@@ -4,7 +4,9 @@
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[94. Binary Tree Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2BinorderTraversal.cpp) |中序 递归| |
+|[94. Binary Tree Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2BinorderTraversal.cpp) |中序 递归| 注意放private|
+|[144. Binary Tree Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2preorderTraversal.cpp) |先序 递归| |
+|[145. Binary Tree Postorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2postorderTraversal.cpp) |后序 递归| |
 |[105. Construct Binary Tree from Preorder and Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/105%2BbuildTree.cpp) | 先序 中序 递归|索引确定|
 |[106. Construct Binary Tree from Inorder and Postorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/106%2BbuildTree.cpp)   |中序 后序 递归 |索引确定|
 |[114. Flatten Binary Tree to Linked List](https://github.com/DuanYaQi/leetcode/blob/master/Tree/114%2Bflatten.cpp)   | 后序 递归 |注意指针连接|
