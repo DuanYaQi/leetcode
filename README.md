@@ -1,30 +1,48 @@
 # Leetcode
 
+**教学**
+
 [力扣加加 - lucifer](https://github.com/azl397985856/leetcode)
 
 [labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
 
+**题解+教学**
+
+[李威威](https://liweiwei1419.gitee.io/leetcode-algo/)
+
+**模板**
+
 [负雪明烛模板](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
 
-[AlgoWiki模板](1+twosum.cpp)
+[AlgoWiki模板](https://ojeveryday.github.io/AlgoWiki/#/?id=algowiki)
 
-[AlgoWiki模板](Tree/105+buildTree.cpp)
+**残酷**
+
+[LeetCode打卡和竞赛微信群](https://wisdompeak.github.io/lc-score-board/rules.html)
+
+做好Medium，没必要死扣Hard。LeetCode上很多Easy的题目看似简单，实则想要写出Perfect的代码并非易事。多思考如何优化Easy，Medium的解法实际上比花精力解Hard题更能提高自己。
+
+```shell
+git config --global http.proxy 127.0.0.1:1080
+//然后开全局代理push
+```
+
 ## Tree
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[94. Binary Tree Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2BinorderTraversal.cpp) |中序 递归| 注意放private|
-|[144. Binary Tree Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2preorderTraversal.cpp) |先序 递归| |
-|[145. Binary Tree Postorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/94%2postorderTraversal.cpp) |后序 递归| |
-|[105. Construct Binary Tree from Preorder and Inorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/105%2BbuildTree.cpp) | 先序 中序 递归|索引确定|
-|[106. Construct Binary Tree from Inorder and Postorder Traversal](https://github.com/DuanYaQi/leetcode/blob/master/Tree/106%2BbuildTree.cpp)   |中序 后序 递归 |索引确定|
-|[114. Flatten Binary Tree to Linked List](https://github.com/DuanYaQi/leetcode/blob/master/Tree/114%2Bflatten.cpp)   | 后序 递归 |注意指针连接|
-|[116. Populating Next Right Pointers in Each Node](https://github.com/DuanYaQi/leetcode/blob/master/Tree/116%2Bconnect.cpp)   | 先序 递归|考虑到特殊情况即可|
-|[222. Count Complete Tree Nodes](https://github.com/DuanYaQi/leetcode/blob/master/Tree/222%2BcountNodes.cpp)   | 完全二叉树 | 利用其性质减少计算|
-|[226. Invert Binary Tree](https://github.com/DuanYaQi/leetcode/blob/master/Tree/226%2BinvertTree.cpp)   | 先序 递归 | 跟交换数字一样|
-|[297. Serialize and Deserialize Binary Tree](https://github.com/DuanYaQi/leetcode/blob/master/Tree/297%2Bserialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi()字符转int |
-|[652. Find Duplicate Subtrees](https://github.com/DuanYaQi/leetcode/blob/master/Tree/652%2BfindDuplicateSubtrees.cpp) |后序 递归  | 巧用map<br>注意输出格式|
-|[654. Maximum Binary Tree](https://github.com/DuanYaQi/leetcode/blob/master/Tree/654%2BconstructMaximumBinaryTree.cpp) |前序 递归  |注意索引 注意返回值|
+|[94. Binary Tree Inorder Traversal](Tree/94+inorderTraversal.cpp) |中序 递归| 注意放private|
+|[144. Binary Tree Inorder Traversal](Tree/144+preorderTraversal.cpp) |先序 递归| |
+|[145. Binary Tree Postorder Traversal](Tree/145+postorderTraversal.cpp) |后序 递归| |
+|[105. Construct Binary Tree from Preorder and Inorder Traversal](Tree/105+buildTree.cpp) | 先序 中序 递归|索引确定|
+|[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 递归 |索引确定|
+|[114. Flatten Binary Tree to Linked List](Tree/144+preorderTraversal.cpp)   | 后序 递归 |注意指针连接|
+|[116. Populating Next Right Pointers in Each Node](Tree/116+connect.cpp)   | 先序 递归|考虑到特殊情况即可|
+|[222. Count Complete Tree Nodes](Tree/222+countNodes.cpp)  | 完全二叉树 | 利用其性质减少计算|
+|[226. Invert Binary Tree](Tree/226+invertTree.cpp)   | 先序 递归 | 跟交换数字一样|
+|[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi()字符转int |
+|[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 递归  | 巧用map<br>注意输出格式|
+|[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 递归  |注意索引 注意返回值|
 |   |  ||
 |   |  ||
 
@@ -92,6 +110,13 @@
 •考察基础算法，比如深度优先、广度优先、二分查找、递归等
 
 •考察基本算法思想：递归、分治、回溯搜索、贪心、动态规划等
+
+---
+## 算法与数据结构分类3
+- Easy：常规字符串操作、常规数组操作、简单数据结构。
+- Medium：数组操作、滑动窗口、哈希表、二分、搜索（bfs、dfs）、常规DP、单调栈、二叉树相关、排序算法、前缀树、堆、并查集等
+- Hard：DP（背包相关、概率DP、简单数论算法、数位DP、记忆化搜索）、简单图算法（最短路、最小生成树）、数据结构实现、字符串算法（后缀数组、回文相关）
+
 
 ----
 ## 算法模式分类
