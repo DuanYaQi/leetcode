@@ -1,5 +1,14 @@
 # Leetcode
 
+[力扣加加 - lucifer](https://github.com/azl397985856/leetcode)
+
+[labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
+
+[负雪明烛模板](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
+
+[AlgoWiki模板](1+twosum.cpp)
+
+[AlgoWiki模板](Tree/105+buildTree.cpp)
 ## Tree
 
 |  题目  |知识点|技巧|
@@ -18,6 +27,98 @@
 |[654. Maximum Binary Tree](https://github.com/DuanYaQi/leetcode/blob/master/Tree/654%2BconstructMaximumBinaryTree.cpp) |前序 递归  |注意索引 注意返回值|
 |   |  ||
 |   |  ||
+
+## 刷题顺序
+**基础篇（30 天）**
+
+基础永远是最重要的，先把最最基础的这些搞熟，磨刀不误砍柴工。
+
+- 数组，队列，栈
+- 链表
+- 树与递归
+- 哈希表
+- 双指针
+
+**思想篇（30 天）**
+
+这些思想是投资回报率极高的，强烈推荐每一个小的专题花一定的时间掌握。
+- 二分
+- 滑动窗口
+- 搜索（BFS，DFS，回溯）
+- 动态规划
+
+**提高篇（31 天）**
+
+这部分收益没那么明显，并且往往需要一定的技术积累。出现的频率相对而言比较低。但是有的题目需要你使用这些技巧。又或者可以使用这些技巧可以实现「降维打击」。
+- 贪心
+- 分治
+- 位运算
+- KMP & RK
+- 并查集
+- 前缀树
+- 线段树
+- 堆
+
+-----
+
+## 算法与数据结构分类1
+
+**算法**
+- 基础技巧：分治、二分、贪心
+- 排序算法：快速排序、归并排序、计数排序
+- 搜索算法：回溯、递归、深度优先遍历，广度优先遍历，二叉搜索树等
+- 图论：最短路径、最小生成树
+- 动态规划：背包问题、最长子序列
+
+**数据结构**
+- 数组与链表：单 / 双向链表
+- 栈与队列
+- 哈希表
+- 堆：最大堆 / 最小堆
+- 树与图：最近公共祖先、并查集
+- 字符串：前缀树（字典树）/ 后缀树
+
+**操作系统**
+- 内存管理
+- 线程处理
+- 文件系统
+- 网络
+
+---
+## 算法与数据结构分类2
+
+•考察数据结构，比如链表、栈、队列、哈希表、图、Trie、二叉树等
+
+•考察基础算法，比如深度优先、广度优先、二分查找、递归等
+
+•考察基本算法思想：递归、分治、回溯搜索、贪心、动态规划等
+
+----
+## 算法模式分类
+1. Pattern: Sliding window，滑动窗口模式
+2. Pattern: two points, 双指针类型
+3. Pattern: Fast & Slow pointers, 快慢指针类型
+4. Pattern: Merge Intervals，区间合并模式
+5. Pattern: Cyclic Sort，循环排序
+6. Pattern: In-place Reversal of a LinkedList，原地链表翻转模式
+7. Pattern: Tree Breadth First Search，树上的BFS模式
+8. Pattern: Tree Depth First Search，树上的DFS模式
+9. Pattern: Two Heaps，双堆类型
+10. Pattern: Subsets，子集类型，一般都是使用多重DFS
+11. Pattern: Modified Binary Search，改造过的二分
+12. Pattern: Top ‘K’ Elements，前K个系列模式
+13. Pattern: K-way merge，多路归并类型模式
+14. Pattern: 0/1 Knapsack (Dynamic Programming)，0/1背包类型
+    1.  0/1 Knapsack, 0/1背包
+    2.  Unbounded Knapsack，无限背包
+    3.  Fibonacci Numbers，斐波那契数列
+    4.  Palindromic Subsequence，回文子系列
+    5.  Longest Common Substring，最长子字符串系列
+15. Pattern: Topological Sort (Graph)，拓扑排序模式
+    
+[Class1-Grokking the Coding Interview: Patterns for Coding Questions](https://www.educative.io/courses/grokking-the-coding-interview)
+
+[Class2-Grokking Dynamic Programming Patterns for Coding Interviews](https://www.educative.io/courses/grokking-dynamic-programming-patterns-for-coding-interviews)
 
 ## 数据结构
 
@@ -131,10 +232,14 @@ N 叉树的遍历又可以扩展为图的遍历，因为图就是好几 N 叉棵
 **只要涉及递归的问题，都是树的问题**。
 
 
-
 数据结构的基本存储方式就是链式和顺序两种，基本操作就是增删查改，遍历方式无非迭代和递归。
 
 刷算法题建议从「**树**」分类开始刷，结合框架思维，把这几十道题刷完，对于树结构的理解应该就到位了。这时候去看**回溯、动规、分治**等算法专题，对思路的理解可能会更加深刻一些。
 
 
+
+---
 ## [C++标准模板库(STL)介绍](https://github.com/DuanYaQi/leetcode/blob/master/STL.md)
+
+
+
