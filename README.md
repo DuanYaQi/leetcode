@@ -6,6 +6,8 @@
 
 [labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
 
+[代码随想录](https://github.com/youngyangyang04/leetcode-master)
+
 **题解+教学**
 
 [李威威](https://liweiwei1419.gitee.io/leetcode-algo/)
@@ -24,15 +26,16 @@
 
 ```shell
 git config --global http.proxy 127.0.0.1:1080
-//然后开全局代理push
+//然后开全局代理push/pull
 ```
 
-## Tree
+---
+## 1. 题表
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[94. Binary Tree Inorder Traversal](Tree/94+inorderTraversal.cpp) |中序 递归| 注意放private|
-|[144. Binary Tree Inorder Traversal](Tree/144+preorderTraversal.cpp) |先序 递归| |
+|[144. Binary Tree Preorder Traversal](Tree/144+preorderTraversal.cpp) |先序 递归| |
 |[145. Binary Tree Postorder Traversal](Tree/145+postorderTraversal.cpp) |后序 递归| |
 |[105. Construct Binary Tree from Preorder and Inorder Traversal](Tree/105+buildTree.cpp) | 先序 中序 递归|索引确定|
 |[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 递归 |索引确定|
@@ -46,7 +49,33 @@ git config --global http.proxy 127.0.0.1:1080
 |   |  ||
 |   |  ||
 
-## 刷题顺序
+
+
+---
+## 2. 专题
+
+### 2.1. [树](Tree/README.md)
+- 二叉树定义
+- 二叉树遍历（递归/迭代）
+
+
+
+---
+
+## 3. C++标准模板库([STL](https://github.com/DuanYaQi/leetcode/blob/master/STL.md))介绍
+- vector
+- set
+- string
+- map
+- queue
+- stack
+- pair
+- algorithm
+
+---
+
+## 4. 分类
+### 4.1. 刷题顺序
 **基础篇（30 天）**
 
 基础永远是最重要的，先把最最基础的这些搞熟，磨刀不误砍柴工。
@@ -79,7 +108,7 @@ git config --global http.proxy 127.0.0.1:1080
 
 -----
 
-## 算法与数据结构分类1
+### 4.2. 分类1
 
 **算法**
 - 基础技巧：分治、二分、贪心
@@ -103,7 +132,7 @@ git config --global http.proxy 127.0.0.1:1080
 - 网络
 
 ---
-## 算法与数据结构分类2
+### 4.3. 分类2
 
 •考察数据结构，比如链表、栈、队列、哈希表、图、Trie、二叉树等
 
@@ -112,14 +141,14 @@ git config --global http.proxy 127.0.0.1:1080
 •考察基本算法思想：递归、分治、回溯搜索、贪心、动态规划等
 
 ---
-## 算法与数据结构分类3
+### 4.4. 难度分类3
 - Easy：常规字符串操作、常规数组操作、简单数据结构。
 - Medium：数组操作、滑动窗口、哈希表、二分、搜索（bfs、dfs）、常规DP、单调栈、二叉树相关、排序算法、前缀树、堆、并查集等
 - Hard：DP（背包相关、概率DP、简单数论算法、数位DP、记忆化搜索）、简单图算法（最短路、最小生成树）、数据结构实现、字符串算法（后缀数组、回文相关）
 
 
 ----
-## 算法模式分类
+### 4.5. 模式分类4
 1. Pattern: Sliding window，滑动窗口模式
 2. Pattern: two points, 双指针类型
 3. Pattern: Fast & Slow pointers, 快慢指针类型
@@ -145,9 +174,10 @@ git config --global http.proxy 127.0.0.1:1080
 
 [Class2-Grokking Dynamic Programming Patterns for Coding Interviews](https://www.educative.io/courses/grokking-dynamic-programming-patterns-for-coding-interviews)
 
-## 数据结构
+----
+## 5. 数据结构
 
-### 存储方式
+### 5.1. 存储方式
 
 只有两种：**数组**（顺序存储）和**链表**（链式存储）。
 
@@ -171,9 +201,9 @@ git config --global http.proxy 127.0.0.1:1080
 
 比如说，让你求解一个迷宫，你要把这个问题层层抽象：迷宫 -> 图的遍历 -> N 叉树的遍历 -> 二叉树的遍历。然后让框架指导你写具体的解法。
 
------
+---
 
-### 基本操作
+### 5.2 基本操作
 
 对于任何数据结构，其基本操作无非遍历 + 访问，再具体一点就是：增删查改。
 
@@ -250,7 +280,7 @@ N 叉树的遍历又可以扩展为图的遍历，因为图就是好几 N 叉棵
 
 ---
 
-### 刷题建议
+### 5.3 刷题建议
 
 **先刷二叉树，先刷二叉树，先刷二叉树**！**二叉树是最容易培养框架思维的，而且大部分算法技巧，本质上都是树的遍历问题**。
 
@@ -260,11 +290,5 @@ N 叉树的遍历又可以扩展为图的遍历，因为图就是好几 N 叉棵
 数据结构的基本存储方式就是链式和顺序两种，基本操作就是增删查改，遍历方式无非迭代和递归。
 
 刷算法题建议从「**树**」分类开始刷，结合框架思维，把这几十道题刷完，对于树结构的理解应该就到位了。这时候去看**回溯、动规、分治**等算法专题，对思路的理解可能会更加深刻一些。
-
-
-
----
-## [C++标准模板库(STL)介绍](https://github.com/DuanYaQi/leetcode/blob/master/STL.md)
-
 
 
