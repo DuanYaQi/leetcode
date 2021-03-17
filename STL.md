@@ -12,6 +12,16 @@
 
 
 
+每个容器还都提供了 `begin()` 和 `end()` 两个函数，分别返回指向容器的第一个元素和最后一个元素的下一位置的iterator
+
+-  `begin()`  返回一个iterator，指向容器的第一个元素
+-  `end()` 返回一个iterator，指向容器最后一个元素的下一位置。
+
+所有容器都提供 `insert()` 用以插入元素，以及 `erase` 用以删除元素。
+
+-  `insert()`  将单一或某个范围内的元素插入容器内
+-  `erase()` 将容器内的单一元素或某个范围内的元素删除。
+
 
 
 
@@ -574,7 +584,7 @@ string str="abcd";
    cout<<str<<endl;//abcopqxyz
    ```
 
-5. erase()
+5. erase(it)/erase(first,last)
 
    ```c++
    //删除单个元素
@@ -856,13 +866,17 @@ int main() {
 using namespace std;
 ```
 
+
+
 #### 5.1 queue定义
 
 ```c++
 queue<typename> name;	//typename 任意基本数据类型或容器
 ```
 
-------
+
+
+---
 
 #### 5.2 queue容器内元素的访问
 
@@ -876,7 +890,9 @@ for(int i=1;i<=5;i++){
 printf("%d %d",q.front(),q.back());//1 5 
 ```
 
-------
+
+
+---
 
 #### 5.3 queue常用函数
 
@@ -911,7 +927,9 @@ printf("%d %d",q.front(),q.back());//1 5
    printf("%d %d",q.front(),q.back());//4 5 
    ```
 
-------
+
+
+---
 
 #### 5.4 queue的常见用途
 

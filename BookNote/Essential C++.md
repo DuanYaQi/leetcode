@@ -664,13 +664,23 @@ find(IteratorType first, IteratorType last, const elemType &value) {
 
 所有容器类（包括string类）的共通操作：
 
-- ==（equality）和!=（inequality）运算符，返回true或false
-- =运算符，将某个容器复制给另一个容器
-- empty()会在容器无热河元素时返回true，否则false
-- size()返回容器内目前持有的元素个数
-- clear()删除所有元素
+- `==`（equality）和 `!=`（inequality）运算符，返回true或false
+- `=`运算符，将某个容器复制给另一个容器
+- `empty()` 会在容器无热河元素时返回true，否则false
+- `size()` 返回容器内目前持有的元素个数
+- `clear()` 删除所有元素
 
 
+
+每个容器都提供了 `begin()` 和 `end()` 两个函数，分别返回指向容器的第一个元素和最后一个元素的下一位置的iterator
+
+-  `begin()`  返回一个iterator，指向容器的第一个元素
+-  `end()` 返回一个iterator，指向容器最后一个元素的下一位置。
+
+所有容器都提供 `insert()` 用以插入元素，以及 `erase` 用以删除元素。
+
+-  `insert()`  将单一或某个范围内的元素插入容器内
+-  `erase()` 将容器内的单一元素或某个范围内的元素删除。
 
 
 
