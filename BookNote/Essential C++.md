@@ -2,7 +2,8 @@
 
 ## Question
 
-- [ ] 2.2 调用函数-Pass by Reference  `我们无法令rval转而代表jval`。
+- [ ] 2.2. 调用函数-Pass by Reference  `我们无法令rval转而代表jval`。
+- [ ] 3.6. 如何设计一个泛型算法-Function Object Adapter `less<int>` 中的 int 是根据什么设定的
 
 
 
@@ -60,7 +61,11 @@ complex<double> purei(0, 7);
 
 switch 每个 case 最后要记得 break 
 
-while 用 break 或 continue 终止迭代
+break 在循环语句中作用是 **跳出循环并终于整个循环语句**继续执行
+
+continue 在循环语句中作用是 **终止当前循环并重新执行新的循环**
+
+**嵌套循环**中的break和continue都只对一层循环起作用，**用在内层循环时，只对内层循环其作用，对外层循环无影响**。
 
 
 
@@ -688,17 +693,452 @@ find(IteratorType first, IteratorType last, const elemType &value) {
 
 ### 3.4. 使用顺序性容器
 
+排列有序。 vecotr和list是两个最主要的顺序性容器。
+
+**vector插入删除效率很低，访问效率高**。**list插入删除效率相对较高，访问效率低**。
+
+vector比较适合数列。list适合随机插入数据。
+
+deque也是顺序性容器。和vector相似，连续内存。适合**前端插入，末端删除**。
+
+**定义**方式有五种
+
+```c++
+//1. 产生空容器
+list<string> slist;
+vector<int> ivec;
+
+//2. 产生特定大小的容器。初值为默认值0
+list<int> ilist(1024);
+vector<string> svec(32);
+
+//3. 产生特定大小容器，指定初值
+list<string> slist(16, "unassigned");
+vector<int> ivec(10, -1);
+
+//4. 通过一堆iterator产生容器。iterator用来标示一整组作为初值的元素的范围
+int ia[8] = {1, 1, 2, 3, 5, 8, 13, 21};
+vector<int> fib(ia, ia+8);
+
+//5. 根据某个容器产生出新容器。复制原容器内的元素，作为新容器的初值
+list<string> slist; 		//空容器
+//填充slist
+list<string> slist2(slist);	//将slist赋值给slist2
+```
+
+
+
+有两个特别的操作函数，允许在容器末尾进行**插入和删除** `push_back()` 和 `pop_back()`。
+
+`push_back()` 会在末端插入一个元素，`pop_back()` 会在删除最后一个元素，
+
+此外，list和deque还提供了 `push_front()` 和`pop_front()`。
+
+**读取**最前端元素的值 `front()` 或末端元素的值 `back()`。
+
+
+
+`push_back()` 和 `push_front()` 都属于特殊化的插入操作。每个容器除了拥有通用的插入函数 `insert()` 还支持四种变形
+
+```c++
+iterator insert (iterator position, elemType value) 
+    //将value插入至位置position前，返回被插入的元素。
+void insert (iterator position, int count, elemType value) 
+    //将count个value插入至位置position前。
+void insert (iterator1 position, iterator2 first, iterator2 last) 
+    //将[first,last)标识的元素插入至位置position前。
+iterator insert (iterator position) 
+    //将默认值插入至位置position前。
+```
+
+
+
+`pop_back()` 和 `pop_front()` 都属于特殊化的删除操作。每个容器除了拥有通用的删除函数 `erase()` 还支持四种变形
+
+```c++
+iterator erase (iterator position) 
+    //删除位置position所指的元素。
+iterator erase (iterator first, iterator last) 
+    //删除[first,last)标识的元素的元素。
+```
+
+
+
+---
+
 ### 3.5. 使用泛型算法
+
+```c++
+#include<algorithm>
+```
+
+`find()` 搜索**无序**集合中是否存在某值；
+
+`binary_search()` 用于**有序**集合的搜索；
+
+`count()` 返回数值相符的元素数目；
+
+`search()` 比对某个容器内是否存在某个**子序列**；
+
+`max_element` 取数列最大元素值；
+
+
+
+---
 
 ### 3.6. 如何设计一个泛型算法
 
+给予一个整数vector，返回一个新的vector，其中包含原vector中小于10的所有数值。
+
+```c++
+bool less_than (int v1, int v2) {
+    return v1 < v2 ? true : false;
+}
+
+bool greater_than (int v1, int v2) {
+    return v1 > v2 ? true : false;
+}
+
+vector<int> filter (const vector<int> &vec, int filter_value, bool (*pred)(int int)){
+    vector<int> nvec;
+    for (int ix = 0; ix < vec.size(); ++ix) {
+        if ( pred( vec[ ix ], filter_value) )
+            nvec.push_back( vec[ix] );
+    }
+}
+
+int main () {
+    vector<int> big_vec;
+    int value;
+    // 填充big_vec和value
+    vector<int> lt_10 = filter(big_vec, value, less_than );
+    return 0;
+}
+```
+
+定义了的**函数指针** `pred`，输入int和int，返回bool。
+
+
+
+```c++
+//找出每个等于10的元素
+iterator find (iterator first, iterator last, int val);
+
+int count_occurs (const vector<int> &vec, int val) {
+    vector<int>::const_iterator iter = vec.begin();
+	int occurs_count = 0;
+    while ( (iter = find(iter, vec.end(), val)) != vec.end() ) {
+        ++occurs_count;
+        ++iter;//指向下一个元素，更改搜索范围
+    }
+    return occurs_count;
+}
+```
+
+
+
+#### Function Object
+
+**function object**，是某种class的实例对象，这类class对function call**运算符做了重载操作**，如此一来可使function object被当成一般函数来使用。
+
+
+
+标准库事先定义了一组function object，分为算术运算（arithmetic）、关系运算（relational）和逻辑运算（logical）。以下列表中的type在实际使用时会被替换为内置类型或class类型
+
+- 六个**算术**（加、减、非、乘、除、模）运算：`plus<type>，minus<type>，negate<type>，multiplies<type>，divides<type>，modules<type>`
+
+- 六个**关系**运算：`less<type>，less_equal<type>，greater<type>，greater_equal<type>，equal_to<type>，not_equal_to<type>`
+- 三个**逻辑**（&&    ||    ！）运算：`，，`
+
+
+
+欲使用事先定义的function object，首先得包含相关头文件：
+
+```c++
+#include<functional>
+```
+
+sort函数默认使用底部元素类型所提供的less-than运算符，将元素**升序**排序。如果改用`greater_than` function object传入，元素就会**降序**排序。
+
+```c++
+sort(vec.begin, vec.end(), greater<int>() );
+```
+
+其中`greater<int>()` 会产生一个未命名的class template object，传给`sort()`。同理
+
+```c++
+binart_search(vec.begin, vec.end(), elem, greater<int>() );
+```
+
+
+
+#### Function Object Adapter
+
+function object `less<type>` 期望外界传入两个值，如果第一个值小于第二个值就返回true。如果其中一个数是固定的。我们可以将`less<type>` 转化为一个**一元**（unary）运算符。可通过参数**绑定** bind 来完成。
+
+**绑定适配器**（binder adapter） 会将function object的参数绑定至某特定值，使**二元**（binary）function object转换为**一元**。
+
+```c++
+vector<int> filter (const vector<int> &vec, int val, less<int> &lt){
+    vector<int> nvec;
+    vector<int>::const_iterator iter = vec.begin();
+    
+    //bind2nd(less<int> ,val); 内置函数 还有bind1st
+    //会把val绑定于 less<int> 的第二个参数身上
+    //less<int> 会将每个元素拿来和val比较
+    
+    while( (iter = find_if(iter, vec.end(), bind2nd(lt, val)) ) {
+        nvec.push_back(*iter);
+        iter++;
+    }
+    return nevc;
+}
+```
+
+为了消除`filter()`与`vector`容器类型的依赖关系，以使`filter()`更加泛化。将`filter()`改为function template，并将元素类型加入template的声明中。为了消除它和容器类型间的依赖性，我们传入一对 `iterator[first,last)`，并在参数列表中增加另一个`iterator`，用以指定从何处开始复制元素。<span id="filter"></span>
+
+```c++
+template <typename InputIterator, typename OutputIterator, typename ElemType, typename Comp>
+
+OutputIterator
+filter (InputIterator first, InputIterator last, OutputIterator at, const ElemType &val, Comp pred)
+{
+    while( (first = find_if(first, last, bind2nd(pred, val))) != last ) {
+        // 观察进行情形
+        cout << "found value: " << *first << endl;
+        
+        // 执行assign操作，然后令两个iterator前进
+        *at++ = *first++;
+    }
+    return at;
+}
+
+int main() {
+    const int elem_size = 8;
+    int ia[elem_size] = {12, 8, 43, 0, 6, 21, 3, 7};
+    vector<int> ivec(ia, ia+elem_size);
+
+
+    int ia2[elem_size];
+    vector<int> ivec2(elem_size);
+
+    cout << "filtering integer array for values less than 8" << endl;
+    filter( ia, ia+elem_size, ia2, elem_size, less<int>() );
+//？？？？？？？？？？？？？？？？？？？？？less<int>()
+    cout << "filtering integer vector for values greater than 8" << endl;
+    filter(ivec.begin(), ivec.end(), ivec2.begin(), elem_size, greater<int>() );
+
+    return 0;
+}
+```
+
+
+
+#### 小练习
+
+将 `sub_vec()` 改为一个template function
+
+```c++
+vector<int> sub_vec (const vector<int> &vec, int val) {
+    vector<int> local_vec(vec);
+    sort(local_vec.begin(), local_vec.end());
+
+    vector<int>::iterator iter = find_if( local_vec.begin(),
+                                        local_vec.end(),
+                                        bind2nd(greater<int>(), val));
+    local_vec.erase(iter, local_vec.end());
+    return local_vec;
+}
+```
+
+写成模板形式
+
+```c++
+template <typename InputIterator, typename OutputIterator, typename ElemType, typename Comp>
+
+OutputIterator
+sub_vec (InputIterator first, InputIterator last, OutputIterator at, const ElemType &val, Comp pred)
+{
+    sort(first, last);
+    last = find_if(first, last, bind2nd(pred, val)); //找到等于val的值
+        
+    while( first != last ) {
+        // 观察进行情形
+        cout << "found value: " << *first << endl;
+        
+        // 执行assign操作，然后令两个iterator前进
+        *at++ = *first++;
+    }
+    return at;
+}
+
+
+// 注意 equal_to
+int main() {
+    const int elem_size = 8;
+    int ia[elem_size] = {12, 8, 43, 0, 6, 21, 3, 7};
+    vector<int> ivec(ia, ia+elem_size);
+
+
+    int ia2[elem_size];
+    vector<int> ivec2(elem_size);
+
+    cout << "filtering integer array for values less than 8" << endl;
+    sub_vec( ia, ia+elem_size, ia2, elem_size, equal_to<int>() ); 
+
+    cout << "filtering integer vector for values greater than 8" << endl;
+    sub_vec(ivec.begin(), ivec.end(), ivec2.begin(), elem_size, equal_to<int>() );
+
+    return 0;
+}
+```
+
+
+
+---
+
 ### 3.7. 使用Map
+
+字典是map一个不错的实例。
+
+map对象有一个名为 `first` 的member，对应于`key` ；有一个名为 `second` 的member，对应于`value`。
+
+查询key是否在map中
+
+- `if(words['study'])`，但这样如果不在，key会被自动加入map。
+- `words.find('study')`，有返回iterator；没有返回end()；
+- `words.count('study')`，统计个数。普通map肯定返回**最大为1**，如果要储存多分相同key值，需使用multimap。
+
+
+
+---
 
 ### 3.8. 使用Set
 
+set由一群 key 组合而成。适合判断某值是否在某个集合内。例如图遍历（graph traversal）。可以使用set储存遍历过的节点（node）。
+
+对于任何 key 值，set 只能储存一份。如果要储存多份相同的 key 值，使用 multiset 。
+
+默认less-than运算符进行排列。
+
+插入 insert( val )  / insert(first, last) 
+
+
+
+---
+
 ### 3.9. 如何使用Iterator Inserter
 
+3.6中对filter()的**[实现](#filter)**，我们将源端中每一个符号条件的元素一一赋值至目的端
+
+```c++
+while( (first = find_if(first, last, bind2nd(pred, val))) != last ) {
+    // 观察进行情形
+    cout << "found value: " << *first << endl;
+
+    // 执行assign操作，然后令两个iterator前进
+    *at++ = *first++;
+}
+```
+
+必须确定目的端容器足够大，返回有效的地址位置。让目的端跟输入一样大，却有些浪费资源。标准库提供了三个所谓的**插入适配器** insertion adapter，这些 adapter 让我们得以**避免使用**容器的 **assignment** 运算符。
+
+- `back_inserter()` 会以容器的 `push_back()` 函数取代 assignment 运算符。对 vector 来说，这是比较适合的 inserter。传入 `back_inserter` 的参数，应该就是容器本身：
+
+```c++
+vector<int> result_vec;
+unique_copy(ivec.begin(), ivec.end(), back_inserter(result_vec));
+```
+
+- `inserter()` 会以容器的 `insert()` 函数取代 assignment 运算符。`inserter()` 接受两个参数：一个是**容器**，另一个是 iterator，指向**容器内的插入操作起点**。
+
+```c++
+vector<string> svec_res;
+unique_copy(svec.begin(), svec.end(), inserter( svec_res, svec_res.end()));
+```
+
+- `front_inserter()` 会以容器的 `push_front()` 函数取代 assignment 运算符。这个 inserter 只适用于 list 和 deque：
+
+```c++
+list<int> ilist_clone;
+copy(ilist.begin(), ilist_end(), front_inserter(ilist_clone));
+```
+
+
+
+这些 adapter 并不能用在 array 上。array 并不支持元素插入操作。之前对 vector 每个位置的赋值操作，替换为在尾部**插入**操作，这样就**不用考虑**容器的**大小**问题，**效率比较高**。
+
+
+
+---
+
 ### 3.10. 使用iostream Iterator
+
+标准库由供输入及输出使用的 iostream iterator 类。称为 istream_iterator 和 ostream_iterator，分别支持单一类型的元素读取和写入。
+
+
+
+就像所有的iterator一样，需要一对iterator `first`和`last`，用来标示元素范围。
+
+```c++
+#include<iterator>
+istream_iterator<string> is(cin);
+istream_iterator<string> eof;
+```
+
+`first` iterator，它将 `is` 定义为一个”绑定标准输入设备“的 `istream_iterator`。只要定义时不指明 istream 对象，即为`end-of-file` 即代表`last`。
+
+```c++
+ostream_iterator<string> os(cout, " ");
+```
+
+将 `os` 定义为一个”绑定至标准输出设备“ 的 `ostream_iterator` 。
+
+```c++
+//标注输入输出设备显示
+int main() {
+    istream_iterator<string> is(cin);
+	istream_iterator<string> eof;
+    
+    vector<string> text;
+    copy(is, eof, back_inserter(text));
+    
+    sort(text.begin(), text.end());
+    
+    ostream_iterator<string> os(cout, " ");
+    copy(text.begin(), text.end(), os);
+    return 0;
+}
+```
+
+
+
+```c++
+//文件读写
+int main() {
+    ifstream in_file("input.txt");
+    ofstream out_file("output.txt");
+    
+    if(!in_file || !out_file) {
+        cerr << "!! unable to open the necessary files." << endl;
+        return -1;
+    }
+    
+    istream_iterator<string> is(in_file);			//绑定的对象不同
+	istream_iterator<string> eof;
+    
+    vector<string> text;
+    copy(is, eof, back_inserter(text));
+    
+    sort(text.begin(), text.end());
+    
+    ostream_iterator<string> os(out_file, " "); 	//绑定的对象不同
+    copy(text.begin(), text.end(), os);
+    return 0;
+}
+```
+
+
 
 
 
