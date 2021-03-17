@@ -484,6 +484,214 @@ extern const vector<int>* (*seq_array[seq_cnt])(int);
 
 ##  3. 泛型编程风格
 
+Standard Templated Library（STL）主要由两种组件构成：容器（container）和泛型算法（generic algorithm）。
+
+---
+
+### 3.1. 指针的算术运算
+
+```c++
+int min ( int array[24] ) {1,2,3,4,5,6,...,24}
+```
+
+array并**不会以传值方式**复制一份，而且可以传递**任意大小**（不一定为24）的array给函数。
+
+当数组被传给函数，或是由函数中返回，仅有第一个元素的地址会被传递。
+
+```c++
+int min ( int *array ) {1,2,3,4,5,6,...,24}
+```
+
+函数可接受任意大小。指向array开头的指针，使我们得以开始对array进行读取操作。
+
+
+
+题目：给定一个储存整数的vector/array，以及一个整数值。如果此值存在于 vector/array 内，返回一个指针指向该值；否则返回 0。则使用函数模板，
+
+问题：
+
+- 将array的元素传入find（），而非指明该array
+
+- 将vector的元素传入find（），而非指明该vector
+
+```c++
+template <typename elemType>
+elemType* find(const elemType *array, int size, const elemType &value) {
+    if (!array || size < 1) return 0;
+    for (int ix = 0; ix < size; ++ix) {
+        if (array[ix] == value) return &array[ix];
+    }
+    return 0;
+}
+```
+
+​	由于传递给find()的array是以其第一个元素的指针传入，可以通过指针访问元素，但也可以改用下标（subscript）运算符，就如同array是个对象（而非指针形式）一般。
+
+事实上所谓**下标操作就是将array的起始地址加上索引值，产生出某个元素的地址，然后该地址再被提领（dereference）以返回元素值**。
+
+```c++
+array[2] ==  *(array + 2); //true
+```
+
+若 array 的第一个元素地址为1000，且array类型为int，那么array+2地址为1000 + 4 * 2。此为指针的算术运算。其中 4 为 int 的长度 4 byte。
+
+另一种实现，通过指针来进行每个元素的定位。每次迭代 array 递增1。array为地址 *array为元素值。
+
+```c++
+template <typename elemType>
+elemType* find(const elemType *array, int size, const elemType &value) {
+    if (!array || size < 1) return 0;
+    for ( int ix = 0; ix < size; ++ix, ++array ) {
+        if ( *array == value ) return array;
+    }
+    return 0;
+}
+```
+
+
+
+另一种实现，使用第两个指针取代参数size。此指针扮演着标兵的角色。可以让我们将array的声明从参数列表中完全移除。
+
+```c++
+template <typename elemType>
+elemType* find(const elemType *first, const elemType *last, const elemType &value) {
+    if (!first || !last ) return 0;
+    for ( ; first != last; ++first ) {
+        if ( *first == value ) return first;
+    }
+    return 0;
+}
+```
+
+
+
+考虑完array，我们来考虑vector，与array不同的是vector可以为空，如果输入为空，则出错
+
+因此定义两个内联函数，确定vector初始地址和最终地址。
+
+```c++
+template <typename elemType>
+inline elemType* begin( const vector<elemType> &vec ) {
+    return vec.empty() ? 0 : &vec[0];
+}
+
+inline elemType* end( const vector<elemType> &vec ) {
+    return vec.empty() ? 0 : &vec[vec.size()-1];
+}
+
+find( begin(vec), end(vec), serach_value );
+```
+
+
+
+考虑完array，vector，我们来考虑list。**指针的算术运算**不适用于list，因为list元素不一定储存在**连续空间**里。
+
+办法是，在底层指针的行为之上提供一层抽象，取代程序原本的”指针直接操作“方式。我们把**底层指针的处理通通放在此抽象层中**，让用户无须直接面对指针操作。见3.2
+
+
+
+---
+
+### 3.2. 了解Iterator（泛型指针）
+
+抽象层的实现，需要一组对象。可提供有如内置运算符（++    *    ==    !=）一般的运算符，并允许我们只为这些运算符提供一份实现代码即可。**即list iterator的++运算符是指针前进到下一个元素。vector iterator的++运算符是将目前地址加上一个元素的大小。**
+
+可以利用C++的类机制来达到目的。
+
+
+
+每个标准容器都提供有一个名为 `begin()` 的操作函数，可返回一个iterator，指向**第一个元素**。另一个名为 `end()` 的操作函数返回的iterator，指向**最后一个元素的下一个位置**。
+
+```c++
+for ( iter = svec.begin(); iter != svec.end(); ++iter ) {
+ 	cout << *iter << '';   
+}
+```
+
+上述包括，iterator的**赋值（assign）、比较（compare）、递增（increment）、提领（dereference）**操作。
+
+iterator 定义需要 **迭代对象（容器）的类型** 和 **iterator所指的元素类型**，即返回值。
+
+```c++
+vector<string> svec;
+iterator<vector, string> iter; 					//定义1
+
+vector<string> svec;
+vector<string>::iterator iter = svec.begin();	//定义2
+```
+
+此处iter被定义为一个iterator，指向一个vector，返回类型为string。其初值指向svec的第一个元素。双冒号表示此iterator乃是位于 string vector定义内的嵌套（nested）类型。
+
+
+
+面对**const vector**（跟数组一样，不能动态增加了，因为const了），我们用**const_iterator**来遍历操作：
+
+```c++
+const vector<string> cs_vec;
+vector<string>::const_iterator iter = cs_vec.begin();
+```
+
+**const_iterator** 允许读取vector的元素，不允许任何写入操作。
+
+如果通过iter调用底部string元素所提供的操作，我们可以使用arrow（箭头）运算符：
+
+```c++
+cout << iter->size() << endl;// 跟指针类似
+```
+
+
+
+现在重新实现find（），让它同时支持**指针**和**容器的iterator**
+
+```c++
+template <typename IteratorType, typename elemType>
+
+IteratorType
+find(IteratorType first, IteratorType last, const elemType &value) {
+    if (!first || !last ) return 0;
+    for ( ; first != last; ++first ) {
+        if ( *first == value ) return first;
+    }
+    return 0;
+}
+```
+
+
+
+---
+
+### 3.3. 所有容器的共通操作
+
+所有容器类（包括string类）的共通操作：
+
+- ==（equality）和!=（inequality）运算符，返回true或false
+- =运算符，将某个容器复制给另一个容器
+- empty()会在容器无热河元素时返回true，否则false
+- size()返回容器内目前持有的元素个数
+- clear()删除所有元素
+
+
+
+
+
+---
+
+### 3.4. 使用顺序性容器
+
+### 3.5. 使用泛型算法
+
+### 3.6. 如何设计一个泛型算法
+
+### 3.7. 使用Map
+
+### 3.8. 使用Set
+
+### 3.9. 如何使用Iterator Inserter
+
+### 3.10. 使用iostream Iterator
+
+
+
 
 
 ---
