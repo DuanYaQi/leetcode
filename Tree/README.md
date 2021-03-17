@@ -143,12 +143,12 @@ vector<int> inorderTraversal (TreeNode* root) {
   	stack<TreeNode*> st;
     vector<int> res;
 	TreeNode* cur = root;
-    while (cur != NULL || !st.empty()) {
-        if (cur != NULL) {
+    while ( !cur || !st.empty()) {
+		if (!cur) {
         	st.push(cur);
             cur = cur->left;
-    	} else {
-        	cur = st.top();
+        } else {
+            cur = st.top();
             st.pop();
             res.push_back(cur->val);
             cur = cur->right;
@@ -161,6 +161,54 @@ vector<int> inorderTraversal (TreeNode* root) {
 后序
 
 ```c++
-
+vector<int> PostorderTraversal (TreeNode* root) {
+    stack<TreeNode*> st;
+    vector<int> res;
+    if (!root) return res;
+    st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        st.pop();
+        res.push_back(node->value);
+        if (node->left)  st.push(node->left);  //栈先进后出 所有最后压左子树
+        if (node->right) st.push(node->right); //空节点不如栈 
+    }
+    reverse(res.begin(), res.end());//反转 左右中
+    return res;
+}
 ```
+
+这样的风格不统一。
+
+
+
+---
+
+#### 1.4.3. 统一迭代遍历
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
