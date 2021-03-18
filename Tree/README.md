@@ -377,10 +377,65 @@ vector<double> averageOfLevels(TreeNode* root) {
 **429. N-ary Tree Level Order Traversal**  N叉树的层序遍历
 
 ```c++
+vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> res;
+        queue<Node*> que;
+        if (root != NULL) que.push(root);
+        while (!que.empty()) {
+            Node* node = que.front();
+            vector<int> vec;
+            int size = que.size();
 
+            for (int i = 0; i < size; ++i) {
+                Node* node = que.front();
+                que.pop();
+                vec.push_back(node->val);
+                if (!node->children.empty()) {
+                    int vsize = node->children.size();
+                    for (int j = 0; j < vsize; ++j) {
+                        que.push(node->children[j]);
+                    }
+                }    
+            }
+            res.push_back(vec);
+        }
+        return res;
+    }
 ```
 
 
+
+
+
+**515.Find Largest Value in Each Tree Row** 在每个树行中找最大值
+
+```c++
+vector<int> largestValues(TreeNode* root) {
+    vector<int> res;
+    queue<TreeNode*> que;
+    if (root != NULL) que.push(root);
+
+    while (!que.empty()) {
+        TreeNode* node = que.front();
+        int size = que.size();
+        int flag = 0x80000000;
+
+        for (int i = 0; i < size; ++i) {
+            TreeNode* node = que.front();
+            que.pop();
+            flag = node->val > flag ? node->val : flag;
+            if (node->left)     que.push(node->left);
+            if (node->right)    que.push(node->right);
+        }
+        res.push_back(flag);
+    }
+    return res;
+}
+```
+
+
+
+**116. Populating Next Right Pointers in Each Node** 填充每个节点的下一个右侧节点指针
 
 
 

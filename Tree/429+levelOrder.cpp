@@ -25,7 +25,6 @@ public:
         queue<Node*> que;
         if (root != NULL) que.push(root);
         while (!que.empty()) {
-            Node* node = que.front();
             vector<int> vec;
             int size = que.size();
 

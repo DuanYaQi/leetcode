@@ -2,11 +2,13 @@
 
 **教学**
 
+[代码随想录](https://github.com/youngyangyang04/leetcode-master)
+
+
 [力扣加加 - lucifer](https://github.com/azl397985856/leetcode)
 
 [labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
 
-[代码随想录](https://github.com/youngyangyang04/leetcode-master)
 
 **题解+教学**
 
@@ -29,12 +31,18 @@ git config --global http.proxy 127.0.0.1:1080
 //然后开全局代理push/pull
 ```
 
-```c++
-if (root != NULL) 而不是if (root)
+## TIPS/TRICKS
 
-int size;double asum;
-vec.push_back(double(asum/size));而不是vec.push_back(asum/size);
-```
+|  技巧  |
+|  :----:  |
+|if (root != NULL) 而不是 if (root)|
+|int size;   double asum;<br>vec.push_back(double(asum/size)); 而不是 vec.push_back(asum/size);|
+|-2^31~2^31-1 对应 INT_MIN 和 INT_MAX|
+||
+||
+||
+
+
 
 
 ---
@@ -59,7 +67,7 @@ vec.push_back(double(asum/size));而不是vec.push_back(asum/size);
 |[199. Binary Tree Right Side View](Tree/199+rightSideView.cpp)   | 层序 ||
 |[637. Average of Levels in Binary Tree](Tree/637+averageOfLevels.cpp)   |层序  ||
 |[429. N-ary Tree Level Order Traversal](Tree/429+levelOrder.cpp)   |层序 多叉树 |换汤不换药|
-|   |  ||
+|[515. Find Largest Value in Each Tree Row](Tree/515+largestValues.cpp)   |层序  ||
 |   |  ||
 |   |  ||
 |   |  ||
@@ -217,7 +225,7 @@ vec.push_back(double(asum/size));而不是vec.push_back(asum/size);
 
 ---
 
-### 5.2 基本操作
+### 5.2. 基本操作
 
 对于任何数据结构，其基本操作无非遍历 + 访问，再具体一点就是：增删查改。
 
@@ -294,7 +302,7 @@ N 叉树的遍历又可以扩展为图的遍历，因为图就是好几 N 叉棵
 
 ---
 
-### 5.3 刷题建议
+### 5.3. 刷题建议
 
 **先刷二叉树，先刷二叉树，先刷二叉树**！**二叉树是最容易培养框架思维的，而且大部分算法技巧，本质上都是树的遍历问题**。
 
