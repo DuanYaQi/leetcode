@@ -29,6 +29,14 @@ git config --global http.proxy 127.0.0.1:1080
 //然后开全局代理push/pull
 ```
 
+```c++
+if (root != NULL) 而不是if (root)
+
+int size;double asum;
+vec.push_back(double(asum/size));而不是vec.push_back(asum/size);
+```
+
+
 ---
 ## 1. 题表
 
@@ -46,9 +54,15 @@ git config --global http.proxy 127.0.0.1:1080
 |[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi()字符转int |
 |[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 递归  | 巧用map<br>注意输出格式|
 |[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 递归  |注意索引 注意返回值|
+|[112. Binary Tree Level Order Traversal](Tree/112+levelOrder.cpp)   | 层序 自顶向下| queue|
+|[107. Binary Tree Level Order Traversal II](Tree/107+levelOrderBottom.cpp)   | 层序 自底向上|reverse|
+|[199. Binary Tree Right Side View](Tree/199+rightSideView.cpp)   | 层序 ||
+|[637. Average of Levels in Binary Tree](Tree/637+averageOfLevels.cpp)   |层序  ||
+|[429. N-ary Tree Level Order Traversal](Tree/429+levelOrder.cpp)   |层序 多叉树 |换汤不换药|
 |   |  ||
 |   |  ||
-
+|   |  ||
+|   |  ||
 
 
 ---

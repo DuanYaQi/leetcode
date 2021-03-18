@@ -1,16 +1,14 @@
-# 树
+# 树/二叉树
 
-## 1. 二叉树
+## 1. 种类
 
-### 1.1. 种类
-
-#### 1.1.1. 满二叉树
+### 1.1. 满二叉树
 
 如果一棵树只有**度**为 **0** 的 **2** 的结点，并且度为 0 的结点在同一层上，则这棵二叉树为满二叉树。
 
 
 
-#### 1.1.2. 完全二叉树
+### 1.2. 完全二叉树
 
 除了最底层节点可能没被填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最**左**边的若干位置。若最底层为第h层，则该层节点数范围为  $1$ ~ $2^h-1$ 个。
 
@@ -20,7 +18,7 @@
 
 
 
-#### 1.1.3. 二叉搜索树
+### 1.3. 二叉搜索树
 
 二叉搜索树是有**数值**的，且是一个**有序**树。
 
@@ -34,7 +32,7 @@
 
 
 
-#### 1.1.4. 平衡二叉搜索树
+### 1.4. 平衡二叉搜索树
 
 AVL（Adelson-Velsky and Landis）树，它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一颗平衡二叉树。
 
@@ -50,7 +48,7 @@ C++中**map、set、multimap，multiset**的底层实现都是**平衡二叉搜�
 
 ---
 
-### 1.2. 存储方式
+## 2. 存储方式
 
 链式存储，指针，不连续
 
@@ -62,7 +60,7 @@ C++中**map、set、multimap，multiset**的底层实现都是**平衡二叉搜�
 
 ----
 
-### 1.3. 定义
+## 3. 定义
 
 ```c++
 struct TreeNode{
@@ -77,7 +75,7 @@ struct TreeNode{
 
 ---
 
-### 1.4. 遍历方式
+## 4. 遍历方式
 
 深度优先遍历：先往深走，遇到叶子节点再往回走
 
@@ -91,7 +89,7 @@ struct TreeNode{
 
 
 
-#### 1.4.1. 递归遍历
+### 4.1. 递归遍历
 
 递归三要素
 
@@ -111,13 +109,13 @@ struct TreeNode{
 
 
 
-#### 1.4.2. 迭代遍历
+### 4.2. 迭代遍历
 
 递归的实现：每一次递归第调用都会把函数的局部变量、参数值和返回地址等**压入调用栈**中，递归返回时，从栈顶弹出上一次递归的各项参数。
 
 **注意空节点不入栈**
 
-前序
+#### 前序
 
 ```c++
 vector<int> preorderTraversal (TreeNode* root) {
@@ -136,7 +134,9 @@ vector<int> preorderTraversal (TreeNode* root) {
 }
 ```
 
-中序 借助指针的遍历来帮助访问节点，栈用来处理节点上的元素。
+#### 中序 
+
+借助指针的遍历来帮助访问节点，栈用来处理节点上的元素。
 
 ```c++
 vector<int> inorderTraversal (TreeNode* root) {
@@ -158,7 +158,7 @@ vector<int> inorderTraversal (TreeNode* root) {
 }
 ```
 
-后序
+#### 后序
 
 ```c++
 vector<int> PostorderTraversal (TreeNode* root) {
@@ -184,25 +184,201 @@ vector<int> PostorderTraversal (TreeNode* root) {
 
 ---
 
-#### 1.4.3. 统一迭代遍历
+### 4.3. 统一迭代遍历
+
+将访问的节点放入栈中，把要处理的节点也放入栈中，但是做标记。
+
+即要处理的节点放入栈之后，**紧接着放入一个空指针作为标记**。**标记法**
+
+#### 中序
+
+```c++
+// 左中右 压栈为 右中左
+vector<int> inorderTraversal(TreeNode* root) {
+    vecotr<int> res;
+    stack<TreeNode*> st;
+    if (root != NULL) st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top();
+        if (node != NULL) {
+            st.pop(); //弹出，避免重复操作，再将右中左节点添加到栈中
+            if (node->right) st.push(node->right);	// 添加右节点
+            st.push(node);							// 添加中节点
+            st.push(NULL);							// 访问过中节点，但是还没有处理，加入空做标记
+            	
+            if (node->left) st.push(node->left);	// 添加左节点
+        } else {			// 遇到空节点时，将下一个节点放进结果集
+            st.pop();		
+            node = st.top();
+            st.pop();
+            res.push_back(node->val);
+        }
+    }
+    return res;
+}
+```
 
 
 
+#### 前序
+
+```c++
+// 中左右 压栈为 右左中
+vector<int> PreTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    if (root != NULL) st.push(root);
+    while (!st.empty()) {
+    	TreeNode* node = st.top();
+        if (node != NULL) {
+            st.pop();
+            if (node->right) 	st.push(node->right);
+            if (node->left) 	st.push(node->left);
+            st.push(node); 	//放中节点，
+            st.push(NULL);	//访问过加null
+        } else {
+            st.pop();
+            node = st.top();
+            st.pop();
+            res.push_back(node->val);
+        }
+    }
+    return res;
+}
+```
 
 
 
+#### 后序
+
+```c++
+// 左右中 压栈为 中右左
+vector<int> PreTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> st;
+    if (root != NULL) st.push(root);
+    while (!st.empty()) {
+    	TreeNode* node = st.top();
+        if (node != NULL) {
+            st.pop();
+            st.push(node); 	//放中节点，
+            st.push(NULL);	//访问过加null
+            if (node->right) 	st.push(node->right);
+            if (node->left) 	st.push(node->left);
+        } else {
+            st.pop();
+            node = st.top();
+            st.pop();
+            res.push_back(node->val);
+        }
+    }
+    return res;
+}
+```
 
 
 
+### 4.4. 层序遍历
+
+#### 自顶向下
+
+即逐层的，从左到右访问所有节点
+
+需要借助一个辅助数据结构即**队列**来实现，队列先进先出，符合一层一层**宽度优先遍历**的逻辑（用**栈**先进后出是模拟**深度优先遍历**也就是**递归**的逻辑。）
+
+```c++
+vector<vector<int>> levelOrder(TreeNode* root) {
+    queue<TreeNode*> que;
+    if (root != NULL) que.push(root);
+    vector<vector<int>> res;
+    while (!que.empty()) {
+        int size = que.size();
+        vector<int> vec;
+
+        for (int i = 0; i < size; i++) {
+            TreeNode* node = que.front();
+            que.pop();
+            vec.push_back(node->val);
+            if (node->left)   que.push(node->left);
+            if (node->right)  que.push(node->right);
+        }
+        res.push_back(vec);
+    }
+    return res;
+} 
+```
 
 
 
+#### 自底向上
+
+```c++
+自顶向下处理后 直接反转 
+reverse();
+```
 
 
 
+#### 习题
+
+**199. binary tree right side view** 二叉树的右视图
 
 
 
+```c++
+vector<int> rightSideView(TreeNode* root) {
+    queue<TreeNode*> que;
+    if (root != NULL) que.push(root);
+    vector<int> res;
+
+    while (!que.empty()) {
+        int size = que.size();
+
+        for (int i = 0; i < size; i++) {
+            TreeNode* node = que.front();
+            que.pop();
+            if (i == size-1 ) res.push_back(node->val);
+            if (node->left)   que.push(node->left);
+            if (node->right)  que.push(node->right);
+        }
+    }
+    return res;
+}
+```
+
+
+
+**637. Average of Levels in Binary Tree** 二叉树的层平均值
+
+```c++
+vector<double> averageOfLevels(TreeNode* root) {
+    queue<TreeNode*> que;
+    if (root != NULL) que.push(root);
+    vector<double> res;
+
+    while (!que.empty()) {
+        int size = que.size();
+        double asum = 0;
+        for (int i = 0; i < size; i++) {
+            TreeNode* node = que.front();
+            que.pop();
+            asum += node->val;
+            if (node->left)   que.push(node->left);
+            if (node->right)  que.push(node->right);
+        }
+        res.push_back(double(asum/size));
+    } 
+    return res;
+}  
+```
+
+
+
+**429. N-ary Tree Level Order Traversal**  N叉树的层序遍历
+
+```c++
+
+```
 
 
 
