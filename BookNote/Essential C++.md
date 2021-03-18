@@ -316,7 +316,7 @@ elems 被定义为函数中的局部静态对象。和局部非静态对象不�
 
 ### 2.6. 提供重载函数
 
-**函数重载**（function  overloading）机制，是我们可以传入**不同类型甚至不同数量的参数**给函数。
+**函数重载**（function  overloading）机制，是我们可以传入**不同类型**甚至**不同数量的参数**给函数。
 
 **参数列表**（parameter list）不相同（类型或数量）的两个或多个函数，可以拥有相同的函数名称。
 
@@ -1148,7 +1148,291 @@ int main() {
 
 ## 4. 基于对象的编程风格
 
+class 会被视为一个类型 type。每个 class 会提供一组操作函数。包括**具名函数，重载运算符**等。
 
+class 由**公开**（public）的操作函数和运算符，以及一组**私有**（private）的实现细节组成。这些操作函数和运算符称为 class 的**成员函数**（member function），代表 class 的公开接口。**用户只能访问公开接口**。
+
+
+
+### 4.1. 如何实现一个Class 
+
+Class 的**声明**以关键字 class 开始，其后接一个 class 名称：
+
+```c++
+class Stack;
+```
+
+前置声明（forward declaration）使我们得以进行**类指针**（class pointer）的定义，或以此class作为**数据类型**。
+
+```c++
+Stack *pt = 0;				//类指针
+void process(const Stack&); //数据类型
+```
+
+class定义的**骨干**：
+
+```c++
+class Stack {
+public:
+    // ...public 接口
+private:
+    // ...private 实现部分
+}
+```
+
+**public member 可以在程序的任何地方被访问，private member 只能在 member function 或是 class friend 内被访问。**
+
+```c++
+class Stack {
+public:
+    // ...public 接口
+    bool push(const string&);
+    bool pop( string &elem);
+    bool peek(string &elem);
+    
+    bool empty();
+    bool full( );
+    
+    int  size() { return _stack.size(); }
+    
+private:
+    vector<string> _stack;
+}
+```
+
+在data member前加上**下划线**，所有member function 都**必须**在 class **主体内**进行**声明**。如果要在 class **主体内定义**，这个 member function 会被自动视为 **inline** 函数。如果在**主体外定义**，应使用**class**名加双冒号（**类作用域解析**），如果需要内联，则要额外加inline（**与在主体内定义inline无差**）。
+
+```c++
+inline bool
+Stack::empty(){
+	return _stack.empty();
+}
+
+bool
+Stack::pop(string &elem){
+	if(empty()) return false;
+	elem = _stack.back();
+	_stack.pop_back();
+	return true;
+}
+```
+
+`Stack::empty()` 说明 `empty() ` Stack 类的一个 member。
+
+**类**及**成员函数的定义**都应该放在头文件中` stack.h`。 **非内联成员函数**应该在程序代码文件中定义 `.cpp`。
+
+
+
+---
+
+### 4.2. 什么是构造函数和析构函数 
+
+每个数列都很适合设计为 class
+
+```c++
+class Triangular {
+public:
+    // ...
+private:
+    int _length;	// 元素个数
+    int _beg_pos;	// 起始位置
+    int _next;     	// 下一个迭代目标
+};
+```
+
+每个Triangular类对象内部都有这三个`data member`。
+
+特别的初始化函数称为构造函数（consturctor）。**构造函数的函数名称**必须与**class名称相同**，且**不返回任何值。可以被重载**。   **第一种构造方法**
+
+```C++
+class Triangular {
+public:
+	// 一组重载的 构造函数
+    Triangular();								//default 
+    Triangular(int len = 1, int beg_pos = 1);	//也是default 
+    Triangular(int len);
+    Triangular(int len, int beg_pos);
+    
+
+    //...
+};
+```
+
+编译器会自动根据获得的参数，挑选出应被调用的constructor。
+
+```c++
+Triangular t1;   		//对应第一个
+Triangular t2(10, 3);	//对应第三个
+Triangular t3 = 8;		//对应第二个  
+Triangular t1(); 		//error 会被视为函数
+```
+
+注意上述第三行 `=` 号是调用构造函数，而不是赋值运算符。第四行会被视为函数。
+
+最简单的构造函数是默认构造函数，不需要任何参数。意味着：
+
+- 它不接受任何参数
+- 它为每个参数提供了默认值
+
+
+
+#### Member Initialization List
+
+**第二种构造方法**
+
+```c++
+Triangular::Triangular(const Triangular &rhs)
+    : _length (rhs._length),
+	  _beg_pos(rhs._beg_pos), _next(rhs._beg_pos - 1)
+{} 	//	空的
+```
+
+**成员初始化列表**紧接在参数列表最后的**冒号后面**，是个以**逗号分隔**的列表。其中，欲赋值给member 的**数值**被**放在** member 名称后面的**小括号中**；这使它们看起来像是在调用 constructor。
+
+```c++
+class Triangular {
+public:
+    // ...
+private:
+    string _name;
+    int _length, _beg_pos, _next;
+};
+
+Triangular::Triangular(int len, int bp;)
+    : _name ("TriangularC"),
+{ 
+    _length = len > 0 ? len : 1;
+	_beg_pos = bp > 0 ? bp : 1;
+    _next = _beg_pos - 1;
+}
+```
+
+
+
+和构造函数对立的是**析构函数**（destructor）。是用户自定义的一个 class **member**。当其object结束生命时，自动调用析构函数处理善后。析构函数主要用来**释放在constructor中或对象生命周期中分配的资源**。
+
+命名严格，class名称加上`~` 前缀。**没有任何参数，不返回任何值，也不可能被重载。**
+
+```c++
+class Matrix {
+public:
+    Matrix (int row, int col) 
+    	: _row(row), _col(col)
+    {
+        _pmat = new double[row * col];
+    }
+    
+    ~Matrix()
+    {
+        delete [] _pmat;
+    }
+    
+private:
+    int _row, _col;
+    double* _pmat;
+};
+```
+
+`Matrix class`，其 consturctor 使用 new 表达式从 heap 中分配 **double 数组所需空间**。析构函数释放内存。有点类似标准库的容器设计。
+
+但是之前的 `Triangular` 三个数据成员都是储值形式存放，objece结束后自动释放，因此没有必要构造析构函数，但`Matrix` 初始化一个指针，指向了一块内存，就需要手动析构释放。
+
+
+
+#### Memberwise Initialization
+
+```c++
+Triangular t1(8);
+Triangular t2 = t1;
+```
+
+对象t1作为t2的初值，数据成员会被依次复制。这就是**默认的成员逐一初始化操作**（defalut Memberwise Initialization）。
+
+但是如果是上述`Matrix` 指针形式复制，则会将t2的**指针完全等于**t1，二者指向同一块内存。若t2释放，t1也被破坏。需要重载初始化函数为 **copy构造函数**
+
+```c++
+Matrix::Matrix(const Matrix &rhs) 
+	: _row(rhs.row), _col(rhs.col)
+{
+    int size = _row * _col;
+    _pmat = new double[size];
+        
+    for (int ix = 0; ix < size; ++ix)
+        _pmat[ix] = rhs._pmat[ix];
+}
+```
+
+注意：如果有必要为某个类编写 copy 构造函数，那么同样有必要为它编写 copy 赋值运算符。
+
+
+
+---
+
+### 4.3. 何谓mutable和const 
+
+```c++
+int sum (const Triangular &trian) {
+    int beg_pos = trian.beg_pos();
+    int length  = trian.length();
+    int sum = 0;
+    for(int ix = 0; ix < length; ++ix )
+        sum += trian.elem( beg_pos + ix);
+    return sum;
+}
+```
+
+`trian` 是个 `const` reference参数，因为编译器必须保证 trian 在 sum() 之中不会被修改。但是 sum() 所调用的任何一个 member function 都有可能更改 trian 的值。为了确保 trian 的值不被更改，编译器必须确保 `beg_pos()、length()、elem()` 都不会更改其调用者。
+
+class 设计者必须在 member function 身上标注 **const** ，告诉编译器，这个 member function 不会更改 class object 的内容：
+
+```c++
+class Triangular {
+public:
+    int length()   		const {return _length;}
+    int beg_pos()  		const {return _beg_pos;}
+    int elem(int pos) 	const;
+    
+    bool next( int &val );
+    void next_reset()   { _next = _beg_pos - 1;} 
+    
+private:    
+	int _length;
+    int _beg_pos;
+    int _next;
+    
+    static vector<int> _elems;
+}
+```
+
+const 修饰符 紧接于函数参数列表之后。凡是在class主体以外定义者，如果它是一个const member function，那就必须同时在声明于定义中指定 `const`。
+
+编译器会检查声明为 const 的 member funciton 有没有被改变 class object 的内容。
+
+
+
+
+
+
+
+
+
+---
+
+### 4.4. 什么是this指针 
+
+### 4.5. 静态类成员 
+
+### 4.6. 打造一个Iterator Class 
+
+### 4.7. 合作关系必须建立在友谊的基础上 
+
+### 4.8. 实现一个copy assignment operator 
+
+### 4.9. 实现一个function object 
+
+### 4.10. 重载iostream运算符 
+
+### 4.11. 指针，指向Class Member Function
 
 ---
 
