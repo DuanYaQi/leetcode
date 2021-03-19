@@ -510,11 +510,24 @@ Node* connect(Node* root) {
 
 ## 6. 对称二叉树
 
+比较两个子树的里侧和外侧的元素是否相等。
 
+**后序遍历**，一个树遍历顺序是左右中，另一个是右左中。
 
+```c++
+bool compare(TreeNode* left, TreeNode* right) {
+    if (left == NULL && right != NULL) return false;
+    else if (left != NULL && right == NULL) return false;
+    else if (left == NULL && right == NULL) return true;
+    else if (left->val != right->val) return false; 
+    else return compare(left->left, right->right) && compare(left->right, right->left);
+}
 
-
-
+bool isSymmetric(TreeNode* root) {
+    if (root == NULL) return true;
+    return compare(root->left, root->right);
+}
+```
 
 
 
