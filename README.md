@@ -73,8 +73,8 @@ git config --global http.proxy 127.0.0.1:1080
 |*[589. N-ary Tree Preorder Traversal](Tree/589+preorder_Rec.cpp)   | N叉树 | R S|
 |*[590. N-ary Tree Postorder Traversal](Tree/590+postorder_Rec.cpp)   | N叉树 | R S|
 |*[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)   | 思考题 |R Q S|
-|   |  ||
-|   |  ||
+|*[104. Maximum Depth of Binary Tree](Tree/104+maxDepth_Rec.cpp)   |思考题 |R Q BFS|
+|*[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)   |  |R Q BFS|
 |   |  ||
 |   |  ||
 |   |  ||
@@ -84,7 +84,7 @@ git config --global http.proxy 127.0.0.1:1080
 
 > 题号前*表示有多种解法 其中
 > 
-> R代表Recursion，Q代表Queue，S代表Stack
+> R代表Recursion，Q代表Queue，S代表Stack，DFS代表深度优先遍历，BFS代表广度优先遍历
 ---
 ## 2. 专题
 
