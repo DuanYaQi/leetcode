@@ -437,6 +437,91 @@ vector<int> largestValues(TreeNode* root) {
 
 **116. Populating Next Right Pointers in Each Node** 填充每个节点的下一个右侧节点指针
 
+```c++
+Node* connect(Node* root) {
+    queue<Node*> que;
+    if (root != NULL) que.push(root);
+    while (!que.empty()) {
+        int size = que.size();
+        Node* node;
+        Node* prenode;
+
+        for (int i = 0; i < size; ++i) {
+            if (i == 0) {
+                prenode = que.front();
+                que.pop();
+                node = prenode;
+            } else {
+                node = que.front();
+                que.pop();
+                prenode->next = node;
+                prenode = prenode->next;
+            }
+            if (node->left)     que.push(node->left);
+            if (node->right)    que.push(node->right);
+        }
+        prenode->next = NULL; 	// prenode 或者 node 都可以
+    }
+    return root;
+}
+```
+
+
+
+
+
+**117. Populating Next Right Pointers in Each Node II** 填充每个节点的下一个右侧节点指针 II
+
+```c++
+与116一模一样
+```
+
+
+
+---
+
+## 5.  翻转二叉树
+
+**226. Invert Binary Tree**
+
+```c++
+
+```
+
+针对二叉树的问题，解题前，想清楚究竟是**前中后层序哪种遍历**。
+
+
+
+## 1-5. 小结
+
+**红黑树**就是一种**二叉平衡搜索树**，C++中 `map、multimap、set、multiset` 的底层实现机制就是二叉平衡搜索树，再具体就是红黑树
+
+树的遍历有一种很厉害的方法 **morris遍历**
+
+递归写法。**实际项目开发中，避免递归**。因为项目代码参数、调用关系都比较复杂，不容易控制递归深度，甚至会栈溢出。
+
+栈实现递归写法（即迭代）
+
+**栈实现递归写法（迭代统一）**。一定要掌握前后中序一种迭代的写法，面试官看写出了递归，会进一步考察能不能写出相应的迭代。
+
+
+
+---
+
+## 6. 对称二叉树
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
