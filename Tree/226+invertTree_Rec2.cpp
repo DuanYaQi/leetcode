@@ -8,7 +8,17 @@
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
-…        return ;
+ */
+class Solution {
+public:
+    void traversal(TreeNode* root) {
+        if (root == NULL) return;
+        TreeNode* tmp = root->left;
+        root->left = root->right;
+        root->right = tmp;
+        traversal(root->left);
+        traversal(root->right);
+        return ;
     }
 
     TreeNode* invertTree(TreeNode* root) {

@@ -35,10 +35,10 @@ git config --global http.proxy 127.0.0.1:1080
 
 |  技巧  |
 |  :----:  |
-|if (root != NULL) 而不是 if (root)|
-|int size;   double asum;<br>vec.push_back(double(asum/size)); 而不是 vec.push_back(asum/size);|
+|if (root != NULL)　而不是　if (root)|
+|int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
 |-2^31~2^31-1 对应 INT_MIN 和 INT_MAX|
-||
+| (p && !q) &#124;&#124; (!p && q)  = (!p &#124;&#124; !q)　两者状态不同时为true　其中!q代表q为空 |
 ||
 ||
 
@@ -50,29 +50,29 @@ git config --global http.proxy 127.0.0.1:1080
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[94. Binary Tree Inorder Traversal](Tree/94+inorderTraversal.cpp) |中序 递归| 注意放private|
-|[144. Binary Tree Preorder Traversal](Tree/144+preorderTraversal.cpp) |先序 递归| |
-|[145. Binary Tree Postorder Traversal](Tree/145+postorderTraversal.cpp) |后序 递归| |
-|[105. Construct Binary Tree from Preorder and Inorder Traversal](Tree/105+buildTree.cpp) | 先序 中序 递归|索引确定|
-|[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 递归 |索引确定|
-|[114. Flatten Binary Tree to Linked List](Tree/144+preorderTraversal.cpp)   | 后序 递归 |注意指针连接|
-|*[116. Populating Next Right Pointers in Each Node](Tree/116+connect.cpp)   | 先序 递归|考虑到特殊情况即可|
+|[94. Binary Tree Inorder Traversal](Tree/94+inorderTraversal.cpp) |中序 R| 注意放private|
+|[144. Binary Tree Preorder Traversal](Tree/144+preorderTraversal.cpp) |先序 R| |
+|[145. Binary Tree Postorder Traversal](Tree/145+postorderTraversal.cpp) |后序 R| |
+|[105. Construct Binary Tree from Preorder and Inorder Traversal](Tree/105+buildTree.cpp) | 先序 中序 R|索引确定|
+|[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 R |索引确定|
+|[114. Flatten Binary Tree to Linked List](Tree/144+preorderTraversal.cpp)   | 后序 R |注意指针连接|
+|*[116. Populating Next Right Pointers in Each Node](Tree/116+connect.cpp)   | 先序 R|考虑到特殊情况即可|
 |[222. Count Complete Tree Nodes](Tree/222+countNodes.cpp)  | 完全二叉树 | 利用其性质减少计算|
-|*[226. Invert Binary Tree](Tree/226+invertTree.cpp)   | 先序 递归 | 跟交换数字一样|
+|*[226. Invert Binary Tree](Tree/226+invertTree_Rec.cpp)   | 先序 R | 跟交换数字一样|
 |[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi()字符转int |
-|[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 递归  | 巧用map<br>注意输出格式|
-|[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 递归  |注意索引 注意返回值|
-|[112. Binary Tree Level Order Traversal](Tree/112+levelOrder.cpp)   | 层序 自顶向下| queue|
+|[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 R  | 巧用map<br>注意输出格式|
+|[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 R  |注意索引 注意返回值|
+|[112. Binary Tree Level Order Traversal](Tree/112+levelOrder.cpp)   | 层序 自顶向下| Q|
 |[107. Binary Tree Level Order Traversal II](Tree/107+levelOrderBottom.cpp)   | 层序 自底向上|reverse|
 |[199. Binary Tree Right Side View](Tree/199+rightSideView.cpp)   | 层序 ||
-|[637. Average of Levels in Binary Tree](Tree/637+averageOfLevels.cpp)   |层序  ||
+|[637. Average of Levels in Binary Tree](Tree/637+averageOfLevels.cpp)   |层序  |强制类型转换|
 |[429. N-ary Tree Level Order Traversal](Tree/429+levelOrder.cpp)   |层序 N叉树 |换汤不换药|
-|[515. Find Largest Value in Each Tree Row](Tree/515+largestValues.cpp)   |层序  ||
-|[116. Populating Next Right Pointers in Each Node](Tree/116+connect2.cpp)   | 层序 ||
+|[515. Find Largest Value in Each Tree Row](Tree/515+largestValues.cpp)   |层序  | INT_MIN|
+|[116. Populating Next Right Pointers in Each Node](Tree/116+connect_Queue.cpp)   | 层序 |R Q |
 |[117. Populating Next Right Pointers in Each Node II](Tree/117+connect.cpp)   | 层序 | 与116一样|
-|*[589. N-ary Tree Preorder Traversal](Tree/589+preorder.cpp)   | N叉树 ||
-|*[590. N-ary Tree Postorder Traversal](Tree/590+postorder.cpp)   | N叉树 ||
-|   |  ||
+|*[589. N-ary Tree Preorder Traversal](Tree/589+preorder_Rec.cpp)   | N叉树 | R S|
+|*[590. N-ary Tree Postorder Traversal](Tree/590+postorder_Rec.cpp)   | N叉树 | R S|
+|*[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)   | 思考题 |R Q S|
 |   |  ||
 |   |  ||
 |   |  ||
@@ -82,7 +82,9 @@ git config --global http.proxy 127.0.0.1:1080
 |   |  ||
 |   |  ||
 
-> 题号前*表示有多种解法
+> 题号前*表示有多种解法 其中
+> 
+> R代表Recursion，Q代表Queue，S代表Stack
 ---
 ## 2. 专题
 

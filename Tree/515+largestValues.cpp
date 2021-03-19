@@ -18,7 +18,7 @@ public:
 
         while (!que.empty()) {
             int size = que.size();
-            int flag = 0x80000000;
+            int flag = INT_MIN;
 
             for (int i = 0; i < size; ++i) {
                 TreeNode* node = que.front();
