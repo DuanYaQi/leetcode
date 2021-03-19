@@ -39,7 +39,7 @@ git config --global http.proxy 127.0.0.1:1080
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
 |-2^31~2^31-1 对应 INT_MIN 和 INT_MAX|
 | (p && !q) &#124;&#124; (!p && q)  = (!p &#124;&#124; !q)　两者状态不同时为true　其中!q代表q为空 |
-||
+| size在for之前取值，防止for循环中size大小改变|
 ||
 
 
