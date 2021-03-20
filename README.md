@@ -64,7 +64,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 R |索引确定|
 |[114. Flatten Binary Tree to Linked List](Tree/144+preorderTraversal.cpp)   | 后序 R |注意指针连接|
 |*[116. Populating Next Right Pointers in Each Node](Tree/116+connect.cpp)   | 先序 R|考虑到特殊情况即可|
-|[222. Count Complete Tree Nodes](Tree/222+countNodes.cpp)  | 完全二叉树 | 利用其性质减少计算|
+|*[222. Count Complete Tree Nodes](Tree/222+countNodes_Rec.cpp)  | 完全二叉树 | 利用其性质减少计算|
 |*[226. Invert Binary Tree](Tree/226+invertTree_Rec.cpp)   | 先序 R | 跟交换数字一样|
 |[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi()字符转int |
 |[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 R  | 巧用map<br>注意输出格式|
@@ -81,8 +81,8 @@ git config --global http.proxy 127.0.0.1:1080
 |*[590. N-ary Tree Postorder Traversal](Tree/590+postorder_Rec.cpp)   | N叉树 | R S|
 |*[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)   | 思考题 |R Q S|
 |*[104. Maximum Depth of Binary Tree](Tree/104+maxDepth_Rec.cpp)   |思考题 |R Q BFS|
-|*[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)   |  |R Q BFS|
-|   |  ||
+|*[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)   |  |R /Q BFS|
+|*[111. Minimum Depth of Binary Tree](Tree/111+minDepth_Rec.cpp)  |  |R /Q BFS|
 |   |  ||
 |   |  ||
 |   |  ||

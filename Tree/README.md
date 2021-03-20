@@ -4,7 +4,9 @@
 
 ### 1.1. 满二叉树
 
-如果一棵树只有**度**为 **0** 的 **2** 的结点，并且度为 0 的结点在同一层上，则这棵二叉树为满二叉树。
+国内定义：除最后一层无任何子节点外，每一层上的所有结点都有两个子结点的二叉树。满二叉树外观上是一个**三角形**。
+
+国外定义：如果一棵树只有**度**为 **0** 的 **2** 的结点，并且度为 0 的结点在同一层上，则这棵二叉树为满二叉树。
 
 
 
@@ -14,7 +16,7 @@
 
 ![1615869609545](assets/1615869609545.png)
 
-优先级队列起始是一个堆，堆就是一颗完全二叉树，同时保证父子节点的顺序关系。
+优先级队列起始是一个堆，堆就是一颗完全二叉树，同时保证父子节点的**顺序**关系。
 
 
 
@@ -46,15 +48,25 @@ C++中**map、set、multimap，multiset**的底层实现都是**平衡二叉搜�
 
 
 
+### 1.5. Complete/Perfect/Full
+
+国外定义的**满**二叉树 Full Binary Tree 是指一棵二叉树的所有节点要么**没有孩子节点**，要么有**两个孩子节点**；
+
+**完全**二叉树对应 Complete Binary Tree；有**顺序**限制。
+
+**国内**定义的**满**二叉树 Perfect Binary Tree是指除最后一层无任何子节点外，每一层上的所有结点都有两个子结点的二叉树。
+
+![img](assets/trees.png)
+
+
+
 ---
 
 ## 2. 存储方式
 
 链式存储，指针，不连续
 
-顺序存储，数组，连续
-
-​	父节点数组下标为 `i`， 左孩子为`i*2+1` ，右孩子为 `i*2 + 2`
+顺序存储，数组，连续	父节点数组下标为 `i`， 左孩子为`i*2+1` ，右孩子为 `i*2 + 2`
 
 
 
@@ -89,6 +101,8 @@ struct TreeNode{
 
 
 
+---
+
 ### 4.1. 递归遍历
 
 递归三要素
@@ -108,6 +122,8 @@ struct TreeNode{
 [145. Binary Tree Postorder Traversal](145+postorderTraversal.cpp)
 
 
+
+---
 
 ### 4.2. 迭代遍历
 
@@ -278,6 +294,8 @@ vector<int> PreTraversal(TreeNode* root) {
 
 
 
+---
+
 ### 4.4. 层序遍历
 
 #### 自顶向下
@@ -405,8 +423,6 @@ vector<vector<int>> levelOrder(Node* root) {
 
 
 
-
-
 **515.Find Largest Value in Each Tree Row** 在每个树行中找最大值
 
 ```c++
@@ -485,7 +501,15 @@ Node* connect(Node* root) {
 **226. Invert Binary Tree**
 
 ```c++
-
+TreeNode* invertTree(TreeNode* root) {
+    if (root == NULL) return root;
+    TreeNode* tmp = root->right;
+    root->right = root->left;
+    root->left = tmp;
+    invertTree(root->left);
+    invertTree(root->right);
+    return root;
+}
 ```
 
 针对二叉树的问题，解题前，想清楚究竟是**前中后层序哪种遍历**。
@@ -514,6 +538,8 @@ Node* connect(Node* root) {
 
 **后序遍历**，一个树遍历顺序是左右中，另一个是右左中。
 
+**101. Symmetric Tree**
+
 ```c++
 bool compare(TreeNode* left, TreeNode* right) {
     if (left == NULL && right != NULL) return false;
@@ -531,9 +557,11 @@ bool isSymmetric(TreeNode* root) {
 
 
 
-## 7. 二叉树的最大深度
+---
 
+## 7. 二叉树的深度
 
+**104. Maximum Depth of Binary Tree**
 
 ```c++
 int maxDepth(TreeNode* root) {
@@ -544,9 +572,29 @@ int maxDepth(TreeNode* root) {
 
 
 
+**111. Minimum Depth of Binary Tree**
+
+```c++
+int minDepth(TreeNode* root) {
+    if (root == NULL) return 0;
+
+    int lDepth = minDepth(root->left);
+    int rDepth = minDepth(root->right);
+
+    if (root->left == NULL && root->right != NULL) return 1 + rDepth;
+    if (root->left != NULL && root->right == NULL) return 1 + lDepth;
+    
+    return lDepth > rDepth ? 1 + rDepth : 1 + lDepth;
+}
+```
 
 
 
+---
 
+## 8. 二叉树节点数
 
+**222. Count Complete Tree Nodes**
+
+完全二叉树
 
