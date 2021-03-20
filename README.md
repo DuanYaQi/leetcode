@@ -14,11 +14,18 @@
 
 [李威威](https://liweiwei1419.gitee.io/leetcode-algo/)
 
+[liuchuo](https://github.com/liuchuo/LeetCode)
+
 **模板**
 
 [负雪明烛模板](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
 
 [AlgoWiki模板](https://ojeveryday.github.io/AlgoWiki/#/?id=algowiki)
+
+
+**英语**
+
+[specialized-vocabulary](https://github.com/liuchuo/specialized-vocabulary)
 
 **残酷**
 
