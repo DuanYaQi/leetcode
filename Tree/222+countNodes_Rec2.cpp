@@ -12,26 +12,22 @@
 class Solution {
 public:
     int countNodes(TreeNode* root) {
-        if (root == NULL) return 0;
-        TreeNode* l = root->left;
-        TreeNode* r = root->right;
-        int ldepth = 1;
-        int rdepth = 1;
-
-        while (l) {
-            ++ldepth;
+        TreeNode *l = root, *r = root;
+        int hl = 0, hr = 0;
+        while (l != nullptr) {
             l = l->left;
+            hl++;
         }
-
-        while (r) {
-            ++rdepth;
+        while (r != nullptr) {
             r = r->right;
+            hr++;
         }
 
-        if (ldepth == rdepth) {
-            return pow(2, ldepth) - 1;
+        if (hl == hr) {
+            return pow(2, hl) - 1;
         }
 
         return 1 + countNodes(root->left) + countNodes(root->right);
     }
+    
 };

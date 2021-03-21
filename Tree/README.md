@@ -598,3 +598,65 @@ int minDepth(TreeNode* root) {
 
 完全二叉树
 
+判断其左右子树是否为完全二叉树，是的话直接计算深度并且 `2^h-1`
+
+```c++
+int countNodes(TreeNode* root) {
+    if (root == NULL) return 0;
+    TreeNode* l = root->left;
+    TreeNode* r = root->right;
+    int ldepth = 1;
+    int rdepth = 1;
+
+    while (l) {
+        ++ldepth;
+        l = l->left;
+    }
+
+    while (r) {
+        ++rdepth;
+        r = r->right;
+    }
+
+    if (ldepth == rdepth) {
+        return pow(2, ldepth) - 1;
+    }
+
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+```
+
+
+
+## 9. 平衡二叉树
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
