@@ -62,9 +62,9 @@ git config --global http.proxy 127.0.0.1:1080
 |[105. Construct Binary Tree from Preorder and Inorder Traversal](Tree/105+buildTree.cpp) | 先序 中序 R|索引确定|
 |[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 R |索引确定|
 |[114. Flatten Binary Tree to Linked List](Tree/144+preorderTraversal.cpp)   | 后序 R |注意指针连接|
-|*[116. Populating Next Right Pointers in Each Node](Tree/116+connect.cpp)   | 先序 R|考虑到特殊情况即可|
-|*[222. Count Complete Tree Nodes](Tree/222+countNodes_Rec.cpp)  | 完全二叉树 | 利用其性质减少计算|
-|*[226. Invert Binary Tree](Tree/226+invertTree_Rec.cpp)   | 先序 R | 跟交换数字一样|
+|[116. Populating Next Right Pointers in Each Node](Tree/116+connect.cpp)*   | 先序 R|考虑到特殊情况即可|
+|[222. Count Complete Tree Nodes](Tree/222+countNodes_Rec.cpp)*  | 完全二叉树 | 利用其性质减少计算|
+|[226. Invert Binary Tree](Tree/226+invertTree_Rec.cpp)*   | 先序 R | 跟交换数字一样|
 |[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi()字符转int |
 |[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 R  | 巧用map<br>注意输出格式|
 |[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 R  |注意索引 注意返回值|
@@ -76,19 +76,19 @@ git config --global http.proxy 127.0.0.1:1080
 |[515. Find Largest Value in Each Tree Row](Tree/515+largestValues.cpp)   |层序  | INT_MIN|
 |[116. Populating Next Right Pointers in Each Node](Tree/116+connect_Queue.cpp)   | 层序 |R Q |
 |[117. Populating Next Right Pointers in Each Node II](Tree/117+connect.cpp)   | 层序 | 与116一样|
-|*[589. N-ary Tree Preorder Traversal](Tree/589+preorder_Rec.cpp)   | N叉树 | R S|
-|*[590. N-ary Tree Postorder Traversal](Tree/590+postorder_Rec.cpp)   | N叉树 | R S|
-|*[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)   | 思考题 |R Q S|
-|*[104. Maximum Depth of Binary Tree](Tree/104+maxDepth_Rec.cpp)   |思考题 |R Q BFS|
-|*[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)   |  |R /Q BFS|
-|*[111. Minimum Depth of Binary Tree](Tree/111+minDepth_Rec.cpp)  |  |R /Q BFS|
-|   |  ||
+|[589. N-ary Tree Preorder Traversal](Tree/589+preorder_Rec.cpp)*   | N叉树 | R S|
+|[590. N-ary Tree Postorder Traversal](Tree/590+postorder_Rec.cpp)*   | N叉树 | R S|
+|[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)*   | 思考题 |R Q S|
+|[104. Maximum Depth of Binary Tree](Tree/104+maxDepth_Rec.cpp)*   |思考题 |R Q BFS|
+|[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)*   |  |R /Q BFS|
+|[111. Minimum Depth of Binary Tree](Tree/111+minDepth_Rec.cpp)*  |  |R /Q BFS|
+|[110. Balanced Binary Tree](Tree/110+isBalanced.cpp)*:(  |  ||
 |   |  ||
 |   |  ||
 |   |  ||
 |   |  ||
 
-> 题号前*表示有多种解法 其中
+> 题号前*表示有多种解法， :(表示:(
 > 
 > R代表Recursion，Q代表Queue，S代表Stack，DFS代表深度优先遍历，BFS代表广度优先遍历
 ---
