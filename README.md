@@ -9,6 +9,7 @@
 
 [labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
 
+[进阶石](https://github.com/acm-clan/algorithm-stone)
 
 **题解+教学**
 
