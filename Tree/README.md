@@ -516,7 +516,7 @@ TreeNode* invertTree(TreeNode* root) {
 
 
 
-## 1-5. 小结
+## #1-5. 小结
 
 **红黑树**就是一种**二叉平衡搜索树**，C++中 `map、multimap、set、multiset` 的底层实现机制就是二叉平衡搜索树，再具体就是红黑树
 
@@ -645,15 +645,44 @@ int countNodes(TreeNode* root) {
 
 ## 10. 二叉树的所有路径
 
+```c++
+void dps (TreeNode* root, vector<string> &res, string ans) {
+    TreeNode* l = root->left;
+    TreeNode* r = root->right;
+
+    if (!l && !r) {
+        res.push_back(ans); 
+        return;
+    }   
+
+    if (l!=NULL) {
+        dps(l, res, ans + "->" + to_string(l->val));
+    }
+
+    if (r!=NULL) {
+        dps(r, res, ans + "->" + to_string(r->val));
+    }   
+
+    return;
+}
+
+```
+
+回溯递归是一一对应的，有一个递归，就要有一个回溯
+
+
+
+## #6-10. 小结
 
 
 
 
 
+---
 
+## 11. 左叶子之和
 
-
-
+**404. 左叶子之和**
 
 
 
