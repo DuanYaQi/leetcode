@@ -4,7 +4,6 @@
 
 [代码随想录](https://github.com/youngyangyang04/leetcode-master)
 
-
 [力扣加加 - lucifer](https://github.com/azl397985856/leetcode)
 
 [labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
@@ -22,7 +21,6 @@
 [负雪明烛模板](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
 
 [AlgoWiki模板](https://ojeveryday.github.io/AlgoWiki/#/?id=algowiki)
-
 
 **英语**
 
@@ -50,11 +48,10 @@ git config --global http.proxy 127.0.0.1:1080
 | size在for之前取值，防止for循环中size大小改变|
 |tostring()　stoi()|
 |剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
-|回溯递归是一一对应的，有一个递归，就要有一个回溯
-
-
-
-|
+|回溯递归是一一对应的，有一个递归，就要有一个回溯|
+|如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！|
+|复杂函数放在private会减少执行用时，减少内存消耗|
+||
 ||
 ||
 
@@ -77,7 +74,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi() |
 |[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 R  | 巧用map<br>注意输出格式|
 |[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 R  |注意索引 注意返回值|
-|[112. Binary Tree Level Order Traversal](Tree/112+levelOrder.cpp)   | 层序 自顶向下| Q|
+|[102. Binary Tree Level Order Traversal](Tree/102+levelOrder.cpp)   | 层序 自顶向下| Q|
 |[107. Binary Tree Level Order Traversal II](Tree/107+levelOrderBottom.cpp)   | 层序 自底向上|reverse|
 |[199. Binary Tree Right Side View](Tree/199+rightSideView.cpp)   | 层序 ||
 |[637. Average of Levels in Binary Tree](Tree/637+averageOfLevels.cpp)   |层序  |强制类型转换|
@@ -91,11 +88,18 @@ git config --global http.proxy 127.0.0.1:1080
 |[104. Maximum Depth of Binary Tree](Tree/104+maxDepth_Rec.cpp)*   |思考题 |R Q BFS|
 |[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)*   |  |R /Q BFS|
 |[111. Minimum Depth of Binary Tree](Tree/111+minDepth_Rec.cpp)*  |  |R /Q BFS|
-|[110. Balanced Binary Tree](Tree/110+isBalanced.cpp)*:(  |  ||
-|[257. Binary Tree Paths](Tree/257+binaryTreePaths_Rec+Back.cpp):)   |  | to_string()|
+|[110. Balanced Binary Tree](Tree/110+isBalanced.cpp)*:(  | 回溯 ||
+|[257. Binary Tree Paths](Tree/257+binaryTreePaths_Rec+Back.cpp):)   | 回溯 | to_string()|
+|[404. Sum of Left Leaves](Tree/404+sumOfLeftLeaves.cpp):(   |后序  |R|
+|[513. Find Bottom Left Tree Value](Tree/513+findBottomLeftValue_Queue_BFS.cpp)*:(   |回溯  |R Q BFS|
+|[112. Path Sum](Tree/112+hasPathSum.cpp):(   | 回溯 |R|
+|[113. Path Sum II](Tree/113+pathSum.cpp)   | 回溯|R |
 |   |  ||
 |   |  ||
 |   |  ||
+|   |  ||
+|   |  ||
+
 
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
 > 
@@ -160,6 +164,7 @@ git config --global http.proxy 127.0.0.1:1080
 ### 4.2. 分类1
 
 **算法**
+
 - 基础技巧：分治、二分、贪心
 - 排序算法：快速排序、归并排序、计数排序
 - 搜索算法：回溯、递归、深度优先遍历，广度优先遍历，二叉搜索树等
@@ -167,6 +172,7 @@ git config --global http.proxy 127.0.0.1:1080
 - 动态规划：背包问题、最长子序列
 
 **数据结构**
+
 - 数组与链表：单 / 双向链表
 - 栈与队列
 - 哈希表
@@ -175,6 +181,7 @@ git config --global http.proxy 127.0.0.1:1080
 - 字符串：前缀树（字典树）/ 后缀树
 
 **操作系统**
+
 - 内存管理
 - 线程处理
 - 文件系统

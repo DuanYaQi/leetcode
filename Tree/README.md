@@ -628,13 +628,27 @@ int countNodes(TreeNode* root) {
 
 
 
-## 9. 平衡二叉树
+## 9. 二叉树的高度/平衡二叉树
 
 左右两个子树的高度差的绝对值不超过1
 
 ```c++
+int getHeight(TreeNode* node) {
+    if (node == NULL) return 0;
 
+    int lheight = getHeight(node->left);
+    if (lheight == -1) return -1;
+    int rheight = getHeight(node->right);
+    if (rheight == -1) return -1;
 
+    if (abs(lheight - rheight) > 1) return -1;
+
+    return 1 + max(lheight, rheight);
+}
+
+bool isBalanced(TreeNode* root) {
+    return getHeight(root)==-1 ? false : true;
+}
 ```
 
 ![1616324886994](assets/1616324886994.png)
@@ -684,17 +698,142 @@ void dps (TreeNode* root, vector<string> &res, string ans) {
 
 **404. 左叶子之和**
 
+```c++
+int sumOfLeftLeaves(TreeNode* root) {
+    if ( root == NULL ) return 0;
+
+    int leftnum = sumOfLeftLeaves( root->left );;
+    int rightnum = sumOfLeftLeaves( root->right );
+
+    int midnum = 0;
+    if ( root->left && !root->left->left && !root->left->right ) {
+        midnum = root->left->val;
+    }
+
+    return midnum + leftnum + rightnum;
+}
+```
+
+递归 后序，因为要通过递归函数的返回值累加求取左叶子数值之和。
+
+**需要通过节点的父节点判断本节点的属性。**
+
+
+
+---
+
+## 12. 树左下角的值
+
+**513. 找树左下角的值**
+
+```c++
+int findBottomLeftValue(TreeNode* root) {
+    if (root == NULL) return 0;
+    queue<TreeNode*> que;
+    que.push(root);
+    int res = 0;
+
+    while (!que.empty()) {
+        int size = que.size();
+        for (int i = 0; i < size; ++i) {
+            TreeNode* node = que.front();
+            que.pop();
+            if (node->left) que.push(node->left);
+            if (node->right) que.push(node->right);
+            if (i == 0) res = node->val;
+        }         
+    }
+
+    return res;
+}
+```
+
+**在最后一行，找到最左边的值。**
 
 
 
 
 
+如果需要遍历整棵树，递归函数就不能有返回值。如果需要遍历某一条固定路线，递归函数就一定要有返回值！
 
 
 
+## 13. 路径总和
 
 
 
+**112. 路经总和**
+
+```c++
+bool traversal(TreeNode* root, int targetSum, int count) {
+    if (!root->left && !root->right && count == targetSum) {    //遇到叶子结点且值相同,即找到路径 直接返回true
+        return true;
+    }
+
+    if (!root->left && !root->right) {      //遇到叶子结点但值不同,没有找到路径 返回false
+        return false;
+    }
+
+    if (root->left) {       // 处理左节点
+        if (traversal(root->left, targetSum, count + root->left->val)) return true;
+    }
+
+    if (root->right) {      // 处理右节点
+        if (traversal(root->right, targetSum, count + root->right->val)) return true;
+    }
+
+    return false;
+}
+
+bool hasPathSum(TreeNode* root, int targetSum) {
+    if (root == NULL) return false;
+    return traversal(root, targetSum, root->val);
+}
+```
+
+**遍历的路线，不要求遍历整颗树，所以递归函数需要返回值。**
 
 
 
+**113. 路径总和II**
+
+```c++
+vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+    if(root == NULL) return res;
+    tmp.push_back(root->val);
+    traversal(root, targetSum, root->val);
+    return res;
+}
+
+
+vector<vector<int>> res;
+vector<int> tmp;
+void traversal(TreeNode* root, int targetSum, int count) {
+    if (!root->left && !root->right && count == targetSum) {
+        res.push_back(tmp);
+        return;
+    }
+
+    if (!root->left && !root->right) {
+        return;
+    }
+
+    if (root->left) {
+        tmp.push_back(root->left->val);
+        traversal(root->left, targetSum, count + root->left->val);
+        tmp.pop_back();
+    }
+
+    if (root->right) {
+        tmp.push_back(root->right->val);
+        traversal(root->right, targetSum, count + root->right->val);
+        tmp.pop_back();
+    }
+
+    return;
+}
+```
+
+
+
+**遍历整个树，找到所有路径，所以递归函数不要返回值**
