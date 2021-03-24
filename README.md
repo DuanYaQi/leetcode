@@ -2,11 +2,11 @@
 
 **教学**
 
-[代码随想录](https://github.com/youngyangyang04/leetcode-master)
+[代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
 
 [力扣加加 - lucifer](https://github.com/azl397985856/leetcode)
 
-[labuladong 的算法小抄](https://github.com/labuladong/fucking-algorithm)
+[labuladong 的算法小抄Github](https://github.com/labuladong/fucking-algorithm)　　[labuladong 的算法小抄Wechat](https://mp.weixin.qq.com/s/AWsL7G89RtaHyHjRPNJENA)
 
 [进阶石](https://github.com/acm-clan/algorithm-stone)
 
