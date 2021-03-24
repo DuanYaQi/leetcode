@@ -752,8 +752,6 @@ int findBottomLeftValue(TreeNode* root) {
 
 
 
-
-
 如果需要遍历整棵树，递归函数就不能有返回值。如果需要遍历某一条固定路线，递归函数就一定要有返回值！
 
 
@@ -837,3 +835,111 @@ void traversal(TreeNode* root, int targetSum, int count) {
 
 
 **遍历整个树，找到所有路径，所以递归函数不要返回值**
+
+
+
+## 14.  构造二叉树
+
+**106. 从中序和后序遍历序列构造二叉树**
+
+```c++
+TreeNode* traversal (vector<int>& inorder, int instart, int inend, 
+                     vector<int>& postorder, int poststart, int postend) {
+    if (inend < instart || postend < poststart) return nullptr;
+
+    int mid = instart;
+    int rootval = postorder[postend];
+    for (int i = instart; i <= inend; ++i) {
+        if (inorder[i] == rootval) {
+            mid = i;
+            break;
+        }
+    }
+
+    TreeNode* root = new TreeNode(rootval);
+    root->left = traversal(inorder, instart, mid - 1, 
+                           postorder, poststart, poststart + mid - instart - 1);
+    root->right = traversal(inorder, mid + 1, inend, 
+                            postorder, poststart + mid - instart, postend - 1);
+
+    return root;
+}
+
+TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+    return traversal(inorder, 0, inorder.size()-1, postorder, 0, postorder.size()-1);
+};
+
+```
+
+​    `leftsize = index - instart;`
+
+![图片](assets/640.webp)
+
+
+
+**105. 从中序和前序遍历序列构造二叉树**
+
+```c++
+TreeNode* build(vector<int>& preorder, int prestart, int preend, 
+                vector<int>& inorder, int instart, int inend) {
+    if (preend < prestart || inend < instart) return nullptr;
+
+    int index;
+    for (int i = instart; i < inend; ++i) {
+        if (inorder[i] == preorder[prestart]) {
+            index = i;
+            break;
+        }
+    } 
+	
+
+    TreeNode* root = new TreeNode(preorder[prestart]);
+    root->left = build(preorder, prestart + 1, prestart + index - instart,
+                       inorder, instart, index - 1);
+
+    root->right = build(preorder, prestart + index - instart + 1, preend,
+                        inorder, index + 1, inend);
+    return root;
+}
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    return build(preorder, 0 , preorder.size()-1, inorder, 0 ,inorder.size()-1);
+}
+```
+
+​    `leftsize = index - instart;`
+
+![图片](assets/640-1616562491143.webp)
+
+
+
+---
+
+## 15. 构造一颗最大的二叉树
+
+**654. 最大二叉树**
+
+```c++
+TreeNode* build(vector<int>& nums, int l, int r) {
+    if (l >= r) return nullptr;
+
+    int index = l;
+    for (int i = l + 1; i < r; i++) { 
+        if (nums[i] > nums[index])  index = i;
+    }
+
+    TreeNode* root = new TreeNode(nums[index]);
+
+    root->left = build(nums, l, index);
+    root->right = build(nums, index+1, r);
+    return root;
+}
+
+TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+    return build(nums, 0 ,nums.size());  //左闭右开
+}
+```
+
+
+
+
+

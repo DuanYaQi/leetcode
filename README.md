@@ -47,13 +47,17 @@ git config --global http.proxy 127.0.0.1:1080
 | (p && !q) &#124;&#124; (!p && q)  = (!p &#124;&#124; !q)　两者状态不同时为true　其中!q代表q为空 |
 | size在for之前取值，防止for循环中size大小改变|
 |tostring()　stoi()|
-|剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
-|回溯递归是一一对应的，有一个递归，就要有一个回溯|
 |如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！|
 |复杂函数放在private会减少执行用时，减少内存消耗|
+|数组构造二叉树，不要定义新的数组，通过索引在原数组上操作。|
+|如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
 ||
 ||
+|剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
+|回溯递归是一一对应的，有一个递归，就要有一个回溯|
+|回溯隐藏，直接在给函数传参时加计算，函数执行完，不改变原值|
 ||
+
 
 
 
@@ -73,7 +77,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[226. Invert Binary Tree](Tree/226+invertTree_Rec.cpp)*   | 先序 R | 跟交换数字一样|
 |[297. Serialize and Deserialize Binary Tree](Tree/297+serialize.cpp) | 序列化<br>反序列化 |  出入队列搜索树 <br>to_string()<br>stoi() |
 |[652. Find Duplicate Subtrees](Tree/652+findDuplicateSubtrees.cpp) |后序 R  | 巧用map<br>注意输出格式|
-|[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp) |前序 R  |注意索引 注意返回值|
+|[654. Maximum Binary Tree](Tree/654+constructMaximumBinaryTree.cpp)* |前序 R  |注意索引 注意返回值|
 |[102. Binary Tree Level Order Traversal](Tree/102+levelOrder.cpp)   | 层序 自顶向下| Q|
 |[107. Binary Tree Level Order Traversal II](Tree/107+levelOrderBottom.cpp)   | 层序 自底向上|reverse|
 |[199. Binary Tree Right Side View](Tree/199+rightSideView.cpp)   | 层序 ||
