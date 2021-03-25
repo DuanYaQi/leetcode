@@ -98,8 +98,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[513. Find Bottom Left Tree Value](Tree/513+findBottomLeftValue_Queue_BFS.cpp)*:(   |回溯  |R Q BFS|
 |[112. Path Sum](Tree/112+hasPathSum.cpp):(   | 回溯 |R|
 |[113. Path Sum II](Tree/113+pathSum.cpp)   | 回溯|R |
-|   |  ||
-|   |  ||
+|[617. Merge Two Binary Trees](Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
+|[700. Search in a Binary Search Tree](Tree/700+searchBST.cpp)   |  |R|
 |   |  ||
 |   |  ||
 |   |  ||

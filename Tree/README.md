@@ -941,5 +941,98 @@ TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
 
 
 
+## 16. 合并两个二叉树
+
+**617. 合并二叉树**
+
+```c++
+TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+    if (root1 == NULL) return root2;
+    if (root2 == NULL) return root1;
+    root1->val += root2->val;
+    root1->left = mergeTrees(root1->left, root2->left);
+    root1->right = mergeTrees(root1->right, root2->right);
+
+    return root1;
+}
+```
+
+
+
+```c++
+TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+    if (root1 == NULL) return root2;
+    if (root2 == NULL) return root1;
+
+    queue<TreeNode*> que1;
+    queue<TreeNode*> que2;
+
+    que1.push(root1);
+    que2.push(root2);
+
+
+    while (!que1.empty() && !que2.empty()) {
+        TreeNode* node1 = que1.front();
+        que1.pop();
+        TreeNode* node2 = que2.front();
+        que2.pop();
+
+        node1->val += node2->val;
+
+        if (node1->left && node2->left) {
+            que1.push(node1->left);
+            que2.push(node2->left);
+        } 
+
+        if (node1->right && node2->right) {
+            que1.push(node1->right);
+            que2.push(node2->right);
+        }
+
+        if (!node1->left && node2->left) {
+            node1->left = node2->left;
+        }
+
+        if (!node1->right && node2->right) {
+            node1->right = node2->right;
+        } 
+    }
+
+    return root1;
+}
+```
+
+
+
+
+
+## 17. 二叉搜索树中的搜索
+
+**700. 二叉搜索树中的搜索**
+
+```c++
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
