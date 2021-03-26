@@ -1011,16 +1011,56 @@ TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
 **700. 二叉搜索树中的搜索**
 
 ```c++
+TreeNode* searchBST(TreeNode* root, int val) {
+    if (root == NULL) return root;
 
+    if (root->val == val) return root;
+    if (root->val < val) return searchBST(root->right, val);
+    if (root->val > val) return searchBST(root->left, val);
+
+    return nullptr;
+}
 ```
 
 
 
 
 
+## 18. 验证二叉搜索树
+
+**98. 验证二叉搜索树**
+
+```c++
+bool isValidBST(TreeNode* root) {
+    if (root == NULL) return true;  
+    traversal(root);
+
+    for (int i = 1; i < res.size(); ++i) {
+        if (res[i] <= res[i-1]) return false;
+    }
+    return true;
+}
+
+vector<int> res;    
+void traversal(TreeNode* root) {
+    if (root == NULL) return;
+    traversal(root->left);
+    res.push_back(root->val);
+    traversal(root->right);
+} 
+```
 
 
 
+
+
+## 19. 二叉搜索树的最小绝对差
+
+**530. 二叉搜索树的最小绝对差**
+
+```c++
+
+```
 
 
 

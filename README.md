@@ -100,8 +100,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[113. Path Sum II](Tree/113+pathSum.cpp)   | 回溯|R |
 |[617. Merge Two Binary Trees](Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
 |[700. Search in a Binary Search Tree](Tree/700+searchBST.cpp)   |  |R|
-|   |  ||
-|   |  ||
+|[98. Validate Binary Search Tree](Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
+|[530. Minimum Absolute Difference in BST](Tree/530+getMinimumDifference.cpp)*   |  |R|
 |   |  ||
 
 
