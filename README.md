@@ -47,7 +47,8 @@ git config --global http.proxy 127.0.0.1:1080
 | (p && !q) &#124;&#124; (!p && q)  = (!p &#124;&#124; !q)　两者状态不同时为true　其中!q代表q为空 |
 | size在for之前取值，防止for循环中size大小改变|
 |tostring()　stoi()|
-|如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！|
+|如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！<br>两种写法注意选择 <br>if(递归函数(left)) return;　　　if(递归函数(right)) return;<br>left = 递归函数(left);　　 　　  right = 递归函数(right);|
+||
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |数组构造二叉树，不要定义新的数组，通过索引在原数组上操作。|
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
@@ -56,8 +57,13 @@ git config --global http.proxy 127.0.0.1:1080
 |剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
 |回溯递归是一一对应的，有一个递归，就要有一个回溯|
 |回溯隐藏，直接在给函数传参时加计算，函数执行完，不改变原值|
+|自底向上=后序遍历=天然的回溯过程|
 ||
-
+||
+||
+||
+||
+||
 
 
 
@@ -102,8 +108,14 @@ git config --global http.proxy 127.0.0.1:1080
 |[700. Search in a Binary Search Tree](Tree/700+searchBST.cpp)   |  |R|
 |[98. Validate Binary Search Tree](Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
 |[530. Minimum Absolute Difference in BST](Tree/530+getMinimumDifference.cpp)*   |  |R|
+|[501. Find Mode in Binary Search Tree](Tree/501+findMode.cpp)*   |  |R Template|
+|[236. Lowest Common Ancestor of a Binary Tree](Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
 |   |  ||
-
+|   |  ||
+|   |  ||
+|   |  ||
+|   |  ||
+|   |  ||
 
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
 > 

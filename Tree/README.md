@@ -941,6 +941,22 @@ TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
 
 
 
+---
+
+## #11-15. 小结
+
+回溯隐藏，函数形参
+
+深度最大一定是叶子节点
+
+下标索引数组，不要新开数组
+
+if控制空节点进不进递归
+
+
+
+---
+
 ## 16. 合并两个二叉树
 
 **617. 合并二叉树**
@@ -1059,20 +1075,92 @@ void traversal(TreeNode* root) {
 **530. 二叉搜索树的最小绝对差**
 
 ```c++
+public:
+    int getMinimumDifference(TreeNode* root) {
+        if (root == NULL) return 0;
+        traversal(root);
 
+        int ans = INT_MAX;
+        for (int i = 1; i < res.size(); ++i) {
+            ans = res[i] - res[i-1] < ans ? res[i] - res[i-1] : ans;
+        }
+        return ans;
+    }
+
+private: 
+    vector<int> res;
+    void traversal(TreeNode* root) {
+        if (root == NULL) return; 
+        traversal(root->left);
+        res.push_back(root->val);
+        traversal(root->right);
+        return;
+    }
 ```
 
 
 
+## 20. 二叉搜索树中的众数
+
+**501. 二叉搜索树中的众数**
+
+```c++
+public:
+    vector<int> findMode(TreeNode* root) {
+        vector<int> res;
+        if (root == NULL) return res;
+        traversal(root);
+        vector<pair<int, int>> vec(mp.begin(), mp.end());
+        sort(vec.begin(), vec.end(), cmp);
+
+        res.push_back(vec[0].first);
+        for (int i = 1; i < vec.size(); i++) {
+            if (vec[i].second == vec[0].second) res.push_back(vec[i].first);
+            else break;
+        }
+        return res;
+    }
+
+    bool static cmp (const pair<int, int> a, const pair<int, int> b) {
+        return a.second > b.second ? true : false;
+    }
+
+private:
+    map<int,int> mp;
+    void traversal(TreeNode* root) {
+        if (root == NULL) return;
+        traversal(root->left);
+        mp[root->val]++;
+        traversal(root->right);
+    }   
+```
 
 
 
+## 21. 二叉树的最近公共祖先
+
+**236. 二叉树的最近公共祖先**
+
+```c++
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (root == p || root == q || root == NULL) return root;
+    TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+    if (left && right) return root;
+
+    if (left != NULL && right == NULL) {
+        return left;
+    } else if (left == NULL && right != NULL) {
+        return right;
+    }
+
+    return NULL;
+}
+```
 
 
 
+## #16-21. 小结
 
-
-
-
-
-
+一起操作两个数，用队列层序遍历。
