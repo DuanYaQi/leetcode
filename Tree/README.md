@@ -1164,3 +1164,88 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
 ## #16-21. 小结
 
 一起操作两个数，用队列层序遍历。
+
+
+
+---
+
+## 22. 删除二叉搜索树中的节点
+
+**450. 删除二叉搜索树中的节点**
+
+```c++
+TreeNode* deleteNode(TreeNode* root, int key) {
+    if (root == nullptr) return root;
+    if (root->val == key) {
+        if (root->left == NULL) return root->right;
+        else if (root->right == NULL) return root->left;
+        else {
+            TreeNode* cur = root->right;
+            while (cur->left != nullptr) {
+                cur = cur->left;
+            }
+            cur->left = root->left;
+            TreeNode* tmp = root;
+            root = root->right;
+            delete(tmp);
+
+            return root;
+        }
+    }
+
+    TreeNode* tmp = new TreeNode(NULL);
+    if (root->val > key) root->left = deleteNode(root->left, key);
+    else root->right = deleteNode(root->right, key);
+
+    return root;
+}
+```
+
+
+
+
+
+## 23. 修剪二叉搜索树
+
+**669. 修剪二叉搜索树**
+
+```c++
+TreeNode* trimBST(TreeNode* root, int low, int high) {
+    if (root == nullptr) return nullptr;
+    if (root->val < low) {
+        TreeNode* right = trimBST(root->right, low, high);
+        return right;
+    }
+
+    if (root->val > high) {
+        TreeNode* left = trimBST(root->left, low, high);
+        return left;
+    }
+
+    root->left = trimBST(root->left, low, high);
+    root->right = trimBST(root->right, low, high);
+
+    return root;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -110,8 +110,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[530. Minimum Absolute Difference in BST](Tree/530+getMinimumDifference.cpp)*   |  |R|
 |[501. Find Mode in Binary Search Tree](Tree/501+findMode.cpp)*   |  |R Template|
 |[236. Lowest Common Ancestor of a Binary Tree](Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
-|   |  ||
-|   |  ||
+|[450. Delete Node in a BST](Tree/450+deleteNode.cpp)   |BST右子树最左侧的节点的值与其兄弟左子树的值最接近  |R|
+|[669. Trim a Binary Search Tree](Tree/669+trimBST.cpp):(   |  |R|
 |   |  ||
 |   |  ||
 |   |  ||
