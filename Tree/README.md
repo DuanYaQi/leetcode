@@ -1205,6 +1205,8 @@ TreeNode* deleteNode(TreeNode* root, int key) {
 
 
 
+---
+
 ## 23. 修剪二叉搜索树
 
 **669. 修剪二叉搜索树**
@@ -1233,9 +1235,47 @@ TreeNode* trimBST(TreeNode* root, int low, int high) {
 
 
 
+---
+
+## 24. 构造一棵二叉搜索树
+
+**108. 将有序数组转换为二叉搜索树**
+
+```c++
+TreeNode* getBST(vector<int>& nums, int start, int end) {
+    if (start > end) return nullptr;
+    int index = start + (end - start) / 2;
+    TreeNode* root = new TreeNode(nums[index]);
+    root->left = getBST(nums, start, index - 1);
+    root->right = getBST(nums, index + 1, end);
+    return root;
+}
+```
 
 
 
+---
+
+## 25. 把二叉搜索树转换为累加树
+
+**538. 把二叉搜索树转换为累加树**
+
+```c++
+int tmp = 0;
+void traversal(TreeNode* root) {
+    if (root == nullptr) return;
+    traversal(root->right);
+    root->val = root->val + tmp;
+    tmp = root->val;
+    traversal(root->left);
+    return;
+}
+
+TreeNode* convertBST(TreeNode* root) {
+    traversal(root);
+    return root;
+}
+```
 
 
 

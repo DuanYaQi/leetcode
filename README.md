@@ -48,7 +48,7 @@ git config --global http.proxy 127.0.0.1:1080
 | size在for之前取值，防止for循环中size大小改变|
 |tostring()　stoi()|
 |如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！<br>两种写法注意选择 <br>if(递归函数(left)) return;　　　if(递归函数(right)) return;<br>left = 递归函数(left);　　 　　  right = 递归函数(right);|
-||
+|反中序过程就是从最右侧往最左侧运行|
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |数组构造二叉树，不要定义新的数组，通过索引在原数组上操作。|
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
@@ -112,8 +112,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[236. Lowest Common Ancestor of a Binary Tree](Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
 |[450. Delete Node in a BST](Tree/450+deleteNode.cpp)   |BST右子树最左侧的节点的值与其兄弟左子树的值最接近  |R|
 |[669. Trim a Binary Search Tree](Tree/669+trimBST.cpp):(   |  |R|
-|   |  ||
-|   |  ||
+|[108. Convert Sorted Array to Binary Search Tree](Tree/108+sortedArrayToBST_B_Rec.cpp)   | 二分 分治 |R|
+|[538. Convert BST to Greater Tree](Tree/538+convertBST_Rec.cpp)   | 反中序 ||
 |   |  ||
 |   |  ||
 
