@@ -530,6 +530,8 @@ TreeNode* invertTree(TreeNode* root) {
 
 
 
+# 求二叉树的属性
+
 ---
 
 ## 6. 对称二叉树
@@ -838,6 +840,10 @@ void traversal(TreeNode* root, int targetSum, int count) {
 
 
 
+---
+
+# 二叉树的修改与构造
+
 ## 14.  构造二叉树
 
 **106. 从中序和后序遍历序列构造二叉树**
@@ -1022,6 +1028,10 @@ TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
 
 
 
+
+
+# 求二叉搜索树的属性
+
 ## 17. 二叉搜索树中的搜索
 
 **700. 二叉搜索树中的搜索**
@@ -1137,6 +1147,10 @@ private:
 
 
 
+
+
+# 二叉树公共祖先问题
+
 ## 21. 二叉树的最近公共祖先
 
 **236. 二叉树的最近公共祖先**
@@ -1204,6 +1218,10 @@ TreeNode* deleteNode(TreeNode* root, int key) {
 
 
 
+
+---
+
+# 二叉搜索树的修改与构造
 
 ---
 
@@ -1278,6 +1296,10 @@ TreeNode* convertBST(TreeNode* root) {
 ```
 
 
+
+涉及到二叉树的构造,无论普通二叉树还是二叉搜索树一定前序,都是先构造中节点。
+求普通二叉树的属性,一般是后序,一般要通过递归函数的返回值做计算。
+求二叉搜索树的属性,一定是中序了,要不白瞎了有序性了。
 
 
 

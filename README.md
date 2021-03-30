@@ -114,7 +114,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[669. Trim a Binary Search Tree](Tree/669+trimBST.cpp):(   |  |R|
 |[108. Convert Sorted Array to Binary Search Tree](Tree/108+sortedArrayToBST_B_Rec.cpp)   | 二分 分治 |R|
 |[538. Convert BST to Greater Tree](Tree/538+convertBST_Rec.cpp)   | 反中序 ||
-|   |  ||
+|[100. Same Tree](Tree/100+isSameTree.cpp)   |  |递归|
 |   |  ||
 
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
