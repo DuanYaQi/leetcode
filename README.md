@@ -120,6 +120,12 @@ git config --global http.proxy 127.0.0.1:1080
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
 > 
 > R代表Recursion，Q代表Queue，S代表Stack，DFS代表深度优先遍历，BFS代表广度优先遍历
+
+
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[203. Remove Linked List Elements](Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
+
 ---
 ## 2. 专题
 
