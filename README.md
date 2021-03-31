@@ -125,6 +125,12 @@ git config --global http.proxy 127.0.0.1:1080
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[203. Remove Linked List Elements](Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
+|   |  ||
+|   |  ||
+|   |  ||
+|   |  ||
+|   |  ||
+
 
 ---
 ## 2. 专题
