@@ -125,7 +125,7 @@ git config --global http.proxy 127.0.0.1:1080
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[203. Remove Linked List Elements](Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
-|   |  ||
+|[707. Design Linked List](Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置|
 |   |  ||
 |   |  ||
 |   |  ||
