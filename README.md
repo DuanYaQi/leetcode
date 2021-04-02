@@ -127,7 +127,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[203. Remove Linked List Elements](Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
 |[707. Design Linked List](Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置|
 |[206. Reverse Linked List](Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
-|[142. Linked List Cycle II]:(   | 链表环 |xxxxxx|
+|[141. Linked List Cycle](Linked_list/141+hasCycle.cpp)   |  |快慢指针|
+|[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
 |[21. Merge Two Sorted Lists](Linked_list/21+mergeTwoLists.cpp)   |  |R|
 |   |  ||
 
