@@ -108,7 +108,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[700. Search in a Binary Search Tree](Tree/700+searchBST.cpp)   |  |R|
 |[98. Validate Binary Search Tree](Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
 |[530. Minimum Absolute Difference in BST](Tree/530+getMinimumDifference.cpp)*   |  |R|
-|[501. Find Mode in Binary Search Tree](Tree/501+findMode.cpp)*   |  |R Template|
+|[501. Find Mode in Binary Search Tree](Tree/501+findMode.cpp)*   | `vector<pair<int, int>>` |R Template sort  |
 |[236. Lowest Common Ancestor of a Binary Tree](Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
 |[450. Delete Node in a BST](Tree/450+deleteNode.cpp)   |BST右子树最左侧的节点的值与其兄弟左子树的值最接近  |R|
 |[669. Trim a Binary Search Tree](Tree/669+trimBST.cpp):(   |  |R|
@@ -127,8 +127,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[203. Remove Linked List Elements](Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
 |[707. Design Linked List](Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置|
 |[206. Reverse Linked List](Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
-|   |  ||
-|   |  ||
+|[142. Linked List Cycle II]:(   | 链表环 |xxxxxx|
+|[21. Merge Two Sorted Lists](Linked_list/21+mergeTwoLists.cpp)   |  |R|
 |   |  ||
 
 

@@ -34,3 +34,36 @@ private:
         traversal(root->right);
     }    
 };
+
+
+
+class Solution {
+public:
+    vector<int> findMode(TreeNode* root) {
+        vector<int> res;
+        if (root == NULL) return res;
+        traversal(root);
+        vector<pair<int, int>> vec(mp.begin(), mp.end());
+        sort(vec.begin(), vec.end(), cmp);
+
+        res.push_back(vec[0].first);
+        for (int i = 1; i < vec.size(); i++) {
+            if (vec[i].second == vec[0].second) res.push_back(vec[i].first);
+            else break;
+        }
+        return res;
+    }
+
+    bool static cmp (const pair<int, int> a, const pair<int, int> b) {
+        return a.second > b.second ? true : false;
+    }
+
+private:
+    map<int,int> mp;
+    void traversal(TreeNode* root) {
+        if (root == NULL) return;
+        traversal(root->left);
+        mp[root->val]++;
+        traversal(root->right);
+    }   
+};
