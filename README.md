@@ -130,7 +130,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[141. Linked List Cycle](Linked_list/141+hasCycle.cpp)   |  |快慢指针|
 |[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
 |[21. Merge Two Sorted Lists](Linked_list/21+mergeTwoLists.cpp)   |  |R|
-|   |  ||
+|[234. Palindrome Linked List](Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 
 
 ---

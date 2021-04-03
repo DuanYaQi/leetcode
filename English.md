@@ -22,8 +22,8 @@
 |                           directed                           |                        定向                         |
 |                            direct                            |         直接的;笔直的;径直的;最近的;直射的          |
 |                           siblings                           |                    兄弟姐妹 结点                    |
-|            specialized tree-based data structure             |                                                     |
-|                          satisfies                           |                                                     |
+|                          palindrome                          |                        回文                         |
+|                          satisfies                           |                  满意，证实，确信                   |
 |                           property                           |                                                     |
 |                  A common implementation of                  |                                                     |
 |                    proper vertex coloring                    |                                                     |
@@ -34,6 +34,15 @@
 |                           duration                           |                      持续时间                       |
 |                          ascending                           |                   上升的，渐进的                    |
 |                           alumnus                            |                        校友                         |
+
+
+
+---
+
+# Paper
+
+|                             英文                             |                        中文                         |
+| :----------------------------------------------------------: | :-------------------------------------------------: |
 |                      stereo camera rig                       |                  立体摄像机控制器                   |
 |                          detection                           |                        检测                         |
 |                           tracking                           |                        跟踪                         |
