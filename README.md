@@ -59,7 +59,7 @@ git config --global http.proxy 127.0.0.1:1080
 |回溯隐藏，直接在给函数传参时加计算，函数执行完，不改变原值|
 |自底向上=后序遍历=天然的回溯过程|
 ||
-||
+|如果题目关键的部分直接用库函数就可以解决，建议**不要**使用库函数。|
 ||
 ||
 ||
@@ -69,6 +69,8 @@ git config --global http.proxy 127.0.0.1:1080
 
 ---
 ## 1. 题表
+
+树
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -115,12 +117,17 @@ git config --global http.proxy 127.0.0.1:1080
 |[108. Convert Sorted Array to Binary Search Tree](Tree/108+sortedArrayToBST_B_Rec.cpp)   | 二分 分治 |R|
 |[538. Convert BST to Greater Tree](Tree/538+convertBST_Rec.cpp)   | 反中序 ||
 |[100. Same Tree](Tree/100+isSameTree.cpp)   |  |递归|
-|   |  ||
+| | | |
+| | | |
+| | | |
+| | | |
 
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
 > 
 > R代表Recursion，Q代表Queue，S代表Stack，DFS代表深度优先遍历，BFS代表广度优先遍历
 
+
+链表
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -131,7 +138,21 @@ git config --global http.proxy 127.0.0.1:1080
 |[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
 |[21. Merge Two Sorted Lists](Linked_list/21+mergeTwoLists.cpp)   |  |R|
 |[234. Palindrome Linked List](Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
+| | | |
+| | | |
+| | | |
+| | | |
 
+双指针
+
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[27. Remove Element](TwoPointer/27+removeElement_LeftRightPointer.cpp) |  in-place删除|双指针|
+|[344. Reverse String](TwoPointer/344+reverseString.cpp) | 反转| 左右双指针|
+| | | |
+| | | |
+| | | |
+| | | |
 
 ---
 ## 2. 专题
