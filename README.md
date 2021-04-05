@@ -61,7 +61,7 @@ git config --global http.proxy 127.0.0.1:1080
 ||
 |如果题目关键的部分直接用库函数就可以解决，建议**不要**使用库函数。|
 ||
-||
+|其实很多**数组填充**类的问题，都可以先**预先**给数组**扩容**带填充后的大小，然后在**从后向前**进行操作。|
 ||
 ||
 
@@ -96,7 +96,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[117. Populating Next Right Pointers in Each Node II](Tree/117+connect.cpp)   | 层序 | 与116一样|
 |[589. N-ary Tree Preorder Traversal](Tree/589+preorder_Rec.cpp)*   | N叉树 | R S|
 |[590. N-ary Tree Postorder Traversal](Tree/590+postorder_Rec.cpp)*   | N叉树 | R S|
-|[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)*   | 思考题 |R Q S|
+|💛[101. Symmetric Tree](Tree/101+isSymmetric_Rec.cpp)*   | 思考题 |R Q S|
 |[104. Maximum Depth of Binary Tree](Tree/104+maxDepth_Rec.cpp)*   |思考题 |R Q BFS|
 |[559. Maximum Depth of N-ary Tree](Tree/559+maxDepth_Rec.cpp)*   |  |R /Q BFS|
 |[111. Minimum Depth of Binary Tree](Tree/111+minDepth_Rec.cpp)*  |  |R /Q BFS|
@@ -111,9 +111,9 @@ git config --global http.proxy 127.0.0.1:1080
 |[98. Validate Binary Search Tree](Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
 |[530. Minimum Absolute Difference in BST](Tree/530+getMinimumDifference.cpp)*   |  |R|
 |[501. Find Mode in Binary Search Tree](Tree/501+findMode.cpp)*   | `vector<pair<int, int>>` |R Template sort  |
-|[236. Lowest Common Ancestor of a Binary Tree](Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
+|💛[236. Lowest Common Ancestor of a Binary Tree](Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
 |[450. Delete Node in a BST](Tree/450+deleteNode.cpp)   |BST右子树最左侧的节点的值与其兄弟左子树的值最接近  |R|
-|[669. Trim a Binary Search Tree](Tree/669+trimBST.cpp):(   |  |R|
+|💛[669. Trim a Binary Search Tree](Tree/669+trimBST.cpp):(   |  |R|
 |[108. Convert Sorted Array to Binary Search Tree](Tree/108+sortedArrayToBST_B_Rec.cpp)   | 二分 分治 |R|
 |[538. Convert BST to Greater Tree](Tree/538+convertBST_Rec.cpp)   | 反中序 ||
 |[100. Same Tree](Tree/100+isSameTree.cpp)   |  |递归|
@@ -135,7 +135,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[707. Design Linked List](Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置|
 |[206. Reverse Linked List](Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
 |[141. Linked List Cycle](Linked_list/141+hasCycle.cpp)   |  |快慢指针|
-|[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
+|💛[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
 |[21. Merge Two Sorted Lists](Linked_list/21+mergeTwoLists.cpp)   |  |R|
 |[234. Palindrome Linked List](Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 | | | |
@@ -149,6 +149,9 @@ git config --global http.proxy 127.0.0.1:1080
 |  :----  |:----:|:----:|
 |[27. Remove Element](TwoPointer/27+removeElement_LeftRightPointer.cpp) |  in-place删除|双指针|
 |[344. Reverse String](TwoPointer/344+reverseString.cpp) | 反转| 左右双指针|
+|[剑指 Offer 05. 替换空格](TwoPointer/J05+replaceSpace.cpp) | 字符填充|双指针 |
+|💛[151. Reverse Words in a String](TwoPointer/151+reverseWords.cpp) | 逆转字符| 双指针|
+|[206. Reverse Linked List](Linked_list/206+reverseList.cpp)   |  反转|注意`cur = cur->next;`的位置所在|
 | | | |
 | | | |
 | | | |
