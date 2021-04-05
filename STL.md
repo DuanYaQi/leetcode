@@ -675,7 +675,18 @@ string str="abcd";
     }
     ```
 
+10. resize()
 
+    ```c++
+    //调整容器中有效数据区域的尺寸，如果尺寸变小，原来数据多余的截掉
+    string s = "smiada";
+    s.resize(2); // sm
+    //。若尺寸变大，不够的数据用该函数第二个参数填充,影响size。
+    string s = "smiada";
+    s.resize(10, 'b');//smiadabbbb
+    ```
+
+    
 
 
 
