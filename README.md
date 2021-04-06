@@ -152,8 +152,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[剑指 Offer 05. 替换空格](TwoPointer/J05+replaceSpace.cpp) | 字符填充|双指针 |
 |💛[151. Reverse Words in a String](TwoPointer/151+reverseWords.cpp) | 逆转字符| 双指针|
 |[206. Reverse Linked List](Linked_list/206+reverseList.cpp)   |  反转|注意`cur = cur->next;`的位置所在|
-| | | |
-| | | |
+|💛[15. 3Sum](TwoPointer/15+threeSum.cpp) |三数之和 | 考虑重复值|
+|[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp)<br>[142. Linked List Cycle II](TwoPointer/142+detectCycle.cpp) | 链表环 | 需要分析其内在规律性质 |
 | | | |
 | | | |
 
