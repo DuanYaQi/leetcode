@@ -63,7 +63,7 @@ git config --global http.proxy 127.0.0.1:1080
 ||
 |其实很多**数组填充**类的问题，都可以先**预先**给数组**扩容**带填充后的大小，然后在**从后向前**进行操作。|
 ||
-||
+|`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
 
 
 
@@ -166,7 +166,7 @@ git config --global http.proxy 127.0.0.1:1080
 栈与指针
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-| | | |
+|[232. Implement Queue using Stacks](StackQueue/232+MyQueue.cpp) |栈实现队列 |栈不是双向，因此需要两个<br>pop()和peek()只差一步 |
 | | | |
 | | | |
 | | | |
