@@ -159,7 +159,17 @@ git config --global http.proxy 127.0.0.1:1080
 |[142. Linked List Cycle II](Linked_list/142+detectCycle.cpp)<br>[142. Linked List Cycle II](TwoPointer/142+detectCycle.cpp) | 链表环 | 需要分析其内在规律性质 |
 |[18. 4Sum](TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
 | | | |
+| | | |
+| | | |
+| | | |
 
+栈与指针
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+| | | |
+| | | |
+| | | |
+| | | |
 ---
 ## 2. 专题
 
@@ -175,14 +185,14 @@ git config --global http.proxy 127.0.0.1:1080
 
 ---
 
-### 2.3. 双指针
+### 2.3. [双指针](TwoPointer/README.md)
 
 
 
 
 ---
 
-### 2.4. 栈与队列
+### 2.4. [栈与队列](StackQueue/README.md)
 
 
 
