@@ -284,7 +284,29 @@ private:
 **142. 环形链表II**
 
 ```c++
+ListNode *detectCycle(ListNode *head) {
+    if (head == NULL || head->next == NULL) {
+        return NULL;
+    }
+    ListNode* cur = head;
+    ListNode* slow = head->next;
+    ListNode* fast = head->next->next;
 
+    while (slow != fast && fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    if(fast == NULL || fast->next == NULL) {
+        return NULL;
+    }
+
+    while (cur != slow) {
+        cur = cur->next;
+        slow = slow->next;
+    }
+    return slow;
+}
 ```
 
 
@@ -326,6 +348,22 @@ private:
 
 
 
+
+- **从头结点出发一个指针，从相遇节点也出发一个指针，这两个指针每次只走一个节点， 那么当这两个指针相遇的时候就是 环形入口的节点**
+
+把环铺开，因为速度为 2 倍关系，计算公式为
+
+![图片](../TwoPointer/assets/640.webp)
+
+slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x + y + n (y + z)`，n为fast指针在环内走了n圈才遇到slow指针， （y+z）为 一圈内节点的个数A。其中 n 必为1。
+
+因为 fast 指针是一步走两个节点，slow 指针一步走一个节点， 所以 fast 指针走过的节点数 = slow 指针走过的节点数 * 2：
+
+```
+(x + y) * 2 = x + y + n (y + z)
+```
+
+有 n = 1，则公式就化解为 `x = z`
 
 
 
