@@ -90,3 +90,130 @@ peek()的实现，直接复用了pop()。
 
 
 
+```c++
+class MyQueue {
+public:
+    /** Initialize your data structure here. */
+    MyQueue() {
+
+    }
+    
+    /** Push element x to the back of queue. */
+    void push(int x) {
+        stIn.push(x);
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    int pop() {
+        if (stOut.empty()) {            //如果为空，则把栈in里的数据全部加入栈out中
+            while (!stIn.empty()) {
+                stOut.push(stIn.top());
+                stIn.pop();
+            }
+        }
+
+        int result = stOut.top();
+        stOut.pop();
+        return result;
+    }
+    
+    /** Get the front element. */
+    int peek() {
+        int res = this->pop();
+        stOut.push(res);    //再加回去
+        return res;
+    }
+    
+    /** Returns whether the queue is empty. */
+    bool empty() {
+        return stIn.empty() && stOut.empty() ? true : false;
+    }
+
+private:
+    stack<int> stIn;
+    stack<int> stOut;    
+};
+```
+
+
+
+## 225. 用队列实现栈
+
+**「用两个队列que1和que2实现栈的功能，que2其实完全就是一个备份的作用」**
+
+重点在pop，备份back前所有的元素，然后将back pop出去，然后恢复备份
+
+```c++
+class MyStack {
+public:
+    /** Initialize your data structure here. */
+    MyStack() {
+
+    }
+    
+    /** Push element x onto stack. */
+    void push(int x) {
+        _qu1.push(x);
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        int res = _qu1.back();
+        int size = _qu1.size(); 
+        while ( size - 1 != 0 ) { //要留最后一个元素去除
+            _qu2.push(_qu1.front());
+            _qu1.pop();
+            size--;
+        }
+
+        _qu1.pop();
+        _qu1 = _qu2;
+
+        while (!_qu2.empty()) {
+            _qu2.pop();
+        }
+        return res;
+    }
+    
+    /** Get the top element. */
+    int top() {
+        return _qu1.back();
+    }
+    
+    /** Returns whether the stack is empty. */
+    bool empty() {
+        return _qu1.empty();
+    }
+
+private:
+    queue<int> _qu1;
+    queue<int> _qu2;
+};
+```
+
+
+
+## 20. 有效的括号
+
+```c++
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<int> st;
+
+        for (int i = 0; i < s.size(); i++) {
+            // 三个左
+            if (s[i] == '(') st.push(')');
+            else if (s[i] == '{') st.push('}');
+            else if (s[i] == '[') st.push(']');
+            // 三个右
+            else if (st.empty() || s[i] != st.top()) return false; // 为右括号且不为空 返回false； 为右括号且与栈顶元素不同，即不对应
+            else if (s[i] == st.top()) st.pop(); //为右且前一个为对应的左，pop出
+            else st.push(s[i]);
+        }
+
+        return st.empty();
+    }
+};
+```
+

@@ -167,8 +167,8 @@ git config --global http.proxy 127.0.0.1:1080
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[232. Implement Queue using Stacks](StackQueue/232+MyQueue.cpp) |栈实现队列 |栈不是双向，因此需要两个<br>pop()和peek()只差一步 |
-| | | |
-| | | |
+|[225. Implement Stack using Queues](StackQueue/225+MyStack.cpp) |队列实现栈 | 重点在`pop()` |
+|[20. Valid Parentheses](StackQueue/20+isValid.cpp) | | 注意左括号和右括号的区分考虑 |
 | | | |
 ---
 ## 2. 专题
