@@ -1,5 +1,20 @@
 # Leetcode
 
+Talk is cheap. Show me the code.
+
+Stay hungry Stay foolish
+
+You build it. You run it.
+
+Go big or go home
+
+Done is better than perfect
+
+Eating our own dog food
+
+
+
+
 **教学**
 
 [代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
