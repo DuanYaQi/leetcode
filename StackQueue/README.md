@@ -1,5 +1,25 @@
 # 栈与队列
 
+游戏开发可能使用栈结构，**编程语言的一些功能实现也会使用栈结构，实现函数递归调用就需要栈。**
+
+
+
+**递归的实现就是：每一次递归调用都会把函数的局部变量、参数值和返回地址等压入调用栈中**，然后递归返回的时候，从栈顶弹出上一次递归的各项参数，所以这就是递归为什么可以返回上一层位置的原因。
+
+
+
+栈溢出，系统输出的异常是`Segmentation fault`（当然不是所有的`Segmentation fault` 都是栈溢出导致的） ，如果你使用了递归，就要想一想是不是无限递归了，那么系统调用栈就会溢出。
+
+
+
+**在企业项目开发中，尽量不要使用递归！**在项目比较大的时候，由于参数多，全局变量等等，使用递归很容易判断不充分return的条件，非常容易无限递归（或者递归层级过深），**造成栈溢出错误（这种问题还不好排查！）**
+
+
+
+
+
+---
+
 ## 基础
 
 队列是先进先出，栈是先进后出。
@@ -216,4 +236,96 @@ public:
     }
 };
 ```
+
+
+
+
+
+## 1047. 删除字符串中的所有相邻重复项
+
+```c++
+string removeDuplicates(string S) {
+    stack<int> st;
+    for (char s : S) {
+        if (!st.empty() && st.top() == s) {
+            st.pop();
+        } else {
+            st.push(s);
+        }
+    }
+
+    string res;
+    while (!st.empty()) {
+        res += st.top();
+        st.pop();
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+```
+
+
+
+
+
+---
+
+## 150. 逆波兰表达式求值
+
+逆波兰表达式：是一种后缀表达式，所谓后缀就是指算符写在后面。
+
+平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。
+
+该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。
+
+**所以RPN（后缀表达式）对计算机来说是非常友好的**
+
+**其实逆波兰表达式相当于是二叉树中的后序遍历**
+
+```c++
+int evalRPN(vector<string>& tokens) {
+    stack<int> st;
+    int a, b, c;
+    for (int i = 0; i < tokens.size(); i++) {
+        if (tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/") {
+            a = st.top();
+            st.pop();
+            b = st.top();
+            st.pop();
+            if (tokens[i] == "+") {
+                st.push(a + b);
+            } else if (tokens[i] == "-") {
+                st.push(b - a);
+            } else if (tokens[i] == "*") {
+                st.push(a * b);
+            } else if (tokens[i] == "/") {
+                st.push(b / a);
+            }
+        } else {
+            st.push(stoi(tokens[i]));
+        }
+    }
+    return st.top();
+}
+```
+
+
+
+---
+
+## 239. 滑动窗口最大值
+
+
+
+
+
+
+
+---
+
+## 347.前 K 个高频元素
+
+
+
+
 
