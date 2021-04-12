@@ -192,7 +192,7 @@ git config --global http.proxy 127.0.0.1:1080
 |[150. Evaluate Reverse Polish Notation](StackQueue/150+evalRPN.cpp) | 逆波兰式| 栈|
 |💛[239. Sliding Window Maximum](StackQueue/239+maxSlidingWindow.cpp) | 滑动窗空| 建立一个对象queue |
 |💛[347. Top K Frequent Elements](StackQueue/347+topKFrequent.cpp) | 堆| 优先队列实现小顶堆|
-| | | |
+|[71. Simplify Path](StackQueue/71+simplifyPath.cpp) |  Unix 风格 绝对路径|栈 |
 | | | |
 
 ---
