@@ -45,6 +45,11 @@ Eating our own dog food
 
 [LeetCode打卡和竞赛微信群](https://wisdompeak.github.io/lc-score-board/rules.html)
 
+**好看的blog**
+
+https://www.cnblogs.com/MinPage/
+
+
 做好Medium，没必要死扣Hard。LeetCode上很多Easy的题目看似简单，实则想要写出Perfect的代码并非易事。多思考如何优化Easy，Medium的解法实际上比花精力解Hard题更能提高自己。
 
 ```shell
@@ -185,8 +190,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[225. Implement Stack using Queues](StackQueue/225+MyStack.cpp) |队列实现栈 | 重点在`pop()` |
 |[20. Valid Parentheses](StackQueue/20+isValid.cpp) | | 注意左括号和右括号的区分考虑 |
 |[150. Evaluate Reverse Polish Notation](StackQueue/150+evalRPN.cpp) | 逆波兰式| 栈|
-| | | |
-| | | |
+|💛[239. Sliding Window Maximum](StackQueue/239+maxSlidingWindow.cpp) | 滑动窗空| 建立一个对象queue |
+|💛[347. Top K Frequent Elements](StackQueue/347+topKFrequent.cpp) | 堆| 优先队列实现小顶堆|
 | | | |
 | | | |
 

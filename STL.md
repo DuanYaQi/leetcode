@@ -1097,9 +1097,9 @@ printf("%d",q.top());//5
    ```c++
    //等价
    priority_queue<int> q;
-   priority_queue<int,vector<int>,less<int> > q;
-   //第二个参数时来承载底层数据结构堆(heap)的容器,
-   //第三个参数是对第一个参数的比较累,less<int>表示数字大的优先级越大,而greater<int>表示数字小的优先级越大
+   priority_queue<int, vector<int>, less<int> > q;
+   //第二个参数是来承载底层数据结构堆(heap)的容器,
+   //第三个参数是对第一个参数的比较类,less<int>表示数字大的优先级越大,而greater<int>表示数字小的优先级越大
    priority_queue<int,vector<int>,greater<int> > q;
    ```
 
@@ -1115,14 +1115,14 @@ printf("%d",q.top());//5
        string name;
        int price;
        friend bool operator < (fruit f1,fruit f2){
-           return f1.price<f2.price;
+           return f1.price < f2.price;
        }
    }
-   //fruit增加了一个函数 friend为友元
+   //fruit 增加了一个函数 friend 为友元
    //"bool operator <(fruit f1,fruit f2)"对fruit类型的操作符"<"进行重载
-   //f1>f2   f2<f1
-   //f1==f2  !(f1<f2)&&!(f2<f1)
-   //"return f1.price<f2.price;" 以价格高的水果为优先级高
+   //f1 > f2   f2 < f1
+   //f1 == f2  !(f1<f2) && !(f2<f1)
+   //"return f1.price < f2.price;" 以价格高的水果为优先级高
    ```
 
    ```c++
@@ -1132,26 +1132,26 @@ printf("%d",q.top());//5
        friend bool operator < (fruit f1,fruit f2){
            return f1.price>f2.price;	//价格低的水果优先级高
        }
-   }f1,f2,f3
+   }f1, f2, f3
    
    int main(){
    	priority_queue<fruit> q;
-   	f1.name="aaa";
-   	f1.price=3;
-   	f2.name="bbb";
-   	f2.price=4;
-   	f3.name="ccc";
-   	f3.price=1;
+   	f1.name = "aaa";
+   	f1.price = 3;
+   	f2.name = "bbb";
+   	f2.price = 4;
+   	f3.name = "ccc";
+   	f3.price = 1;
    	q.push(f1);
    	q.push(f2);
    	q.push(f3);
-   	cout<<q.top().name<<""<<q.top.price<<endl;
+   	cout << q.top().name << "" << q.top.price << endl;
    	return 0;
    }
    
    ```
    
-```c++
+   ```c++
    //苹果1
    struct fruit{
        string name;
@@ -1159,26 +1159,28 @@ printf("%d",q.top());//5
    }f1,f2,f3
    
    struct cmp{
-       bool operator <(fruit f1,fruit f2){		//去掉friend
-           return f1.price>f2.price;	//价格低的水果优先级高
+   	bool operator < (fruit f1, fruit f2){		//去掉friend
+           return f1.price > f2.price;	//价格低的水果优先级高
        }
    }
    
-   priority_queue<fruit,vector<fruit>,cmp > q;
-```
+   priority_queue<fruit, vector<fruit>, cmp> q;
+   ```
+
+
 
 **即便是基本数据类型或者其他STL容器,也可以通过同样的方式来定义优先级.**
 
-如果结构体内的数据较为庞大(例如出现了字符串或者数组),建议使用引用来提高效率,此时比较类的参数中需要加上`"const"`和`"&"`
+如果结构体内的数据较为庞大(例如出现了字符串或者数组)，建议使用引用来提高效率，此时比较类的参数中需要加上`"const"`和`"&"`
 
 ```c++
-   friend bool operator < (const fruit &f1,const fruit &f2){
-           return f1.price>f2.price;	//价格低的水果优先级高
-   }
+friend bool operator < (const fruit &f1, const fruit &f2){
+    return f1.price > f2.price;	//价格低的水果优先级高
+}
    
-   bool operator () (const fruit &f1,const fruit &f2){
-           return f1.price>f2.price;	//价格低的水果优先级高
-   }
+bool operator () (const fruit &f1, const fruit &f2){
+    return f1.price > f2.price;	//价格低的水果优先级高
+}
 ```
 
 
