@@ -195,6 +195,16 @@ git config --global http.proxy 127.0.0.1:1080
 |[71. Simplify Path](StackQueue/71+simplifyPath.cpp) |  Unix 风格 绝对路径|栈 |
 | | | |
 
+
+哈希表
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+| | | |
+| | | |
+| | | |
+
+
+
 ---
 ## 2. 专题
 
