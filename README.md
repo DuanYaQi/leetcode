@@ -199,7 +199,7 @@ git config --global http.proxy 127.0.0.1:1080
 哈希表
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-| | | |
+|[242. Valid Anagram](HashTable/242+isAnagram.cpp) |字母异位词 |数组模拟哈希表 |
 | | | |
 | | | |
 

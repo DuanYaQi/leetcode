@@ -80,8 +80,70 @@
 
 ![图片](assets/setmapii)
 
-`std::unordered_map` 底层实现为哈希表，`std::map` 和 `std::multimap` 的底层实现是红黑树。同理，`std::map` 和 `std::multimap` 的 `key` 也是有序的（这个问题也经常作为面试题，考察对语言容器底层的理解）。
+`std::unordered_map` 底层实现为哈希表，`std::map` 和 `std::multimap` 的底层实现是红黑树。同理，`std::map` 和 `std::multimap` 的 `key` 也是有序的。
+
+
+
+解决哈希问题的时候，优先使用 `unordered_set` ，因为它的查询和增删效率是最优的，如果需要集合是有序的，那么就用 `set`，如果要求不仅有序还要有重复数据的话，那么就用 ` multiset` 。
+
+
+
+ `map` 是一个 `key value` 的数据结构，`map` 中，对 `key` 是有限制，对 `value` 没有限制的，因为 `key` 的存储方式使用红黑树实现的。
+
+
+
+虽然 `set`、`multiset` 的底层实现是红黑树，不是哈希表，但是 `set、multiset` 依然使用哈希函数来做映射，只不过底层的符号表使用了红黑树来存储数据，所以使用这些数据结构来解决映射问题的方法，我们依然称之为哈希法。`map` 也是一样的道理。
+
+
+
+`unordered_set` 在C++11的时候被引入标准库了，而 `hash_set` 并没有，所以建议还是使用 `unordered_set` 比较好，这就好比一个是官方认证的，`hash_set，hash_map` 是 C++11 标准之前民间高手自发造的轮子。实际上功能都是一样的
 
 
 
 ---
+
+
+
+**当我们遇到了要快速判断一个元素是否出现集合里的时候，就要考虑哈希法**。
+
+但是哈希法也是**牺牲了空间换取了时间**，因为我们要使用额外的数组，set或者是map来存放数据，才能实现快速的查找。
+
+
+
+
+
+
+
+---
+
+## 第242题. 有效的字母异位词
+
+「数组其实就是一个简单哈希表」
+
+定一个数组叫做record，大小为26 就可以了，初始化为0，因为字符a到字符z的ASCII也是26个连续的数值。
+
+```c++
+bool isAnagram(string s, string t) {
+    int mp[26] = {0};
+
+    for (char c : s) {
+        mp[c - 'a']++;
+    }
+    for (char c : t) {
+        mp[c - 'a']--;
+    }
+    for (int i = 0; i < 26; i++) {
+        if (mp[i] != 0) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+
+
+
+
+
+
