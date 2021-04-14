@@ -1,20 +1,5 @@
 # Leetcode
 
-Talk is cheap. Show me the code.
-
-Stay hungry Stay foolish
-
-You build it. You run it.
-
-Go big or go home
-
-Done is better than perfect
-
-Eating our own dog food
-
-
----
-
 **教学**
 
 [代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
@@ -349,6 +334,20 @@ git config --global http.proxy 127.0.0.1:1080
 [Class1-Grokking the Coding Interview: Patterns for Coding Questions](https://www.educative.io/courses/grokking-the-coding-interview)
 
 [Class2-Grokking Dynamic Programming Patterns for Coding Interviews](https://www.educative.io/courses/grokking-dynamic-programming-patterns-for-coding-interviews)
+
+
+
+---
+
+### 4.6. 10大类35项
+
+![image-20210414121456783](assets/image-20210414121456783.png)
+
+
+
+![image-20210414121548516](assets/image-20210414121548516.png)
+
+
 
 ----
 ## 5. 数据结构
@@ -716,3 +715,24 @@ for (int i = 0; i < n; i++) {
 
 ![e85d4af103548c1f4d7729b6cf63607b.png](assets/e85d4af103548c1f4d7729b6cf63607b.png)
 
+
+
+
+
+## 7. Fun
+
+Talk is cheap. Show me the code.
+
+Stay hungry Stay foolish
+
+You build it. You run it.
+
+Go big or go home
+
+Done is better than perfect
+
+Eating our own dog food
+
+
+
+![image-20210414123138579](assets/image-20210414123138579.png)
