@@ -143,7 +143,62 @@ bool isAnagram(string s, string t) {
 
 
 
+## 第349题. 两个数组的交集
+
+**「如果哈希值比较少、特别分散、跨度非常大，使用数组就造成空间的极大浪费。」**此时就要使用另一种结构体set ，关于set，C++ 给提供了如下三种可用的数据结构：
+
+- std::set
+- std::multiset
+- std::unordered_set
+
+`std::set` 和 `std::multiset` 底层实现都是红黑树，`std::unordered_set` 的底层实现是哈希表， 使用 `unordered_set` 读写效率是最高的，并不需要对数据进行排序，而且还不要让数据重复，所以选择 `unordered_set`。
+
+```c++
+vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+    unordered_set<int> uset(nums1.begin(), nums1.end());
+    unordered_set<int> res;
+
+    for (int num : nums2) {
+        if (uset.find(num) != uset.end()) {
+            res.insert(num);
+        }
+    }
+
+    return vector<int>(res.begin(), res.end());
+}
+```
 
 
 
+## 第202题. 快乐数
+
+**「当我们遇到了要快速判断一个元素是否出现集合里的时候，就要考虑哈希法了。」**
+
+```c++
+int getNum (int n) {//计算位置之和
+    int sum = 0;
+    int c;
+    while (n) {
+        c = n % 10; //余数
+        n = n / 10;
+        sum += c * c;
+    }
+    return sum;
+}
+
+bool isHappy(int n) {
+    unordered_set<int> uset;
+    while (1) {
+        n = getNum(n);
+        if (n == 1) {
+            return true;
+        }
+        if (uset.find(n) != uset.end()) {
+            return false;
+        }
+        uset.insert(n);
+    }
+    return true;
+}
+```
 

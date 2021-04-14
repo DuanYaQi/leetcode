@@ -69,6 +69,14 @@ git config --global http.proxy 127.0.0.1:1080
 |其实很多**数组填充**类的问题，都可以先**预先**给数组**扩容**带填充后的大小，然后在**从后向前**进行操作。|
 ||
 |`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
+|`unordered_set` 与 `vector` 之间迭代器传递|
+||
+||
+||
+||
+||
+||
+
 
 
 
@@ -185,9 +193,12 @@ git config --global http.proxy 127.0.0.1:1080
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[242. Valid Anagram](HashTable/242+isAnagram.cpp) |字母异位词 |数组模拟哈希表 |
+|[349. Intersection of Two Arrays](HashTable/349+intersection.cpp) | 并集| `unordered_set` 与 `vector` 之间迭代器传递|
+|[202. Happy Number](HashTable/202+isHappy.cpp) | 快乐数 | set判断重复出现|
 | | | |
 | | | |
-
+| | | |
+| | | |
 
 
 ---
@@ -216,7 +227,9 @@ git config --global http.proxy 127.0.0.1:1080
 
 
 
+---
 
+### 2.5. [哈希表](HashTable/README.md)
 
 ---
 
