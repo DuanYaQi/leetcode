@@ -202,3 +202,32 @@ bool isHappy(int n) {
 }
 ```
 
+
+
+---
+
+## 第1题. 两数之和
+
+**「这道题目中并不需要key有序，选择std::unordered_map 效率更高！」**
+
+```c++
+vector<int> twoSum(vector<int>& nums, int target) {
+    std::unordered_map <int,int> map;
+    for(int i = 0; i < nums.size(); i++) {
+        auto iter = map.find(target - nums[i]);
+        if(iter != map.end()) {
+            return {iter->second, i};
+        }
+        map[nums[i]] = i;
+    }
+    return {};
+}
+```
+
+
+
+
+
+---
+
+# 第454题.四数相加II

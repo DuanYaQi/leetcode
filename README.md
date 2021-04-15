@@ -195,8 +195,8 @@ git config --global http.proxy 127.0.0.1:1080
 |[242. Valid Anagram](HashTable/242+isAnagram.cpp) |字母异位词 |数组模拟哈希表 |
 |[349. Intersection of Two Arrays](HashTable/349+intersection.cpp) | 并集| `unordered_set` 与 `vector` 之间迭代器传递|
 |[202. Happy Number](HashTable/202+isHappy.cpp) | 快乐数 | set判断重复出现|
-| | | |
-| | | |
+|[1. Two Sum](HashTable/1+twoSum.cpp) |两数之和 | map |
+|[454. 4Sum II](HashTable/454+fourSumCount.cpp) | 四数之和| 两个数存一个map |
 | | | |
 | | | |
 
