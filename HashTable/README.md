@@ -230,4 +230,38 @@ vector<int> twoSum(vector<int>& nums, int target) {
 
 ---
 
-# 第454题.四数相加II
+## 第454题.四数相加II
+
+本题解题步骤：
+
+1. 首先定义一个 `unordered_map`，`key` 放 a 和 b 两数之和，`value` 放 a 和 b 两数之和出现的次数。
+2. 遍历大A和大B数组，统计两个数组元素之和，和出现的次数，放到map中。
+3. 定义变量 `count`，用来统计 `a+b+c+d = 0` 出现的次数。
+4. 在遍历大C和大D数组，找到如果 0-(c+d) 在map中出现过的话，就用 `count` 把 map 中`key` 对应的 `value` 也就是出现次数统计出来。
+5. 返回统计值 `count` 
+
+
+
+```c++
+int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+    std::unordered_map<int, int> umap;
+    int count = 0;
+    // 遍历a b 计算所有的 a + b 统计出现的次数
+    for (int a : nums1) {
+        for (int b : nums2) {
+            umap[a + b]++;
+        }
+    }
+
+    for (int c : nums3) {
+        for (int d : nums4) {
+            auto iter = umap.find(0 - c - d);
+            if (iter != umap.end()) {
+                count += iter->second; //加上出现的次数
+            }
+        }
+    }
+    return count;
+}
+```
+
