@@ -265,3 +265,95 @@ int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vec
 }
 ```
 
+
+
+---
+
+## 第383题. 赎金信
+
+本题判断第一个字符串ransom能不能由第二个字符串magazines里面的字符构成，但是这里需要注意两点
+
+- 第一点“为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思” 这里**说明杂志里面的字母不可重复使用。**
+- 第二点 “你可以假设两个字符串均只含有小写字母。” **说明只有小写字母**，这一点很重要
+
+
+
+**「其实在本题的情况下，使用map的空间消耗要比数组大一些的，因为map要维护红黑树或者哈希表，而且还要做哈希函数。所以数组更加简单直接有效！」**
+
+
+
+```c++
+bool canConstruct(string ransomNote, string magazine) {
+     int record[26] = {0};
+
+     for (char c : magazine) {
+         record[c - 'a']++;
+     }
+
+     for (char c : ransomNote) {
+         record[c - 'a']--;
+         if (record[c - 'a'] < 0) {
+             return false;
+         }
+     }
+
+     return true;
+ }
+```
+
+
+
+---
+
+## 第15题. 三数之和
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        int left, right;
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] > 0) {
+                return res;
+            }
+
+            if (nums[i] == nums[i - 1] && i > 0) {
+                continue;
+            }
+
+            left = i + 1;
+            right = nums.size() - 1;
+
+
+            while (left < right) {
+                if (nums[i] + nums[left] + nums[right] > 0) {
+                    right--;
+                } else if (nums[i] + nums[left] + nums[right] < 0) {
+                    left++;
+                } else {
+                    res.push_back(vector<int>{nums[i], nums[left], nums[right]});
+                    left++;
+                    right--;
+
+                    while (nums[right] == nums[right + 1] && left < right) {
+                        right--;
+                    }
+                    
+                    while (nums[left] == nums[left - 1] && left < right) {
+                        left++;
+                    }
+                    
+                }
+
+            }
+
+        }
+
+        return res;
+    }
+};
+```
+

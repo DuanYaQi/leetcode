@@ -34,6 +34,10 @@
 |                           duration                           |                      持续时间                       |
 |                          ascending                           |                   上升的，渐进的                    |
 |                           alumnus                            |                        校友                         |
+|                          arbitrary                           |                       任意的                        |
+|                         ransom note                          |                       赎金信                        |
+
+
 
 
 

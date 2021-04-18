@@ -197,9 +197,10 @@ git config --global http.proxy 127.0.0.1:1080
 |[202. Happy Number](HashTable/202+isHappy.cpp) | 快乐数 | set判断重复出现|
 |[1. Two Sum](HashTable/1+twoSum.cpp) |两数之和 | map |
 |[454. 4Sum II](HashTable/454+fourSumCount.cpp) | 四数之和| 两个数存一个map |
+|[383. Ransom Note](HashTable/383+canConstruct.cpp) | 赎金信 |  |
 | | | |
 | | | |
-
+| | | |
 
 ---
 ## 2. 专题
