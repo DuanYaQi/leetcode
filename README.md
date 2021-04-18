@@ -206,6 +206,15 @@ git config --global http.proxy 127.0.0.1:1080
 | | | |
 | | | |
 
+
+字符串
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[344. Reverse String](String/344+reverseString.cpp) | 反转串 | |
+|[541. Reverse String II](String/541+reverseStr.cpp) | 反转字符串 |  在`for`循环表达式规则上修改|
+| | | |
+| | | |
+
 ---
 ## 2. 专题
 
