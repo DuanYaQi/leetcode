@@ -320,7 +320,7 @@ public:
                 return res;
             }
 
-            if (nums[i] == nums[i - 1] && i > 0) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
 
@@ -338,11 +338,11 @@ public:
                     left++;
                     right--;
 
-                    while (nums[right] == nums[right + 1] && left < right) {
+                    while (left < right && nums[right] == nums[right + 1]) {
                         right--;
                     }
                     
-                    while (nums[left] == nums[left - 1] && left < right) {
+                    while (left < right && nums[left] == nums[left - 1]) {
                         left++;
                     }
                     
@@ -357,3 +357,70 @@ public:
 };
 ```
 
+
+
+---
+
+## 第18题. 四数之和
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> res;
+        std::sort(nums.begin(), nums.end());
+        int i, j, left, right;
+
+        for (int i = 0; i < nums.size(); ++i) {
+            /*这部分不能要如果为负数 则单独负数比负数之和要大
+            if (nums[i] > target) {
+                return res;
+            }*/
+
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            for (int j = i + 1; j < nums.size(); ++j) {
+                /* 这部分不能要，因为j遍历到后边可以两个数加起来就够大了
+                if (nums[i] + nums[j] > target) {
+                    return res; 
+                }
+                */
+
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+
+                left = j + 1;
+                right = nums.size() - 1;
+
+                while (left < right) {
+                    if (nums[i] + nums[j] + nums[left] + nums[right] > target) {
+                        right--;
+                    } else if (nums[i] + nums[j] + nums[left] + nums[right] < target) {
+                        left++;
+                    } else {
+                        res.push_back(vector<int>{nums[i], nums[j], nums[left], nums[right]});
+                        while (left < right && nums[left] == nums[left + 1]) {
+                            left++;
+                        }
+                        while (left < right && nums[right] == nums[right - 1]) {
+                            right--;
+                        }
+                        left++;
+                        right--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+```
+
+
+
+
+
+## 

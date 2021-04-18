@@ -71,11 +71,15 @@ git config --global http.proxy 127.0.0.1:1080
 |`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
 |`unordered_set` 与 `vector` 之间迭代器传递|
 ||
+|`&&` 是有**顺序**的防止下标越界|
+||
+|要保存键值用`map`，不保存用`set`，限制大小用`数组`|
+|比如要求只有小写字母，用数组来代替map |
 ||
 ||
 ||
 ||
-||
+
 
 
 
