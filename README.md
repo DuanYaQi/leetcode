@@ -14,7 +14,9 @@
 
 [李威威](https://liweiwei1419.gitee.io/leetcode-algo/)
 
-[liuchuo](https://github.com/liuchuo/LeetCode)
+[柳婼](https://github.com/liuchuo/LeetCode)
+
+[luliyucoordinate](https://github.com/luliyucoordinate/Leetcode)Github
 
 **模板**
 
@@ -76,12 +78,22 @@ git config --global http.proxy 127.0.0.1:1080
 |要保存键值用`map`，不保存用`set`，限制大小用`数组`|
 |比如要求只有小写字母，用数组来代替map |
 ||
+|字符串反转，可以试着从局部反转和全局反转下手|
 ||
 ||
 ||
-
-
-
+||
+```c++
+//https://blog.csdn.net/qq_32320399/article/details/81518476
+static const auto io_sync_off = []()
+{
+    // turn off sync
+    std::ios::sync_with_stdio(false);
+    // untie in/out streams
+    std::cin.tie(nullptr);
+    return nullptr;
+}();
+```
 
 
 ---
@@ -212,6 +224,9 @@ git config --global http.proxy 127.0.0.1:1080
 |  :----  |:----:|:----:|
 |[344. Reverse String](String/344+reverseString.cpp) | 反转串 | |
 |[541. Reverse String II](String/541+reverseStr.cpp) | 反转字符串 |  在`for`循环表达式规则上修改|
+|[剑指 Offer 05. 替换空格](String/J05+replaceSpace.cpp) | 填充字符串 | 扩充size, 反向双指针 |
+|[151. Reverse Words in a String](String/151+removeExtraSpace.cpp) | 反转字符串| 双指针处理多余空格 |
+|[剑指 Offer 58 - II. 左旋转字符串](String/J58II+reverseLeftWords.cpp) | 左旋| |
 | | | |
 | | | |
 
