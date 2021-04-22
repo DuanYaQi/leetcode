@@ -24,22 +24,154 @@
 |                           siblings                           |                    兄弟姐妹 结点                    |
 |                          palindrome                          |                        回文                         |
 |                          satisfies                           |                  满意，证实，确信                   |
-|                           property                           |                                                     |
-|                  A common implementation of                  |                                                     |
-|                    proper vertex coloring                    |                                                     |
-|                           vertices                           |                                                     |
-|         uniqueness of the card numbers is guaranteed         |                                                     |
-|                     non-increasing order                     |                                                     |
+|                           property                           |                        性质                         |
+|                  A common implementation of                  |                   ... 的通用实现                    |
+|                    proper vertex coloring                    |                    正常顶点着色                     |
+|                           vertices                           |                    至高点；头顶                     |
+|         uniqueness of the card numbers is guaranteed         |                 保证了卡号的唯一性                  |
+|                     non-increasing order                     |                     非递增顺序                      |
 |                           victims                            |                       受害者                        |
 |                           duration                           |                      持续时间                       |
 |                          ascending                           |                   上升的，渐进的                    |
 |                           alumnus                            |                        校友                         |
 |                          arbitrary                           |                       任意的                        |
 |                         ransom note                          |                       赎金信                        |
-
-
-
-
+|                          unreliable                          |                      不相关的                       |
+|                           criteria                           |                      标准/尺度                      |
+|                          Perception                          |                        感知                         |
+|                        sophisticated                         |                       复杂的                        |
+|                          Pedestrian                          |                        行人                         |
+|                            chaos                             |                        混沌                         |
+|                            entity                            |                        实体                         |
+|                           vaguely                            |                       模糊地                        |
+|                           abstract                           |                       抽象的                        |
+|                           absolute                           |                       绝对地                        |
+|                            purely                            |                       纯粹地                        |
+|                          numerical                           |                       数字的                        |
+|                        correspondence                        |                        关系                         |
+|                        conveyor belt                         |                       传送带                        |
+|                           Sensing                            |                        检测                         |
+|                           Digitize                           |                       数字化                        |
+|                           isolate                            |                       使隔离                        |
+|                            Refine                            |                        提炼                         |
+|                           Redefine                           |                       重定义                        |
+|                             tail                             |                        尾巴                         |
+|                          available                           |                       可用的                        |
+|                           reliable                           |                   可靠的/可信赖的                   |
+|                          reasonable                          |                       合理的                        |
+|                         generalized                          |                       普遍的                        |
+|                          generalize                          |                        推广                         |
+|                          generative                          |                       生成的                        |
+|                           tradeoff                           |                        权衡                         |
+|                           diagram                            |                       示意图                        |
+|                         acquisition                          |                        获取                         |
+|                            assign                            |                        分配                         |
+|                         exploitation                         |                        利用                         |
+|                          transducer                          |                       变换器                        |
+|                          Bandwidth                           |                        带宽                         |
+|                        Discriminative                        |                        区别                         |
+|               translation, rotation and scale                |              平移、旋转和缩放（尺度）               |
+| occlusion, distortion, deformation, and variations in environment |             遮挡、失真、变形和环境变化              |
+|                          underlying                          |                       潜在的                        |
+|                          guarantee                           |                        保证                         |
+|                             Tow                              |                        引入                         |
+|                           disjoint                           |                       不相交                        |
+|                          procedure                           |                        步骤                         |
+|                           optimal                            |                       最优的                        |
+|                        monotonically                         |                        单调                         |
+|                          hyperbolas                          |                       双曲线                        |
+|                    Analytically tractable                    |                      易于分析                       |
+|                        asymptotically                        |                       渐进的                        |
+|                 Multivariate Normal Density                  |                    多元正态密度                     |
+|                          arbitrary                           |                       任意的                        |
+|                        hyperquadrics                         |                     超二次曲面                      |
+|                       constant density                       |                      恒等密度                       |
+|                           contours                           |                       等高线                        |
+|                           scenario                           |                      场景/脚本                      |
+|                          orthogonal                          |                       正交的                        |
+|                         nonsingular                          |                      非奇异的                       |
+|                          Quadratic                           |                       二次的                        |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
+|                                                              |                                                     |
 
 ---
 
@@ -549,22 +681,6 @@
 1. lest                                                       以免
 
 
-
-
-
-
-
-
-
-​						
-
-​									
-
-​								
-
-​								   
-
-​								  
 
 
 
