@@ -39,10 +39,7 @@ https://www.cnblogs.com/MinPage/
 
 做好Medium，没必要死扣Hard。LeetCode上很多Easy的题目看似简单，实则想要写出Perfect的代码并非易事。多思考如何优化Easy，Medium的解法实际上比花精力解Hard题更能提高自己。
 
-```shell
-git config --global http.proxy 127.0.0.1:1080
-//然后开全局代理push/pull
-```
+
 
 ## TIPS/TRICKS
 
