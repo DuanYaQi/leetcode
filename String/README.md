@@ -1,6 +1,7 @@
 # 字符串
 
 - [ ] KMP算法[优化](#kmp)
+- [ ] KMP算法next数组[右移](#youyi)
 
 
 
@@ -230,6 +231,8 @@ knuth Morris Pratt O(n+m)
 
 
 
+
+
 ---
 
 ### 实战 bool
@@ -366,6 +369,16 @@ int KMP(char text[], char pattern[]) {
 
 ---
 
+### 补充<span id = "youyi"></span>
+
+其实很多文章都说道对前缀表进行右移的操作，然后首位补-1， 这其实是和统一减一操作的效果的一样的。
+
+[听说你对KMP有这些疑问？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247484451&idx=1&sn=46f85138f1560842ea33e327b652cf2a)
+
+
+
+---
+
 ## 字符串：前缀表不右移，难道就写不出KMP了？
 
  
@@ -378,13 +391,57 @@ int KMP(char text[], char pattern[]) {
 
 ## 28. 实现 strStr()
 
+KMP的经典思想就是:**「当出现字符串不匹配时，可以记录一部分之前已经匹配的文本内容，利用这些信息避免从头再去做匹配。」**
 
+```c++
+void getNext(int* next, const string& s) {
+    int j = -1;
+    next[0] = -1;
+    for (int i = 1; i < s.size(); i++) {
+        while (j > -1 && s[j + 1] != s[i]) {
+            j = next[j];
+        }
+        if (s[j + 1] == s[i]) {
+            j++;
+        }
+        next[i] = j;
+    }
+
+}
+
+int strStr(string haystack, string needle) {
+    int nSize = needle.size();
+    if (nSize == 0) {
+        return 0;
+    }
+    int next[nSize];
+    getNext(next, needle);
+    //cout << next[0] << ',' <<next[1];
+    int j = -1;
+    for (int i = 0; i < haystack.size() ; i++) {
+        while (j > -1 && needle[j + 1] != haystack[i]) {
+            j = next[j];
+        }
+        if (needle[j + 1] == haystack[i]) {
+            j++;
+        }
+        if (j == nSize - 1) {
+            return i - nSize + 1;
+        }
+    }
+    return -1;
+}
+```
 
 
 
 ---
 
 ## 459. 重复的子字符串
+
+```c++
+
+```
 
 
 

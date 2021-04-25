@@ -224,6 +224,8 @@ static const auto io_sync_off = []()
 |[剑指 Offer 05. 替换空格](String/J05+replaceSpace.cpp) | 填充字符串 | 扩充size, 反向双指针 |
 |[151. Reverse Words in a String](String/151+removeExtraSpace.cpp) | 反转字符串| 双指针处理多余空格 |
 |[剑指 Offer 58 - II. 左旋转字符串](String/J58II+reverseLeftWords.cpp) | 左旋| |
+|[28. Implement strStr()](String/28+strStr.cpp) | kmp | kmp算法 |
+|[459. Repeated Substring Pattern](String/459+repeatedSubstringPattern.cpp) | 子序列| kmp注意审题，由子串多次构成，next数组中前边几个-1的位置都是子串|
 | | | |
 | | | |
 
