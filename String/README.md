@@ -5,6 +5,40 @@
 
 
 
+---
+
+## 基础
+
+字符串是若干字符组成的有限序列，也可以理解为是一个字符数组，但是很多语言对字符串做了特殊的规定，接下来我来说一说C/C++中的字符串。
+
+在C语言中，把一个字符串存入一个数组时，也把结束符 '\0'存入数组，并以此作为该字符串是否结束的标志。例如这段代码：
+
+```c++
+char a[5] = "asd";
+for (int i = 0; a[i] != '\0'; i++) {
+}
+```
+
+在C++中，提供一个string类，string类会提供 size接口，可以用来判断string类字符串是否结束，就不用'\0'来判断是否结束。例如这段代码:
+
+```c++
+string a = "asd";
+for (int i = 0; i < a.size(); i++) {
+}
+```
+
+那么`vector< char >` 和 `string` 又有什么区别呢？
+
+其实在**基本操作上没有区别**，但是 `string` 提供更多的**字符串处理的相关接口**，例如 `string` **重载了+**，而 `vector` 却没有。所以想处理字符串，我们还是会定义一个string类型。
+
+
+
+
+
+
+
+---
+
 ## 题目：344. 反转字符串
 
 ```c++
@@ -375,15 +409,56 @@ int KMP(char text[], char pattern[]) {
 
 [听说你对KMP有这些疑问？](https://mp.weixin.qq.com/s?__biz=MzUxNjY5NTYxNA==&mid=2247484451&idx=1&sn=46f85138f1560842ea33e327b652cf2a)
 
+[前缀表不右移，难道就写不出KMP了？](https://mp.weixin.qq.com/s/p3hXynQM2RRROK5c6X7xfw) 
 
+在前缀表不减一的情况下，依然使用 `j=next[j]` 来进行回退，确实会出现死循环。但完全可以换一种回退方式，应该找 `j=next[j-1]` 来进行回退。
 
----
+主要就是`j=next[x]` 这一步最为关键！
 
-## 字符串：前缀表不右移，难道就写不出KMP了？
+`getNext` 的实现为：（前缀表统一减一）
 
- 
+```c++
+void getNext(int* next, const string& s) {
+    int j = -1;
+    next[0] = j;
+    for(int i = 1; i < s.size(); i++) { // 注意i从1开始
+        while (j >= 0 && s[i] != s[j + 1]) { // 前后缀不相同了
+            j = next[j]; // 向前回溯
+        }
+        if (s[i] == s[j + 1]) { // 找到相同的前后缀
+            j++;
+        }
+        next[i] = j; // 将j（前缀的长度）赋给next[i]
+    }
+}
+```
 
+此时如果输入的 `s` 为 `aabaaf`，对应的 `next` 为 `-1 0 -1 0 1 -1`。
 
+这里 `j` 和 `next[0]` 初始化为 -1，整个 `next` 数组是以前缀表减一之后的效果来构建的。
+
+那么前缀表不减一来构建 `next` 数组，代码如下：
+
+```c++
+void getNext(int* next, const string& s) {
+    int j = 0;	//初始化变了
+    next[0] = 0;
+    for(int i = 1; i < s.size(); i++) {
+        // j要保证大于0，因为下面有取j-1作为数组下表的操作
+        while (j > 0 && s[i] != s[j]) {  //判断的两个下标为 i 和 j
+            j = next[j - 1]; // 注意这里，是要找前一位的对应的回退位置了
+        }
+        if (s[i] == s[j]) { //判断的两个下标为 i 和 j
+            j++;
+        }
+        next[i] = j;
+    }
+}
+```
+
+此时如果输入的 `s` 为 `aabaaf`，对应的 `next` 为 `0 1 0 1 2 0`，（其实这就是前缀表的数值了）。
+
+此时 `next[i]`内的数字表示，`j + 1` 失配时，`j` 应该回退的位置。
 
 
 
@@ -435,15 +510,120 @@ int strStr(string haystack, string needle) {
 
 
 
+用前缀表，即不减1
+
+```c++
+void getNext(int* next, const string& s) {
+    int j = 0;
+    next[0] = 0;
+    for(int i = 1; i < s.size(); i++) {
+        while (j > 0 && s[i] != s[j]) { // j要保证大于0，因为下面有取j-1作为数组下表的操作
+            j = next[j - 1]; // 从j-1对应的回退值开始回退
+        }
+        if (s[i] == s[j]) {
+            j++;
+        }
+        next[i] = j;
+    }
+}
+int strStr(string haystack, string needle) {
+    if (needle.size() == 0) {
+        return 0;
+    }
+    int next[needle.size()];
+    getNext(next, needle);
+    int j = 0;
+    for (int i = 0; i < haystack.size(); i++) { 
+        while(j > 0 && haystack[i] != needle[j]) { //j>0 下标i和j 
+            j = next[j - 1]; // 这里要找j前一位的对应的回退位置了
+        }
+        if (haystack[i] == needle[j]) {//下标i和j 
+            j++;
+        }
+        if (j == needle.size() ) { //比较为size()
+            return (i - needle.size() + 1);
+        }
+    }
+    return -1;
+}
+```
+
+
+
+
+
 ---
 
 ## 459. 重复的子字符串
 
 ```c++
+void getNext(int* next, const string& s) {
+    int j = -1;
+    next[0] = -1;
 
+    for (int i = 1; i < s.size(); i++) { ///注意是从1开始
+        while (j > -1 && s[i] != s[j + 1]) {
+            j = next[j];
+        }
+        if (s[i] == s[j + 1]) {
+            j++;
+        }
+        next[i] = j;
+    }
+}
+bool repeatedSubstringPattern(string s) {
+    int nSize = s.size();
+    int next[nSize];
+
+    getNext(next, s);
+
+    /*
+        for (int i = 0; i < nSize; i++) {
+            cout << next[i] << " ";
+        }
+        */
+
+    // (nSize % (nSize - next[nSize - 1] - 1)) == 0  由子串多次构成的判定
+    // len = next(n - 1) + 1 存放的是s减去子字符串的长度值，nSize - len 就是子字符串的长度值，必须要能整除
+    if (next[nSize - 1] != -1 && (nSize % (nSize - next[nSize - 1] - 1)) == 0) {
+        return true;
+    }
+
+    return false;
+}
 ```
 
 
+
+用前缀表，即不减1
+
+```c++
+void getNext (int* next, const string& s){
+    next[0] = 0;
+    int j = 0;
+    for(int i = 1;i < s.size(); i++){
+        while(j > 0 && s[i] != s[j]) { // j要保证大于0，因为下面有取j-1作为数组下表的操作
+            j = next[j - 1]; // 从j-1对应的回退值开始回退
+        }
+        if(s[i] == s[j]) {
+            j++;
+        }
+        next[i] = j;
+    }
+}
+bool repeatedSubstringPattern (string s) {
+    if (s.size() == 0) {
+        return false;
+    }
+    int next[s.size()];
+    getNext(next, s);
+    int len = s.size();
+    if (next[len - 1] != 0 && len % (len - (next[len - 1] )) == 0) { 
+        return true;
+    }
+    return false;
+}
+```
 
 
 
