@@ -261,6 +261,10 @@ static const auto io_sync_off = []()
 
 ---
 
+### 2.6. [字符串](String/README.md)
+
+---
+
 ## 3. C++标准模板库([STL](https://github.com/DuanYaQi/leetcode/blob/master/STL.md))介绍
 - vector
 - set
