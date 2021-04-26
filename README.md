@@ -234,7 +234,7 @@ static const auto io_sync_off = []()
 回溯
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-| | | |
+|[77. Combinations](Backtracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
 | | | |
 
 
