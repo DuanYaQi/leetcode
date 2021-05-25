@@ -634,6 +634,97 @@ C++ is the directly control over hardware.
 
 # 6. CS420
 
+## Squally
+
+SPACE - ATTACK
+
+
+
+```assembly
+#什么都不执行
+nop
+
+add edi, 256 #加
+sub edi, 256 #减
+
+mov ebx, eax #eax的值赋给ebx
+
+
+inc edi #递增
+dec edi #递减
+```
+
+
+
+```assembly
+#对整数进行计算
+imul ecx, 1
+iadd
+isub
+
+#将eax寄存器除以ecx中的值。结果储存在eax中，切勿除以0！会使程序崩溃！
+mov ecx, 3 # 加载除数 3
+idiv ecx   # eax = eax / ecx = eax / 3
+```
+
+
+
+```assembly
+
+# 以f开头的指令对浮点数进行运算，将小数添加到FPU堆栈顶部的数字。 很少在现代程序中使用！
+fadd dword ptr [ebx]
+fsub
+fdiv
+fmul
+```
+
+
+
+```assembly
+#xmm* 寄存器只能包含浮点数
+#在xmm* 寄存器上操作的指令成为SSE指令
+#它们比FPU指令更快，更常用！
+
+addss #将两个小数相加
+subss #将两个小数相减
+```
+
+
+
+
+
+higher score win!
+
+一轮结束时得分最低的玩家将失去生命。
+
+通过在牌上打牌来提高你的分数
+
+蓝卡二进制卡\白卡十进制卡\绿卡十六进制卡
+
+
+
+自己已经有很大的优势，想要保存下一轮的牌，选择盾牌保护自己。
+
+对手已经有很大的优势，牌不足以赢得这一轮，最好放弃这一轮，反击下一轮（手牌会保留下来）
+
+MOV命令牌 把第一个值赋给第二个值
+
+ADD命令牌 把第一个值加到第二个值上
+
+
+
+
+
+mov 将hex牌溢出为0
+
+左移牌影响连续的所有拍牌，有效地将每张牌的攻击力乘以2。小心不要超过15溢出
+
+8 * 2 = 0
+
+9 * 2 = 2
+
+
+
 ## 6.1. Game Hacking Course Introduction
 
 Squally - A game designed to teach game hacking and x86/x64 assembly
@@ -740,7 +831,7 @@ Ctrl + F 查找扫描
 
 
 
-**Examples**
+### **Examples**
 
 squally.exe change the health
 
@@ -844,6 +935,8 @@ remember backup the file first
 - API monitoring (intercept calls to the OS to see what files the game is using)
 
 ![image-20210509204807151](assets/image-20210509204807151.png)
+
+### Examples
 
 进程资源监视器 https://docs.microsoft.com/zh-cn/sysinternals/
 
@@ -965,7 +1058,7 @@ HEX
 
 
 
-**unknown values scanning**
+### unknown values scanning
 
 收集数据/搜索未知类型的值 (尽量不要用未变动的值)
 
@@ -1069,7 +1162,7 @@ exe 第一次运行时，会给他分配它自己的虚拟内存。
 
 
 
-**Memory Leak**
+### **Memory Leak**
 
 如果更换地图，销毁指针，但是忘记删除对象（析构）。这些旧的资源仍占用内存。
 
@@ -1080,6 +1173,8 @@ exe 第一次运行时，会给他分配它自己的虚拟内存。
 ![image-20210509230941354](assets/image-20210509230941354.png)
 
 
+
+### pointer chain
 
 一个从 exe 到 gold 的路径
 
@@ -1236,7 +1331,7 @@ scripting language 不生产汇编语言
 
 
 
-**Examples**
+### **Examples**
 
 找到一个数据的地址 > 右键 `Find out what access this address`  > 游戏中改变这个值 > 找到地址 >  `Add to the codelist` > Stop and Close last window > 右键 `Open the disassembler at this location`  > `Replace with code that does nothing` > `Restore with original code`
 
@@ -1251,8 +1346,6 @@ so code keeps **streaming** (from RAM  into the cpu line by line
 sometimes code needs to accsee data, but **accessing ram from the cpu is expensive**, so they put a very small amount of storage on the cpu called **registers**
 
 ![image-20210510123220522](assets/image-20210510123220522.png)
-
-
 
 
 
@@ -1317,6 +1410,8 @@ disrupt the flow of that program / maybe crash
 前六个和最后七个（R9-R15）是我们需要关注的
 
 
+
+### Instruction
 
 **INC/DEC**
 
@@ -1429,4 +1524,97 @@ div [esp + 8]
 
 
 
-**Examples**
+**PUSH**
+
+moves a number to the **top of the stack**
+
+![image-20210510182820283](assets/image-20210510182820283.png)
+
+​          
+
+![image-20210510182845933](assets/image-20210510182845933.png)
+
+```assembly
+push ecx
+```
+
+![image-20210510182948982](assets/image-20210510182948982.png)
+
+```assembly
+push [ebx]
+```
+
+![image-20210510183004764](assets/image-20210510183004764.png)
+
+
+
+```assembly
+push [esi + 12]
+```
+
+![image-20210510183037902](assets/image-20210510183037902.png)
+
+
+
+**POP**
+
+removes a number from the top of the stack, **and** **stores** it in the given destination
+
+![image-20210510183244343](assets/image-20210510183244343.png)
+
+![image-20210510183258063](assets/image-20210510183258063.png)
+
+```assembly
+pop ecx # ecx = 1
+```
+
+![image-20210510183314176](assets/image-20210510183314176.png)
+
+```assembly
+pop [ebx] # [ebx] = 92     10 > 92
+```
+
+
+
+```assembly
+pop [esi + 12]  # [esi + 12] = 65536   500 > 65536
+```
+
+
+
+**SHL**    向左移位
+
+**SHR**	向右移位
+
+**NOT**	反转所有位，0 > 1, 1 > 0
+
+**AND**	按位AND操作
+
+**OR**	   按位OR操作
+
+**XOR**     按位XOR操作
+
+**BSWAP** 翻转32位整数字节的操作
+
+
+
+### **Examples**
+
+找到扫雷的时间地址 > 右键 `Find out what write this address`  > 游戏中改变这个值 > 找到地址 >  `Add to the codelist` > Stop and Close last window > 右键 `Open the disassembler at this location`  > 不能直接更改指令，因为会把后边的指令顺序毁掉
+
+Tools > auto assemble (Ctrl + A) > 输入 `[Enable]  [Disable]` > Template > Code Infection (Ctrl + I) > 'ok' > 
+
+删掉 `//this is allocated memory, you have read,write,execute access //place your code hereoriginalcode:`  和 `label(originalcode)` > `newmem:` 下修改要更换的功能`add []`  > file > 分配到当前 CT 表
+
+**分配空的内存，pointer指向它，执行完，再pointer跳回来**
+
+![image-20210510175443795](assets/image-20210510175443795.png)
+
+
+
+![image-20210510175547070](assets/image-20210510175547070.png)
+
+
+
+
+

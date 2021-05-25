@@ -102,26 +102,6 @@ LOL换肤助手永久免费 http://www.lolhfzs.cn/
 
 
 
----
-
-# 数据类型
-
-|    type     |                             mean                             |
-| :---------: | :----------------------------------------------------------: |
-| `uintptr_t` |                 无符号整数，取消地址的 `0x`                  |
-|  `LPCVOID`  | 一个`void* const` 指针<br>（LP 代表 Long Pointer，C 代表 Constant，VOID 代表 void） |
-|  `LPVOID`   | 一个`void*` 指针<br/>（LP 代表 Long Pointer，VOID 代表 void） |
-|  `HANDLE`   | 句柄，是 Windows 用来表示对象的（不是C++的对象）<br>在 windows 程序中，有各种各样的资源（窗口、图标、光标等），系统在创建这些资源时会为他们分配内存，并返回标示这些资源的标示号，即句柄 |
-|  `SIZE_T`   | 标准 C 库中定义的，在64位系统中为 `long long unsigned int`，非64位系统中为 `long unsigned int`。 |
-|   `DWORD`   | `Double Word`，`unsigned long`，MFC的数据类型。每个 WORD 为 2 个字节的长度，DWORD 双字即为4个字节，每个字节是8位，共32位。DWORD 在 Windows 下经常用来保存地址(或者存放指针)。 |
-|             |                                                              |
-|             |                                                              |
-|             |                                                              |
-
-
-
-
-
 
 
 ---

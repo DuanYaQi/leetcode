@@ -1,7 +1,3 @@
-
-
----
-
 # Guided Hacking
 
 https://guidedhacking.com/forums/the-game-hacking-bible-learn-how-to-hack-games.469/
@@ -15,14 +11,14 @@ https://guidedhacking.com/threads/game-hacking-fundamentals-the-game-hacking-boo
 - [x] https://guidedhacking.com/threads/getting-started-how-to-find-the-entity-list.10300/
 - [x] https://guidedhacking.com/threads/how-to-solve-problems-achieve-goals.14359/
 - [x] https://guidedhacking.com/threads/stop-pasting-focus-on-the-basics.14126/
+- [ ] https://guidedhacking.com/threads/how-to-learn-c-programming-where-to-learn-c.10820/
 - [ ] https://guidedhacking.com/threads/ghb1-start-here-beginner-guide-to-game-hacking.5911/
-
+- [ ] https://guidedhacking.com/threads/finddmaaddy-c-multilevel-pointer-function.6292/
+- [ ] https://guidedhacking.com/threads/get-module-base-address-tutorial-dwgetmodulebaseaddress.5781/
+- [ ] https://guidedhacking.com/threads/how-to-bypass-anticheat-start-here-beginners-guide.9882/
 - [ ] https://guidedhacking.com/threads/how-to-find-the-entitylist-address-tutorial.10235/
-
 - [ ] https://guidedhacking.com/threads/how-to-hack-any-game-tutorial-c-trainer-1-external.10897/
-
 - [ ] https://guidedhacking.com/threads/getting-started-how-to-find-the-entity-list.10300/
-
 - [ ] https://www.unknowncheats.me/forum/general-programming-and-reversing/451666-educational-resources-learning-kernel-dev.html#post3129608
 
 
@@ -401,39 +397,551 @@ https://guidedhacking.com/threads/ghb1-start-here-beginner-guide-to-game-hacking
 
 https://guidedhacking.com/threads/squally-cs420-game-hacking-course.14191
 
-
-
-
+finish in E_HackingBasic.md  Chapter 6
 
 #### 1.1. Game Hacking Course Introduction
 
-
-
 #### 1.2. Memory Editing 1
-
-
 
 #### 1.3. Base Systems - Hex, Decimal & Binary
 
-
-
 #### 1.4. How to Hex Edit Games
-
-
 
 #### 1.5. Memory Editing 2 & Data Types
 
-
-
 #### 1.6. Virtual Memory
-
-
 
 #### 1.7. Virtual Memory 2 & Multilevel Pointers Tutorial
 
-
-
 #### 1.8. How to Edit Assembly Tutorial
+
+
+
+
+
+---
+
+### 2. Guide - Game Hacking FAQ - Frequently Asked Questions
+
+https://guidedhacking.com/threads/game-hacking-faq-frequently-asked-questions.9884/
+
+
+
+**How to [Bypass anticheat](https://guidedhacking.com/threads/how-to-get-started-with-anticheat-bypass.9882/)?**
+
+[Read the How to Bypass Anticheat Guide for Noobs](https://guidedhacking.com/showthread.php?9882-How-to-Bypass-Anticheat-Tutorial-for-Noobs)
+
+
+
+**Game crashes when loading Cheat Engine?**
+Change debugger in CE settings to **VEH Debugger/kernelmode**, if that doesn't work, read the first couple paragraphs of [Guide - How to Get Started with AntiCheat Bypass](https://guidedhacking.com/showthread.php?9882-How-to-Bypass-Anticheat-Tutorial-for-Noobs)
+
+
+
+**How to use MultiLevel pointers in C++?**
+Use the good ol' [FindDmaAddy ](https://guidedhacking.com/finddma)function from Fleep that de-references and adds the offsets for you, we fixed it up a bit to be even nicer
+
+
+
+**How to use client.dll+0xDEADBEEF in C++?**
+Use the [GetModuleBase ](https://guidedhacking.com/getmodulebase)function which uses the ToolHelp32Snapshot function to walk through the loaded modules and grab the base address on your modules.
+
+
+
+**How to find multilevel pointers in cheat engine?**
+Part of 2 of [this Cheat Engine Tutorial](https://guidedhacking.com/showthread.php?9690-Cheat-Engine-6-7-Tutorial-Video-Guide) video will show you an excellent method of finding pointers manually.
+[PointerScanner Video Tutorial](https://guidedhacking.com/showthread.php?9739-Cheat-Engine-How-to-Pointer-Scan-with-Pointermaps) : Learn how to use PointerScanner and pointermaps for finding multilevel pointers
+
+
+
+**How to find offsets?**
+Use Cheat Engine "Find what Accesses/Writes", in the assembly the game will access variables using the proper offsets, these are the offsets you will use. [This tutorial ](https://guidedhacking.com/showthread.php?7194-Cheat-Engine-How-To-Hack-Any-Game)is very good for beginners.
+
+
+
+**Why isn't my hack working?**
+Because you suck. [Learn to Debug Your Hack with the Visual Studio Debugger](https://guidedhacking.com/debug)
+
+
+
+**How to inject a DLL?**
+[Use the GH Injector!](https://guidedhacking.com/resources/guided-hacking-dll-injector.4/)
+
+
+
+**How to update offsets/addresses for a new version of the game?**
+Anywhere in the project where addresses or offsets are defined you need to update them. [Learn to find pointers/offsets here](https://guidedhacking.com/showthread.php?7194-Cheat-Engine-How-To-Hack-Any-Game-1-10-Difficulty-Part-1-2)
+
+
+
+**What's the difference between internal and external?**
+
+https://guidedhacking.com/showthread.php?9884-Game-Hacking-FAQ&p=53836&viewfull=1#post53836
+
+
+
+**What game should I learn game hacking on?**
+
+**Assault Cube** first, then either **CSGO** or **COD4**. Do not learn game hacking on **new games**, it's too complicated for beginners. 
+
+Do not try to learn game hacking on **Unity, Unreal Engine or Java games**. Only learn game hacking on **native C++** games.
+
+
+
+**Common Visual Studio Problems**
+
+**Linker Errors:**
+
+```c++
+Error LNK2019    unresolved external symbol
+```
+
+This error means the compiler **cannot find the "external symbol"**. The "external symbol" is usually a **function**. You're calling a function but **it wasn't included properly**, like you probably forgot to **include the header file** or **link the lib/dll**. You need to correctly link the header file and any LIB/DLL that's needed.
+
+例如报错
+
+```c++
+Erro LNK2019    unresolved external symbol glBegin referenced in function "int __stdcall hwglSwapBuffers()
+```
+
+修复
+
+```c++
+#pragma comment(lib, "lib\\OpenGL32.Lib")
+#include <gl\GL.h>
+```
+
+
+
+**Unicode/MultiByte Character Set**
+
+Seeing error **"cannot convert char* to LPWSTR?"** or something similar?
+
+This happens because projects can be be set to use a certain type of string literal, Unicode or "regular" Multibyte Character Set (MBCS)
+
+Fleep made his tutorials using Multibyte Character Set but the industry standard is Unicode, Visual Studio 2017 has the default set to Unicode.
+
+If you want char* string literals to be single byte chars, set the project to Multibyte Character Set, especially if you're doing a Fleep tutorial.
+
+Project Properties -> General -> Character Set
+
+
+
+```c++
+error C2664 cannot convert argument 1 from 'const char [11]' to 'LPSTR'
+```
+
+https://guidedhacking.com/threads/error-c2664-cannot-convert-argument-1-from-const-char-11-to-lpstr.11827/
+
+
+
+**How to install Windows Forms for Fleep Tutorials on Visual Studio 2017?**
+[Visual Studio 2017 - Windows Forms](https://social.msdn.microsoft.com/Forums/vstudio/en-US/e6fbde42-d872-4ab3-8000-41ab22a4a584/visual-studio-2017-windows-forms?forum=winformsdesigner)
+
+
+
+**Internal vs. External?**
+
+
+
+**External**
+External Hacks use `WriteProcessMemory` (WPM) and `ReadProcessMemory` (RPM) to interact with the game process's memory. To do this you need to ask the [kernel](https://guidedhacking.com/threads/kernel-mode-drivers-info-for-anticheat-bypass.11325/) to give you a handle to the process by using `OpenProcess()` with the [Process Access Rights](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684880(v=vs.85).aspx) you require, typically `PROCESS_ALL_ACCESS`. The handle is a required parameter for RPM/WPM. [Kernel](https://guidedhacking.com/threads/kernel-mode-drivers-info-for-anticheat-bypass.11325/) mode anticheats can easily block external hacks by using `ObjRegisterCallbacks` to **block handle creation**. 
+
+[Info from DouggemHacks](https://douggemhax.wordpress.com/2015/05/27/obregistercallbacks-and-countermeasures/). RPM/WPM is **slow** because you have the overhead of the API calls into the kernel. You should **limit the frequency of these calls** and store as much information **locally** as possible to increase the performance of your external hack. If the game has **no method of detecting RPM** making an **overlay ESP** is a good way of making an undetected **external ESP** because you **only need RPM** to be undetected.
+
+Pros of external:
+
+- In my opinion none compared to internal unless you just want to **super quickly patch some bytes and then close the hack**
+
+
+Cons of external:
+
+- Super **easy to detect** because of the open process handle
+- Harder to use especially for beginners (WPM/RPM, getting the PID, blalba) though easy to master because it has no potential
+- **Less potential**
+- **Slow**
+
+
+
+**Internal**
+
+Internal hacks are created by **injecting DLLs** into the game process, when you do this you have direct **access to the process's memory** which means **fast performance and simplicity**. Injected DLL's can be made more **sneaky**(隐蔽) by using **different injection methods** such as Manual Mapping. View the [GuidedHacking Injector](https://guidedhacking.com/ghinjector) thread for more info
+
+Try a [simple DLL hack source code](https://guidedhacking.com/showthread.php?7451-Assault-Cube-internal-DLL-skeleton) for Assault Cube for learning purposes.
+
+When you are internal you create **pointers to objects**, typecast(类型化) them and point them to objects in memory. Then you can access variables（访问变量） of that object easily through the pointer. [ReClass](https://guidedhacking.com/resources/reclass-net-download.2/) is a great tool for generating classes from memory. This is an example of how to typecast variables（类型化变量） in memory and modify（修改） them in an internal cheat:
+
+```c++
+DWORD* localPlayerAddress = (DWORD*)(0x509B74);
+int * health = (int*)(*localPlayerAddress + 0xf8);
+*health = 1337;
+```
+
+
+
+Pros of internal:
+
+- Sick performance
+- Easy to start off with
+- Much potential
+- Can be super sneaky and almost impossible to detect if done properly
+
+
+Cons of internal:
+
+- **Hard to master**
+- **Easier to detect when you don't know what you're doing**
+
+
+
+If anyone is starting internal, I recommend reading this first [Walkthrough: Create and use your own Dynamic Link Library (C++)](https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-dynamic-link-library-cpp)
+
+
+
+---
+
+### 3. Video Tutorial - Cheat Engine Tutorial Video Guide
+
+#### 3.1. Cheat Engine Tutorial Guide 1/3 Steps 1-5
+
+大部分为 4 字节，还有浮点数，双浮点数（扫描双浮点数类型建议禁用 "快速扫描"）
+
+
+
+![image-20210510223547168](assets/image-20210510223547168.png)
+
+右键/F5 设置断点，F7 步进
+
+```assembly
+#  rax存的是地址
+mov [rax], edx #edx的值即RDX的值 00 00 01 3E 赋给 [rax]  318
+```
+
+或者右键 replace with code that does nothing
+
+
+
+#### 3.2. Cheat Engine Tutorial Guide 2/3 Steps 6-9 Pointers & Code Injection
+
+##### Step 6
+
+搜索这个存储血量的地址
+
+![image-20210510224950837](assets/image-20210510224950837.png)
+
+得到基址（即一个指针，这个指针指向血量）
+
+![image-20210510225040404](assets/image-20210510225040404.png)
+
+手动添加地址（指针）
+
+![image-20210510225150568](assets/image-20210510225150568.png)
+
+
+
+green glow means static meaning that it's going to be either relative to the base address (its gonna be the same address in the process every time)
+
+**relative offset**
+
+```c++
+int health = 1337;
+int* myhealth = &health; //指针myhealth指向血量变量
+cout << *myhealth; //1337
+
+//每次血量变量动态分配，pointer指向新的动态地址
+while (1) {
+	myhealth = new int(health);  
+    sleep(4);
+}
+```
+
+
+
+##### Step 7
+
+![image-20210510230725227](assets/image-20210510230725227.png)
+
+
+
+##### **Step 8 **- 525927
+
+备注1: 本步骤也可以使用**自动汇编程序脚本**或者使用**指针扫描器**加以解决。
+备注2: 在某些情况下，可以改变 CE 软件"代码查找"的相关设置。
+当你遇到类似于 `mov eax,[eax]` 的指令时，**调试程序将显示改变之后的寄存器中的值**，也许利用它更容易找出指针的位置。
+
+
+
+```c++
+//4级指针模板
+-> = "points to"
+Address = Value = ?
+base ptr -> address + offset4 = address
+base ptr -> address + offset3 = address
+base ptr -> address + offset2 = address
+static base -> address + offset1 = address
+```
+
+
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 2856
+base ptr -> address + offset4 = 014C2E08
+base ptr -> address + offset3 = address
+base ptr -> address + offset2 = address
+static base -> address + offset1 = address
+```
+
+
+
+find out what access this address `014C2E08`
+
+![image-20210510231822124](assets/image-20210510231822124.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+base ptr -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+base ptr -> address + offset3 = address
+base ptr -> address + offset2 = address
+static base -> address + offset1 = address
+```
+
+搜索16进制地址 `014C2DF0`
+
+![image-20210510232258353](assets/image-20210510232258353.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+base ptr -> address + offset3 = 06275500
+base ptr -> address + offset2 = address
+static base -> address + offset1 = address
+```
+
+
+
+find out what access this address `06275500`
+
+![image-20210510232540344](assets/image-20210510232540344.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+base ptr -> address + 0 = 06275500
+base ptr -> address + offset2 = address
+static base -> address + offset1 = address
+```
+
+搜索16进制地址 `06275500`
+
+![image-20210510232621231](assets/image-20210510232621231.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+0152A528 -> 06275500 + 0 = 06275500
+base ptr -> address + offset2 = 0152A528
+static base -> address + offset1 = address
+```
+
+
+
+find out what access this address `0152A528`
+
+![image-20210510232908839](assets/image-20210510232908839.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+0152A528 -> 06275500 + 0 = 06275500
+base ptr -> 0152A510 + 0x18 = 0152A528 // 0152A528 - 0x18
+static base -> address + offset1 = address
+```
+
+搜索16进制地址 `0152A510`
+
+![image-20210510233222493](assets/image-20210510233222493.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+0152A528 -> 06275500 + 0 = 06275500
+0152A2A0 -> 0152A510 + 0x18 = 0152A528 // 0152A528 - 0x18
+static base -> address + offset1 = 0152A2A0
+```
+
+
+
+find out what access this address `0152A2A0`
+
+![image-20210510233323000](assets/image-20210510233323000.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+0152A528 -> 06275500 + 0 = 06275500
+0152A2A0 -> 0152A510 + 0x18 = 0152A528 // 0152A528 - 0x18
+static base -> 0152A290 + 0x10 = 0152A2A0 //0152A2A0 - 0x10
+```
+
+搜索16进制地址 `0152A290`
+
+![image-20210510233459018](assets/image-20210510233459018.png)
+
+```c++
+//模板
+-> = "points to"
+014C2E08 = Value = 376
+06275500 -> 014C2DF0 + 0x18 = 014C2E08 // 014C2E08 - 0x18
+0152A528 -> 06275500 + 0 = 06275500
+0152A2A0 -> 0152A510 + 0x18 = 0152A528 // 0152A528 - 0x18
+"Tutorial-x86_64.exe"+306B00 -> 0152A290 + 0x10 = 0152A2A0 //0152A2A0 - 0x10
+    
+base address = "Tutorial-x86_64.exe"+306B00
+```
+
+![image-20210510233550402](assets/image-20210510233550402.png)
+
+
+
+##### **Step 9** - 31337157
+
+游戏中的共用代码, 这种代码是通用在除了自己以外的其他同类型对象上。
+
+如果你把健康相关代码移除的话，其结果是你的角色无敌, 但你的敌人也无敌了。
+
+在这种情况下, 你必须想办法**区分自己与敌人**。有时候很简单, 你只要检查**最前面的4个字节**(**函数指针表**), 它通常指向一个独一无二的地址, 代表着游戏玩家角色，而有的时候它是一个团体号码, 或者也可能是一个指针, 它指向另一个指针, 该址针又指向下一个指针,搞不好还指向下下一个指针, 最后指向一个玩家名字。总之完全取决于游戏的复杂度, 以及你的运气
+
+最简单的方法是以"**找出是什么改写了这个地址**"去找出游戏代码，然后使用"**分析(新/旧)数据/结构**"的功能去**比较两种结构**。
+
+当你找到如何区分你和电脑单位的方法后，你可以注入一段自动汇编脚本来检查状态，然后看是要运行游戏的代码还是要做其他的修改。(例如一击必杀)
+
+另外, 你还可以用这个方法去创建一般所说的**"字节数组"的字串, 它可以用来搜寻并产生一份所有你的单位或是敌人单位的列表**
+
+
+
+
+
+找到四个血量的地址，find out what write this address，然后减去偏移量为基址
+
+查看内存 > 工具 > 分析数据/遍历
+
+![image-20210511003512029](assets/image-20210511003512029.png)
+
+血量 `04` ，[ebx+04]，则队伍 `10`，[ebx+10]，相差 `6` 个字节
+
+这里 string name 的偏移量是 `0015`，health的偏移量是`0010`，
+
+**最前面的4/8个字节**（**函数指针表vTable ptr**）指向的是同一地址
+
+在 Dave 血量的地址 > find out what write this address > 显示反汇编程序 > 自动汇编
+
+**AOB注入**
+
+```assembly
+[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+
+aobscanmodule(INJECT,Tutorial-i386.exe,89 43 04 D9 EE) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+  cmp [ebx+10],1 # 如果队伍为1 就不执行正常的减血操作
+  jne code
+  fldz
+  jmp return
+
+code:
+  mov [ebx+04],eax
+  fldz 
+  jmp return
+
+INJECT:
+  jmp newmem
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+INJECT:
+  db 89 43 04 D9 EE
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+```
+
+
+
+**普通代码注入**
+
+![image-20210511003416965](assets/image-20210511003416965.png)
+
+```assembly
+newmem:
+cmp [ebx+10] 1          #判断是不是1
+jne originalcode		#不是1的话 正常执行 originalcode 减血 不运行下边两条程序了
+fldz					#是1的话像 执行fldz
+jmp originalcode+5      #执行完 fldz 后执行 fld 与 originalcode 间隔5个byte
+#相当于跳过了减血的代码
+# 一个jmp是5个字节，编写一个jmp时会覆盖5个字节
+
+originalcode:
+mov [ebx+04],eax
+fldz
+```
+
+![image-20210511003708917](assets/image-20210511003708917.png)
+
+```assembly
+#等效
+newmem:
+cmp [ebx+10] 2
+je originalcode
+fldz
+jmp originalcode+5
+
+originalcode:
+mov [ebx+04],eax
+fldz
+```
+
+
+
+Dave 血量动态指针链
+
+搜索时第一级是改写 write，后边都是访问 access
+
+![image-20210511001000469](assets/image-20210511001000469.png)
+
+Eric 血量动态指针链
+
+![image-20210511001308450](assets/image-20210511001308450.png)
+
+HAL 血量动态指针链
+
+![image-20210511001605863](assets/image-20210511001605863.png)
+
+KITT 血量动态指针链
+
+![image-20210511001735651](assets/image-20210511001735651.png)
 
 
 
@@ -442,6 +950,221 @@ https://guidedhacking.com/threads/squally-cs420-game-hacking-course.14191
 
 
 ---
+
+#### 3.3. Cheat Engine Tutorial Guide 3/3 Tutorial Games
+
+##### Level 1
+
+有时候搜索不到值的时候，需要搜索 **总数 - 这个数**，比如子弹数目，有时存储的是打出去的子弹数目，而不是剩余的子弹数目
+
+```c++
+//敌人血量
+-> = "points to"
+018B19C0 = Value = ?
+01889618 -> 018B1968 + 58 = 018B19C0
+018F5BE4 -> 01889600 + 18 = 01889618
+"gtutorial-i386.exe"+2D88C0 -> 018F5750 + 494 = 018F5BE4
+```
+
+右键可以使用空指针替换， 然后也可以还原
+
+工具 > 自动汇编 > AOB Injection (find an AOB we can use)
+
+> 特征码定位 signature
+>
+> 是动态地址，游戏每次重新打开就会改变，而CE用AOB注入的话，CE每次都能够找到这个已变化的地址，然后Jmp到申请的内存地址里
+>
+> "xxx.exe"+123456就是模块句柄+偏移，模块句柄一般是固定的 你遇到类似u3d做的游戏就不会这么说了，很多代码是动态生成，需要 mono 处理或用 aobscan 和 aobscanmodule 来做特征码定位
+
+```assembly
+[ENABLE]
+
+aobscanmodule(INJECT,gtutorial-i386.exe,89 50 58 83 78 54 00) // should be unique
+alloc(newmem,$1000)
+label(return)
+
+newmem:
+  push edx              # 寄存器入栈
+  xor edx,edx           # edx = 0
+  mov [eax+58],edx      # 直接把血量变为0
+  cmp dword ptr [eax+54],00 # 按原内容继续执行
+  pop edx
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 89 50 58 83 78 54 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+```
+
+
+
+##### Level 2
+
+4字节玩家的血量，找到 player 血量的地址
+
+未知的初始值，找到 enemy 血量的地址，可以试试地址 `+4 -4` 找到另一个enemy的地址，并验证。也可以先找一个玩家的血量，**如果玩家和敌人是同一个对象**，那么直接找相关减血的汇编代码如 `sub [eax+50],edx`，右键该行 > find out what addresses this instruction accesses.击打敌人，就可以找到敌人血量的地址。
+
+![image-20210515130234401](assets/image-20210515130234401.png)
+
+
+
+这里可以直接全选，右键 > open dissect data with selected address ，就会出现结构分析，找到两个敌人一样，我们跟他们不一样的地方。
+
+
+
+查找指针链，找改写地址，再找访问地址。
+
+```c++
+//玩家血量
+-> = "points to"
+018124A8 = Value = ?
+0181200C -> 01812458 + 50 = 018124A8
+0180625C -> 01811FF8 + 14 = 0181200C
+"gtutorial-i386.exe"+2D88C0 -> 01805DC8 + 494 = 0180625C
+```
+
+
+
+```c++
+//ENEMY2血量
+-> = "points to"
+018120B8 = Value = ?
+01812010 -> 01812068 + 50 = 018120B8
+0180625C -> 01811FF8 + 18 = 01812010
+"gtutorial-i386.exe"+2D88C0 -> 01805DC8 + 494 = 0180625C
+```
+
+
+
+```c++
+//ENEMY2血量
+-> = "points to"
+018122E8 = Value = ?
+01812014 -> 01812298 + 50 = 018122E8
+0180625C -> 01811FF8 + 1C = 01812014
+"gtutorial-i386.exe"+2D88C0 -> 01805DC8 + 494 = 0180625C
+```
+
+
+
+查看内存 > 工具 > 分析数据遍历 > 分群组 > 结构/定义新的结构
+
+![image-20210514224056010](assets/image-20210514224056010.png)
+
+找到team变量距离血量 8 个字节，即`eax+58`，AOB注入
+
+```assembly
+[ENABLE]
+
+aobscanmodule(INJECT,gtutorial-i386.exe,29 50 50 C3 00 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+  cmp [eax+58],0 # 如果是我们自己，就不跳
+  jne code
+  ret
+  add [eax],al
+  jmp return
+
+code:
+  sub [eax+50],edx #  这行改成mov [eax+50],0 实现秒杀
+  ret 
+  add [eax],al
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 29 50 50 C3 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+```
+
+
+
+**普通代码注入**
+
+```assembly
+[Enable]
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem:
+cmp [eax+58],0
+jne originalcode  #不执行sub 直接接着sub之后的命令
+ret
+add [eax],al
+
+originalcode:
+sub [eax+50],edx  
+ret 
+add [eax],al
+
+exit:
+jmp returnhere
+
+"gtutorial-i386.exe"+385A0:
+jmp newmem
+nop
+returnhere:
+
+
+
+
+[Disable]
+dealloc(newmem)
+"gtutorial-i386.exe"+385A0:
+sub [eax+50],edx
+ret 
+add [eax],al
+//Alt: db 29 50 50 C3 00 00
+
+```
+
+
+
+
+
+##### Level 3
+
+- find collision（冲突） detect with enemies
+- teleport（心灵传输）
+- fly
+
+查找X，Y坐标位置，然后浏览相关内存区域，死的时候看附近哪些值变换了，然后就锁定它们。让他们不变。
+
+```c++
+//查找坐标位置
+-> = "points to"
+0194209C = Value = ?
+01889618 -> 01942080 + 1C = 0194209C
+018F5BE4 -> 01889600 + 18 = 01889618
+"gtutorial-i386.exe"+2D88C0 -> 018F5750 + 494 = 018F5BE4
+```
+
+
 
 
 
