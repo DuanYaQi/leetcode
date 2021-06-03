@@ -1,23 +1,3 @@
-# Apex
-
-```powershell
-D:\workspace\Reverse\apex\Project-Branthium-main\Project-Branthium-main\build>kdmapper.exe driver.sys                   [<] Loading vulnerable driver                                                                                           [+] NtLoadDriver Status 0x0                                                                                             [+] PiDDBLock Ptr fffff8010e30a591                                                                                      [+] PiDDBCacheTable Ptr fffff8010e30dcfb                                                                                [+] PiDDBLock Locked                                                                                                    [+] PiDDBCacheTable result -> TimeStamp: 5284eac3                                                                       [+] Found Table Entry = FFFF808F14E17D00                                                                                [+] PiDDBCacheTable Cleaned                                                                                             [+] g_KernelHashBucketList Found 0xFFFFF801124B8080                                                                     [+] g_HashCacheLock Locked                                                                                              [+] Found In g_KernelHashBucketList: \Users\ADMINI~1\AppData\Local\Temp\vVqjtVsJWgGIsrkm                                [+] g_KernelHashBucketList Cleaned                                                                                      [+] MmUnloadedDrivers Cleaned: vVqjtVsJWgGIsrkm                                                                         [+] Image base has been allocated at 0xFFFFD201CB0EF000                                                                 [+] Skipped 0x1000 bytes of PE Header                                                                                   [<] Calling DriverEntry 0xFFFFD201CB0EF1B0                                                                              [+] DriverEntry returned 0x00000000                                                                                     [<] Unloading vulnerable driver                                                                                         [+] NtUnloadDriver Status 0x0                                                                                           [+] Vul driver data destroyed before unlink                                                                             [+] success
-```
-
-
-
-```text
-Run as admin Usermode.exe at apex lobby , don't use cmd too
-
-change kdmapper entry point , name / pack usermode and driver / delete traces
-```
-
-
-
-
-
----
-
 # 网站
 
 时刻更新 LOL https://www.2fzb.com/
@@ -48,8 +28,6 @@ OD零基础入门教程 https://www.bilibili.com/video/BV14p4y1i7bN
 
 
 
-Windows逆向之X86汇编  https://ke.yijincc.com/play?kid=3641
-
 破解的那个程序能检测到OD，OD一打开那个程序就打不了
 
 换工具，伪装
@@ -64,7 +42,7 @@ Windows逆向之X86汇编  https://ke.yijincc.com/play?kid=3641
 
 【易道云学院】C/C++黑客 游戏逆向/反外挂基础 精讲课https://www.bilibili.com/video/BV1Af4y1k7wj
 
-【C/C++】经典外挂-DLL注入-实现无线弹药-开过挂的你，知道其中的原理吗 https://www.bilibili.com/video/BV1ah411X7y9
+
 
 游戏逆向c++封包汇编基础易语言lua内存外挂与反外挂零基础ce od完整教程 https://www.bilibili.com/video/BV1Gy4y1J7P5
 
