@@ -1,3 +1,87 @@
+# Error
+
+1. 无法将参数 2 从“const char [52]”转换为“LPCWSTR”
+
+```
+项目 > 属性 > 配置属性 > 高级 > 高级属性 > 字符集 > 改为未设置 
+```
+
+
+
+2. 不能将 "const wchar_t *" 类型的值分配到 "LPCSTR" 类型的实体 / "const wchar_t *" 类型的实参与 "LPCSTR" 类型的形参不兼容
+
+```
+项目 > 属性 > 配置属性 > 高级 > 高级属性 > 字符集 > 改为使用Unicode字符集
+```
+
+
+
+3. “无法启动程序，不是有效的Win32应用程序”
+
+```
+项目 > 属性 > 配置属性 > 高级 > 高级属性 > 目标文件扩展名 > exe
+```
+
+只有 `debug` 模式下，才能进入 `main.cpp` 以外的函数。
+
+
+
+4. use _CRT_SECURE_NO_WARNINGS
+
+```
+项目->属性->配置属性->C/C++ -> 预处理器 -> 预处理器定义，增加：
+_CRT_SECURE_NO_DEPRECATE
+```
+
+
+
+5. MSVCRT.lib(exe_main.obj) : error LNK2001: 无法解析的外部符号 _main
+   *.exe : fatal error LNK1120: 1 个无法解析的外部命令
+
+```
+项目 > 属性 > 配置属性 > 高级 > 高级属性 > 目标文件扩展名 > dll
+```
+
+
+
+6. error MSB8040: 此项目需要缓解了 Spectre 漏洞的库。
+
+```
+打开“Visual Studio Installer”
+
+“使用 C++ 的桌面开发”工作负荷，查看PC安装的MSVC的版本，“MSVC v142 - VS 2019 C++ x64/x86 生成工具(V14.27)”（请注意，其中的 14.27就是可用的最高版本）。
+
+选择“单个组件”，然后搜索“14.27”。 这会返回所有体系结构的工具集，包括 Spectre 缓解库。 选择要为其开发的驱动程序体系结构。
+
+选中Spectre缓解库，点击“修改”，完成安装。
+```
+
+
+
+7. 字符常量中的字符过多
+
+```
+'client.dll'
+换成
+"client.dll"
+```
+
+
+
+8. Device driver does not install on any devices, use primitive driver if this is intended.
+
+```
+用 Kernel Mode Driver, Empty(KMDF)
+源文件为.c 
+而不是.cpp
+```
+
+
+
+
+
+---
+
 # 数据类型
 
 LP 代表 Long Pointer，长指针
@@ -36,24 +120,3 @@ WND 代表 `Windows` 窗口过程
 |  `WNDPROC`  |                    指向窗口过程的32位指针                    |
 |             |                                                              |
 
-
-
----
-
-# Error
-
-1. 无法将参数 2 从“const char [52]”转换为“LPCWSTR”
-
-```
-项目 > 属性 > 配置属性 > 高级 > 高级属性 > 字符集 > 改为未设置 
-```
-
-
-
-2. “无法启动程序，不是有效的Win32应用程序”
-
-```
-项目 > 属性 > 配置属性 > 高级 > 高级属性 > 目标文件扩展名 > exe
-```
-
-只有 `debug` 模式下，才能进入 `main.cpp` 以外的函数。
