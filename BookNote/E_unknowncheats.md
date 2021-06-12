@@ -1189,6 +1189,10 @@ https://www.youtube.com/watch?v=1HVJqyTOL2Q
 
 
 
+
+
+
+
 ---
 
 # 3. How to make a Box ESP for Apex Legends (C++)
@@ -1724,3 +1728,51 @@ umpdc.dll
 
 
 The injector still work but the internal p200 need an update so it crash
+
+
+
+
+
+# 5. Kernel Hack
+
+Here are a bunch of useful links that helped me out. I mention the book Kernel Programming, I really recommend it for Beginners, it really helped me out because not only does it get you started with driver development but it also teaches you about things like threads, pools, pages, etc.
+I also really recommend the Null's tutorials, they are very well made. Im not expert myself but this is what helped me 
+
+**MSDN Official page on driver development**
+[https://docs.microsoft.com/en-us/win...indows-drivers](https://docs.microsoft.com/en-us/windows-hardware/drivers/develop/getting-started-with-windows-drivers)
+
+**Amazing series on driver development**
+Part 1: [https://www.codeproject.com/Articles...ion-to-Drivers](https://www.codeproject.com/Articles/9504/Driver-Development-Part-1-Introduction-to-Drivers)
+Part 2: [https://www.codeproject.com/Articles...on-to-Implemen](https://www.codeproject.com/Articles/9575/Driver-Development-Part-2-Introduction-to-Implemen)
+Part 3: [https://www.codeproject.com/Articles...on-to-driver-c](https://www.codeproject.com/Articles/9636/Driver-Development-Part-3-Introduction-to-driver-c)
+Part 4: [https://www.codeproject.com/Articles...on-to-device-s](https://www.codeproject.com/Articles/9766/Driver-Development-Part-4-Introduction-to-device-s)
+
+**Some UC Links on kernel basics**
+[Windows kernel driver tutorial (setup, code, Q&A)](https://www.unknowncheats.me/forum/c-and-c-/397169-windows-kernel-driver-tutorial-setup-code.html)
+[Driver aka Kernel Mode](https://www.unknowncheats.me/forum/anti-cheat-bypass/271733-driver-aka-kernel-mode.html)
+[Teach yourself about Windows!](https://www.unknowncheats.me/forum/general-programming-and-reversing/173549-teach-yourself-windows.html)
+
+**Zer0Mem0ry kernel videos**
+IOCTL: https://www.youtube.com/watch?v=1JWNrAk-Kx0
+Kernel Bhop: https://www.youtube.com/watch?v=sJdBtPosWQs
+
+**Null's amazing series on function hooking as communication method**
+Part 1: https://www.youtube.com/watch?v=KNGr4m99PTU
+Part 2: https://www.youtube.com/watch?v=YzY-Uhg7IUU
+
+**Some great books on kernel**
+Kernel Programming by Pavel Yosifovich
+Windows Internals Seventh Edition
+
+**Github repo with a bunch of widely used km-um communication methods**
+You can check these out although function hooking is nice
+https://github.com/alxbrn/km-um-communication
+
+**Kernel Anti-cheat emulator to test your cheats on**
+[Kernel Anti-cheat emulator, check your detection vectors](https://www.unknowncheats.me/forum/anti-cheat-bypass/334931-kernel-anti-cheat-emulator-check-detection-vectors.html)
+
+**Tips on Kernel Programming**
+[[FAQ\] Tips and tricks for kernel newbies and beginners](https://www.unknowncheats.me/forum/anti-cheat-bypass/300487-faq-tips-tricks-kernel-newbies-beginners.html)
+
+**Anticheats FAQ**
+[FAQ - Anti-Cheats, Bypasses and Hardware IDs](https://www.unknowncheats.me/forum/anti-cheat-bypass/266433-faq-anti-cheats-bypasses-hardware-ids.html)

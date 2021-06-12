@@ -1,4 +1,4 @@
-# 1. Basics of C++
+# **1**. Basics of C++
 
 ## Windows install
 
@@ -1374,6 +1374,29 @@ scientists hide all of these caches from us so as far as a game hacker is concer
 if we want to change something, we need to load it into a register first.
 
 
+
+### Register
+
+1.通用寄存器组
+
+AX、BX、CX、DX4个16位寄存器
+
+AX(AH、AL)：**累加**器。有些指令约定以AX(或AL)为源或目的寄存器。 
+BX(BH、BL)：**基址寄存**器。BX可用作**间接寻址**的地址寄存器和基地址寄存器，
+CX(CH、CL)：**计数**寄存器。CX在**循环和串操作中充当计数器**，指令执行后CX内容自动修改。
+DX(DH、DL)：**数据**寄存器。除用作通用寄存器外，在I/O指令中可用作端口地址寄存器，乘除指令中用作辅助累加器。
+
+2.指针和变址寄存器
+BP( Base Pointer regilter)：基址指针寄存器。 
+SP( Stack Pointer Register)：堆栈指针寄存器。
+SI( Source Index register)：源变址寄存器。
+DI( Destination Index Register)：目的变址寄存器。
+
+3.段寄存器CS
+
+4.指令指针寄存器IP
+
+5.标志寄存器FR
 
 ![image-20210510123937180](assets/image-20210510123937180.png)
 

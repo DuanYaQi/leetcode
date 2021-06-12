@@ -1,5 +1,9 @@
 # Error
 
+Extra Sensory Perception
+
+
+
 1. 无法将参数 2 从“const char [52]”转换为“LPCWSTR”
 
 ```
@@ -78,6 +82,20 @@ _CRT_SECURE_NO_DEPRECATE
 
 
 
+9. 调试 dll
+
+![image-20210605141457364](assets/image-20210605141457364.png)
+
+
+
+10. UAC （User Account Control）执行级别修改
+
+![image-20210605150503278](assets/image-20210605150503278.png)
+
+
+
+
+
 
 
 ---
@@ -118,5 +136,16 @@ WND 代表 `Windows` 窗口过程
 |             |                                                              |
 |   `PROC`    |                             函数                             |
 |  `WNDPROC`  |                    指向窗口过程的32位指针                    |
+|             |                                                              |
+|  `wchar_t`  | unicode编码的字符一般以wchar_t类型存储。wchar_t所能表示的字符数远超char型。 |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
+|             |                                                              |
 |             |                                                              |
 
