@@ -6,6 +6,8 @@
 
 
 
+
+
 ## Ch1 黑客编程入门
 
 对于一个程序员来说，除了要掌握基本的开发语言以外，还要掌握具体的开发环境和系统平台的相关知识；在掌握编程语言和开发环境等知识后，还要掌握调试技术以及各种调试分析工具。同样，Windows 操作系统提供了良好的调试接口，并且有非常多的调试工具。
@@ -16,11 +18,86 @@
 
 ### 1.1.1. 对消息的演示测试
 
-首先写一个简单的程序，通过编写的程序发送消息来关闭记事本的进程、获取窗口的标题和设置窗口的标题。
+首先写一个简单的程序，通过编写的程序**发送消息**来关闭记事本的进程、获取窗口的标题和设置窗口的标题。
 
 ```c++
+void CMsgTestDlg::OnClose()
+{
+    // 在此处添加处理程序代码
+    HWND hWnd = ::FindWindow("Notepad", NULL);
+    if ( hWnd == NULL )
+    {
+        AfxMessageBox("没有找到记事本");
+        return ;
+    }
+    ::SendMessage(hWnd, WM_CLOSE, NULL, NULL);
+}
 
+void CMsgTestDlg::OnExec()
+{
+    // 在此处添加处理程序代码
+    WinExec("notepad.exe", SW_SHOW);
+}
+
+void CMsgTestDlg::OnEditWnd()
+{
+    // 在此处添加处理程序代码
+    HWND hWnd = ::FindWindow(NULL, "无标题 - 记事本");
+    if ( hWnd == NULL )
+    {
+        AfxMessageBox("没有找到记事本");
+        return ;
+	}
+	char *pCaptionText = "消息测试";
+	::SendMessage(hWnd, WM_SETTEXT, (WPARAM)0, (LPARAM)pCaptionText);
+}
+
+void CMsgTestDlg::OnGetWnd()
+{
+    // 在此处添加处理程序代码
+    HWND hWnd = ::FindWindow("Notepad", NULL);
+    if ( hWnd == NULL )
+    {
+        AfxMessageBox("没有找到记事本");
+        return ;
+    }
+    char pCaptionText[MAXBYTE] = { 0 };
+    ::SendMessage(hWnd, WM_GETTEXT, (WPARAM)MAXBYTE, (LPARAM)pCaptionText);
+    AfxMessageBox(pCaptionText);
+}
 ```
+
+
+
+### 1.1.2. 对“消息测试”程序代码的解释
+
+要学习的 API 函数有两个，分别是 `FindWindow()` 和 `SendMessage()`。下面看一下它们在 MSDN 中的定义。
+
+```C++
+HWND FindWindow(
+    LPCTSTR lpClassName,
+    LPCTSTR lpWindowName
+);
+```
+
+`FindWindow()` 函数的功能是，通过指定的**窗口类名**（`lpClassName`）或**窗口标题**
+（`lpWindowName`）查找匹配的窗口并返回最上层的窗口句柄。简单理解就是，通过指定的窗口名（窗口名相对于窗口类来说要直观些，因此往往使用的是窗口名）返回窗口句柄。
+
+`FindWindow()` 函数有两个参数，分别是 lpClassName 和 lpWindowName。该函数通常使用的是第 2 个参数 `lpWindowName`，该参数是指定窗口的名称。在例子代码中，为程序指定的窗口名是“**无标题—记事本**”。“无标题—记事本”是记事本程序打开后的默认窗口标题，当 `FindWindow()` 找到该窗口时，会返回它的窗口句柄。例子代码中也使用了`lpClassName`（窗口类名），在窗口的名称会改变的情况下，只能通过窗口类名来获取窗口的句柄了。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
