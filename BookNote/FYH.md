@@ -16,11 +16,17 @@ windows 内核 函数结构体
 
 https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016
 
-https://blog.csdn.net/weixin_44286745/article/details/102235347
+
+
+Windows内核研究https://blog.csdn.net/weixin_44286745/category_9741425.html
+
+VT(CPU虚拟化技术)https://blog.csdn.net/weixin_44286745/category_10565173.html
+
+透视挂原理：透明窗口，画框，画线，绘制文字的实现（C++）https://blog.csdn.net/weixin_44286745/article/details/102235347
 
 https://www.freebuf.com/author/huoji120
 
-https://bbs.pediy.com/thread-126933.htm	
+Direct3D透视教程，教你做出属于自己的透视 https://bbs.pediy.com/thread-126933.htm	
 
 https://key08.com/index.php/game_anticheat.html
 
@@ -867,7 +873,7 @@ dbgview4.81.exe 管理员方式运行
 
 在驱动中生成了控制设备和符号链接，卸载驱动时记得需要删除，否则符号链接就会一直存在。 
 
-先卸载 `IoDeleteSymbolicLink`  ，在卸载 `IoDeleteDevice`
+先卸载 `IoDeleteSymbolicLink`  ，再卸载 `IoDeleteDevice`
 
 
 

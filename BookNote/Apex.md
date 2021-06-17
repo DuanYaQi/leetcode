@@ -1212,6 +1212,10 @@ https://bbs.pediy.com/thread-126933.htm
 
 
 
+
+
+
+
 a private um cheat
 
 kernel driver with undetectable communication
@@ -1480,6 +1484,45 @@ cargo run --release --  "C:\Users\Louis\Desktop\tutorial\EasyAntiCheat_launcher_
 Congratulations you now have successfully dumped offsets from the game. The file with the offsets will be in `apexbot-master -> offsets -> stdout.md`
 
 **Now just change the names back in Apex Legends folder (Step 1) to the old names and you can play the game again.**
+
+
+
+---
+
+# Bypass EAC
+
+
+
+`ObRegisterCallbacks` is a function which allows you to set 2 callbacks, `PreCallback` and `PostCallback`. These 2 functions are called when you are creating or duplicating a handle, what most anti cheats do is they ignore `PostCallback` and do their shit in `PreCallback`. In that function they strip the handle's access mask so if you call `NtReadVirtualMemory` for example, it will return access denied as the handle does not have the specific access mask as it was stripped in the callback. There are multiple options for you to do to bypass this:
+
+A) The obvious, going kernel and using functions which require no handles for example `MmCopyVirtualMemory`.
+B) Removing the callbacks temporarily and injecting then adding them back so nor the anti cheat will be suspicious (if you are faster than their checks) or patchguard will be mad.
+C) Byte patching `ObpReferenceObjectByHandleWithTag`'s handle mask check, this will also trigger patchguard if you do not succeed the integrity checks, secondly anti cheats will be able to enumerate handles to the protected game and then flag you depending on the circumstances, however you can completely flaw their handle enumeration checks with some thinking.
+D) Think of more ideas to somehow flaw this.
+
+
+
+## prevent patchguard hooking protected functions
+
+https://www.unknowncheats.me/forum/anti-cheat-bypass/455919-prevent-patchguard-hooking-protected-functions.html
+
+
+
+For the sake of interest, a check was made with disabling PG via Shark, and I can say for sure that in Apex Legends this is undetected.
+
+
+
+Signed the merged certificate on this forum, then cleared the traces of the driver (Shark.sys). I wrote a test cheat on apex, tested for about a month and a half, there was no ban, the main driver was hidden through MiProcessLoaderEntry.
+
+
+
+
+
+
+
+
+
+
 
 ---
 
