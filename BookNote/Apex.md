@@ -1437,6 +1437,53 @@ int main()
 
 
 
+## Posted by doraemoonud
+
+```c++
+if (strcmp(IdentifierC, "player"))
+{
+    // get player team ID
+    int playerTeamID = driver::read<int>(process_id, locPlayer + OFFSET_TEAM); // OFFSET_TEAM 0x0450 m_iTeamNum	
+
+    // get entity team ID
+    int entTeamID = driver::read<int>(process_id, Entity + OFFSET_TEAM); // OFFSET_TEAM 0x0450 m_iTeamNum	
+
+    entNewVisTime = driver::read<float>(process_id, Entity + OFFSET_VISIBLE_TIME); // OFFSET_VISIBLE_TIME
+
+    if (entTeamID != playerTeamID)
+    {
+
+        if (entNewVisTime != entOldVisTime[i])
+        {
+            visCooldownTime[i] = 1; // low values mean less latency, increase if you observe the color changes on visible enemies
+
+            driver::write<float>(process_id, Entity + 0x1D0, 0.f);
+            driver::write<float>(process_id, Entity + 0x1D4, 3.f);
+            driver::write<float>(process_id, Entity + 0x1D8, 0.f);
+
+            entOldVisTime[i] = entNewVisTime;
+        }
+        else
+        {
+            if (visCooldownTime[i] <= 0)
+            {
+
+            }
+        }
+    }
+    else
+    {
+        driver::write<float>(process_id, Entity + 0x1D0, 2.f); // my team 
+        driver::write<float>(process_id, Entity + 0x1D4, 20.f);
+        driver::write<float>(process_id, Entity + 0x1D8, 2.f);
+    }
+    if (visCooldownTime[i] >= 0) visCooldownTime[i] -= 1;
+```
+
+
+
+
+
 ---
 
 ## Apex External Glow/ItemGlow/Basic Aimbot
@@ -1448,6 +1495,337 @@ No source
 
 
 
+
+
+
+
+
+
+
+----
+
+## read process physical memory, no attach
+
+https://www.unknowncheats.me/forum/anti-cheat-bypass/444289-read-process-physical-memory-attach.html
+
+```c++
+NTKERNELAPI
+PVOID
+PsGetProcessSectionBaseAddress(
+	__in PEPROCESS Process
+);
+ 
+PVOID GetProcessBaseAddress(int pid) 
+{
+	PEPROCESS pProcess = NULL;
+	if (pid == 0) return STATUS_UNSUCCESSFUL;
+ 
+	NTSTATUS NtRet = PsLookupProcessByProcessId(pid, &pProcess);
+	if (NtRet != STATUS_SUCCESS) return NtRet;
+ 
+	PVOID Base = PsGetProcessSectionBaseAddress(pProcess);
+	ObDereferenceObject(pProcess);
+	return Base;
+}
+ 
+//https://ntdiff.github.io/
+#define WINDOWS_1803 17134
+#define WINDOWS_1809 17763
+#define WINDOWS_1903 18362
+#define WINDOWS_1909 18363
+#define WINDOWS_2004 19041
+#define WINDOWS_20H2 19569
+#define WINDOWS_21H1 20180
+ 
+DWORD GetUserDirectoryTableBaseOffset()
+{
+	RTL_OSVERSIONINFOW ver = { 0 };
+	RtlGetVersion(&ver);
+ 
+	switch (ver.dwBuildNumber)
+	{
+	case WINDOWS_1803:
+		return 0x0278;
+		break;
+	case WINDOWS_1809:
+		return 0x0278;
+		break;
+	case WINDOWS_1903:
+		return 0x0280;
+		break;
+	case WINDOWS_1909:
+		return 0x0280;
+		break;
+	case WINDOWS_2004:
+		return 0x0388;
+		break;
+	case WINDOWS_20H2:
+		return 0x0388;
+		break;
+	case WINDOWS_21H1:
+		return 0x0388;
+		break;
+	default:
+		return 0x0388;
+	}
+}
+ 
+//check normal dirbase if 0 then get from UserDirectoryTableBas
+ULONG_PTR GetProcessCr3(PEPROCESS pProcess)
+{
+	PUCHAR process = (PUCHAR)pProcess;
+	ULONG_PTR process_dirbase = *(PULONG_PTR)(process + 0x28); //dirbase x64, 32bit is 0x18
+	if (process_dirbase==0)
+	{
+		DWORD UserDirOffset = GetUserDirectoryTableBaseOffset();
+		ULONG_PTR process_userdirbase = *(PULONG_PTR)(process + UserDirOffset);
+		return process_userdirbase;
+	}
+	return process_dirbase;
+}
+ULONG_PTR GetKernelDirBase()
+{
+	PUCHAR process = (PUCHAR)PsGetCurrentProcess();
+	ULONG_PTR cr3 = *(PULONG_PTR)(process + 0x28); //dirbase x64, 32bit is 0x18
+	return cr3;
+}
+ 
+NTSTATUS ReadVirtual(uint64_t dirbase, uint64_t address, uint8_t* buffer, SIZE_T size, SIZE_T *read)
+{
+	uint64_t paddress = TranslateLinearAddress(dirbase, address);
+	return ReadPhysicalAddress(paddress, buffer, size, read);
+}
+ 
+NTSTATUS WriteVirtual(uint64_t dirbase, uint64_t address, uint8_t* buffer, SIZE_T size, SIZE_T *written)
+{
+	uint64_t paddress = TranslateLinearAddress(dirbase, address);
+	return WritePhysicalAddress(paddress, buffer, size, written);
+}
+ 
+NTSTATUS ReadPhysicalAddress(PVOID TargetAddress, PVOID lpBuffer, SIZE_T Size, SIZE_T *BytesRead)
+{
+	MM_COPY_ADDRESS AddrToRead = { 0 };
+	AddrToRead.PhysicalAddress.QuadPart = TargetAddress;
+	return MmCopyMemory(lpBuffer, AddrToRead, Size, MM_COPY_MEMORY_PHYSICAL, BytesRead);
+}
+ 
+//MmMapIoSpaceEx limit is page 4096 byte
+NTSTATUS WritePhysicalAddress(PVOID TargetAddress, PVOID lpBuffer, SIZE_T Size, SIZE_T* BytesWritten)
+{
+	if (!TargetAddress)
+		return STATUS_UNSUCCESSFUL;
+ 
+	PHYSICAL_ADDRESS AddrToWrite = { 0 };
+	AddrToWrite.QuadPart = TargetAddress;
+ 
+	PVOID pmapped_mem = MmMapIoSpaceEx(AddrToWrite, Size, PAGE_READWRITE);
+ 
+	if (!pmapped_mem)
+		return STATUS_UNSUCCESSFUL;
+ 
+	memcpy(pmapped_mem, lpBuffer, Size);
+ 
+        *BytesWritten = Size;
+	MmUnmapIoSpace(pmapped_mem, Size);
+	return STATUS_SUCCESS;
+}
+ 
+#define PAGE_OFFSET_SIZE 12
+static const uint64_t PMASK = (~0xfull << 8) & 0xfffffffffull;
+ 
+uint64_t TranslateLinearAddress(uint64_t directoryTableBase, uint64_t virtualAddress) {
+	directoryTableBase &= ~0xf;
+ 
+	uint64_t pageOffset = virtualAddress & ~(~0ul << PAGE_OFFSET_SIZE);
+	uint64_t pte = ((virtualAddress >> 12) & (0x1ffll));
+	uint64_t pt = ((virtualAddress >> 21) & (0x1ffll));
+	uint64_t pd = ((virtualAddress >> 30) & (0x1ffll));
+	uint64_t pdp = ((virtualAddress >> 39) & (0x1ffll));
+ 
+	SIZE_T readsize = 0;
+	uint64_t pdpe = 0;
+	ReadPhysicalAddress(directoryTableBase + 8 * pdp, &pdpe, sizeof(pdpe), &readsize);
+	if (~pdpe & 1)
+		return 0;
+ 
+	uint64_t pde = 0;
+	ReadPhysicalAddress((pdpe & PMASK) + 8 * pd, &pde, sizeof(pde), &readsize);
+	if (~pde & 1)
+		return 0;
+ 
+	/* 1GB large page, use pde's 12-34 bits */
+	if (pde & 0x80)
+		return (pde & (~0ull << 42 >> 12)) + (virtualAddress & ~(~0ull << 30));
+ 
+	uint64_t pteAddr = 0;
+	ReadPhysicalAddress((pde & PMASK) + 8 * pt, &pteAddr, sizeof(pteAddr), &readsize);
+	if (~pteAddr & 1)
+		return 0;
+ 
+	/* 2MB large page */
+	if (pteAddr & 0x80)
+		return (pteAddr & PMASK) + (virtualAddress & ~(~0ull << 21));
+ 
+	virtualAddress = 0;
+	ReadPhysicalAddress((pteAddr & PMASK) + 8 * pte, &virtualAddress, sizeof(virtualAddress), &readsize);
+	virtualAddress &= PMASK;
+ 
+	if (!virtualAddress)
+		return 0;
+ 
+	return virtualAddress + pageOffset;
+}
+ 
+ 
+//
+NTSTATUS ReadProcessMemory(int pid, PVOID Address, PVOID AllocatedBuffer, SIZE_T size, SIZE_T* read)
+{
+	PEPROCESS pProcess = NULL;
+	if (pid == 0) return STATUS_UNSUCCESSFUL;
+ 
+	NTSTATUS NtRet = PsLookupProcessByProcessId(pid, &pProcess);
+	if (NtRet != STATUS_SUCCESS) return NtRet;
+ 
+	ULONG_PTR process_dirbase = GetProcessCr3(pProcess);
+	ObDereferenceObject(pProcess);
+ 
+	SIZE_T CurOffset = 0;
+	SIZE_T TotalSize = size;
+	while (TotalSize)
+	{
+ 
+		uint64_t CurPhysAddr = TranslateLinearAddress(process_dirbase, (ULONG64)Address + CurOffset);
+		if (!CurPhysAddr) return STATUS_UNSUCCESSFUL;
+ 
+		ULONG64 ReadSize = min(PAGE_SIZE - (CurPhysAddr & 0xFFF), TotalSize);
+                SIZE_T BytesRead = 0;
+		NtRet = ReadPhysicalAddress(CurPhysAddr, (PVOID)((ULONG64)AllocatedBuffer + CurOffset), ReadSize, &BytesRead);
+		TotalSize -= BytesRead;
+		CurOffset += BytesRead;
+		if (NtRet != STATUS_SUCCESS) break;
+                if(BytesRead==0) break;
+	}
+ 
+	*read = CurOffset;
+	return NtRet;
+}
+ 
+NTSTATUS WriteProcessMemory(int pid, PVOID Address, PVOID AllocatedBuffer, SIZE_T size, SIZE_T* written)
+{
+	PEPROCESS pProcess = NULL;
+	if (pid == 0) return STATUS_UNSUCCESSFUL;
+ 
+	NTSTATUS NtRet = PsLookupProcessByProcessId(pid, &pProcess);
+	if (NtRet != STATUS_SUCCESS) return NtRet;
+ 
+	ULONG_PTR process_dirbase = GetProcessCr3(pProcess);
+	ObDereferenceObject(pProcess);
+ 
+	SIZE_T CurOffset = 0;
+	SIZE_T TotalSize = size;
+	while (TotalSize)
+	{
+		uint64_t CurPhysAddr = TranslateLinearAddress(process_dirbase, (ULONG64)Address + CurOffset);
+		if (!CurPhysAddr) return STATUS_UNSUCCESSFUL;
+ 
+		ULONG64 WriteSize = min(PAGE_SIZE - (CurPhysAddr & 0xFFF), TotalSize);
+                SIZE_T BytesWritten = 0;
+		NtRet = WritePhysicalAddress(CurPhysAddr, (PVOID)((ULONG64)AllocatedBuffer + CurOffset), WriteSize, &BytesWritten);
+		TotalSize -= BytesWritten;
+		CurOffset += BytesWritten;
+		if (NtRet != STATUS_SUCCESS) break;
+                if(BytesWritten==0) break;
+	}
+ 
+	*written = CurOffset;
+	return NtRet;
+}
+```
+
+
+
+examples:
+
+```c++
+char buf[64] ={0};
+SIZE_T read;
+ULONG_PTR Base = GetProcessBaseAddress(4321);
+ReadProcessMemory(4321, Base , &buf, 64, &read);
+ 
+process_cr3 base 0000000175391000 kernel cr3:00000000001AD000 read:2
+read MZ
+```
+
+
+
+I write this to avoid `kestackattachprocess` detect [Eac maybe detect KeStackAttachProcess](https://www.unknowncheats.me/forum/anti-cheat-bypass/442246-eac-maybe-detect-kestackattachprocess.html)
+
+
+
+
+
+
+
+
+
+# Banned
+
+## Got permanent EAC ban after bsod
+
+https://www.unknowncheats.me/forum/anti-cheat-bypass/462453-permanent-eac-ban-bsod.html
+
+Im using my kernel driver to bypass EAC I used it for 2 weeks without problem but today when I played I got bsod with code `IRQL_NOT_LESS_OR_EQUAL` and after restart played 30-40 min and got eac ban. It was first time when I got bsod from my driver. Can this cause ban or just my driver got detected? Btw checked other accounts where I played with this driver they have no bans.
+
+
+
+What driver?
+method?
+how injected it to kernel?
+was it signed?
+what did you do with your driver?
+what game?
+
+
+
+It's a **kernel mode driver**
+Used **sockets** to communicate
+**Manually mapped** it with vulnerable driver (its public) and then **cleaned all traces**
+**Unsigned**
+Getting module **base addr, reading, writing**
+Game is called Rust
+
+
+
+List the traces you're clearing. You're probably forgetting something.
+
+How are you gaining execution? System thread? Trapped hook?
+
+Are you stack attaching? (`MmCopyVirtualMemory` stack attaches - so does the common way of finding module base address).
+
+You using a crappy topmost/transparent/layered overlay?  
+
+
+
+**Clearing pidbb cache table** and mm unloaded drivers after mmaping driver to **clean vulnerable driver from list**.
+
+**Creating system thread** to listen socket. I dont have any hooks in driver
+
+Using **PEB** to get module base address
+
+Overlay has no top most flag
+
+Btw playing half a day now without bans **I think when my localplayer was null or pointed to some other garbage I tried to write to this memory and somehow triggered eac**  
+
+**我想当我的 localplayer 为空或指向其他一些垃圾时，我试图写入此内存并以某种方式触发的eac**
+
+
+
+Here's the issues I see:
+- You're missing **BigPool cleaning**
+- You're missing **module stomping for your pool**
+- You're missing a way to **hide your thread**
+- Eliminating only topmost is not sufficient.
+- If you stack attach to obtain the PEB, you shouldn't.
 
 
 

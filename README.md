@@ -36,6 +36,9 @@
 
 https://www.cnblogs.com/MinPage/
 
+**debug**
+
+[leetcode-cpp-debug 插件](https://github.com/xavier-cai/vscode-leetcode-cpp-debug/blob/master/README_zh-CN.md)
 
 做好Medium，没必要死扣Hard。LeetCode上很多Easy的题目看似简单，实则想要写出Perfect的代码并非易事。多思考如何优化Easy，Medium的解法实际上比花精力解Hard题更能提高自己。
 
@@ -46,6 +49,7 @@ https://www.cnblogs.com/MinPage/
 |  技巧  |
 |  :----:  |
 |if (root != NULL)　而不是　if (root)|
+|用于储存答案的res直接定义在主函数中，副函数&取值输入，最后直接输出。不要定义在函数外|
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
 |-2^31~2^31-1 对应 INT_MIN 和 INT_MAX|
 | (p && !q) &#124;&#124; (!p && q)  = (!p &#124;&#124; !q)　两者状态不同时为true　其中!q代表q为空 |
@@ -100,9 +104,9 @@ static const auto io_sync_off = []()
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[94. Binary Tree Inorder Traversal](Tree/94+inorderTraversal.cpp) |中序 R| 注意放private|
-|[144. Binary Tree Preorder Traversal](Tree/144+preorderTraversal.cpp) |先序 R| |
-|[145. Binary Tree Postorder Traversal](Tree/145+postorderTraversal.cpp) |后序 R| |
+|[94. Binary Tree Inorder Traversal](Tree/94+inorderTraversal_2022.cpp) |中序 R| 注意放private|
+|[144. Binary Tree Preorder Traversal](Tree/144+preorderTraversal_2022.cpp) |先序 R| |
+|[145. Binary Tree Postorder Traversal](Tree/145+postorderTraversal_2022.cpp) |后序 R| |
 |[105. Construct Binary Tree from Preorder and Inorder Traversal](Tree/105+buildTree.cpp) | 先序 中序 R|索引确定|
 |[106. Construct Binary Tree from Inorder and Postorder Traversal](Tree/106+buildTree.cpp)   |中序 后序 R |索引确定|
 |[114. Flatten Binary Tree to Linked List](Tree/144+preorderTraversal.cpp)   | 后序 R |注意指针连接|
