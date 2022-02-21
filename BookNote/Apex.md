@@ -1,36 +1,4 @@
-# Apex HWID Spoofer
-
-i always use spoofer
-
-dont forget the traces
-
-Baseboard , Bios, CPU, Diskdrive , Mac Address , ip adress and probably more.
-
-
-
-
-
-## [TODO] apex spoofer session 9
-
-https://www.unknowncheats.me/forum/apex-legends/452145-apex-spoofer-session-9-a.html
-
-
-
-## [TODO] Full Apex/EAC/Origin Trace Files Cleaner
-
-https://www.unknowncheats.me/forum/apex-legends/450793-apex-eac-origin-trace-files-cleaner.html
-
-
-
-
-
-
-
----
-
 # Apex Kdmapper
-
-## kdmapper
 
 [KDMapper ](https://github.com/z175/kdmapper)is a [kernel](https://guidedhacking.com/threads/kernel-mode-drivers-info-for-anticheat-bypass.11325/) driver manual mapper using a vulnerable Intel Driver
 
@@ -43,14 +11,14 @@ https://www.unknowncheats.me/forum/apex-legends/450793-apex-eac-origin-trace-fil
 
 If you use KDMapper you must **bypass these kernel detections**
 
-- PiDDBCacheTable
-- MmUnloadedDrivers
+- `PiDDBCacheTable`
+- `MmUnloadedDrivers`
 - System thread detection
 - System pool detection
 
 
 
-This driver (iqvw64e.sys) comes as part of **Intel LAN drivers** and it allows to copy, read and write user/kernel memory, map physical memory and perform virtual to physical address translation.
+This driver (`iqvw64e.sys`) comes as part of **Intel LAN drivers** and it allows to copy, read and write user/kernel memory, map physical memory and perform virtual to physical address translation.
 
 Your driver must be compiled with /GS- option, and have custom **driver entry point defined**. (Basically the same kind of driver that you would use with drvmap or any other driver manual mapper)
 
@@ -60,18 +28,29 @@ https://github.com/z175/kdmapper
 
 
 
-### 编译
+---
+
+## 编译
 
 ```c++
 open .sln
 release x64
+close Spectre-mitigated
 build solution
 you will get the kdmapper.exe in floder x64/Release
 ```
 
+Just disable "Spectre Mitigation" in project config as TheBestRaul said or just download them from Visual Studio Installer -> Individual components -> search spectre
+
+![image-20210617195758255](assets/image-20210617195758255.png)
 
 
-### 加载
+
+![img](assets/DvUI0k9.png)
+
+
+
+## 加载
 
 每次重启电脑使用都需要加载  `driver.sys`
 
@@ -84,7 +63,7 @@ kdmapper.exe driver.sys
 pause
 ```
 
-加载时确定 origin 和 apex 是关闭的，使用管理员运行。
+**加载时确定 origin 和 apex 是关闭的，使用管理员运行。**
 
 ![1620363663075](assets/1620363663075.png)
 
@@ -94,7 +73,7 @@ pause
 
 
 
-
+![image-20210617195901460](assets/image-20210617195901460.png)
 
 
 
@@ -102,223 +81,115 @@ pause
 
 # Apex UCThread - Glow
 
+## **Project Branthium**
+
+https://www.unknowncheats.me/forum/apex-legends/451329-project-branthium-15.html
+
+https://github.com/TheCruZ/kdmapper
+
+I recommend you build this with **Visual Studio 2017** or **2019**.
+The menu key is **INSERT**.
+Build in **Release x64**.
+You will need **WDK** to build the driver.
+Use **kdmapper** to load the driver.
+For the **overlay to work properly** you must be in **windowed/borderless windowed**.
+There seems to be an issue where some users can't use the cheat (can't get base address or **insta crash**), either this is **CPU related** or you're on an older **version of Windows 10**. 
+
+
+
+```
+1- Install all "Windows 10 SDK (10.x.xxx.xxx)" and Visual Studio
+2- ] Install WDK 
+3- ] Download Branthium Project from github
+4- ] Open Solution file "Project Branthium.sln"
+5-A ] On top where you see "Local Windows Debugger" you can see 2 select box before it
+ - Set them on "Release" "x64" (it's solving compile errors)
+5-B ] Disable "Spectre Mitigation" for driver "This is How"
+6- ] Press Ctrl+SHIFT+B and wait for the success message
+7- ] Compile kdmapper like step 4-6
+8- ] Copy kdmapper.exe from" kdmapper-master\x64\Release" to "Project-Branthium-main\build"
+9- ] Run cmd as admin and cd to build dir
+10- ] Enter "kdmapper.exe driver.sys"
+11- ] Run usermode.exe
+12- ] Open Apex and Done!
+
+Tips
+- Run Visual Studio as admin
+- Author in 20H2
+- I just got banned. And now I using spoofer for clean all log. Thanksfully I didn't get banned hwid.
+- Run as admin Usermode.exe at apex lobby , don't use cmd too
+- If you dont get ban , change kdmapper entry point , name / pack usermode and driver / delete traces
+- need to hold insert a few sec to close, but also need to hold insert fow few sec to open, only use for glow
+
+Error
+- I think kestackattachprocess and MmCopyVirtualMemory were detected on EAC and BE. We can use this read process physical memory, no attach [see Section Anti-Cheat Bypass read process physical memory, no attach]
+- The driver literally patches a non writable section (PAGE) in dxgkrnl.sys. I can confidently tell you that you can change that 'most likely' to a definitely.
+- Obviously this would be detected you are inline hooking
+```
+
+
+
+
+
 ```powershell
 D:\workspace\Reverse\apex\Project-Branthium-main\Project-Branthium-main\build>kdmapper.exe driver.sys                   
-[<] Loading vulnerable driver                                                                                           
-[+] NtLoadDriver Status 0x0                                                                                             
-[+] PiDDBLock Ptr fffff8010e30a591                                                                                      
-[+] PiDDBCacheTable Ptr fffff8010e30dcfb                                                                                
-[+] PiDDBLock Locked                                                                                                    
-[+] PiDDBCacheTable result -> TimeStamp: 5284eac3                                                                       
-[+] Found Table Entry = FFFF808F14E17D00                                                                                
-[+] PiDDBCacheTable Cleaned                                                                                             
-[+] g_KernelHashBucketList Found 0xFFFFF801124B8080                                                                     
-[+] g_HashCacheLock Locked                                                                                              
-[+] Found In g_KernelHashBucketList: \Users\ADMINI~1\AppData\Local\Temp\vVqjtVsJWgGIsrkm                                
-[+] g_KernelHashBucketList Cleaned                                                                                      
-[+] MmUnloadedDrivers Cleaned: vVqjtVsJWgGIsrkm                                                                       
-[+] Image base has been allocated at 0xFFFFD201CB0EF000                                                             
-[+] Skipped 0x1000 bytes of PE Header                                                                                
-[<] Calling DriverEntry 0xFFFFD201CB0EF1B0                                                                           
-[+] DriverEntry returned 0x00000000                                                                                 
+[<] Loading vulnerable driver                                               
+[+] NtLoadDriver Status 0x0                  
+[+] PiDDBLock Ptr fffff8010e30a591                      
+[+] PiDDBCacheTable Ptr fffff8010e30dcfb
+[+] PiDDBLock Locked                          
+[+] PiDDBCacheTable result -> TimeStamp: 5284eac3   
+[+] Found Table Entry = FFFF808F14E17D00       
+[+] PiDDBCacheTable Cleaned                     
+[+] g_KernelHashBucketList Found 0xFFFFF801124B8080      
+[+] g_HashCacheLock Locked                    
+[+] Found In g_KernelHashBucketList: \Users\ADMINI~1\AppData\Local\Temp\vVqjtVsJWgGIsrkm  
+[+] g_KernelHashBucketList Cleaned             
+[+] MmUnloadedDrivers Cleaned: vVqjtVsJWgGIsrkm    
+[+] Image base has been allocated at 0xFFFFD201CB0EF000  
+[+] Skipped 0x1000 bytes of PE Header       
+[<] Calling DriverEntry 0xFFFFD201CB0EF1B0   
+[+] DriverEntry returned 0x00000000          
 [<] Unloading vulnerable driver      
-
-[+] NtUnloadDriver Status 0x0                                                                                        
-[+] Vul driver data destroyed before unlink                                                                           
+[+] NtUnloadDriver Status 0x0               
+[+] Vul driver data destroyed before unlink   
 [+] success
 ```
 
 
 
-```text
-Run as admin Usermode.exe at apex lobby , don't use cmd too
-
-change kdmapper entry point , name / pack usermode and driver / delete traces
+```powershell
+[<] Loading vulnerable driver
+[+] NtLoadDriver Status 0x0
+[+] PiDDBLock Ptr fffff8043eb6b8bc
+[+] PiDDBCacheTable Ptr fffff8043eb6b99b
+[+] PiDDBLock Locked
+[+] PiDDBCacheTable result -> TimeStamp: 5284eac3
+[+] Found Table Entry = FFFFE70DC02C5630
+[+] PiDDBCacheTable Cleaned
+[+] g_KernelHashBucketList Found 0xFFFFF8043F3D0080
+[+] g_HashCacheLock Locked
+[+] Found In g_KernelHashBucketList: \Users\root\AppData\Local\Temp\ElhTDubTiNyDGkmAitoyT
+[+] g_KernelHashBucketList Cleaned
+[+] MmUnloadedDrivers Cleaned: ElhTDubTiNyDGkmAitoyT
+[+] Image base has been allocated at 0xFFFF920DCB8F6000
+[+] Skipped 0x1000 bytes of PE Header
+[<] Calling DriverEntry 0xFFFF920DCB8F61B0
+[+] DriverEntry returned 0x00000000
+[<] Unloading vulnerable driver
+[+] NtUnloadDriver Status 0x0
+[+] Vul driver data destroyed before unlink
+[+] success
 ```
 
 
-
----
-
-## [TODO] Need help for the recent glow with mhyprot
-
-https://www.unknowncheats.me/forum/apex-legends/452924-help-recent-glow-mhyprot-2.html
-
-using `mhyprot2` driver for `enum process modules`,  `r/w process memory` 
-
-
-
----
-
-## [TODO] Apex External Glow/ItemGlow/Basic Aimbot
-
-https://www.unknowncheats.me/forum/apex-legends/452939-apex-external-glow-itemglow-basic-aimbot.html
-
-
-
-winver 1909 or winver 20h2 ( i made a 20h2 version but i don't have any pc to test it you guys are being my tester for this version) 
-
-Step by step :
-
-1--> Start apex (Wait to be on menu to start cheat)
-
-2--> Start `Lulu v3.0` as **admin** !!
-
-3--> I added some stuff but its just training random shit dont worried about it xD
-
-4--> Login = 666
-
-
-
-Select your feature one by one using "1 for yes/0 for no "+hit enter
-
-1--> glow --> players glow (!! its a must have , if you dont enable it cheat isn't working) , NO vischeck so you will see alltime red enemy
-
-2--> Glow item--> display all stuff on ground with color and shit
-
-once you have done that and Hit enter you will see Pr count start droping its normal and it means your good to go  (点击回车，你会看到 Pr 计数开始下降，这意味着成功)
-
-
-
-
-
----
-
-## TheCruz - Stop sharing shit about Glow hacks!
-
-https://www.unknowncheats.me/forum/apex-legends/397711-stop-sharing-shit-glow-hacks.html
-
-**1.- The context, what fucking is the context?(0x310):**
-
-Basically the game have some predefined **styles** and **colors**, for the team, for the items and other shits... depending the context, the offset to read the glow color/other params will change!
-
-All the people set the **context** as 1 thinking that is like 1/0 boolean value but no, for example **bloodhunt** context is **7**!  
-
-
-
-**2.- The color offset(0x1D0):**
-
-Some people put random values in the color and try with the idea that will have luck they think that is a value from 0 to 255 like other structures but again NO it's not a 0-255 value
-The color is an structure like
 
 ```c++
-struct Color {
-	float r, g, b;
-};
+the detection is here
+
+BYTE shell_code[] = { 0x48, 0xB8 }; // mov rax, xxx
+BYTE shell_code_end[] = { 0xFF, 0xE0 }; //jmp rax
 ```
-
-and as you see they are **float**!! and is really easy to manage, the color is based in percents, for exame 0% r , 0% g and 0% b = black in any other structure here is the same 0.f, 0.f, 0.f is black(or maybe better to say no color)but what happens with the insensity? and here is the trick that values are not between **0.f and 255.f** or FLT_MAX that values controls the amount of that color and if you put too much in one of these you will see this:
-
-![img](assets/24409022339269deb6e189c1284b8e91.png)
-
-i personally recommend to work only with values between **0 and 15.f** like this:
-
-![img](assets/0d47114bab649904789adc532889feef.png)
-
-
-
-**3.- The Glow Style Offset(0x27C):**
-
-- Main body style:
-
-Now why bloodhunt have some lines in horizontal in the color and some strange effects?
-
-easy the offset 0x27C controls how the glow is showed and you really can do a lot of shit they are basically 4 bytes or maybe in general a bit mask(didn't check) the first one controls the main glow style (not the borders)
-
-Styles that i see in this byte(you will need to found it by yourself):
-
-![img](assets/0d47114bab649904789adc532889feef.png)
-
-No color:
-
-![img](assets/240bf318e532fd5db995b4c51b1941e6.png)
-
-Bloodhunt mode:
-
-![img](assets/20b5365d6382828e7d8b048f2b0fcae3.png)
-
-Scanner mode:
-
-https://gyazo.com/e754173b30aa0b82fcc0bd934931e1b3
-
-Something near of wireframed:
-
-![img](assets/c9ecc9c2383076e3858b80aa8f9f7328.png)
-
-
-
-- Border style:
-
-The second byte is exactly the same but only for the border for example you can put a border like bloodhunt with the little scanning style
-
-https://gyazo.com/0c98360dd650c7bb15eeaca5a5efd111
-
-- Border Size
-
-the 3th byte is the border size
-
-- Unknown
-
-and the 4th i don't know exactly but some of them makes the character transparent and other visible, i set it as 75(decimal) because is see the game setting it somewhere  
-
-
-
-**4.- The render importance/order offset(0x320)**
-
-Now your enemy is visible until he go behind a wall and he disappear
-
-yeah because the game have something like the **"object importance"/"drawing order"** or idk what it's but that value hides the character
-
-the offset is 0x320 and the game normally put it as 5 and we want it as 1(or 0, no difference i think) to show **through walls and smoke**
-
-通过墙和烟雾
-
-
-
-**5.-The glow duration:**
-
-I didn't found anything exactly that looks line a duration but a lot of people put the duration in `FLT_MAX` and by some reason it don't work as spected why???
-
-I have check what the game does in some address and don't looks like a duration address there, looks more like the game removes the glow by himself
-
-but in any case use `FLT_MAX` isn't the correct method, after some reversing i see the game sets the global game time to `0x2EC` and for at least 4 values more in the user object this time less `1f`
-
-something like:
-
-```c++
-0x2EC = global_time
-0x2D8 = global_time - 1.f
-0x2DC = global_time - 1.f
-0x2E0 = global_time - 1.f
-0x2E4 = global_time - 1.f
-```
-
-why the game do this? i don't know but with this data at least for me the glow don't disapear
-
-i found the global time in `0xEE4` maybe there are another method to get it.
-
-Some people sets `0x2d0` and `0x2d4` with `FLT_MAX` too but this offsets are like a byte mask to some styles/some shit that makes the glow visible/enable and use the duration, and other values, if this mask is wrong the game will remove the glow **immediately**
-
-im setting both offsets as `0x34000000(872415232)` because the game set it somewhere and works perfectly
-
-
-
-
-
-> glow magic number is not in 0x27C but in [0x278 + context * 4]
-> if your context is 1, then it is indeed in 0x27C
->
-> ``` c++
-> // About highlight magic:
-> // highlight magic = [31 ... 0] bits
-> // [07-00] = Inside function
-> // [15-08] = Outline function
-> // [23-16] = outline radius on the given context
-> // [29-24] = Get custom state on the given context
-> // [   30] = Tells if this entity will be drawn
-> // [   31] = Tells if this highlight will be drawn after all post-processes
-> ```
->
 
 
 
@@ -328,21 +199,164 @@ im setting both offsets as `0x34000000(872415232)` because the game set it somew
 
 ---
 
-## [TODO] TheCruz - direct efi aimbot glow hack
+## **Streamproof Box ESP**
 
-https://www.unknowncheats.me/forum/apex-legends/405983-direct-efi-aimbot-glow-hack.html
+https://www.unknowncheats.me/forum/apex-legends/445419-streamproof-box-esp.html
+
+https://github.com/BaconToaster/UC-Apex
+
+```
+0) (only for nvidia graphics cards) install NVIDIA GeForce Experience
+1) download the file and extract it
+2) run cmd as admin and copy the path to the folder you extracted to
+3) you can do it in 2 ways:
+drag Driver.sys on kdmapper
+or:
+open cmd as admin
+type cd YOUR\PATH\TO\THE\FOLDER
+and type kdmapper.exe Driver.sys
+5) (only for non-nvidia graphics cards) run Overlay.exe
+6) run Usermode.exe
+7) start Apex
+
+Tips
+Usermode crashing after saying success:
+- most likely the driver failed to map
+- release x64
+- Close Spectre Mitigation
+
+Failed to hijack NVIDIA overlay:
+- open Overlay.exe and try opening Usermode.exe again
+
+Fixes for driver mapping fail:
+- disable vanguard/faceit/esea
+- disable your antivirus
+
+VCRUNTIME error:
+- install the C++ redistributables https://aka.ms/vs/16/release/vc_redist.x64.exe and https://aka.ms/vs/16/release/vc_redist.x86.exe (they can be found on https://support.microsoft.com/en-us/topic/the-latest-supported-visual-c-downloads-2647da03-1eea-4433-9aff-95f26a218cc0
+
+Everything worked but esp doesn't show in game:
+- switch from fullscreen to borderless
+- (only for NVIDIA graphics cards) open the NVIDIA overlay with alt + z
+- make sure the driver mapped correctly
+
+BSOD
+- make sure any browsers are closed
+- map driver, run apex as admin and load usermode in game
+- reason for bsod is apex is in fullscreen
+```
+
+
+
+**Very nice way of being banned.**
+
+```C++
+	PVOID* function = reinterpret_cast<PVOID*>(get_system_module_export("\\SystemRoot\\System32\\drivers\\dxgkrnl.sys",                             "NtQueryCompositionSurfaceStatistics"));
+ 
+	if (!function)
+		return false;
+ 
+	BYTE orig[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+ 
+	BYTE shell_code[] = { 0x48, 0xB8 }; // mov rax, xxx
+	BYTE shell_code_end[] = { 0xFF, 0xE0 }; //jmp rax
+```
+
+`NtQueryCompositionSurfaceStatistics` is just a function being hooked for driver to application communication. 
+
+
+
+There are hundred other functions you can hook to communicate
+
+[https://github.com/hfiref0x/NtCall64...all64/tables.h](https://github.com/hfiref0x/NtCall64/blob/master/Source/NtCall64/tables.h)
+
+but be careful, some of them have security checks which easy bsod. look at hook in WinDbg too see if there not getting checked. 
+
+其中一些有安全检查，会导致蓝屏，也看看 WinDbg 中的钩子，看看是否没有被检查。
+
+
+
+if you build driver and use `Win32dbg` you can see what it does. you can also hook other functions to fix bsod but make sure they have no security cookie.
+
+如果您构建驱动程序并使用 Win32dbg，您可以看到它的作用。您还可以 hook 其他函数来修复 bsod，但请确保它们没有安全 cookie
+
+
+
+右键 usermode.exe 属性
+
+![img](assets/7z9urOH.png)
+
+![img](assets/W5qgE6K.png)
+
+
+
+I fixed the cmd with this
+
+just add a simple output stream after this line:
+
+```c++
+std::cout << base_address << std::endl;
+```
+
+should look like this:
+
+```c++
+std::cout << base_address << std::endl;
+std::cout << "Bruh moment";
+```
+
+
+
+```c++
+DWORD64 GetEntityById(int Ent, DWORD64 Base)
+{
+	DWORD64 EntityList = Base + 0x18DA338;
+	DWORD64 BaseEntity = Read<DWORD64>(EntityList);
+	if (!BaseEntity)
+		return NULL;
+ 
+	return  Read<DWORD64>(EntityList + (Ent << 5));
+}
+ 
+void EnableHighlight(DWORD64 Entity, float r, float g, float b)
+{
+	write<bool>(Entity + 0x3C8, true);
+	write<int>(Entity + 0x350, 1);
+	write<float>(Entity + 0x1D0, r);
+	write<float>(Entity + 0x1D4, g);
+	write<float>(Entity + 0x1D8, b);
+	for (int offset = 0x388; offset <= 0x3B4; offset += 0x4)
+		write<float>(Entity + offset, FLT_MAX);
+	write<float>(Entity + 0x2FC, 500.f); // distance max
+}
+```
+
+if i change the `(Entity + 0x2FC, 500.f)` to `(Entity + 0x2FC, 100.f)` , the ESP distance will change in game.
 
 
 
 
+
+
+
+---
 
 ## External Apex Glow ESP
 
 https://www.unknowncheats.me/forum/apex-legends/443493-external-apex-glow-esp-21.html
 
-
-
 https://github.com/SurgeGotTappedAgain/External-Apex-Cheat
+
+```
+Edit : Install WDK
+1) Build in Release x64
+2) Map driver using KDMapper
+3) Launch Game
+4) Run User-mode when in main menu
+5) Have Fun
+```
+
+
 
 since it **hooks Win32**, for some reason **browsers cause it too Blue screen** but just do not have browser open when playing. 
 
@@ -596,20 +610,6 @@ write<int>(Entity + GLOW_CONTEXT, (glow_enabled) ? 1 : 2); // glow enable: 1 = e
 
 
 
----
-
-## [TODO] Apex External Glow/ItemGlow/Basic Aimbot
-
-
-
-
-
-
-
----
-
-
-
 
 
 
@@ -621,12 +621,176 @@ write<int>(Entity + GLOW_CONTEXT, (glow_enabled) ? 1 : 2); // glow enable: 1 = e
 
 
 ---
+
+## Need help for the recent glow with mhyprot[TODO] 
+
+https://www.unknowncheats.me/forum/apex-legends/452924-help-recent-glow-mhyprot-2.html
+
+using `mhyprot2` driver for `enum process modules`,  `r/w process memory` 
+
+
+
+---
+
+## TheCruz - Stop sharing shit about Glow hacks!
+
+https://www.unknowncheats.me/forum/apex-legends/397711-stop-sharing-shit-glow-hacks.html
+
+**1.- The context, what fucking is the context?(0x310):**
+
+Basically the game have some predefined **styles** and **colors**, for the team, for the items and other shits... depending the context, the offset to read the glow color/other params will change!
+
+All the people set the **context** as 1 thinking that is like 1/0 boolean value but no, for example **bloodhunt** context is **7**!  
+
+
+
+**2.- The color offset(0x1D0):**
+
+Some people put random values in the color and try with the idea that will have luck they think that is a value from 0 to 255 like other structures but again NO it's not a 0-255 value
+The color is an structure like
+
+```c++
+struct Color {
+	float r, g, b;
+};
+```
+
+and as you see they are **float**!! and is really easy to manage, the color is based in percents, for exame 0% r , 0% g and 0% b = black in any other structure here is the same 0.f, 0.f, 0.f is black(or maybe better to say no color)but what happens with the insensity? and here is the trick that values are not between **0.f and 255.f** or FLT_MAX that values controls the amount of that color and if you put too much in one of these you will see this:
+
+![img](assets/24409022339269deb6e189c1284b8e91.png)
+
+i personally recommend to work only with values between **0 and 15.f** like this:
+
+![img](assets/0d47114bab649904789adc532889feef.png)
+
+
+
+**3.- The Glow Style Offset(0x27C):**
+
+- Main body style:
+
+Now why bloodhunt have some lines in horizontal in the color and some strange effects?
+
+easy the offset 0x27C controls how the glow is showed and you really can do a lot of shit they are basically 4 bytes or maybe in general a bit mask(didn't check) the first one controls the main glow style (not the borders)
+
+Styles that i see in this byte(you will need to found it by yourself):
+
+![img](assets/0d47114bab649904789adc532889feef.png)
+
+No color:
+
+![img](assets/240bf318e532fd5db995b4c51b1941e6.png)
+
+Bloodhunt mode:
+
+![img](assets/20b5365d6382828e7d8b048f2b0fcae3.png)
+
+Scanner mode:
+
+https://gyazo.com/e754173b30aa0b82fcc0bd934931e1b3
+
+Something near of wireframed:
+
+![img](assets/c9ecc9c2383076e3858b80aa8f9f7328.png)
+
+
+
+- Border style:
+
+The second byte is exactly the same but only for the border for example you can put a border like bloodhunt with the little scanning style
+
+https://gyazo.com/0c98360dd650c7bb15eeaca5a5efd111
+
+- Border Size
+
+the 3th byte is the border size
+
+- Unknown
+
+and the 4th i don't know exactly but some of them makes the character transparent and other visible, i set it as 75(decimal) because is see the game setting it somewhere  
+
+
+
+**4.- The render importance/order offset(0x320)**
+
+Now your enemy is visible until he go behind a wall and he disappear
+
+yeah because the game have something like the **"object importance"/"drawing order"** or idk what it's but that value hides the character
+
+the offset is 0x320 and the game normally put it as 5 and we want it as 1(or 0, no difference i think) to show **through walls and smoke**
+
+通过墙和烟雾
+
+
+
+**5.-The glow duration:**
+
+I didn't found anything exactly that looks line a duration but a lot of people put the duration in `FLT_MAX` and by some reason it don't work as spected why???
+
+I have check what the game does in some address and don't looks like a duration address there, looks more like the game removes the glow by himself
+
+but in any case use `FLT_MAX` isn't the correct method, after some reversing i see the game sets the global game time to `0x2EC` and for at least 4 values more in the user object this time less `1f`
+
+something like:
+
+```c++
+0x2EC = global_time
+0x2D8 = global_time - 1.f
+0x2DC = global_time - 1.f
+0x2E0 = global_time - 1.f
+0x2E4 = global_time - 1.f
+```
+
+why the game do this? i don't know but with this data at least for me the glow don't disapear
+
+i found the global time in `0xEE4` maybe there are another method to get it.
+
+Some people sets `0x2d0` and `0x2d4` with `FLT_MAX` too but this offsets are like a byte mask to some styles/some shit that makes the glow visible/enable and use the duration, and other values, if this mask is wrong the game will remove the glow **immediately**
+
+im setting both offsets as `0x34000000(872415232)` because the game set it somewhere and works perfectly
+
+
+
+
+
+> glow magic number is not in 0x27C but in [0x278 + context * 4]
+> if your context is 1, then it is indeed in 0x27C
+>
+> ``` c++
+> // About highlight magic:
+> // highlight magic = [31 ... 0] bits
+> // [07-00] = Inside function
+> // [15-08] = Outline function
+> // [23-16] = outline radius on the given context
+> // [29-24] = Get custom state on the given context
+> // [   30] = Tells if this entity will be drawn
+> // [   31] = Tells if this highlight will be drawn after all post-processes
+> ```
+>
+
+
+
+
+
+
+
+---
+
+## TheCruz - direct efi aimbot glow hack[TODO] 
+
+https://www.unknowncheats.me/forum/apex-legends/405983-direct-efi-aimbot-glow-hack.html
+
+
+
+
+
+---
+
+## Script Highlight
 
 https://casualhacks.net/apexstuff/highlight-functions.html
 
 
-
-## Script Highlight
 
 https://www.unknowncheats.me/forum/apex-legends/446349-script-highlight.html
 
@@ -1108,9 +1272,9 @@ highlight.m_Params[contextId * 2 + functionParameterId][2] = (_Blue / 100.f) * (
 
 
 
-## Small Code
+## Usefull Functions
 
-
+### GlowMode
 
 ```c++
 struct GlowMode
@@ -1182,6 +1346,93 @@ if (visCooldownTime[i] >= 0) visCooldownTime[i] -= 1;
 
 由于 Apex Legends 更新 1.69，可见性检查不再起作用。
 
+### Glows in diff colors
+
+```c++
+// glows in diff colors
+int main()
+{
+    if (hWnd == 0)
+    {
+        hWnd = FindWindow(NULL, "Apex Legends");
+        cout << "[+] Found Apex!!" << endl;
+    }
+    else
+    {
+    	cout << "[+] WTFFF MEN!!" << endl;
+	}
+
+    process_id = get_process_id("r5apex.exe");
+    base_address = get_module_base_address("r5apex.exe");
+    cout << process_id << endl;
+    cout << base_address << endl;
+
+    while (true) // loop function
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            DWORD64 Entity = GetEntityById(i, base_address);
+            if (Entity == 0)
+            	continue;
+            DWORD64 EntityHandle = Read<DWORD64>(Entity + 0x589);
+            std::string Identifier = Read<std::string>(EntityHandle);
+            LPCSTR IdentifierC = Identifier.c_str();
+            if (strcmp(IdentifierC, "player"))
+            {
+                static float x = 0, y = 0;
+                static float r = 0, g = 0, b = 0;
+
+                if (y >= 0.0f && y < 255.0f) {
+                    r = 255.0f;
+                    g = 0.0f;
+                    b = x;
+                }
+                else if (y >= 255.0f && y < 510.0f) {
+                    r = 255.0f - x;
+                    g = 0.0f;
+                    b = 255.0f;
+                }
+                else if (y >= 510.0f && y < 765.0f) {
+                    r = 0.0f;
+                    g = x;
+                    b = 255.0f;
+                }
+                else if (y >= 765.0f && y < 1020.0f) {
+                    r = 0.0f;
+                    g = 255.0f;
+                    b = 255.0f - x;
+                }
+                else if (y >= 1020.0f && y < 1275.0f) {
+                    r = x;
+                    g = 255.0f;
+                    b = 0.0f;
+                }
+                else if (y >= 1275.0f && y < 1530.0f) {
+                    r = 255.0f;
+                    g = 255.0f - x;
+                    b = 0.0f;
+                }
+
+                x += 0.25f; //increase this value to switch colors faster
+                if (x >= 255.0f)
+                	x = 0.0f;
+
+                y += 0.25f; //increase this value to switch colors faster
+                if (y > 1530.0f)
+                	y = 0.0f;
+                
+                write<int>(Entity + 0x3C8, 1);
+                write<int>(Entity + 0x3D0, 2);
+                write<GlowMode>(Entity + 0x2C4, { 101,101,46,90 });
+                write<float>(Entity + 0x1D0, r); // r
+                write<float>(Entity + 0x1D4, g); // g
+                write<float>(Entity + 0x1D8, b); // b
+            }
+        }
+    }
+}
+```
+
 
 
 
@@ -1235,17 +1486,17 @@ if (strcmp(IdentifierC, "player"))
 
 ---
 
-# Apex UCThread - RW
+## Apex External Glow/ItemGlow/Basic Aimbot
 
-## [TODO] Using mhyprot driver to read/write
+https://www.unknowncheats.me/forum/apex-legends/452939-apex-external-glow-itemglow-basic-aimbot.html
 
-https://www.unknowncheats.me/forum/anti-cheat-bypass/452945-using-mhyprot-driver-read-write.html
+No source
 
 
 
-https://github.com/PoopProgrammer/MhyprotDriver-1
 
-https://github.com/kkent030315/libmhyprot
+
+
 
 
 
@@ -1590,6 +1841,10 @@ https://bbs.pediy.com/thread-126933.htm
 
 
 
+
+
+
+
 a private um cheat
 
 kernel driver with undetectable communication
@@ -1624,11 +1879,9 @@ uint64_t LocalEntityHandle = 0x1057a84;
 
 
 
+### Glow crashing apex
 
-
-### glow crashing apex
-
-been cheating since like 3 days after apex released. been lvl 500 for a long time. I **only use glow** as I have very good natural aim. Have been predator every season. I am in the same boat as casual though, I am still using **mmcopyvirtualmemory** but still am not banned. I do not believe they will ban you for using this alone, but that it could be a contributing factor in some kind of points system they use for bans. using a personal **driver** created **from scratch** with a **non public communication** method. i dont even bother to xor strings or anything either lol
+been cheating since like 3 days after apex released. been lvl 500 for a long time. I **only use glow** as I have very good natural aim. Have been predator every season. I am in the same boat as casual though, I am still using **`mmcopyvirtualmemory`** but still am not banned. I do not believe they will ban you for using this alone, but that it could be a contributing factor in some kind of points system they use for bans. using a personal **driver** created **from scratch** with a **non public communication** method. i dont even bother to xor strings or anything either lol
 
 
 
@@ -1859,106 +2112,6 @@ Congratulations you now have successfully dumped offsets from the game. The file
 
 **Now just change the names back in Apex Legends folder (Step 1) to the old names and you can play the game again.**
 
----
-
-# Apex Linux Hack
-
-https://www.unknowncheats.me/forum/apex-legends/406426-kvm-vmread-apex-esp-aimbot.html
-
-need a QEMU KVM with GPU passthrough 需要一个带有 GPU 直通的 QEMU KVM 才能使用它
-
-需要 Linux 作为主机
-
-使用 QEMU 而不是 KVM
-
-2 GPU / 1 GPU + 1 CPU IG
-
-Having two monitors is the "fastest" way. However with only one monitor you can use a HDMI switch or use Looking Glass.
-
-Im using one monitor with 2 input. Hdmi and DP.
-
-
-
-https://wiki.gentoo.org/wiki/GPU_passthrough_with_libvirt_qemu_kvm
-
-https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF
-
-https://wiki.archlinux.org/title/Installation_guide
-
-
-
-One tutorial here
-https://www.youtube.com/watch?v=C2jnUK4MSyE&t=34s
-Then try this https://github.com/Y33Tcoder/EzApexDMAAimbot
-install meson and ninja on your linux host
-run "meson builddir" inside vmread folder
-run "ninja" command in builddir to build example.cpp
-run "./example"
-
-
-
-\1. Install linux
-\2. Create Windows VM
-\3. Set up GPU passthrough to VM
-\4. Play Apex on VM
-
-
-
-您所要做的就是从您的 win10 虚拟机或您家中的另一台电脑 ssh 并执行 apex_dma。所以不用担心丢失主机屏幕。
-
-
-
-```C++
-//Client/main.cpp #L21
-[...]
-bool use_nvidia = false;
-[...]
-
-
-//Client/overlay.cpp #L57
-[...]
-if (wcscmp(XorStrW(L"overlay"), className) == 0) //Custom overlay
-[...]
-    
-    
-//Overlay/main.cpp #L7
-[...]
-const wchar_t g_szClassName[] = L"overlay";
-[...]
-```
-
-
-
-
-
-**CPU**
-
-Your CPU must support hardware virtualization (for kvm) and IOMMU (for the passthrough itself)您的CPU 必须支持硬件虚拟化（for kvm ）和IOMMU （for 直通本身） 
-        兼容的Intel CPU列表（Intel VT - x和Intel VT - d ）   
-        All AMD CPUs from the Bulldozer generation and up (including Zen) should be compatible.  
-            CPUs from the K10 generation (2007) do not have an IOMMU, so you need to have a motherboard with a 890FX or 990FX chipset to make it work, as those have their own IOMMU. CPU从K10代（2007年）就不会有一个 `IOMMU` ，所以你需要有一个主板带有一个`890FX` 或 `990FX` 芯片组，使其工作，因为那些有自己的 `IOMMU `。
-
-**motherboard**
-
-Your motherboard must also support IOMMU 您的主板还必须支持 `IOMMU`
-        Both the **chipset** and the **BIOS** must support it. 芯片组和BIOS必须支持它 It is not always easy to tell at a glance whether or not this is the case, but there is a fairly comprehensive list on the matter on the **Xen wiki** as well as **Wikipedia:List of IOMMU-supporting hardware.** Xen的维基作为以及为维基百科：名单IOMMU的-支持硬件。
-    
-
-**GPU**
-
-Your guest GPU ROM must support UEFI. 您的访客 GPU ROM 必须支持 `UEFI` 。
-        If you can find any ROM in this list that applies to your specific GPU and is said to support UEFI, you are generally in the clear. All GPUs from 2012 and later should support this, as Microsoft made UEFI a requirement for devices to be marketed as compatible with Windows 8.  如果你能找到任何ROM在此列表适用于特定的GPU和被据说支持UEFI ，你一般都是在明确的。**所有的GPU2012以后来应该支持这个**，因为微软做UEFI的要求的设备在市场上销售的兼容与的Windows 8。       
-
-
-
-**Monitor**  
-
-You will probably want to have a spare monitor or one with multiple input ports connected to different GPUs (the passthrough GPU will not display anything if there is no screen plugged in and using a VNC or Spice connection will not help your performance), as well as a mouse and a keyboard you can pass to your VM. If anything goes wrong, you will at least have a way to control your host machine this way  可能会想有一个**备用显示器**或一个具有连接到不同的多个输入端口的GPU （passthrough GPU将不会显示任何东西，如果有是没有屏幕插在和使用一个VNC或香料的连接将不会帮助你的表现），因为好作为鼠标和键盘，您可以传递给您的 VM 。如果出现任何问题， 你至少有办法以这种方式控制你的主机。
-
-
-
-
-
 
 
 
@@ -1967,18 +2120,61 @@ You will probably want to have a spare monitor or one with multiple input ports 
 
 ---
 
-# For Apex
+# Anti-Cheat Bypass
+
+
+
+`ObRegisterCallbacks` is a function which allows you to set 2 callbacks, `PreCallback` and `PostCallback`. These 2 functions are called when you are creating or duplicating a handle, what most anti cheats do is they ignore `PostCallback` and do their shit in `PreCallback`. In that function they strip the handle's access mask so if you call `NtReadVirtualMemory` for example, it will return access denied as the handle does not have the specific access mask as it was stripped in the callback. There are multiple options for you to do to bypass this:
+
+A) The obvious, going kernel and using functions which require no handles for example `MmCopyVirtualMemory`.
+B) Removing the callbacks temporarily and injecting then adding them back so nor the anti cheat will be suspicious (if you are faster than their checks) or patchguard will be mad.
+C) Byte patching `ObpReferenceObjectByHandleWithTag`'s handle mask check, this will also trigger patchguard if you do not succeed the integrity checks, secondly anti cheats will be able to enumerate handles to the protected game and then flag you depending on the circumstances, however you can completely flaw their handle enumeration checks with some thinking.
+D) Think of more ideas to somehow flaw this.
+
+
+
+---
+
+## prevent patchguard hooking protected functions
+
+https://www.unknowncheats.me/forum/anti-cheat-bypass/455919-prevent-patchguard-hooking-protected-functions.html
+
+
+
+For the sake of interest, a check was made with disabling PG via Shark, and I can say for sure that in Apex Legends this is undetected.
+
+
+
+Signed the merged certificate on this forum, then cleared the traces of the driver (Shark.sys). I wrote a test cheat on apex, tested for about a month and a half, there was no ban, the main driver was hidden through `MiProcessLoaderEntry`.
+
+
+
+---
+
+## Using mhyprot driver to read/write[TODO] 
+
+https://www.unknowncheats.me/forum/anti-cheat-bypass/452945-using-mhyprot-driver-read-write.html
+
+
+
+https://github.com/PoopProgrammer/MhyprotDriver-1
+
+https://github.com/kkent030315/libmhyprot
+
+
+
+---
 
 ## **IOCTL communication in Manually Mapped driver**
 
 This driver works fine when loaded normally (through sc), but when manually mapped it loads, but the usermode client cant find the IOCTL file.
 
-After some debugging, I found that the problem is that when the driver is manually mapped, it doesnt create the symbolic link to the device that I create.
+After some debugging, I found that the problem is that when the driver is manually mapped, **it doesn't create the symbolic link to the device that I create**.
 
-Heres the code in DriverInitialize (called by creating a driver in DriverEntry (IoCreateDriver):
+Here's the code in DriverInitialize (called by creating a driver in `DriverEntry` (`IoCreateDriver`):
 
 ```C++
- UNICODE_STRING DeviceName = {};
+    UNICODE_STRING DeviceName = {};
     UNICODE_STRING SymbolicLinkName = {};
  
     RtlInitUnicodeString(&DeviceName, L"\\Device\\TestDriver");
@@ -1998,6 +2194,7 @@ Heres the code in DriverInitialize (called by creating a driver in DriverEntry (
             FILE_DEVICE_SECURE_OPEN,
             TRUE,
             &pDeviceObject);
+
      if (!NT_SUCCESS(ntstatus))
       {
             ERR_PRINT("IoCreateDevice failed: 0x%X", ntstatus);
@@ -2022,7 +2219,14 @@ You are gonna get clapped by BE/EAC for using IOCTLs on an manually mapped drive
 ```C++
 RtlInitUnicodeString(&dev, L"\\Device\\PecesStealthDriver");
 RtlInitUnicodeString(&dos, L"\\DosDevices\\PecesStealthDriver");
-IoCreateDevice(pDriverObject, 0, &dev, FILE_DEVICE_UNKNOWN, FILE_DEVICE_SECURE_OPEN, FALSE, &pDeviceObject);
+IoCreateDevice(
+    pDriverObject, 
+    0, 
+    &dev, 
+    FILE_DEVICE_UNKNOWN, 
+    FILE_DEVICE_SECURE_OPEN, 
+    FALSE, 
+    &pDeviceObject);
 IoCreateSymbolicLink(&dos, &dev);
 ```
 
@@ -2030,7 +2234,7 @@ IoCreateSymbolicLink(&dos, &dev);
 
 
 
-
+---
 
 ## read process physical memory, no attach
 
@@ -2272,16 +2476,215 @@ NTSTATUS WriteProcessMemory(int pid, PVOID Address, PVOID AllocatedBuffer, SIZE_
 
 example
 
-Code:
-
 ```c++
 char buf[64] ={0};
 SIZE_T read;
 ULONG_PTR Base = GetProcessBaseAddress(4321);
 ReadProcessMemory(4321, Base , &buf, 64, &read);
- 
+
 process_cr3 base 0000000175391000 kernel cr3:00000000001AD000 read:2
 read MZ
 ```
 
-I write this to avoid `kestackattachprocess` detect
+I write this to avoid `kestackattachprocess` detect [Eac maybe detect KeStackAttachProcess](https://www.unknowncheats.me/forum/anti-cheat-bypass/442246-eac-maybe-detect-kestackattachprocess.html)
+
+
+
+
+
+
+
+
+
+
+
+## EAC maybe detect KeStackAttachProcess
+
+https://www.unknowncheats.me/forum/anti-cheat-bypass/442246-eac-maybe-detect-kestackattachprocess.html
+
+EAC detect `KeStackAttachProcess` in Apex. 
+
+He also say `stackcount` is no issue because it is restore on detach. https://doxygen.reactos.org/d0/dc9/p...ce.html#l00649](https://doxygen.reactos.org/d0/dc9/procobj_8c_source.html#l00649)
+he refer to this https://www.unknowncheats.me/forum/3070465-post91.html
+
+```
+KEPROCESS::StackCount
+```
+
+许多内存操作 API 使用 `KeStackAttachProcess` 来增加 `StackCount`，如果给定值频繁增加，这很可能引起怀疑。
+
+
+
+```
+Quote:
+without doing anything im banned even for just being attached 
+[9:48 AM] 
+game start -> im attach -> close game -> detach 
+[9:49 AM] 
+after some memes on kthread struct im safe this way
+[9:49 AM] 
+but when i enable hack routine 
+[9:49 AM] 
+while loop with attach/detach 
+[9:49 AM] 
+im banned again because i need rw to game
+```
+
+
+
+EAC can detect `kestackattach` with working set memory, I make post about this for EAC in past [EAC ProcessWorkingSetWatch](https://www.unknowncheats.me/forum/anti-cheat-bypass/418637-eac-processworkingsetwatch.html)
+
+
+
+there is also this thread [How can KeStackAttachProcess/KiAttachProcess be detected?](https://www.unknowncheats.me/forum/anti-cheat-bypass/429730-kestackattachprocess-kiattachprocess-detected.html)
+
+EAC maybe detect this way with `kealertthread` or other apc functions, they do import them.
+
+main smart man also say this is used by other functions
+
+```
+NtRead/Write->MiReadWrite->MMCopyVirtualMemory->KeStackAttach
+```
+
+
+
+
+
+
+
+
+
+---
+
+# Apex HWID Spoofer/Clean
+
+i always use spoofer
+
+dont forget the `traces`
+
+`Baseboard` , `Bios`, `CPU`, `Diskdrive` , `Mac Address` , `ip address` and probably more.
+
+Disk Devices
+Network Adapters
+SMBIOS table entries
+EFI environment tables
+System file with unique identifies
+
+
+
+
+
+apex spoofer session 9
+
+https://www.unknowncheats.me/forum/apex-legends/452145-apex-spoofer-session-9-a.html
+
+
+
+Full Apex/EAC/Origin Trace Files Cleaner
+
+https://www.unknowncheats.me/forum/apex-legends/450793-apex-eac-origin-trace-files-cleaner.html
+
+
+
+
+
+
+
+---
+
+# Apex Linux Hack
+
+https://www.unknowncheats.me/forum/apex-legends/406426-kvm-vmread-apex-esp-aimbot.html
+
+need a QEMU KVM with GPU passthrough 需要一个带有 GPU 直通的 QEMU KVM 才能使用它
+
+需要 Linux 作为主机
+
+使用 QEMU 而不是 KVM
+
+2 GPU / 1 GPU + 1 CPU IG
+
+Having two monitors is the "fastest" way. However with only one monitor you can use a HDMI switch or use Looking Glass.
+
+Im using one monitor with 2 input. Hdmi and DP.
+
+
+
+https://wiki.gentoo.org/wiki/GPU_passthrough_with_libvirt_qemu_kvm
+
+https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF
+
+https://wiki.archlinux.org/title/Installation_guide
+
+
+
+One tutorial here
+https://www.youtube.com/watch?v=C2jnUK4MSyE&t=34s
+Then try this https://github.com/Y33Tcoder/EzApexDMAAimbot
+install meson and ninja on your linux host
+run "meson builddir" inside vmread folder
+run "ninja" command in builddir to build example.cpp
+run "./example"
+
+
+
+\1. Install linux
+\2. Create Windows VM
+\3. Set up GPU passthrough to VM
+\4. Play Apex on VM
+
+
+
+您所要做的就是从您的 win10 虚拟机或您家中的另一台电脑 ssh 并执行 apex_dma。所以不用担心丢失主机屏幕。
+
+
+
+```C++
+//Client/main.cpp #L21
+[...]
+bool use_nvidia = false;
+[...]
+
+
+//Client/overlay.cpp #L57
+[...]
+if (wcscmp(XorStrW(L"overlay"), className) == 0) //Custom overlay
+[...]
+    
+    
+//Overlay/main.cpp #L7
+[...]
+const wchar_t g_szClassName[] = L"overlay";
+[...]
+```
+
+
+
+
+
+**CPU**
+
+Your CPU must support hardware virtualization (for kvm) and IOMMU (for the passthrough itself)您的CPU 必须支持硬件虚拟化（for kvm ）和IOMMU （for 直通本身） 
+        兼容的Intel CPU列表（Intel VT - x和Intel VT - d ）   
+        All AMD CPUs from the Bulldozer generation and up (including Zen) should be compatible.  
+            CPUs from the K10 generation (2007) do not have an IOMMU, so you need to have a motherboard with a 890FX or 990FX chipset to make it work, as those have their own IOMMU. CPU从K10代（2007年）就不会有一个 `IOMMU` ，所以你需要有一个主板带有一个`890FX` 或 `990FX` 芯片组，使其工作，因为那些有自己的 `IOMMU `。
+
+**motherboard**
+
+Your motherboard must also support IOMMU 您的主板还必须支持 `IOMMU`
+        Both the **chipset** and the **BIOS** must support it. 芯片组和BIOS必须支持它 It is not always easy to tell at a glance whether or not this is the case, but there is a fairly comprehensive list on the matter on the **Xen wiki** as well as **Wikipedia:List of IOMMU-supporting hardware.** Xen的维基作为以及为维基百科：名单IOMMU的-支持硬件。
+    
+
+**GPU**
+
+Your guest GPU ROM must support UEFI. 您的访客 GPU ROM 必须支持 `UEFI` 。
+        If you can find any ROM in this list that applies to your specific GPU and is said to support UEFI, you are generally in the clear. All GPUs from 2012 and later should support this, as Microsoft made UEFI a requirement for devices to be marketed as compatible with Windows 8.  如果你能找到任何ROM在此列表适用于特定的GPU和被据说支持UEFI ，你一般都是在明确的。**所有的GPU2012以后来应该支持这个**，因为微软做UEFI的要求的设备在市场上销售的兼容与的Windows 8。       
+
+
+
+**Monitor**  
+
+You will probably want to have a spare monitor or one with multiple input ports connected to different GPUs (the passthrough GPU will not display anything if there is no screen plugged in and using a VNC or Spice connection will not help your performance), as well as a mouse and a keyboard you can pass to your VM. If anything goes wrong, you will at least have a way to control your host machine this way  可能会想有一个**备用显示器**或一个具有连接到不同的多个输入端口的GPU （passthrough GPU将不会显示任何东西，如果有是没有屏幕插在和使用一个VNC或香料的连接将不会帮助你的表现），因为好作为鼠标和键盘，您可以传递给您的 VM 。如果出现任何问题， 你至少有办法以这种方式控制你的主机。
+
+
+
