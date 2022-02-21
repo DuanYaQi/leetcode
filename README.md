@@ -1,5 +1,10 @@
 # Leetcode
 
+## TODO
+- [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
+
+- [x] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
+---
 **教学**
 
 [代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
@@ -120,7 +125,7 @@ static const auto io_sync_off = []()
 |[107. Binary Tree Level Order Traversal II](Tree/107+levelOrderBottom.cpp)   | 层序 自底向上|reverse|
 |[199. Binary Tree Right Side View](Tree/199+rightSideView.cpp)   | 层序 ||
 |[637. Average of Levels in Binary Tree](Tree/637+averageOfLevels.cpp)   |层序  |强制类型转换|
-|[429. N-ary Tree Level Order Traversal](Tree/429+levelOrder.cpp)   |层序 N叉树 |换汤不换药|
+|💛[429. N-ary Tree Level Order Traversal](Tree/429+levelOrder.cpp)   |层序 N叉树 |换汤不换药,为什么可以用[i]?|
 |[515. Find Largest Value in Each Tree Row](Tree/515+largestValues.cpp)   |层序  | INT_MIN|
 |[116. Populating Next Right Pointers in Each Node](Tree/116+connect_Queue.cpp)   | 层序 |R Q |
 |[117. Populating Next Right Pointers in Each Node II](Tree/117+connect.cpp)   | 层序 | 与116一样|

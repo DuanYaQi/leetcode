@@ -276,8 +276,10 @@ vector<int> PreTraversal(TreeNode* root) {
     while (!st.empty()) {
     	TreeNode* node = st.top();
         if (node != NULL) {
+            /* 可省略
             st.pop();
             st.push(node); 	//放中节点，
+            */
             st.push(NULL);	//访问过加null
             if (node->right) 	st.push(node->right);
             if (node->left) 	st.push(node->left);
@@ -376,7 +378,7 @@ vector<double> averageOfLevels(TreeNode* root) {
 
     while (!que.empty()) {
         int size = que.size();
-        double asum = 0;
+        double asum = 0;	//!!!!!!!!!!!!!注意清零
         for (int i = 0; i < size; i++) {
             TreeNode* node = que.front();
             que.pop();
@@ -434,7 +436,7 @@ vector<int> largestValues(TreeNode* root) {
     while (!que.empty()) {
         TreeNode* node = que.front();
         int size = que.size();
-        int flag = 0x80000000;
+        int flag = 0x80000000; //INT_MIN
 
         for (int i = 0; i < size; ++i) {
             TreeNode* node = que.front();
