@@ -1,5 +1,27 @@
 # Leetcode
 
+如果问最短，最少，BFS
+
+如果问连通性，静态就是 DFS,BFS，动态就 UF
+
+如果问依赖性就 topo sort
+
+DAG 的问题就 dfs+memo
+
+矩阵和 Array 通常都是 DP
+
+问数量的通常都是 DP
+
+问是否可以，也很有可能 DP
+
+求所有解的，基本 backtracking
+
+排序总是可以想一想的
+
+万事总可以想HashMap
+
+找规律试试Stack
+
 ## TODO
 - [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
 
@@ -54,6 +76,7 @@ https://www.cnblogs.com/MinPage/
 |  技巧  |
 |  :----:  |
 |if (root != NULL)　而不是　if (root)|
+|深度优先遍历 DFS　　　stack<br> 广度优先遍历 BFS　　　queue|
 |用于储存答案的res直接定义在主函数中，副函数&取值输入，最后直接输出。不要定义在函数外|
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
 |-2^31~2^31-1 对应 INT_MIN 和 INT_MAX|
@@ -799,3 +822,64 @@ Eating our own dog food
 
 
 ![image-20210414123138579](assets/image-20210414123138579.png)
+
+
+
+
+
+
+
+## Style
+
+- 循环和条件语句
+
+```c++
+if (b) {          // if 条件语句和循环语句关键字后均有空格.
+} else {          // else 前后有空格.
+}
+
+while (test) {}   // 圆括号内部不紧邻空格.
+        
+for (int i = 0; i < 5; ++i) {}
+
+switch (i) {
+  case 1:         // switch case 的冒号前无空格.
+    ...
+  case 2: break;  // 如果冒号有代码, 加个空格.
+}
+```
+
+
+
+- 操作符
+
+```c++
+// 赋值运算符前后总是有空格.
+x = 0; 
+
+// 二元操作符也前后恒有空格, 不过对于表达式的子式可以不加空格.
+v = w*x + y/z;
+v = w * (x + z); // 圆括号内部没有紧邻空格.
+
+// 在参数和一元操作符之间不加空格.
+x = -5;
+++x;
+if (x && !y) {}
+```
+
+
+
+- 指针和引用表达式
+
+句点或箭头前后不要有空格. 指针/地址操作符 (`*, &`) 之后不能有空格.
+
+
+
+- 返回值
+
+```c++
+// 可以用圆括号把复杂表达式圈起来, 改善可读性.
+return (some_long_condition &&
+        another_condition);
+```
+

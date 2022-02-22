@@ -508,6 +508,7 @@ TreeNode* invertTree(TreeNode* root) {
     TreeNode* tmp = root->right;
     root->right = root->left;
     root->left = tmp;
+    // swap(root->left, root->right)
     invertTree(root->left);
     invertTree(root->right);
     return root;
@@ -517,6 +518,14 @@ TreeNode* invertTree(TreeNode* root) {
 针对二叉树的问题，解题前，想清楚究竟是**前中后层序哪种遍历**。
 
 
+
+迭代的写法，保证原来的迭代遍历，只是把节点加入容器之后，再进行swap更换位置。
+
+节点加入容器，是为了后续继续遍历。
+
+
+
+---
 
 ## #1-5. 小结
 
@@ -532,7 +541,11 @@ TreeNode* invertTree(TreeNode* root) {
 
 
 
-# 求二叉树的属性
+
+
+---
+
+# 二叉树的属性
 
 ---
 
