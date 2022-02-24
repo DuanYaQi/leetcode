@@ -634,12 +634,6 @@ C++ is the directly control over hardware.
 
 # 6. CS420
 
-## Squally
-
-SPACE - ATTACK
-
-
-
 ```assembly
 #什么都不执行
 nop
@@ -693,73 +687,13 @@ subss #将两个小数相减
 
 
 
-higher score win!
-
-一轮结束时得分最低的玩家将失去生命。
-
-通过在牌上打牌来提高你的分数
-
-蓝卡二进制卡\白卡十进制卡\绿卡十六进制卡
-
-
-
-自己已经有很大的优势，想要保存下一轮的牌，选择盾牌保护自己。
-
-对手已经有很大的优势，牌不足以赢得这一轮，最好放弃这一轮，反击下一轮（手牌会保留下来）
-
-MOV命令牌 把第一个值赋给第二个值
-
-ADD命令牌 把第一个值加到第二个值上
-
-
-
-
-
-mov 将hex牌溢出为0
-
-左移牌影响连续的所有拍牌，有效地将每张牌的攻击力乘以2。小心不要超过15溢出
-
-8 * 2 = 0
-
-9 * 2 = 2
-
-
+---
 
 ## 6.1. Game Hacking Course Introduction
-
-Squally - A game designed to teach game hacking and x86/x64 assembly
-
-
-
-skills you will learn
-
-
-
-- Memory editing: edit health, gold, etc. in a running game
-- Assembly editing: rewrite the game's code to do what you want it to do.
-- Hex editing: edit save-files, and other on-disk resources
-- Packet editing: send modified information to servers to cheat in online games
-- Botting: write programs to play the game for you
-
-
-
-Specialized Topics
-
-- Graphics Injection
-- Resource Editing
-- Browser game hacking(editing JavaScript, Flash Decompiling)
-- JVM/CLR Game Hacking
-- Emulated Games
-- Anti-cheat systems
-- Memory editor implementation
 
 ![image-20210508203551692](assets/image-20210508203551692.png)
 
 
-
-hack processing:
-
-find thing to exploit or hack > try exploit or hack > see if it worked
 
 
 
@@ -788,14 +722,6 @@ so game hacking only hack the version in RAM
 
 
 memory scanning > memory editing > see if it worked
-
-
-
-**TOOLS** 
-
-Cheat Engine
-
-Squalr
 
 
 
@@ -828,16 +754,6 @@ Ctrl + F 查找扫描
 ![image-20210509192924260](assets/image-20210509192924260.png)
 
 从 0 开始计数，每 8 个 bit 为一组。也是这一个 byte 的地址
-
-
-
-### **Examples**
-
-squally.exe change the health
-
-exact value > 4 bytes(int32) > new scan > change health > next scan
-
-find the address > change value > if is not changed > do some thing to refresh the screen
 
 
 
@@ -915,28 +831,9 @@ https://flippybitandtheattackofthehexadecimalsfrombase16.com/
 
 ## 6.4. Hex Edit
 
-find info in save file that you want to hack > hex edit the file > boot up the game and see if it worked
-
-remember backup the file first
-
-
-
-**Save file editing**
-
-**Resource editing**
-
-**Raw Memory editing**
-
-**Packet editing**
-
-
-
-- just google it
-- API monitoring (intercept calls to the OS to see what files the game is using)
-
 ![image-20210509204807151](assets/image-20210509204807151.png)
 
-### Examples
+
 
 进程资源监视器 https://docs.microsoft.com/zh-cn/sysinternals/
 
@@ -1000,6 +897,10 @@ www.ascii-code.com
 
 
 
+
+
+
+
 ---
 
 ## 6.5. Memory Editing & Data Types
@@ -1056,19 +957,7 @@ HEX
 
 ![image-20210509214124951](assets/image-20210509214124951.png)
 
-
-
-### unknown values scanning
-
-收集数据/搜索未知类型的值 (尽量不要用未变动的值)
-
-减少了（多少）
-
-增加了（多少）
-
-unknown initial value(float) -> increased value -> decreased value
-
-如果剩下的值没办法筛选，ce锁定值看是否能在游戏里改变（二分法） 	
+​	
 
 如果找到坐标 x 了，复制一个地址，然后再地址上 +4，就**极有可能**是坐标 y （因为x常为float类型，float类型占 4 字节）
 
@@ -1139,6 +1028,10 @@ exe 第一次运行时，会给他分配它自己的虚拟内存。
 如果敌人的血量是静态变量，那么一个敌人受到伤害，所有敌人都会掉血
 
 ![image-20210509225651284](assets/image-20210509225651284.png)
+
+
+
+
 
 
 
@@ -1332,10 +1225,6 @@ scripting language 不生产汇编语言
 
 
 ### **Examples**
-
-找到一个数据的地址 > 右键 `Find out what access this address`  > 游戏中改变这个值 > 找到地址 >  `Add to the codelist` > Stop and Close last window > 右键 `Open the disassembler at this location`  > `Replace with code that does nothing` > `Restore with original code`
-
-
 
 we need that code to run on the cpu
 
@@ -1623,21 +1512,8 @@ pop [esi + 12]  # [esi + 12] = 65536   500 > 65536
 
 ### **Examples**
 
-找到扫雷的时间地址 > 右键 `Find out what write this address`  > 游戏中改变这个值 > 找到地址 >  `Add to the codelist` > Stop and Close last window > 右键 `Open the disassembler at this location`  > 不能直接更改指令，因为会把后边的指令顺序毁掉
-
-Tools > auto assemble (Ctrl + A) > 输入 `[Enable]  [Disable]` > Template > Code Infection (Ctrl + I) > 'ok' > 
-
-删掉 `//this is allocated memory, you have read,write,execute access //place your code hereoriginalcode:`  和 `label(originalcode)` > `newmem:` 下修改要更换的功能`add []`  > file > 分配到当前 CT 表
-
 **分配空的内存，pointer指向它，执行完，再pointer跳回来**
 
 ![image-20210510175443795](assets/image-20210510175443795.png)
-
-
-
-![image-20210510175547070](assets/image-20210510175547070.png)
-
-
-
 
 
