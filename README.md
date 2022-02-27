@@ -89,7 +89,6 @@ https://www.cnblogs.com/MinPage/
 |数组构造二叉树，不要定义新的数组，通过索引在原数组上操作。|
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
 ||
-||
 |剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
 |回溯递归是一一对应的，有一个递归，就要有一个回溯|
 |回溯隐藏，直接在给函数传参时加计算，函数执行完，不改变原值|
@@ -112,6 +111,7 @@ https://www.cnblogs.com/MinPage/
 ||
 ||
 ||
+
 ```c++
 //https://blog.csdn.net/qq_32320399/article/details/81518476
 static const auto io_sync_off = []()
@@ -432,6 +432,41 @@ static const auto io_sync_off = []()
 
 
 ![image-20210414121548516](assets/image-20210414121548516.png)
+
+
+
+---
+
+### 4.7. 九章
+
+
+
+数据结构：数组，栈，队列，链表，二叉树，二叉搜索树，哈希表
+
+常用算法：贪心法，字符串处理，复杂度分析，递归，BFS，DFS，分治，排序
+
+![image-20220227093821428](assets/image-20220227093821428.png)
+
+
+
+![image-20220227093841959](assets/image-20220227093841959.png)
+
+
+
+![image-20220227093911503](../image-20220227093911503.png)
+
+
+
+![image-20220227093929949](assets/image-20220227093929949.png)
+
+
+
+![image-20220227120249170](assets/image-20220227120249170.png)
+
+带名字的都不考
+Morris / Dijkstra / Floyd / Manacher / Tarjan / Dinic / KMP
+
+
 
 
 

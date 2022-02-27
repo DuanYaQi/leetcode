@@ -285,6 +285,28 @@ int main(){
 
 
 
+5. 判断相等
+
+- 如果vector里面的元素类型是简单类型（内置类型），可以直接使用“==”或者“!=”进行比较
+
+```c++
+// 判断两个vector是否相等 直接用“==”
+// 因为在STL里面，==和!=是可以直接使用的：
+template< class T, class Alloc >
+bool operator==( const vector<T,Alloc>& lhs,
+                 const vector<T,Alloc>& rhs );
+ 
+template< class T, class Alloc >
+bool operator!=( const vector<T,Alloc>& lhs,
+                 const vector<T,Alloc>& rhs );
+```
+
+
+
+
+
+
+
 ---
 
 #### 1.4 vector的常见用途

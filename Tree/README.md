@@ -316,7 +316,7 @@ vector<vector<int>> levelOrder(TreeNode* root) {
         vector<int> vec;
 
         for (int i = 0; i < size; i++) {
-            TreeNode* node = que.front();
+            TreeNode* node = que.front();	//注意这个在循环里
             que.pop();
             vec.push_back(node->val);
             if (node->left)   que.push(node->left);
@@ -555,6 +555,12 @@ TreeNode* invertTree(TreeNode* root) {
 
 **后序遍历**，一个树遍历顺序是左右中，另一个是右左中。
 
+![image-20220225095910153](assets/image-20220225095910153.png)
+
+因为要遍历两棵树⽽且要**⽐较内侧和外侧节点**，所以准确的来说是**⼀个树的遍历顺序是左右中**，**⼀个树的遍历顺序是右左中**。
+
+
+
 **101. Symmetric Tree**
 
 ```c++
@@ -574,11 +580,69 @@ bool isSymmetric(TreeNode* root) {
 
 
 
+迭代法
+
+```c++
+bool isSymmetric(TreeNode* root) {
+    if (root == nullptr) return true;
+    queue<TreeNode*> que;
+    que.push(root->left);
+    que.push(root->right);
+
+    while (!que.empty()) {
+        TreeNode* nodeL = que.front(); que.pop();
+        TreeNode* nodeR = que.front(); que.pop();
+
+        if (nodeL == nullptr && nodeR == nullptr) continue;
+        if (nodeL == nullptr || nodeR == nullptr || (nodeL->val != nodeR->val)) return false;
+
+        que.push(nodeL->left);
+        que.push(nodeR->right);
+        que.push(nodeL->right);
+        que.push(nodeR->left);
+    }
+    return true;
+}
+```
+
+这个迭代法，其实是把**左右两个⼦树要⽐较的元素顺序放进⼀个容器**，然后**成对成对的取出来进⾏⽐较**，那么其实使⽤栈也是可以的。
+
+
+
+```c++
+bool isSymmetric(TreeNode* root) {
+    if (root == nullptr) return true;
+    stack<TreeNode*> st;
+    st.push(root->left);
+    st.push(root->right);
+
+    while (!st.empty()) {
+        TreeNode* nodeL = st.top(); st.pop();
+        TreeNode* nodeR = st.top(); st.pop();
+
+        if (nodeL == nullptr && nodeR == nullptr) continue;
+        if (nodeL == nullptr || nodeR == nullptr || nodeL->val != nodeR->val) return false;
+
+        st.push(nodeL->left);
+        st.push(nodeR->right);
+        st.push(nodeL->right);
+        st.push(nodeR->left);
+    }
+    return true;
+}
+```
+
+
+
+
+
 ---
 
 ## 7. 二叉树的深度
 
 **104. Maximum Depth of Binary Tree**
+
+最⼤深度是指从根节点到最远叶⼦节点的最⻓路径上的节点总数。
 
 ```c++
 int maxDepth(TreeNode* root) {
@@ -591,6 +655,10 @@ int maxDepth(TreeNode* root) {
 
 **111. Minimum Depth of Binary Tree**
 
+最⼩深度是从**根节点**到最近**叶⼦节点**的最短路径上的节点数量。
+
+说明: 叶⼦节点是指没有⼦节点的节点。
+
 ```c++
 int minDepth(TreeNode* root) {
     if (root == NULL) return 0;
@@ -602,6 +670,33 @@ int minDepth(TreeNode* root) {
     if (root->left != NULL && root->right == NULL) return 1 + lDepth;
     
     return lDepth > rDepth ? 1 + rDepth : 1 + lDepth;
+}
+```
+
+
+
+```c++
+int minDepth(TreeNode* root) {
+    queue<TreeNode*> que;
+    if (root == nullptr) return 0;
+    que.push(root);
+    int depth = 0;
+
+    while (!que.empty()) {
+        int size = que.size();
+        depth++;
+        for (int i = 0; i < size; ++i) {
+            TreeNode* node = que.front();
+            que.pop();
+
+            if (node->left != nullptr) que.push(node->left);
+            if (node->right != nullptr) que.push(node->right);
+
+            if (node->left == nullptr && node->right == nullptr) return depth;  //提前找到叶子节点 就可以退出了
+        }
+
+    }
+    return depth;
 }
 ```
 
