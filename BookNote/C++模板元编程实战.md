@@ -39,19 +39,14 @@ class UnitMatrix : public AbstractMatrix;
 
 `AbstractMatrix` 定义了表示矩阵的基类，其中的 `Value` 接口在传入行号与列号时，返回对应的元素（这里假定它为 `int` 型）。之后，我们引入了若干个派生类，使用 `Matrix` 表示一般意义的矩阵；使用 `ZeroMatrix` 表示元素全为零的矩阵；而 `UnitMatrix` 则表示单位矩阵。
 
-所有派生自AbstractMatrix的具体矩阵必须实现Value接口。比如，对于ZeroMatrix来说，
-其Value接口的功能就是返回数值0。而对于UnitMatrix来说，如果调用Value接口时传入的行
-号与列号相同，则返回1；否则返回0。
-现在考虑一下，如果我们要实现一个函数，输入两个矩阵并计算二者之和，该怎么写。
-基于前文所定义的类，矩阵相加函数可以使用如下声明：
-1 Matrix Add(const AbstractMatrix * mat1, const AbstractMatrix * mat2);
-每个矩阵都实现了AbstractMatrix所定义的接口，因此我们可以在这个函数中分别遍历两
-个矩阵中的元素，将对应元素求和并保存在结果Matrix矩阵中返回。
+所有派生自AbstractMatrix的具体矩阵必须实现Value接口。比如，对于ZeroMatrix来说，其Value接口的功能就是返回数值0。而对于UnitMatrix来说，如果调用Value接口时传入的行号与列号相同，则返回1；否则返回0。
+
+现在考虑一下，如果我们要实现一个函数，输入两个矩阵并计算二者之和，该怎么写。基于前文所定义的类，矩阵相加函数可以使用如下声明：1 Matrix Add(const AbstractMatrix * mat1, const AbstractMatrix * mat2);
+每个矩阵都实现了AbstractMatrix所定义的接口，因此我们可以在这个函数中分别遍历两个矩阵中的元素，将对应元素求和并保存在结果Matrix矩阵中返回。
 
 
 
-显然，这是一种相对通用的实现，能解决大部分问题，但对于一些特殊的情况，则性能
-较差。比如可能存在如下的性能优化空间：
+显然，这是一种相对通用的实现，能解决大部分问题，但对于一些特殊的情况，则性能较差。比如可能存在如下的性能优化空间：
 ● 如果一个Matrix对象与一个ZeroMatrix对象相加，那么直接返回Matrix对象即可；
 ● 如果一个Matrix对象与一个UnitMatrix对象相加，那么结果矩阵中的大部分元素与Matrix
 对象中的元素相同，主对角线上的元素值为Matrix对象中相应位置的元素值加1。

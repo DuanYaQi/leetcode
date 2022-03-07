@@ -111,6 +111,9 @@ vector<int> v3(100,9);	//把100长度的数组v3所有值初始化为9
 in={1,2,3,4,5,6,7};
 vector<int> tin(in, in+7);	// 1 2 3 4 5 6 7
 vector<int> tin(in, in+6);	// 1 2 3 4 5 6 
+
+vector<int>(n, 0); 								//一维向量1xn 初始化为0
+vector<vector<int>> dp(m, vector<int>(n, 0));  //二维向量mxn 初始化为0
 ```
 
 

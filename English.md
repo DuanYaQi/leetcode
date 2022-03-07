@@ -92,9 +92,9 @@
 |                         nonsingular                          |                      非奇异的                       |
 |                          Quadratic                           |                       二次的                        |
 |                                                              |                                                     |
-|                                                              |                                                     |
-|                                                              |                                                     |
-|                                                              |                                                     |
+|                          accumulate                          |                      积累/累加                      |
+|                           allocate                           |                        分配                         |
+|                             tile                             |                      块，瓷砖                       |
 |                                                              |                                                     |
 |                                                              |                                                     |
 |                                                              |                                                     |

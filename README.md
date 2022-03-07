@@ -22,6 +22,14 @@ DAG 的问题就 dfs+memo
 
 找规律试试Stack
 
+
+
+回溯注意进来的时候，是 `+` 而不是 `+=`
+
+
+
+---
+
 ## TODO
 - [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
 
@@ -90,9 +98,10 @@ https://www.cnblogs.com/MinPage/
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
 ||
 |剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
-|回溯递归是一一对应的，有一个递归，就要有一个回溯|
-|回溯隐藏，直接在给函数传参时加计算，函数执行完，不改变原值|
+|**回溯递归是一一对应的，有一个递归，就要有一个回溯**|
+|回溯隐藏，直接在给函数**传参**时**加**计算，函数执行完，不改变原值<br>而**不是加等**计算|
 |自底向上=后序遍历=天然的回溯过程|
+|回溯要注意如果main函数给定root->val，函数里直接加 left->val或right->val<br>否会回少加一层最后|
 ||
 |如果题目关键的部分直接用库函数就可以解决，建议**不要**使用库函数。|
 ||
@@ -108,7 +117,7 @@ https://www.cnblogs.com/MinPage/
 ||
 |字符串反转，可以试着从局部反转和全局反转下手|
 ||
-||
+|树每层都处理的话，queue就在while里再for循环，整体处理只用一个while|
 ||
 ||
 
@@ -125,7 +134,65 @@ static const auto io_sync_off = []()
 ```
 
 
+
+### 迭代法和递归法
+
+判断条件是相同的，迭代法是手动分配空间
+
+**100.相同的树**
+
+```c++
+bool isSameTree(TreeNode* p, TreeNode* q) {
+    queue<TreeNode*> que;
+    que.push(p);
+    que.push(q);
+
+    while (!que.empty()) {
+        TreeNode* L = que.front(); que.pop();
+        TreeNode* R = que.front(); que.pop();
+
+        if (L == nullptr && R == nullptr) continue;
+        if (L == nullptr || R == nullptr || L->val != R->val) return false;
+
+        que.push(L->left);
+        que.push(R->left);
+        que.push(L->right);
+        que.push(R->right);
+    }
+
+    return true;
+
+}
+```
+
+
+
+```c++
+bool rec(TreeNode* L, TreeNode* R) {
+    if (L == nullptr && R == nullptr) return true;
+
+    if (L == nullptr || R == nullptr || L->val != R->val) {
+        return false;
+    } 
+
+    return rec(L->left, R->left) & rec(L->right, R->right);
+}
+
+bool isSameTree(TreeNode* p, TreeNode* q) {
+    return rec(p, q);
+}
+```
+
+
+
+
+
+
+
+
+
 ---
+
 ## 1. 题表
 
 树
@@ -175,8 +242,8 @@ static const auto io_sync_off = []()
 |[108. Convert Sorted Array to Binary Search Tree](Tree/108+sortedArrayToBST_B_Rec.cpp)   | 二分 分治 |R|
 |[538. Convert BST to Greater Tree](Tree/538+convertBST_Rec.cpp)   | 反中序 ||
 |[100. Same Tree](Tree/100+isSameTree.cpp)   |  |递归|
-| | | |
-| | | |
+|[572. Subtree of Another Tree](Tree/572+Subtree%20of%20Another%20Tree.cpp) |注意continue位置 | |
+|| | |
 | | | |
 | | | |
 
@@ -270,6 +337,28 @@ static const auto io_sync_off = []()
 | | | |
 
 
+DP
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[509.Fibonacci Number](DP/509%2BFibonacci%20Number.cpp)| | 注意初始化|
+|[70.Climbing Stairs](DP/70%2BClimbing%20Stairs.cpp) | |注意循环起点 |
+|[746.Min Cost Climbing Stairs](DP/746%2BMin%20Cost%20Climbing%20Stairs.cpp) | |最小花费 需要`min` |
+|[62.Unique Paths](DP/62%2BUnique%20Paths.cpp) | | 递推|
+|[63.Unique Paths II](DP/63%2BUnique%20Paths%20II.cpp) | |递推 |
+|[343.Integer Break](DP/343+Integer%20Break.cpp) | | 最大乘积 需要`max`|
+|[96.Unique Binary Search Trees](DP/96+Unique%20Binary%20Search%20Trees.cpp) | | 左右子树为子空间|
+| | | |
+| | | |
+
+
+Graph
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[797+All Paths From Source to Target](Graph/797+All%20Paths%20From%20Source%20to%20Target.cpp) | DFS | 重点为 `pop_back()` 和 `vis[v] = false;`|
+|[2192.All Ancestors of a Node in a Directed Acyclic Graph](Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
+| | | |
+| | | |
+
 ---
 ## 2. 专题
 
@@ -303,6 +392,10 @@ static const auto io_sync_off = []()
 ---
 
 ### 2.6. [字符串](String/README.md)
+
+
+
+
 
 ---
 
@@ -453,7 +546,7 @@ static const auto io_sync_off = []()
 
 
 
-![image-20220227093911503](../image-20220227093911503.png)
+![image-20220227093911503](assets/image-20220227093911503.png)
 
 
 
@@ -591,256 +684,9 @@ N 叉树的遍历又可以扩展为图的遍历，因为图就是好几 N 叉棵
 
 
 
-
-
 ---
 
-## 6. Big O
-
-目前分析算法主要从「**时间**」和「**空间**」两个维度来进行分析。时间维度顾名思义就是算法需要**消耗的时间**，「时间复杂度」是常用的分析单位。空间维度代表算法需要占用的**内存空间**，我们通常用「空间复杂度」来分析。
-
-分析算法的效率主要从「**时间复杂度**」和「**空间复杂度**」来分析。这两个复杂度反映的是，随着问题量级的增大，时间和空间**增长的趋势**。很多时候我们两者不可兼得，有时候要用**时间换空间**，或者**空间换时间**。
-
-
-
----
-
-### 6.1. 时间复杂度
-
-`T(n)` 表示算法的**渐进时间复杂度**，`f(n)​` 表示代码**执行次数**，​`O()​` 表示**正比关系**。
-
-```c++
-for (int i = 1; i <= n; i++) {
-    x++;
-}
-
-i <= n 	执行n+1次 最后还要再判断一次
-i++		执行n次
-x++;	执行n次
-i = 1	执行1次
-共3N+2次
-```
-
-`O(3N+2) = O(N)` 
-
-关心的是**输入不断增长时程序的表现如何**，当N很大时，就是**最坏情况下的性能**，因此只需要**关注高阶项**，**忽略低阶项**。
-
-
-
-```c++
-for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
-    	x++;
-    }
-}
-```
-
-时间复杂度为 `O(N^2)​`
-
-
-
-```c++
-for (int i = 1; i <= n; i++) {
-    x++;
-}
-for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
-    	x++;
-    }
-}
-```
-
-时间复杂度为 `O(N+N^2)=O(N^2)​`
-
-
-
----
-
-### 6.2. 常用时间复杂度量级
-
-横轴为问题的量级，纵轴为时间复杂度
-
-![37b5a1516b172f9c8456d1574a0446b5.png](assets/37b5a1516b172f9c8456d1574a0446b5.png)
-
-
-
-![Image result for time complexity chart](assets/big-o-running-time-complexity.png)
-
-- **常数**阶O(1)
-- **对数**阶O(logN)
-
-
-
-- **线性**阶O(n)
-- **线性对数/超线性**阶O(nlogN)
-
-
-
-- 平方阶O(n²)
-- 立方阶O(n³)
-- **K次方/多项式**阶O(n^k)
-- **指数**阶(2^n)
-- **阶乘**O(n!)
-
-
-
-上面的时间复杂从上到下复杂度越来越大，也意味着执行效率越来越低。
-
-![1616323325038](assets/1616323325038.png)
-
-
-
----
-
-#### 6.2.1. 常数阶O(1)
-
-只要没有**循环**或**递归**等复杂逻辑，无论代码执行多少行，代码复杂度都为O(1)，如下：
-
-```c++
-int x = 0;
-int y = 1;
-int temp = x;
-x = y;
-y = temp;
-```
-
-上述代码在执行的时候，所消耗的**时间不会随着特定变量的增长而增长**，即使有几万行这样的代码，我们都可以用O(1)来表示它的时间复杂度。
-
-
-
-#### 6.2.2. 线性阶O(n)
-
-```c++
-for (int i = 1; i <= n; i++) {
-    x++;
-}
-```
-
-在这段代码中，for循环会执行n遍，因此**计算消耗的时间是随着n的变化而变化**，因此这类代码都可以用O(n)来表示其时间复杂度。
-
-
-
-#### 6.2.3. 对数阶O(logN)
-
-```c++
-int i = 1;
-while(i < n) {
-    i = i * 2;
-}
-```
-
-在上面的循环中，每次 i 都会被乘以2，也意味着每次 i 都离 n 更进一步。那需要多少次循环 i 才能等于或大于 n 呢，也就是求解 $2 ^ k = n$，答案 $k=log_{2}N$ 。 取最高次项，且去掉最高此项的系数，所有进一步简化为 $k=logN$
-
-也就是说循环 $k=logN$ 次之后，i 会大于等于n，这段代码就结束了。所以此代码的复杂度为：`O(logN)`。
-
-
-
-#### 6.2.4. 线性对数阶O(nlogN)
-
-线性对数阶O(nlogN)很好理解，也就是将复杂度为O(logN)的代码循环n遍：
-
-```c++
-for(int i = 0; i <= n: i++) {
-    int x = 1;
-    while(x < n) {
-        x = x * 2;
-    }
-}
-```
-
-因为每次循环的复杂度为 `O(logN)`，所以 `n * logN = O(nlogN)`
-
-
-
-#### 6.2.5. 平方阶O(n²)
-
-```c++
-for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
-        x++;
-    }
-}
-
-```
-
-O(n²)的本质就是 `n * n`，如果我们将内层的循环次数改为m，复杂度就变为 `n * m = O(nm)`。
-
-关于一些更高的阶级比如 `O(n³)` 或者 `O(n^k)`，我们可以参考 `O(n²)` 来理解即可，`O(n³)` 相当于三层循环，以此类推。
-
-
-
-### 6.2.6. 指数阶O(2^n)
-
-```c++
-int f (int n) {
-    if (n == 1) return 1;
-    else return f(n-1) + f(n-1);
-}
-```
-
-`O(2^N-1) = O(2^N)`
-
----
-
-
-
-除了「大O表示法」还有其他「平均时间复杂度」、「均摊时间复杂度」、「最坏时间复杂度」、「最好时间复杂度」等等分析指数，但是最常用的依然是「大O表示法」，表示最差情况。
-
-
-
----
-
-### 6.3. 空间复杂度
-
-「空间复杂度」也不是用来计算程序具体占用的空间。随着问题量级的变大，程序需要分配的内存空间也可能会变得更多，而「空间复杂度」反映的则是**内存空间增长的趋势**。
-
-比较常用的空间复杂度有：O(1)、O(n)、O(n²)。用 S(n) 来定义「空间复杂度」。
-
-
-
-#### 6.3.1. O(1)空间复杂度
-
-如果算法执行所需要的临时空间**不随着某个变量 n 的大小而变化**，此算法空间复杂度为一个**常量**，可表示为 O(1)：
-
-```c++
-int x = 0;
-int y = 0;
-x++;
-y++;
-```
-
-其中x, y所分配的空间**不随着处理数据量变化**，因此「空间复杂度」为 O(1)
-
-
-
-#### 6.3.2. O(n)空间复杂度
-
-以下的代码给长度为n的数组赋值：
-
-```c++
-int[] newArray = new int[n];
-for (int i = 0; i < n; i++) {
-    newArray[i] = i;
-}
-```
-
-在这段代码中，我们创建了一个长度为 n 的数组，然后在循环中为其中的元素赋值。因此，这段代码的「空间复杂度」**取决于 newArray 的长度**，也就是 n，所以 S(n) = O(n)。
-
-
-
-如果newArray是个二维数组，则空间复杂度为O(n²)
-
-
-
-
-
-![e85d4af103548c1f4d7729b6cf63607b.png](assets/e85d4af103548c1f4d7729b6cf63607b.png)
-
-
-
-
-
-## 7. Fun
+## 6. Fun
 
 Talk is cheap. Show me the code.
 
@@ -860,11 +706,260 @@ Eating our own dog food
 
 
 
+---
+
+## 7. I/O
+
+https://blog.csdn.net/cleveland_/article/details/89373062
+
+### vector输入
+
+**万能模板**
+
+[1,2,5,46,51] - Leetcode 
+
+或
+
+1 2 5 46 51 - 普通OJ
+
+```c++
+// 一维vector
+int main() {
+	vector<int> a; //最终输出
+	cin.clear();
+	cin.sync();
+	string str;
+	int temp = 0;
+	bool flag = false;
+	
+    getline(cin, str);
+    for (int i = 0; i != str.size(); ++i) {
+        if (isdigit(str[i])) {
+            temp = temp*10 + (str[i]-48);
+            flag = true;
+        } else {
+            if(flag) {
+                a.push_back(temp);
+                temp = 0;
+            }
+            flag = false;
+        }
+        
+        if (i == (str.size() - 1) && flag) {
+            a.push_back(temp);
+        }
+    }
+ 
+	for(auto b:a) {
+		cout << b << " ";
+	}
+ 
+	return 0;
+}
+```
 
 
 
+
+
+2                             这个 2 可能需要单独指定输入
+[1,5,6,5,8496]
+[16,6,94,848,4]
+
+或
+
+2
+1 5 6 5 8496
+16 6 94 848 4
+
+```c++
+//二维vector
+int main() {
+	int row;
+	cin >> row;
+	vector<vector<int>> a(row); //最终输出
+	cin.clear();
+	cin.sync();
+	string str;
+	int temp = 0;
+	bool flag = false;
+	for(int j = 0; j < row; j++) {
+		cin.sync();
+		getline(cin, str);
+		for (int i = 0; i != str.size(); ++i) {
+			if (isdigit(str[i])) {
+				temp = temp* 10 + (str[i] - 48);
+				flag = true;
+			} else {
+				if(flag) {
+					a[j].push_back(temp);
+					temp = 0;
+				}
+				flag = false;
+ 
+			}
+            
+			if (i == (str.size() - 1) && flag) {
+				a[j].push_back(temp);
+			}
+		}
+        
+		temp = 0;
+		flag = false;
+		cin.sync();
+	}
+
+	for(auto c:a) {
+		for(auto d:c)
+			cout << d << " ";
+		cout << endl;
+	}
+ 
+	return 0;
+}
+```
+
+
+
+[1,5,6,5,8496]
+[16,6,94,848,4]
+
+​                           // 注意这里空行也需要输入
+
+或
+
+1 5 6 5 8496
+16 6 94 848 4
+
+​                           // 注意这里空行也需要输入
+
+```c++
+int main() {
+	vector<vector<int>> a; //最终输出
+	cin.clear();
+	cin.sync();
+	string str;
+	int temp = 0;
+	bool flag = false;
+	while(getline(cin,str) && !str.empty()) {
+		cin.sync();
+		vector<int> tmpList;
+		for (int i = 0; i != str.size(); ++i) {
+			if (isdigit(str[i])) {
+				temp = temp* 10 + (str[i] - 48);
+				flag = true;
+			} else {
+				if(flag) {
+					tmpList.push_back(temp);
+					temp = 0;
+				}
+				flag = false;
+			}
+            
+			if (i == (str.size() - 1) && flag) {
+				tmpList.push_back(temp);
+			}
+		}
+        
+		temp = 0;
+		flag = false;
+		cin.sync();
+        a.push_back(tmpList);
+	}
+ 
+	for(auto c:a) {
+		for(auto d:c)
+			cout << d << " ";
+		cout << endl;
+	}
+ 
+	return 0;
+}
+```
+
+
+
+
+
+----
+
+**精简版**
+
+长度为 n 的 vector 输入
+
+```c++
+//单个案例
+// Input: 2
+//        5 6
+
+int main() {
+    int n;
+   	cin >> n;	// 表示 vecotr 的元素数
+   	vector<int> data(n);
+   	for (int i = 0; i < n; ++i)
+   		cin >> data[i];
+    return 0;
+}
+
+或
+    
+int main() {
+	int n;
+    cin >> n; 	// 表示 vecotr 的元素数
+    vector<int> data;
+    for(int i = 0; i < n; ++i) {
+        int temp;
+        cin >> temp;
+        data.push_back(temp);
+    }
+	return 0;
+}
+```
+
+
+
+
+
+```c++
+//多个案例
+// Input: 5 
+//		  2
+//        1 4
+//        3 5
+//        5 5
+//        6 9
+//        8 9
+int main() {
+	int n = 0;		// 共几个案例
+	int m = 0;		// 每个案例几个元素
+	while(cin >> n >> m) { //关键步骤
+		vector<vector<int>> num;
+		for(int i = 0; i < n; i++) {	
+			vector<int> tmpList;
+			for(int j = 0; j < m; j++) {
+				int temp;
+				cin >> temp;
+				tmpList.push_back(temp);
+			}
+			num.push_back(tmpList);	
+		}
+	}		
+   	func(num);	//[[1, 4], [3, 5], [5, 5], [6, 9], [8, 9]]
+	return 0;
+}
+```
+
+
+
+
+
+
+
+---
 
 ## Style
+
+https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/formatting/#section-7
 
 - 循环和条件语句
 
@@ -916,5 +1011,12 @@ if (x && !y) {}
 // 可以用圆括号把复杂表达式圈起来, 改善可读性.
 return (some_long_condition &&
         another_condition);
+```
+
+
+
+- I/O
+
+```c++
 ```
 

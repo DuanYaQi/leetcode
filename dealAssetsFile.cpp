@@ -34,6 +34,7 @@ void getFiles(string path, vector<string>& files) {
 int main() {
     string iterfilePath = "D:\\MY_DOCUMENT\\Work\\Reverse\\assets";   // 迭代搜索路径
     string delfilePath = "D:\\MY_DOCUMENT\\Work\\Leetcode\\BookNote\\assets";   // 待删除路径
+
     vector<string> files;  //存储文件名
 
     // 获取 iter路径下的所有文件
