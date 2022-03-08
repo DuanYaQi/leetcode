@@ -353,6 +353,16 @@ https://labuladong.gitee.io/algo/2/20/37/
 
 
 
+如果一个有向图的任意顶点都无法通过一些有向边到自身，那么称这个图为有向无环图（Directed Acyclic Graph，DAG）
+
+
+
+
+
+
+
+
+
 
 
 ### 有向图的环检测
