@@ -721,8 +721,11 @@ i    : 被拆分的数
 ```c++
 dp[i] = max(dp[i], max( (i-j)*j, dp[i-j]*j ));  
 
-// 为什么还要跟dp[i] 做比较 ，因为每次循环j都会计算出不同的 dp[i] 
-// 比如前边的 2 2 的4 dp[i] 比 3 1的 3 dp[i]要大
+// 为什么还要跟dp[i] 做比较 ？
+// 因为每次循环j都会计算出不同的 dp[i]，比如前边的 2 2 的4 dp[i] 比 3 1的 3 dp[i]要大
+
+// 为什么 max( (i-j)*j, dp[i-j]*j )？
+// 因为 i-j表示的是第一个乘数    dp[i-j]也可以表示第一个乘数    二者本质意义一样
 ```
 
 
@@ -1012,3 +1015,332 @@ dp[1] = 1;
 
 
 5. 举例推导dp数组
+
+
+
+
+
+
+
+----
+
+# 打家劫舍
+
+## 198.打家劫舍
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 	打劫i以内的房屋能拿到的最多钱
+i：		第i个房屋    
+```
+
+
+
+2. 确定**递推公式**
+
+决定 dp[i] 的因素就是第i个房间偷还是不偷
+
+- 偷：`dp[i] = d[i-2] + nums[i]`  第i-1房间不考虑
+- 不偷：`dp[i] = dp[i-1]`（但也不是非要偷 i-1，因为dp[i-1] 也有偷或不偷两种情况）
+
+```c++
+dp[i] = max(dp[i-1], dp[i-2] + nums[i]);
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+// 边界条件
+dp[0] = nums[0]; //就是一定偷0，值最大 
+dp[1] = max(nums[0], nums[1]); //挑一个偷
+```
+
+
+
+4. 确定**遍历顺序**
+
+从递推公式可以看出，dp[i] 依赖 dp[0:i-1]，因此遍历的顺序是**从前到后**遍历的。
+
+
+
+5. 举例推导dp数组
+
+
+
+```c++
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+
+    int dp[n];
+    dp[0] = nums[0];
+    dp[1] = max(nums[0], nums[1]);
+
+
+    for (int i = 2; i < n; ++i) {
+        dp[i] = max(dp[i-2] + nums[i], dp[i-1]);
+    }
+    return dp[n-1];
+}
+```
+
+
+
+
+
+
+
+## 213.打家劫舍II
+
+唯⼀区别就是成环了。
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 	打劫i以内的房屋能拿到的最多钱
+i：		第i个房屋    
+```
+
+
+
+2. 确定**递推公式**
+
+成环的三种情况
+
+- 不考虑首尾元素，
+- 考虑首元素，不考虑尾元素，
+- 考尾元素，不考虑首元素，
+
+相当于把环拉直 按198.打家劫舍求解‘
+
+但其实二三情况就包含了第一种情况
+
+```c++
+dp[i] = max(dp[i-1], dp[i-2] + nums[i]);
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+// 边界条件
+dp[0] = nums[0]; //就是一定偷0，值最大 
+dp[1] = max(nums[0], nums[1]); //挑一个偷
+```
+
+
+
+4. 确定**遍历顺序**
+
+从递推公式可以看出，dp[i] 依赖 dp[0:i-1]，因此遍历的顺序是**从前到后**遍历的。
+
+
+
+5. 举例推导dp数组
+
+
+
+```c++
+int robRange(vector<int>& nums, int start, int end) {
+    if (end - start == 0) return nums[start];
+    if (end - start == 1) return max(nums[start], nums[start + 1]);
+
+    int dp[nums.size()+1];
+    dp[start] = nums[start];
+    dp[start + 1] = max(nums[start], nums[start + 1]);
+    for (int i = start + 2; i <= end; ++i) {
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i]);
+    }
+    return dp[end];
+}
+
+
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+
+    int noStart = robRange(nums, 1, n-1);
+    int noEnd = robRange(nums, 0, n-2);
+    return max(noStart, noEnd);
+}
+```
+
+
+
+----
+
+## 337.打家劫舍 III
+
+变成树了
+
+
+
+### 记忆化递推
+
+**本题⼀定是要后序遍历，因为通过递归函数的返回值来做下⼀步计算。**如果抢了当前节点，两个孩⼦就不是动，如果没抢当前节点，就可以**考虑**抢左右孩⼦（注意这里说的是“考虑”）
+
+> 为什么是考虑？
+>
+> 当前左右孩子值很小，所有我要**左右孩子节点**的**孩子节点**
+
+
+
+```c++
+unordered_map<TreeNode* , int> umap; // 记录计算过的结果    
+int rob(TreeNode* root) {
+    //进来了就说明 该节点 root 是可以被选择的
+    if (root == nullptr) return 0;
+    if (root->left == nullptr && root->right == nullptr) return root->val; 
+    if (umap[root]) return umap[root];
+
+    int val1 = root->val;
+    if (root->left) val1 += rob(root->left->left) + rob(root->left->right);
+    if (root->right) val1 += rob(root->right->left) + rob(root->right->right);  
+
+    int val2 = rob(root->left) + rob(root->right);
+    umap[root] = max(val1, val2);
+    return umap[root];
+}
+```
+
+
+
+
+
+---
+
+### 动态规划
+
+树形dp，树上进行状态转移
+
+递归三部曲为框架，融合动规五部曲的内容
+
+
+
+1. **确定递归函数的参数和返回值**
+
+要求⼀个节点 偷与不偷的两个状态所得到的⾦钱，那么返回值就是⼀个长度为2的数组。
+
+```c++
+vector<int> robTree(TreeNode* cur);
+```
+
+返回数组就是dp数组。
+
+
+
+2. **确定终止条件** 
+
+```c++
+if (cur == NULL) return vector<int>{0, 0};
+```
+
+空节点的话，很明显，无论偷还是不偷都是 0
+
+
+
+3. **确定单层递归的逻辑**
+
+```c++
+vector<int> left = robTree(cur->left); // 左
+vector<int> right = robTree(cur->right); // 右
+
+// 偷cur
+int val1 = cur->val + left[0] + right[0];
+// 不偷cur
+int val2 = max(left[0], left[1]) + max(right[0], right[1]);
+
+return {val2, val1};
+```
+
+- 偷当前节点，那么左右孩子就不能偷，`val1 = cur->val + left[0] + right[0]; `
+
+- 不偷当前节点，考虑是否偷左右孩子 `val2 =
+  max(left[0], left[1]) + max(right[0], right[1]);`
+
+最后当前节点的状态就是{val2, val1}; 即：{不偷当前节点得到的最大金钱，偷当前节点得到的最大金钱}
+
+
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 	下标为0记录不偷该节点所得到的的最大金钱，下标为1记录偷该节点所得到的的最大金钱。
+i：	    0/1
+```
+
+长度为2的数组怎么标记树中每个节点的状态呢？
+在递归的过程中，**系统栈会保存**每⼀层递归的参数。
+
+
+
+
+
+2. 确定**递推公式**
+
+```c++
+与确定单层递归的逻辑相同
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+if (cur == NULL) return vector<int>{0, 0};
+```
+
+递归的最后一层就是 dp 的初始化
+
+
+
+4. 确定**遍历顺序**
+
+后序遍历， 先计算左右子树的状态，再计算是否考虑加根节点。
+
+```c++
+// 下标0：不偷，下标1：偷
+vector<int> left = robTree(cur->left); // 左
+vector<int> right = robTree(cur->right); // 右
+// 中
+```
+
+
+
+5. 举例推导dp数组
+
+
+
+
+
+```c++
+vector<int> robTree(TreeNode* cur) {
+    if (cur == nullptr) return vector<int> {0, 0};
+
+    vector<int> left = robTree(cur->left);
+    vector<int> right = robTree(cur->right);
+
+    int val1Choice = cur->val + left[0] + right[0];
+    int val0Choice = max(left[0], left[1]) + max(right[0], right[1]);
+
+    return vector<int> {val0Choice, val1Choice};
+}
+
+int rob(TreeNode* root) {
+    vector<int> res = robTree(root);
+    return max(res[0], res[1]);
+}
+```
+
