@@ -32,8 +32,9 @@ DAG 的问题就 dfs+memo
 
 ## TODO
 - [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
-
 - [x] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
+- [ ] 
+- [ ] 
 ---
 **教学**
 
@@ -1028,5 +1029,56 @@ return (some_long_condition &&
 - I/O
 
 ```c++
+
 ```
+
+
+
+
+
+---
+
+## Discuss
+
+[hacking C++](https://hackingcpp.com/index.html)
+
+
+
+Data Structure Visualizations
+
+https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
+
+
+
+VisuAlgo.net/zh 数据结构和算法动态可视化 (Chinese)
+
+https://visualgo.net/zh
+
+
+
+新手会归并排序，快排，翻转链表，前中后序二叉树，二分法，dfs和bfs各一道，加01背包，以及股票问题就够了。 不面头部四家，这个难度差不多够用了
+
+
+
+主要我觉得国内公司考图的概率太小了
+
+面试不考，笔试总有
+
+
+
+笔试考图特别多，不过也基本上不涉及这些算法，都是用并查集来做
+
+
+
+
+
+阿里手撸红黑树
+
+真没听说过谁面阿里手撕红黑树代码的，插入删除讲个流程就差不多了
+
+家里人，安全部门
+
+
+
+
 

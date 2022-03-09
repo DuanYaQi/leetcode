@@ -1,5 +1,33 @@
 [TOC]
 
+- [ ] [双非渣硕斩获大厂算法之简历制作](https://zhuanlan.zhihu.com/p/365889235)
+- [ ] https://www.zhihu.com/collection/785759950
+- [ ] https://www.zhihu.com/collection/766319397
+- [ ] https://www.zhihu.com/collection/648783531?page=1
+- [ ] https://zhuanlan.zhihu.com/p/350651297扩展Pytorch：实现自定义算子（一）
+- [ ] 一文解释PyTorch求导相关 (backward, autograd.grad) https://zhuanlan.zhihu.com/p/279758736
+- [ ] [CMake从入门到精通系列链接整理](https://zhuanlan.zhihu.com/p/393316878)
+- [ ] [【研究综述】浅谈GPU通信和PCIe P2P DMA](https://zhuanlan.zhihu.com/p/430101220)
+- [ ] [60道30K+C++工程师面试必问面试题](https://zhuanlan.zhihu.com/p/470972286)
+- [ ] [如果你是一个C++面试官，你会问哪些问题？](https://www.zhihu.com/question/451327108/answer/2275638668)
+- [ ] [秋招冲刺阶段｜280道C++校招面试题](https://zhuanlan.zhihu.com/p/392798071)
+- [ ] [C++为什么要弄出虚表这个东西？](https://www.zhihu.com/question/389546003/answer/1194780618)
+- [ ] [算法小白如何高效、快速刷leetcode](https://www.zhihu.com/question/321738058/answer/888860701)
+- [ ] [工作一年的CV算法工程师感想——技术篇](https://zhuanlan.zhihu.com/p/395255446)
+- [ ] [一个CV算法工程师的小反思](https://zhuanlan.zhihu.com/p/363354912)
+- [ ] [2021春季CV实习面经](https://zhuanlan.zhihu.com/p/442975101)
+- [ ] [春招将至 | 22届算法岗SSP大满贯经验](https://zhuanlan.zhihu.com/p/467623667)
+- [ ] [腾讯/字节/华为/旷视 2022届实习面经-计算机视觉方向](https://zhuanlan.zhihu.com/p/366561904)
+- [ ] https://zhuanlan.zhihu.com/p/269012332恶补了 Python 装饰器的八种写法，你随便问~
+- [ ] https://www.zhihu.com/collection/652759948
+- [ ] https://www.zhihu.com/collection/614186258
+- [ ] https://www.zhihu.com/question/36149122/answer/1837141822在校生为了面试，有必要强行记住一些复杂算法如红黑树、KMP等的实现吗？
+- [ ] [AVL树，红黑树，B树，B+树，Trie树都分别应用在哪些现实场景中？](https://www.zhihu.com/question/30527705/answer/1663740519)
+- [ ] 万字长文炸裂！手撕 STL 迭代器源码与 traits 编程技法 https://mp.weixin.qq.com/s/srgj9KnxQrru_hMv-IVpWw
+- [ ] 超硬核 | 2 万字+20 图带你手撕 STL 序列式容器源码https://zhuanlan.zhihu.com/p/359213877
+
+
+
 # 面试心得
 
 ​	2019年春招和秋招，我在中国进行了多场面试，其目的是找一个暑期实习职位和找秋招的正式工作。这是我的个人心得总结。
