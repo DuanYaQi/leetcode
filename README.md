@@ -374,9 +374,19 @@ Greedy
 |[455.Assign Cookies.cpp](Alog_Greedy/455+Assign%20Cookies.cpp) | |先排序|
 |[376.Wiggle Subsequence](Alog_Greedy/376+Wiggle%20Subsequence.cpp) | 贪心思想| preDiff来保留之前状态<br> 要跟之前状态进行比较|
 |[53.Maximum Subarray](Alog_Greedy/53+Maximum%20Subarray.cpp) | | 重点：理解得到负数就可以重新开始算了 |
+|[121.Best Time to Buy and Sell Stock I](/Alog_Greedy/121+Best%20Time%20to%20Buy%20and%20Sell%20Stock.cpp) | |找左边的最小值和最大的差值 |
+|[122.Best Time to Buy and Sell Stock II](Alog_Greedy/122+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20II.cpp) | |只需要考虑正利润区间 |
+|[1005. Maximize Sum Of Array After K Negations](Alog_Greedy/1005+Maximize%20Sum%20Of%20Array%20After%20K%20Negations.cpp) | |用绝对值大小排序 |
 | | | |
 | | | |
 | | | |
+
+
+二分
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
+|[35.Search Insert Position.cpp](Alog_BinarySearch/35+Search%20Insert%20Position.cpp) | | 与二分查找仅有最后return的区别 |
 | | | |
 | | | |
 
@@ -569,6 +579,14 @@ Greedy
 
 带名字的都不考
 Morris / Dijkstra / Floyd / Manacher / Tarjan / Dinic / KMP
+
+
+
+---
+
+![img](assets/v2-2c471c0dc0983ecfbcea15463a995088_720w.jpg)
+
+
 
 
 
@@ -1079,6 +1097,10 @@ https://visualgo.net/zh
 家里人，安全部门
 
 
+
+
+
+https://www.cxyxiaowu.com/7072.html
 
 
 
