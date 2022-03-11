@@ -88,7 +88,7 @@ int searchInsert(vector<int>& nums, int target) {
 
 
 
-### 寻找右边界寻找右边界
+### 寻找右边界
 
 先来寻找右边界，确定好：计算出来的右边界是不包含target的右边界，左边界同理。可以写出如下代码
 
@@ -101,7 +101,8 @@ int getRightBorder(vector<int>& nums, int target) {
     int rightBorder = -2; // 记录一下rightBorder没有被赋值的情况
     
     while (left <= right) { // 当left==right，区间[left, right]依然有效
-        int middle = left + ((right - left) / 2);// 防止溢出 等同于(left + right)/2
+        int middle = left + ((right - left) / 2);
+        
         if (nums[middle] > target) {
             right = middle - 1; // target 在左区间，所以[left, middle - 1]
         } else { // 当nums[middle] == target的时候，更新left，这样才能得到target的右边界
@@ -115,6 +116,87 @@ int getRightBorder(vector<int>& nums, int target) {
 ```
 
 
+
+### 寻找左边界
+
+```cpp
+// 二分查找，寻找target的左边界leftBorder（不包括target）
+// 如果leftBorder没有被赋值（即target在数组范围的右边，例如数组[3,3],target为4），为了处理情况一
+int getLeftBorder(vector<int>& nums, int target) {
+    int left = 0;
+    int right = nums.size() - 1; // 定义target在左闭右闭的区间里，[left, right]
+    int leftBorder = -2; // 记录一下leftBorder没有被赋值的情况
+    while (left <= right) {
+        int middle = left + ((right - left) / 2);
+        if (nums[middle] >= target) { // 寻找左边界，就要在nums[middle] == target的时候更新right
+            right = middle - 1;
+            leftBorder = right;
+        } else {
+            left = middle + 1;
+        }
+    }
+    return leftBorder;
+}
+```
+
+
+
+
+
+### 处理三种情况
+
+左右边界计算完之后，看一下主体代码，这里把上面讨论的三种情况，都覆盖了
+
+```cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int leftBorder = getLeftBorder(nums, target);
+        int rightBorder = getRightBorder(nums, target);
+        // 情况一
+        if (leftBorder == -2 || rightBorder == -2) return {-1, -1};
+        // 情况三
+        if (rightBorder - leftBorder > 1) return {leftBorder + 1, rightBorder - 1};
+        // 情况二
+        return {-1, -1};
+    }
+private:
+     int getRightBorder(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+        int rightBorder = -2; // 记录一下rightBorder没有被赋值的情况
+        while (left <= right) {
+            int middle = left + ((right - left) / 2);
+            if (nums[middle] > target) {
+                right = middle - 1;
+            } else { // 寻找右边界，nums[middle] == target的时候更新left
+                left = middle + 1;
+                rightBorder = left;
+            }
+        }
+        return rightBorder;
+    }
+    int getLeftBorder(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+        int leftBorder = -2; // 记录一下leftBorder没有被赋值的情况
+        while (left <= right) {
+            int middle = left + ((right - left) / 2);
+            if (nums[middle] >= target) { // 寻找左边界，nums[middle] == target的时候更新right
+                right = middle - 1;
+                leftBorder = right;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return leftBorder;
+    }
+};
+```
+
+
+
+初学者建议大家一块一块的去分拆这道题目，正如本题解描述，想清楚三种情况之后，先专注于寻找右区间，然后专注于寻找左区间，左右根据左右区间做最后判断。
 
 
 

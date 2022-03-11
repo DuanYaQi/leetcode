@@ -1,4 +1,4 @@
-# Leetcode
+Leetcode
 
 如果问最短，最少，BFS
 
@@ -33,8 +33,8 @@ DAG 的问题就 dfs+memo
 ## TODO
 - [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
 - [x] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
-- [ ] 
-- [ ] 
+- [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
+- [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
 ---
 **教学**
 
