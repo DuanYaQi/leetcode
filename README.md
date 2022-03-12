@@ -387,9 +387,10 @@ Greedy
 |  :----  |:----:|:----:|
 |[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
 |[35.Search Insert Position.cpp](Alog_BinarySearch/35+Search%20Insert%20Position.cpp) | | 与二分查找仅有最后return的区别 |
+|[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
+|[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
+|[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
 | | | |
-| | | |
-
 
 ---
 ## 2. 专题

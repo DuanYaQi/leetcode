@@ -1,7 +1,3 @@
-
-
----
-
 # 二分查找
 
 ## 704. 二分查找
@@ -204,6 +200,28 @@ private:
 
 ## 69.x 的平方根
 
+二分查找第一个 res^2 大于x的元素，然后再减一
+
+```c++
+int mySqrt(int x) {
+    int left = 1;  
+    int right = x;
+    int mid;
+
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+
+        if (pow(mid, 2) > x) {
+            right = mid - 1;
+        } else {
+            left  = mid + 1; 
+        } 
+    }
+
+    return left - 1;
+}
+```
+
 
 
 
@@ -211,6 +229,29 @@ private:
 ---
 
 ## 367.有效的完全平方数
+
+```c++
+bool isPerfectSquare(int num) {
+    if (num == 1) return true;
+    if (num == 2 | num == 3) return false;
+
+    int left = 0;
+    int right = num / 2;
+    int mid;
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+        if (pow(mid, 2) > num) {
+            right = mid - 1;
+        } else if (pow(mid, 2) < num) {
+            left = mid + 1;
+        } else {
+            return true;
+        }
+    }
+
+    return false;
+}
+```
 
 
 
