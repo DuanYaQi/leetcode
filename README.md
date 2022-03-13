@@ -1,4 +1,4 @@
-Leetcode
+# Leetcode
 
 如果问最短，最少，BFS
 
@@ -271,24 +271,6 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 | | | |
 
 
-
-双指针
-
-|  题目  |知识点|技巧|
-|  :----  |:----:|:----:|
-|[27. Remove Element](Alog_TwoPointer/27+removeElement_LeftRightPointer.cpp) |  in-place删除|双指针|
-|[344. Reverse String](Alog_TwoPointer/344+reverseString.cpp) | 反转| 左右双指针|
-|[剑指 Offer 05. 替换空格](Alog_TwoPointer/J05+replaceSpace.cpp) | 字符填充|双指针 |
-|💛[151. Reverse Words in a String](Alog_TwoPointer/151+reverseWords.cpp) | 逆转字符| 双指针|
-|[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意`cur = cur->next;`的位置所在|
-|💛[15. 3Sum](Alog_TwoPointer/15+threeSum.cpp) |三数之和 | 考虑重复值|
-|[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp)<br>[142. Linked List Cycle II](Alog_TwoPointer/142+detectCycle.cpp) | 链表环 | 需要分析其内在规律性质 |
-|[18. 4Sum](Alog_TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
-| | | |
-| | | |
-| | | |
-| | | |
-
 栈与指针
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -340,11 +322,31 @@ Graph
 | | | |
 
 
+双指针
+
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[27. Remove Element](Alog_TwoPointer/27+removeElement_LeftRightPointer.cpp) |  in-place删除|双指针|
+|[344. Reverse String](Alog_TwoPointer/344+reverseString.cpp) | 反转| 左右双指针|
+|[剑指 Offer 05. 替换空格](Alog_TwoPointer/J05+replaceSpace.cpp) | 字符填充|双指针 |
+|💛[151. Reverse Words in a String](Alog_TwoPointer/151+reverseWords.cpp) | 逆转字符| 双指针|
+|[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意`cur = cur->next;`的位置所在|
+|💛[15. 3Sum](Alog_TwoPointer/15+threeSum.cpp) |三数之和 | 考虑重复值|
+|[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp)<br>[142. Linked List Cycle II](Alog_TwoPointer/142+detectCycle.cpp) | 链表环 | 需要分析其内在规律性质 |
+|[18. 4Sum](Alog_TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
+|[26. Remove Duplicates from Sorted Array](Alog_TwoPointer/26+Remove%20Duplicates%20from%20Sorted%20Array.cpp) | | 注意慢指针的移动条件 |
+|[283. Move Zeroes](/Alog_TwoPointer/283+Move%20Zeroes.cpp) | |注意循环里i和fastIndex的区分 |
+|[844. Backspace String Compare](/Alog_TwoPointer/844+Backspace%20String%20Compare.cpp) | | 注意最后index是指向哪里的<br>for的终止位置是index还是+-1|
+|[977. Squares of a Sorted Array](/Alog_TwoPointer/977+Squares%20of%20a%20Sorted%20Array.cpp) | |注意双指针也可以从两边开始指 |
+|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum.cpp) | 滑动窗口 | 重点是处理减区间的那部分|
+| | | |
+
 
 回溯
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[77. Combinations](Alog_Backtracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
+| | | |
 | | | |
 
 
@@ -744,7 +746,7 @@ https://blog.csdn.net/cleveland_/article/details/89373062
 
 ### vector输入
 
-**万能模板**
+#### **万能版**
 
 [1,2,5,46,51] - Leetcode 
 
@@ -913,7 +915,7 @@ int main() {
 
 ----
 
-**精简版**
+#### **精简版**
 
 长度为 n 的 vector 输入
 
