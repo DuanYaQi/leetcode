@@ -57,3 +57,26 @@ int main () {
 
     return res;
 }
+
+/***************优化后*********************/
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int fast = 0, slow = 0;
+        int res = 0;
+        int cha = INT_MAX;
+        for (; fast < nums.size(); fast++) {
+            res += nums[fast];
+            while (res >= target) {
+                cha = min(cha, fast - slow + 1);
+                res -= nums[slow++];
+            }
+        }
+
+        if (cha == INT_MAX)
+            return 0;
+
+        return cha;
+    }
+};

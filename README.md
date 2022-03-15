@@ -338,7 +338,7 @@ Graph
 |[283. Move Zeroes](/Alog_TwoPointer/283+Move%20Zeroes.cpp) | |注意循环里i和fastIndex的区分 |
 |[844. Backspace String Compare](/Alog_TwoPointer/844+Backspace%20String%20Compare.cpp) | | 注意最后index是指向哪里的<br>for的终止位置是index还是+-1|
 |[977. Squares of a Sorted Array](/Alog_TwoPointer/977+Squares%20of%20a%20Sorted%20Array.cpp) | |注意双指针也可以从两边开始指 |
-|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum.cpp) | 滑动窗口 | 重点是处理减区间的那部分|
+|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum.cpp) | 滑动窗口 | 重点是处理减区间的那部分<br>其实可以当它大于等于target时直接slow++，这样也计算到了这时的窗口大小|
 | | | |
 
 
@@ -467,6 +467,8 @@ Greedy
 - 线段树
 - 堆
 
+
+
 -----
 
 ### 4.2. 分类1
@@ -495,6 +497,8 @@ Greedy
 - 文件系统
 - 网络
 
+
+
 ---
 ### 4.3. 分类2
 
@@ -504,26 +508,32 @@ Greedy
 
 •考察基本算法思想：递归、分治、回溯搜索、贪心、动态规划等
 
+
+
+
+
 ---
 ### 4.4. 难度分类3
 - Easy：常规字符串操作、常规数组操作、简单数据结构。
 - Medium：数组操作、滑动窗口、哈希表、二分、搜索（bfs、dfs）、常规DP、单调栈、二叉树相关、排序算法、前缀树、堆、并查集等
 - Hard：DP（背包相关、概率DP、简单数论算法、数位DP、记忆化搜索）、简单图算法（最短路、最小生成树）、数据结构实现、字符串算法（后缀数组、回文相关）
 
+
+
 ----
 ### 4.5. 模式分类4
-1. Pattern: Sliding window，滑动窗口模式
-2. Pattern: two points, 双指针类型
-3. Pattern: Fast & Slow pointers, 快慢指针类型
+1. **Pattern: Sliding window，滑动窗口模式**
+2. **Pattern: two points, 双指针类型**
+3. **Pattern: Fast & Slow pointers, 快慢指针类型**
 4. Pattern: Merge Intervals，区间合并模式
 5. Pattern: Cyclic Sort，循环排序
 6. Pattern: In-place Reversal of a LinkedList，原地链表翻转模式
-7. Pattern: Tree Breadth First Search，树上的BFS模式
-8. Pattern: Tree Depth First Search，树上的DFS模式
+7. **Pattern: Tree Breadth First Search，树上的BFS模式**
+8. **Pattern: Tree Depth First Search，树上的DFS模式**
 9. Pattern: Two Heaps，双堆类型
 10. Pattern: Subsets，子集类型，一般都是使用多重DFS
-11. Pattern: Modified Binary Search，改造过的二分
-12. Pattern: Top ‘K’ Elements，前K个系列模式
+11. **Pattern: Modified Binary Search，改造过的二分**
+12. **Pattern: Top ‘K’ Elements，前K个系列模式**
 13. Pattern: K-way merge，多路归并类型模式
 14. Pattern: 0/1 Knapsack (Dynamic Programming)，0/1背包类型
     1.  0/1 Knapsack, 0/1背包
@@ -531,8 +541,7 @@ Greedy
     3.  Fibonacci Numbers，斐波那契数列
     4.  Palindromic Subsequence，回文子系列
     5.  Longest Common Substring，最长子字符串系列
-15. Pattern: Topological Sort (Graph)，拓扑排序模式
-    
+15. **Pattern: Topological Sort (Graph)，拓扑排序模式**
 
 [Class1-Grokking the Coding Interview: Patterns for Coding Questions](https://www.educative.io/courses/grokking-the-coding-interview)
 
