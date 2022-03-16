@@ -36,6 +36,12 @@ DAG 的问题就 dfs+memo
 - [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
 - [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
 ---
+
+
+<details>
+  <summary>学习网站汇总</summary>
+
+
 **教学**
 
 [代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
@@ -78,6 +84,9 @@ https://www.cnblogs.com/MinPage/
 
 做好Medium，没必要死扣Hard。LeetCode上很多Easy的题目看似简单，实则想要写出Perfect的代码并非易事。多思考如何优化Easy，Medium的解法实际上比花精力解Hard题更能提高自己。
 
+<img width="50%" src="https://github-readme-stats.vercel.app/api?username=ak523&show_icons=true&theme=radical" />
+
+</details>
 
 
 ## TIPS/TRICKS
@@ -339,6 +348,8 @@ Graph
 |[844. Backspace String Compare](/Alog_TwoPointer/844+Backspace%20String%20Compare.cpp) | | 注意最后index是指向哪里的<br>for的终止位置是index还是+-1|
 |[977. Squares of a Sorted Array](/Alog_TwoPointer/977+Squares%20of%20a%20Sorted%20Array.cpp) | |注意双指针也可以从两边开始指 |
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum.cpp) | 滑动窗口 | 重点是处理减区间的那部分<br>其实可以当它大于等于target时直接slow++，这样也计算到了这时的窗口大小|
+|[904. Fruit Into Baskets](/Alog_TwoPointer/904+Fruit%20Into%20Baskets.cpp) | | 模板<br>重点是处理左指针|
+| | | |
 | | | |
 
 
