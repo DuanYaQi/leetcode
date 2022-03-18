@@ -192,108 +192,164 @@ int main(){
 
 #### 1.3 vector常用函数
 
-1. push_back(i)
+1. push_back(i) / emplace_back(i)
 
-   ```C++
-   //在vector后面添加元素x，世家复杂度O(1)
-   #include<stdio.h>
-   #incldue<vector>
-   using namespace std;
-   int main(){
-       vector<int> vi;
-       for(int i=1;i<=3;i++){
-           vi.push_back(i);
-       }
-       for(int i=0;i<vi.size();i++){
-           printf("%d ",vi[i]);		// 1 2 3
-       }
-       return 0;
-   }
-   ```
+```C++
+//在vector后面添加元素x，时间复杂度O(1)
+#include<stdio.h>
+#incldue<vector>
+using namespace std;
+int main(){
+    vector<int> vi;
+    for(int i=1;i<=3;i++){
+        vi.emplace_back(i);	//push_back
+    }
+    for(int i=0;i<vi.size();i++){
+        printf("%d ",vi[i]);		// 1 2 3
+    }
+    return 0;
+}
+
+//emplace_back() 和 push_back() 的区别，就在于底层实现的机制不同
+//push_back() 向容器尾部添加元素时，首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）
+//emplace_back() 在实现时，则是直接在容器尾部创建这个元素，省去了拷贝或移动元素的过程。
+```
+
+显然完成同样的操作，push_back() 的底层实现过程比 emplace_back() 更繁琐，换句话说，emplace_back() 的执行效率比 push_back() 高。因此，在实际使用时，建议大家优先选用 emplace_back()。
+
+> 由于 emplace_back() 是 C++ 11 标准新增加的，如果程序要兼顾之前的版本，还是应该使用 push_back()。
+
+
 
 2. pop_back()
 
-   ```c++
-   //有添加就会有删除， 删除vector尾元素
-   #include<stdio.h>
-   #incldue<vector>
-   using namespace std;
-   int main(){
-       vector<int> vi;
-       for(int i=1;i<=3;i++){
-           vi.push_back(i);
-       }
-       vi.pop_back();	//删除vi尾部元素
-       for(int i=0;i<vi.size();i++){
-           printf("%d ",vi[i]);		// 1 2 
-       }
-       return 0;
-   }
-   ```
-
-5. insert(it,x)
-
-   ```c++
-   //向vector的任意迭代器it处插入一个元素x
-   #include<stdio.h>
-   #incldue<vector>
-   using namespace std;
-   int main(){
-       vector<int> vi;
-       for(int i=1;i<=5;i++){
-           vi.push_back(i);	//1 2 3 4 5 
-       }
-       vi.insert(vi.begin()+2,-1);	//将-1插入vi[2]的位置
-       for(int i=0;i<vi.size();i++){
-           printf("%d ",vi[i]);		// 1 2 -1 3 4 5
-       }
-       return 0;
-   }
-   ```
-
-6. erase(it)/erase(first,last)
-
-   ```c++
-   //删除迭代器为it处的元素
-   #include<stdio.h>
-   #incldue<vector>
-   using namespace std;
-   int main(){
-       vector<int> vi;
-       for(int i=5;i<=9;i++){
-           vi.push_back(i);	//5 6 7 8 9
-       }
-       //删除8 
-       vi.erase(vi.begin()+3);
-       for(int i=0;i<vi.size();i++){
-           printf("%d ",vi[i]);		// 5 6 7 9 
-       }
-       return 0;
-   }
-   ```
-
-   ```c++
-   //删除一个区间[fisrt,last)内的所有元素
-   #include<stdio.h>
-   #incldue<vector>
-   using namespace std;
-   int main(){
-       vector<int> vi;
-       for(int i=5;i<=9;i++){
-           vi.push_back(i);	//5 6 7 8 9
-       }
-       //删除8 
-       vi.insert(vi.begin()+1，vi.begin()+4);
-       for(int i=0;i<vi.size();i++){
-           printf("%d ",vi[i]);		// 5 9 
-       }
-       return 0;
-   }
-   ```
+```c++
+//有添加就会有删除， 删除vector尾元素
+#include<stdio.h>
+#incldue<vector>
+using namespace std;
+int main(){
+    vector<int> vi;
+    for(int i=1;i<=3;i++){
+        vi.push_back(i);
+    }
+    vi.pop_back();	//删除vi尾部元素
+    for(int i=0;i<vi.size();i++){
+        printf("%d ",vi[i]);		// 1 2 
+    }
+    return 0;
+}
+```
 
 
 
-5. 判断相等
+3. insert(it,x)
+
+```c++
+//向vector的任意迭代器it处插入一个元素x
+#include<stdio.h>
+#incldue<vector>
+using namespace std;
+int main(){
+    vector<int> vi;
+    for(int i=1;i<=5;i++){
+        vi.push_back(i);	//1 2 3 4 5 
+    }
+    vi.insert(vi.begin()+2,-1);	//将-1插入vi[2]的位置
+    for(int i=0;i<vi.size();i++){
+        printf("%d ",vi[i]);		// 1 2 -1 3 4 5
+    }
+    return 0;
+}
+```
+
+
+
+4. erase(it)/erase(first,last)
+
+```c++
+//删除迭代器为it处的元素
+#include<stdio.h>
+#incldue<vector>
+using namespace std;
+int main(){
+    vector<int> vi;
+    for(int i=5;i<=9;i++){
+        vi.push_back(i);	//5 6 7 8 9
+    }
+    //删除8 
+    vi.erase(vi.begin()+3);
+    for(int i=0;i<vi.size();i++){
+        printf("%d ",vi[i]);		// 5 6 7 9 
+    }
+    return 0;
+}
+```
+
+```c++
+//删除一个区间[fisrt,last)内的所有元素
+#include<stdio.h>
+#incldue<vector>
+using namespace std;
+int main(){
+    vector<int> vi;
+    for(int i=5;i<=9;i++){
+        vi.push_back(i);	//5 6 7 8 9
+    }
+    //删除8 
+    vi.insert(vi.begin()+1，vi.begin()+4);
+    for(int i=0;i<vi.size();i++){
+        printf("%d ",vi[i]);		// 5 9 
+    }
+    return 0;
+}
+```
+
+
+
+5. append() 添加元素
+
+
+
+
+
+6. clear() 删除全部
+
+```c++
+vector<int> vec{1,2,3,4,5};
+vec.clear() 
+```
+
+
+
+7. remove() 删除容器中和指定元素值相同的所有元素
+
+```c++
+vector<int> demo{ 1,3,3,4,3,5 };
+
+//交换要删除元素和最后一个元素的位置
+auto iter = std::remove(demo.begin(), demo.end(), 3);
+
+cout << "size is :" << demo.size() << endl;
+cout << "capacity is :" << demo.capacity() << endl;
+
+//输出剩余的元素
+for (auto first = demo.begin(); first < iter;++first) {	// 1 4 5
+    cout << *first << " ";
+}
+```
+
+改变容器原来的大小和容量，因此需要借助 remove() 返回的迭代器（iter 为终点）完成正确的遍历。
+
+
+
+
+
+
+
+
+
+8. 判断相等
 
 - 如果vector里面的元素类型是简单类型（内置类型），可以直接使用“==”或者“!=”进行比较
 
@@ -311,7 +367,7 @@ bool operator!=( const vector<T,Alloc>& lhs,
 
 
 
-
+7. 
 
 
 
@@ -764,6 +820,16 @@ string str="abcd";
 
     
 
+11. append() 添加
+
+```c++
+string b;
+b = "";	//对字符串清空
+b.append("0000");
+b.append("0001");
+cout << b ; // 00000001
+```
+
 
 
 
@@ -848,6 +914,13 @@ map<set<int>,string> mp;
    map<char,int>::iterator it=mp.find('b');
    printf("%c %d\n",it->first,it->second);
    //b 2
+   
+   // 判断是否在不在
+   if (mp.find('b') != mp.end()) {	// 在
+       
+   } else {						// 不在
+       
+   }
    ```
 
 2. erase()

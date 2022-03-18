@@ -10,7 +10,7 @@ DAG 的问题就 dfs+memo
 
 矩阵和 Array 通常都是 DP
 
-问数量的通常都是 DP
+问**数量**的通常都是 DP
 
 问是否可以，也很有可能 DP
 
@@ -21,6 +21,12 @@ DAG 的问题就 dfs+memo
 万事总可以想HashMap
 
 找规律试试Stack
+
+问连续通常都是滑动窗口
+
+
+
+
 
 
 
@@ -35,30 +41,31 @@ DAG 的问题就 dfs+memo
 - [x] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
 - [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
 - [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
+
+
+
 ---
 
 
 <details>
   <summary>学习网站汇总</summary>
-
-
 **教学**
 
 [代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
 
 [labuladong 的算法小抄Github](https://github.com/labuladong/fucking-algorithm)　　[labuladong 的算法小抄Wechat](https://mp.weixin.qq.com/s/AWsL7G89RtaHyHjRPNJENA)　　[labuladong 的算法小抄Gitbook](https://labuladong.gitee.io/algo/)
 
-[力扣加加 - lucifer](https://github.com/azl397985856/leetcode)　　[力扣加加 - 社区](https://leetcode-solution-leetcode-pp.gitbook.io/leetcode-solution/)
+[力扣加加 - luciferGithub](https://github.com/azl397985856/leetcode)　　[力扣加加 - 社区](https://leetcode-solution-leetcode-pp.gitbook.io/leetcode-solution/)
 
-[进阶石](https://github.com/acm-clan/algorithm-stone)
+[进阶石Github](https://github.com/acm-clan/algorithm-stone)
 
 **题解+教学**
 
 [李威威](https://liweiwei1419.gitee.io/leetcode-algo/)
 
-[柳婼](https://github.com/liuchuo/LeetCode)
+[柳婼Github](https://github.com/liuchuo/LeetCode)
 
-[luliyucoordinate](https://github.com/luliyucoordinate/Leetcode)Github
+[luliyucoordinate-Github](https://github.com/luliyucoordinate/Leetcode)
 
 **模板**
 
@@ -68,7 +75,7 @@ DAG 的问题就 dfs+memo
 
 **英语**
 
-[specialized-vocabulary](https://github.com/liuchuo/specialized-vocabulary)
+[specialized-vocabulary-Github](https://github.com/liuchuo/specialized-vocabulary)
 
 **残酷**
 
@@ -83,8 +90,6 @@ https://www.cnblogs.com/MinPage/
 [leetcode-cpp-debug 插件](https://github.com/xavier-cai/vscode-leetcode-cpp-debug/blob/master/README_zh-CN.md)
 
 做好Medium，没必要死扣Hard。LeetCode上很多Easy的题目看似简单，实则想要写出Perfect的代码并非易事。多思考如何优化Easy，Medium的解法实际上比花精力解Hard题更能提高自己。
-
-<img width="50%" src="https://github-readme-stats.vercel.app/api?username=ak523&show_icons=true&theme=radical" />
 
 </details>
 
@@ -200,12 +205,10 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 
-
 ---
+## 1. 数据结构专题
 
-## 1. 题表
-
-树
+### 1.1. [树](DS_Tree/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -263,7 +266,9 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 
-链表
+---
+
+### 1.2. [链表](DS_Linked_list/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -280,7 +285,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 | | | |
 
 
-栈与指针
+
+---
+
+### 1.3. [栈与队列](DS_StackQueue/README.md)
+
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[232. Implement Queue using Stacks](DS_StackQueue/232+MyQueue.cpp) |栈实现队列 |栈不是双向，因此需要两个<br>pop()和peek()只差一步 |
@@ -293,7 +302,12 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 | | | |
 
 
-哈希表
+
+
+---
+
+### 1.4. [哈希表](DS_HashTable/README.md)
+
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[242. Valid Anagram](DS_HashTable/242+isAnagram.cpp) |字母异位词 |数组模拟哈希表 |
@@ -307,7 +321,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 | | | |
 
 
-字符串
+
+---
+
+### 1.5. [字符串](DS_String/README.md)
+
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[344. Reverse String](DS_String/344+reverseString.cpp) | 反转串 | |
@@ -322,7 +340,10 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 
-Graph
+---
+
+### 1.6. [图](DS_Graph/README.md)
+
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[797+All Paths From Source to Target](DS_Graph/797+All%20Paths%20From%20Source%20to%20Target.cpp) | DFS | 重点为 `pop_back()` 和 `vis[v] = false;`|
@@ -331,7 +352,36 @@ Graph
 | | | |
 
 
-双指针
+
+
+
+
+
+---
+
+## 2. 算法专题
+
+### 2.1. [二分](Alog_BinarySearch/README.md)
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
+|[35.Search Insert Position.cpp](Alog_BinarySearch/35+Search%20Insert%20Position.cpp) | | 与二分查找仅有最后return的区别 |
+|[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
+|[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
+|[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
+| | | |
+
+
+
+---
+
+### 2.2. [排序](Alog_BinarySearch/README.md)
+
+
+
+---
+
+### 2.3. [双指针 / 前缀和](Alog_BinarySearch/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -349,17 +399,64 @@ Graph
 |[977. Squares of a Sorted Array](/Alog_TwoPointer/977+Squares%20of%20a%20Sorted%20Array.cpp) | |注意双指针也可以从两边开始指 |
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum.cpp) | 滑动窗口 | 重点是处理减区间的那部分<br>其实可以当它大于等于target时直接slow++，这样也计算到了这时的窗口大小|
 |[904. Fruit Into Baskets](/Alog_TwoPointer/904+Fruit%20Into%20Baskets.cpp) | | 模板<br>重点是处理左指针|
+|[76. Minimum Window Substring](/Alog_TwoPointer/76+Minimum%20Window%20Substring.cpp) | |注意最后结果是resL而不是left |
+|[438. Find All Anagrams in a String](/Alog_TwoPointer/438+Find%20All%20Anagrams%20in%20a%20String.cpp) | |固定窗口 |
 | | | |
+| | | |
+| | | |
+| | | |
+| | | |
+|[724. Find Pivot Index](/Alog_TwoPointer/724+Find%20Pivot%20Index.cpp) | 前缀和| |
+|[523. ] | 前缀和| |
+|[560.] | 前缀和| |
+|[1248.] | 前缀和| |
+|[974.] | 前缀和| |
 | | | |
 
 
-回溯
+
+---
+
+### 2.4. [递归](Alog_BinarySearch/README.md)
+
+[树](DS_Tree/README.md)中 **Sec 4.1 ** 有详细概述
+
+
+
+---
+
+### 2.5. [回溯](Alog_Backtracking/README.md)
+
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[77. Combinations](Alog_Backtracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
+|[51. N-Queens](/Alog_Backtracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
+| | | |
+
+
+
+---
+
+### 2.6. [贪心](Alog_Greedy/README.md)
+
+Greedy
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[455.Assign Cookies.cpp](Alog_Greedy/455+Assign%20Cookies.cpp) | |先排序|
+|[376.Wiggle Subsequence](Alog_Greedy/376+Wiggle%20Subsequence.cpp) | 贪心思想| preDiff来保留之前状态<br> 要跟之前状态进行比较|
+|[53.Maximum Subarray](Alog_Greedy/53+Maximum%20Subarray.cpp) | | 重点：理解得到负数就可以重新开始算了 |
+|[121.Best Time to Buy and Sell Stock I](/Alog_Greedy/121+Best%20Time%20to%20Buy%20and%20Sell%20Stock.cpp) | |找左边的最小值和最大的差值 |
+|[122.Best Time to Buy and Sell Stock II](Alog_Greedy/122+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20II.cpp) | |只需要考虑正利润区间 |
+|[1005. Maximize Sum Of Array After K Negations](Alog_Greedy/1005+Maximize%20Sum%20Of%20Array%20After%20K%20Negations.cpp) | |用绝对值大小排序 |
+| | | |
 | | | |
 | | | |
 
+
+
+---
+
+### 2.7. [动态规划](Alog_BinarySearch/README.md)
 
 DP
 |  题目  |知识点|技巧|
@@ -381,68 +478,41 @@ DP
 | | | |
 
 
-Greedy
-|  题目  |知识点|技巧|
-|  :----  |:----:|:----:|
-|[455.Assign Cookies.cpp](Alog_Greedy/455+Assign%20Cookies.cpp) | |先排序|
-|[376.Wiggle Subsequence](Alog_Greedy/376+Wiggle%20Subsequence.cpp) | 贪心思想| preDiff来保留之前状态<br> 要跟之前状态进行比较|
-|[53.Maximum Subarray](Alog_Greedy/53+Maximum%20Subarray.cpp) | | 重点：理解得到负数就可以重新开始算了 |
-|[121.Best Time to Buy and Sell Stock I](/Alog_Greedy/121+Best%20Time%20to%20Buy%20and%20Sell%20Stock.cpp) | |找左边的最小值和最大的差值 |
-|[122.Best Time to Buy and Sell Stock II](Alog_Greedy/122+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20II.cpp) | |只需要考虑正利润区间 |
-|[1005. Maximize Sum Of Array After K Negations](Alog_Greedy/1005+Maximize%20Sum%20Of%20Array%20After%20K%20Negations.cpp) | |用绝对值大小排序 |
-| | | |
-| | | |
-| | | |
-
-
-二分
-|  题目  |知识点|技巧|
-|  :----  |:----:|:----:|
-|[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
-|[35.Search Insert Position.cpp](Alog_BinarySearch/35+Search%20Insert%20Position.cpp) | | 与二分查找仅有最后return的区别 |
-|[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
-|[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
-|[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
-| | | |
-
----
-## 2. 专题
-
-### 2.1. [树](DS_Tree/README.md)
 
 ---
 
-### 2.2. [链表](DS_Linked_list/README.md)
+### 2.8. DFS/BFS
+
+[树](DS_Tree/README.md) 中 **Sec 4.2 + Sec 4.3** 迭代遍历为 DFS，**Sec 4.4** 层序遍历为 BFS
+[图](DS_Graph/README.md) 中 **图的遍历 ** 有 DFS/ BFS 详细概述
+
+
+
+
+
 
 
 ---
 
-### 2.3. [栈与队列](DS_StackQueue/README.md)
-
----
-
-### 2.4. [哈希表](DS_HashTable/README.md)
-
----
-
-### 2.5. [字符串](DS_String/README.md)
-
----
-
-### 2.6. [图](DS_Graph/README.md)
-
-
----
 
 ## 3. C++标准模板库([STL](https://github.com/DuanYaQi/leetcode/blob/master/STL.md))介绍
 - vector
 - set
+  - unordered_set
 - string
 - map
+  - unordered_map
+
 - queue
+  - priority_queue
 - stack
+
 - pair
 - algorithm
+
+
+
+
 
 ---
 

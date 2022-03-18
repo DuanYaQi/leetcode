@@ -4,6 +4,8 @@
 
 
 
+https://programmercarl.com/%E6%95%B0%E7%BB%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.html
+
 ---
 
 ## 26. 删除有序数组中的重复项
@@ -440,7 +442,37 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
 
 ---
 
-## 904. 水果成篮
+## 3.无重复字符的最长子串 / 904. 水果成篮
+
+```C++
+int lengthOfLongestSubstring(string s) {
+    if (s.size() == 0) return 0;
+    unordered_map<char, int> umap;
+    int left = 0;
+    int len = 0;
+    int res = 0;
+
+    for (int right = 0; right < s.size(); right++) {
+        umap[s[right]]++;
+        len++;
+
+        while (umap[s[right]] > 1) {	// 一旦重复 就移动left 减到2
+            umap[s[left]]--;
+            if (umap[s[left]] == 0) umap.erase(s[left]);
+            left++;
+            len--;
+        } 
+
+        res = max(res, len);//保存结果在外边
+    }
+
+    return res;
+}
+```
+
+
+
+**水果成篮一模一样原理的题**
 
 问题等价于，找到最长的子序列
 
@@ -454,6 +486,28 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
 
 我们会发现这个 opt(j) 是一个单调递增的函数，这是因为**所有合法子序列的子序列一定也是合法的**
 
+```c++
+int totalFruit(vector<int>& fruits) {
+    int left = 0, right = 0;
+    int len = 0, res = 0;
+    unordered_map<int, int> umap;
+
+    for(; right < fruits.size(); right++) {
+        umap[fruits[right]]++;
+        len++;
+        while (umap.size() > 2) {	// size=3时候 直接减到2
+            umap[fruits[left]]--;
+            if (umap[fruits[left]] == 0) umap.erase(fruits[left]);
+            left++;
+            len--;
+        }	//小于2的时候直接跳过 记录最优值
+
+        res = max(res, len);//保存结果在外边
+    }
+
+    return res;
+}
+```
 
 
 
@@ -461,5 +515,228 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
 
 
 
+---
+
+# 滑动窗口（Sliding Window）
+
+滑动窗口主要用来处理连续问题。比如题目求解“连续子串 xxxx”，“连续子数组 xxxx”，就应该可以想到滑动窗口。能不能解决另说，但是这种敏感性还是要有的。
+
+从类型上说主要有：
+
+- 固定窗口大小
+- 窗口大小不固定，求解最大的满足条件的窗口
+- 窗口大小不固定，求解最小的满足条件的窗口（上面的 209 题就属于这种）
+
+后面两种我们统称为`可变窗口`。当然不管是哪种类型基本的思路都是一样的，不一样的仅仅是代码细节。
+
+
+
+## 固定窗口大小
+
+对于固定窗口，我们只需要固定初始化左右指针 l 和 r，分别表示的窗口的左右顶点，并且保证：
+
+1. l 初始化为 0
+2. 初始化 r，使得 r - l + 1 等于窗口大小
+3. 同时移动 l 和 r
+4. 判断窗口内的连续元素是否满足题目限定的条件
+   - 4.1 如果满足，再判断是否需要更新最优解，如果需要则更新最优解
+   - 4.2 如果不满足，则继续。
+
+
+
+---
+
+## 可变窗口大小
+
+对于可变窗口，我们同样固定初始化左右指针 l 和 r，分别表示的窗口的左右顶点。后面有所不同，我们需要保证：
+
+1. l 和 r 都初始化为 0
+2. r 指针移动一步
+3. 判断窗口内的连续元素是否满足题目限定的条件
+   - 3.1 如果满足，再判断是否需要更新最优解，如果需要则更新最优解。并尝试通过移动 l 指针缩小窗口大小。循环执行 3.1
+   - 3.2 如果不满足，则继续。
+
+形象地来看的话，就是 r 指针不停向右移动，l 指针仅仅在窗口满足条件之后才会移动，起到窗口收缩的效果。
+
+
+
+---
+
+## 伪代码
+
+```c++
+初始化慢指针 = 0
+初始化 ans
+
+for 快指针 in 可迭代集合
+   更新窗口内信息
+   while 窗口内不符合题意
+      扩展或者收缩窗口
+      慢指针移动
+   更新答案
+返回 ans
+```
+
+
+
+
+
+## 76. 最小覆盖子串
+
+```c++
+unordered_map<char, int> umaps, umapt;
+
+bool check() {
+    for (auto c : umapt) {
+        if (umaps[c.first] < c.second) {
+            return false;
+        }
+    }
+    return true;
+}
+
+string minWindow(string s, string t) {
+ 	for (auto c : t)
+        umapt[c]++;
+    
+    int left = 0, right = 0;
+    int len = INT_MAX, resL = -1;
+    
+    for (; right < t.size(); ++right) {
+        char c = s[right];
+        
+        if (umapt.find(c) != umapt.end())
+            umaps[c]++;
+                
+        while (check() && left <= right) {	//一旦满足 就移动 left 缩小
+            if (right - left + 1 < len) {	//保存结果在里边
+                len = right - left + 1;
+                resL = left;
+            }
+            
+            if (umapt.find(s[left]) != umapt.end()) {
+                umaps[s[left]]--;
+            }
+            
+            left++;
+        }
+        
+    }
+    
+    return resL == -1 ? string() : s.substr(left, len);
+}
+```
+
+
+
+## 930. 和相同的二元子数组
+
+
+
+
+
+
+
+
+
+
+
+---
 
 # 【西法带你学算法】一次搞定前缀和
+
+前缀和是一种重要的预处理，能大大降低查询的时间复杂度。可以简单理解为“数列的前 n 项的和”。
+
+
+
+
+
+通过前缀和数组可以轻松得到**每个区间的和**。我们的前缀和数组里保存的就是前 n 项的和。
+
+前缀和其实我们很早之前就了解过的，我们求数列的和时，`Sn = a1+a2+a3+...an`; 此时 Sn 就是数列的前 n 项和。例 `S5 = a1 + a2 + a3 + a4 + a5`; `S2 = a1 + a2`。所以我们完全可以通过 `S5-S2` 得到 `a3+a4+a5` 的值，这个过程就和我们做题用到的前缀和思想类似。我们的前缀和数组里保存的就是前 n 项的和。见下图
+
+![img](assets/1610773274-TkbOFU-file_1610773273675.png)
+
+我们通过前缀和数组保存前 n 位的和，presum[1]保存的就是 nums 数组中前 1 位的和，也就是 `presum[1] = nums[0]`, `presum[2] = nums[0] + nums[1] = presum[1] + nums[1]`. 依次类推，所以我们通过前缀和数组可以轻松得到每个区间的和。
+
+例如我们需要获取 nums[2] 到 nums[4] 这个区间的和，我们则完全根据 presum 数组得到，是不是有点和我们之前说的字符串匹配算法中 BM,KMP 中的 next 数组和 suffix 数组作用类似。那么我们怎么根据 presum 数组获取 nums[2] 到 nums[4] 区间的和呢？见下图
+
+![前缀和](assets/前缀和.77twdj3gpkg0.png)
+
+
+
+好啦，我们已经了解了前缀和的解题思想了，我们可以通过下面这段代码得到我们的前缀和数组，非常简单
+
+```c++
+presum[0] = 0;
+for (int i = 0; i < nums.length; i++) {
+	presum[i+1] = nums[i] + presum[i];
+}
+```
+
+
+
+
+
+## 724. 寻找数组的中心下标
+
+
+
+```c++
+int pivotIndex(vector<int>& nums) {
+    int presum[nums.size() + 1];
+    presum[0] = 0;
+
+    for (int i = 0; i < nums.size(); ++i) {
+        presum[i + 1] = nums[i] + presum[i];
+    }
+
+    int left = 0, right = 0;
+    for (int i = 0; i < nums.size(); ++i) {
+        left = presum[i] - presum[0];
+        right = presum[nums.size()] - presum[i];
+
+        if (left == right) {
+            return i;
+        }
+
+    }
+    return -1;
+}
+```
+
+
+
+
+
+## 523. 连续的子数组和
+
+
+
+**前缀和 + HashMap**
+
+
+
+
+
+![image-20220317222759046](assets/image-20220317222759046.png)
+
+
+
+
+
+![image-20220317222853765](assets/image-20220317222853765.png)
+
+
+
+![image-20220317222923101](assets/image-20220317222923101.png)
+
+
+
+![image-20220317222841757](assets/image-20220317222841757.png)
+
+
+
+
+
+![image-20220317222819678](assets/image-20220317222819678.png)
