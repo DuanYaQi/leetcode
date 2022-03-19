@@ -59,6 +59,8 @@ DAG 的问题就 dfs+memo
 
 [进阶石Github](https://github.com/acm-clan/algorithm-stone)
 
+[algorithm-base/Github](https://github.com/chefyuan/algorithm-base)
+
 **题解+教学**
 
 [李威威](https://liweiwei1419.gitee.io/leetcode-algo/)
@@ -102,8 +104,8 @@ https://www.cnblogs.com/MinPage/
 |深度优先遍历 DFS　　　stack<br> 广度优先遍历 BFS　　　queue|
 |用于储存答案的res直接定义在主函数中，副函数&取值输入，最后直接输出。不要定义在函数外|
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
-|-2^31~2^31-1 对应 INT_MIN 和 INT_MAX|
-| (p && !q) &#124;&#124; (!p && q)  = (!p &#124;&#124; !q)　两者状态不同时为true　其中!q代表q为空 |
+|-2^31~2^31-1 对应 INT_MIN 和 INT_MAX   (少1位是符号位)|
+| (!p &#124;&#124; !q) = (p && !q) &#124;&#124; (!p && q) 　两者状态不同时为true　其中!q代表q为空 |
 | size在for之前取值，防止for循环中size大小改变|
 |tostring()　stoi()|
 |如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！<br>两种写法注意选择 <br>if(递归函数(left)) return;　　　if(递归函数(right)) return;<br>left = 递归函数(left);　　 　　  right = 递归函数(right);|
@@ -149,6 +151,23 @@ static const auto io_sync_off = []()
 ```
 
 
+
+```c++
+// 不开拖空间swap
+// 异或 任何数与自己异或为0 与0异或为自己
+a = a ^ b; 
+b = a ^ b; // b = a^b^b = a^0 = a
+a = a ^ b; 
+
+// 加和
+a = a + b;
+b = a - b;
+a = a - b;
+```
+
+
+
+---
 
 ### 迭代法和递归法
 
@@ -423,16 +442,51 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 
+**master 公式(主定理)** 是利用**分治**策略来解决问题经常使用的时间复杂度的分析方法。分治策略中递归来求解问题分为三步：**分解、解决，合并**。
+
+T(N) 的公式从大规模来看，不细分。
+$$
+T(N) = a * T(N/b)+O(n^d)
+$$
+其中 n 表示问题的规模，即总样本数，
+a 表示递归的次数，即生成的子问题数，子过程调用多少次
+b 表示每次递归是原来的N/b之一个规模，$N/b$ 是子过程数据量
+d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，剩余时间复杂度。
+
+①$\text{if} \quad \log_ba > d      \quad   => 	\quad	O(N^{\log_ba})$
+②$\text{if} \quad \log_ba = d 	\quad	=> \quad O(N^d *\log N)$
+③$\text{if} \quad \log_ba < d	\quad	 => \quad		O(N^d)$
+
+>  注意: 多个递归的规模必须一样，否则master公式失效。
+>
+> 例子：二分
+> $$
+> T(N) = 2 * T[N/2] + O(1)
+> $$
+> a = 2, b = 2, d = 0
+>
+> $ d < \log_2 2$, 时间复杂度为 $O(n)$
+
+
+
+
+
+
+
+
+
 ---
 
-### 2.5. [回溯](Alog_Backtracking/README.md)
+### 2.5. [回溯](Alog_BackTracking/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[77. Combinations](Alog_Backtracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
-|[51. N-Queens](/Alog_Backtracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
+|[77. Combinations](Alog_BackTracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
+|[51. N-Queens](/Alog_BackTracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
+|[37. Sudoku Solver](/Alog_BackTracking/37+Sudoku%20Solver.cpp) | |判断合法后再递归 |
 | | | |
-
+| | | |
+| | | |
 
 
 ---
@@ -486,6 +540,13 @@ DP
 [树](DS_Tree/README.md) 中 **Sec 4.2 + Sec 4.3** 迭代遍历为 DFS，**Sec 4.4** 层序遍历为 BFS
 
 [图](DS_Graph/README.md) 中 **图的遍历** 有 DFS/ BFS 详细概述
+
+
+
+
+
+---
+### 2.9. [Math](Math_数论/README.md)
 
 
 

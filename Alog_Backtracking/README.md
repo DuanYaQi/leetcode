@@ -175,16 +175,21 @@ void backtracking(参数) {
 1. **回溯函数模板返回值以及参数**
 
 ```c++
-void backtracking(参数)
+vector<vector<string>> result;
+void bt(int cnt, int n, vector<string> &queen, vector<vector<int>> &attack, vector<vector<string>> &solve)
 ```
+
+参数n是棋牌的大小，然后用 cnt 来记录当前遍历到棋盘的第几行了。
+
+
 
 
 
 2. **回溯函数终止条件**
 
 ```c++
-if (queen == 0) {
-    存放结果;
+if (cnt == n) {     //放皇后的数目, 也表示行数
+    solve.push_back(queen);
     return;
 }
 ```
@@ -193,19 +198,75 @@ if (queen == 0) {
 
 3. **回溯搜索的遍历过程**
 
-注意图中，特意举例集合大小和孩子的数量是相等的！回溯函数遍历过程伪代码如下：
+递归深度就是 cnt 控制棋盘的行，每⼀层里 for 循环的 col 控制棋盘的**列**，一行一列，确定了放置皇后的位置。每次都是要从新的一行的起始位置开始搜，所以都是从 0 开始。
 
 ```c++
-for (选择: 本层集合中元素（树中节点孩子的数量就是集合的大小）) {
-    处理节点;
-    backtracking(路径, 选择列表); //递归
-    回溯，撤销处理结果;
+for (int i = 0; i < n; ++i) {
+    if(attack[cnt][i] == 0) {
+        queen[cnt][i] = 'Q';
+        vector<vector<int>> tmp = attack;
+        putQueen(cnt, i, attack);
+        bt(cnt+1, n, queen, attack, solve);
+        attack = tmp;
+        queen[cnt][i] = '.';
+    }
 }
 ```
 
 
 
 
+
+**放 Queen，更新 Attack数组**
+
+```c++
+void putQueen(int x, int y, vector<vector<int>> &attack) {
+    int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    attack[x][y] = 1;
+
+    for (int i = 1; i < attack.size(); ++i) {
+        for (int j = 0; j < 8; ++j) {
+            int ax = x + i * dx[j];
+            int ay = y + i * dy[j];
+
+            if (ax >= 0 && ax < attack.size() && ay >=0 && ay < attack.size()) {
+                attack[ax][ay] = 1;
+            }
+        }
+    }
+
+}
+```
+
+
+
+**递归 + 回溯**
+
+```c++
+void bt(int cnt, int n, vector<string> &queen, vector<vector<int>> &attack, vector<vector<string>> &solve) {
+
+    if (cnt == n) {     //放皇后的数目, 也表示行数
+        solve.push_back(queen);
+        return;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        if(attack[cnt][i] == 0) {
+            queen[cnt][i] = 'Q';
+            vector<vector<int>> tmp = attack;
+            putQueen(cnt, i, attack);
+            bt(cnt+1, n, queen, attack, solve);
+            attack = tmp;
+            queen[cnt][i] = '.';
+        }
+    }
+}
+```
+
+
+
+**主函数**
 
 ```c++
 vector<vector<string>> solveNQueens(int n) {
@@ -234,58 +295,103 @@ vector<vector<string>> solveNQueens(int n) {
 
 
 
+---
+
+### 37. 解数独
+
+本题中棋盘的每⼀个位置都要放⼀个数字，并检查数字是否合法，解数独的树形结构要比N皇后更宽更深。
+
+
+
+
+
+1. **回溯函数模板返回值以及参数**
+
 ```c++
-    void putQueen(int x, int y, vector<vector<int>> &attack) {
-        int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
-        int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
-        attack[x][y] = 1;
-        
-        for (int i = 1; i < attack.size(); ++i) {
-            for (int j = 0; j < 8; ++j) {
-                int ax = x + i * dx[j];
-                int ay = y + i * dy[j];
-
-                if (ax >= 0 && ax < attack.size() && ay >=0 && ay < attack.size()) {
-                    attack[ax][ay] = 1;
-                }
-            }
-        }
-
-    }
-
-    void bt(int cnt, int n, vector<string> &queen, vector<vector<int>> &attack, vector<vector<string>> &solve) {
-
-        if (cnt == n) {     //放皇后的数目, 也表示行数
-            solve.push_back(queen);
-            return;
-        }
-
-        for (int i = 0; i < n; ++i) {
-            if(attack[cnt][i] == 0) {
-                queen[cnt][i] = 'Q';
-                vector<vector<int>> tmp = attack;
-                putQueen(cnt, i, attack);
-                bt(cnt+1, n, queen, attack, solve);
-                attack = tmp;
-                queen[cnt][i] = '.';
-            }
-        }
-    }
-
-  
+bool backtracking(vector<vector<char>>& board)
 ```
 
 
 
+2. **回溯函数终止条件**
+
+本题递归不用终止条件，解数独是要遍历整个树形结构寻找可能的叶子节点就立刻返回。
+
+递归的下⼀层的棋盘⼀定比上⼀层的棋盘多⼀个数，等数填满了棋盘自然就终止（填满当然好了，说明找到结果了），所以不需要终止条件
+
+
+
+
+
+3. **回溯搜索的遍历过程**
+
+⼀个for循环遍历棋盘的行，⼀个for循环遍历棋盘的列，⼀行⼀列确定下来之后，递归遍历这个位置放9个数字的可能性！
+
+```c++
+bool backtracking(vector<vector<char>>& board) {
+    
+    for (int i = 0; i < board.size(); i++) { // 遍历⾏
+        for (int j = 0; j < board[0].size(); j++) { // 遍历列
+            
+            if (board[i][j] != '.') continue;
+            
+            for (char k = '1'; k <= '9'; k++) { // (i, j) 这个位置放k是否合适
+                if (isValid(i, j, k, board)) {
+                    board[i][j] = k; // 放置k
+                	if (backtracking(board)) return true; // 如果找到合适⼀组⽴刻返回
+                    board[i][j] = '.'; // 回溯，撤销k
+                }
+            }
+            return false; // 9个数都试完了，都不行，那么就返回false
+        }
+    }
+    return true; // 遍历完没有返回false，说明找到了合适棋盘位置了
+}
+```
+
+注意这里 return false的地方：因为如果⼀行一列确定下来了，这⾥尝试了9个数都不行，说明这个棋盘找不到解决数独问题的解！
+
+那么会直接返回， 这也就是为什么没有终止条件也不会永远填不满棋盘而无限递归下去！
 
 
 
 
 
 
----
 
-### 37. 解数独
+**判断棋盘是否合法有如下三个维度**：
+
+同行是否重复
+同列是否重复
+9宫格里是否重复
+
+```c++
+bool isValid(int row, int col, char val, vector<vector<char>>& board) {
+    for (int i = 0; i < 9; i++) { // 判断行里是否重复
+        if (board[row][i] == val) {
+        	return false;
+        }
+    }
+    
+    for (int j = 0; j < 9; j++) { // 判断列里是否重复
+        if (board[j][col] == val) {
+            return false;
+        }
+    }
+    
+    int startRow = (row / 3) * 3;
+    int startCol = (col / 3) * 3;
+    
+    for (int i = startRow; i < startRow + 3; i++) { // 判断9方格里是否重复
+        for (int j = startCol; j < startCol + 3; j++) {
+            if (board[i][j] == val ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+```
 
 
 

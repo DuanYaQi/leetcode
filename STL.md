@@ -121,6 +121,8 @@ vector<int>(n, 0); 								//一维向量1xn 初始化为0
 vector<vector<int>> dp(m, vector<int>(n, 0));  //二维向量mxn 初始化为0
 ```
 
+[二维vector初始化](https://www.cnblogs.com/NirobertEinteson/p/11960285.html) 
+
 
 
 ---
@@ -186,7 +188,9 @@ int main(){
 }
 ```
 
-​	**STL容器中，只有vector和string中，允许使用`vi.begin()+3`这种迭代器加上整数的写法**
+​	**STL容器中，只有 vector 和 string 中，允许使用`vi.begin()+3`这种迭代器加上整数的写法**
+
+
 
 ---
 
