@@ -1,8 +1,14 @@
 # 回溯
 
+**第一遍不要去考虑剪枝！！！**
+
+
+
+
+
 ## 基础
 
-回溯法也可以叫做回溯搜索法，它是⼀种搜索的⽅式。
+回溯法也可以叫做回溯搜索法，它是⼀种搜索的⽅式。（属于DFS）
 
 在二叉树系列中，我们已经不止⼀次，提到了回溯，**回溯是递归的副产品，只要有递归就会有回溯**。
 
@@ -150,7 +156,306 @@ void backtracking(参数) {
 
 ![image-20210426233635237](assets/image-20210426233635237.png)
 
+**取过的数，不在重复取**
 
+**图中每次搜索到了叶⼦节点，我们就找到了⼀个结果。**
+
+**图中可以发现n相当于树的宽度，k相当于树的深度。**
+
+
+
+
+
+1. **回溯函数模板返回值以及参数**
+
+```c++
+void backtracking(int n, int k, int start);
+// n上限数字 k上限个数 start当前取到的数字
+```
+
+
+
+2. **回溯函数终止条件**
+
+**搜到叶子节点**了，也就找到了满⾜条件的⼀条答案，把这个答案存放起来，并结束本层递归。
+
+```c++
+if (resT.size() == k) {
+    存放结果;
+    return;
+}
+```
+
+
+
+3. **回溯搜索的遍历过程**
+
+回溯法⼀般是在**集合中递归搜索**，集合的大小构成了树的宽度，递归的深度构成的树的深度。
+
+```c++
+for (int i = start; i < n; ++i) {
+    resT.push_back(i);
+    backtracking(n, k, i + 1); //递归
+    resT.pop_back();
+}
+```
+
+
+
+
+
+注意下边的优化，要**全局变量/引用**，不要传值(堆栈会爆内存)
+
+```C++
+// 	24 ms	9.7 MB
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(int start, int cnt, int n, int k) {
+    if (cnt == k) {
+        res.push_back(resT);
+    }
+
+    for (int i = start + 1; i <= n; ++i) {
+        resT.push_back(i);
+        dfs(i, cnt + 1, n, k);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> combine(int n, int k) {
+    vector<int> resT;
+    dfs(0, 0, n, k);    
+
+    return res;
+}
+
+
+
+```
+
+
+
+```C++
+// 	24 ms	9.7 MB
+vector<vector<int>> res;
+    
+void dfs(int start, int cnt, int n, int k, vector<int> &resT) {
+    if (cnt == k) {
+        res.push_back(resT);
+    }
+
+    for (int i = start + 1; i <= n; ++i) {
+        resT.push_back(i);
+        dfs(i, cnt + 1, n, k, resT);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> combine(int n, int k) {
+    vector<int> resT;
+    dfs(0, 0, n ,k, resT);    
+
+    return res;
+}
+```
+
+
+
+```C++
+//548 ms	164.4 MB
+vector<vector<int>> res;
+    
+void dfs(int start, int cnt, int n, int k, vector<int> resT) {
+    if (cnt == k) {
+        res.push_back(resT);
+    }
+
+    for (int i = start + 1; i <= n; ++i) {
+        resT.push_back(i);
+        dfs(i, cnt + 1, n, k, resT);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> combine(int n, int k) {
+    vector<int> resT;
+    dfs(0, 0, n ,k, resT);    
+
+    return res;
+}
+```
+
+
+
+
+
+**剪枝**
+
+
+
+
+
+---
+
+### 216题. 组合总和III
+
+
+
+1. **回溯函数模板返回值以及参数**
+
+```c++
+void backtracking(int n, int k, int start, int sum);
+// n上限数字 k上限个数 start当前取到的数字
+```
+
+
+
+2. **回溯函数终止条件**
+
+**搜到叶子节点**了，也就找到了满⾜条件的⼀条答案，把这个答案存放起来，并结束本层递归。
+
+```c++
+if (resT.size() == k && sum == n) {
+    存放结果;
+    return;
+}
+```
+
+
+
+3. **回溯搜索的遍历过程**
+
+回溯法⼀般是在**集合中递归搜索**，集合的大小构成了树的宽度，递归的深度构成的树的深度。
+
+```c++
+for (int i = start; i <= 9; ++i) {
+    if (sum + i <= n) {
+        resT.push_back(i);
+        sum += i;
+        backtracking(n, k, i + 1); //递归
+        sum -= i;
+        resT.pop_back();
+    }
+}
+```
+
+
+
+
+
+
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(int k, int n, int start, int sum) {
+    if (resT.size() == k && sum == n) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i <= 9; ++i) {
+        if (sum + i <= n) {		//这里不剪枝 也不会降低效率
+            resT.push_back(i);
+            sum += i;
+            dfs(k, n, i+1, sum);
+            sum -= i;
+            resT.pop_back();
+        }
+    }
+
+
+    return;
+}
+
+vector<vector<int>> combinationSum3(int k, int n) {
+    dfs(k, n, 1, 0);
+
+    return res;
+}
+```
+
+
+
+---
+
+### 17. 电话号码的字母组合
+
+```c++
+vector<string> res;
+string resT;
+
+char a[10][4] = {{}, {}, {'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, 
+                 {'j', 'k', 'l'}, {'m', 'n', 'o'}, {'p', 'q', 'r', 's'}, {'t', 'u', 'v'}, {'w', 'x', 'y', 'z'} };
+
+void dfs(string &digits, int start){
+    if (resT.size() == digits.size()) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i < digits.size(); ++i) {
+        int number = digits[i] - '0';
+        for (int j = 0; j <= 3; ++j) {
+            char c = a[number][j];
+            if (c != '\000') {	//注意char数组末尾为\000
+                resT.push_back(c);
+                dfs(digits, i+1);
+                resT.pop_back();
+            }
+        }
+    }   
+
+
+    return;     
+}
+
+vector<string> letterCombinations(string digits) {
+    if (digits.size() == 0) return res;     
+
+    dfs(digits, 0);
+
+    return res;
+}
+```
+
+
+
+
+
+---
+
+### 39. 
+
+
+
+
+
+
+
+---
+
+### 40.
+
+
+
+
+
+
+
+
+
+
+
+---
 
 ## 3. 分割
 

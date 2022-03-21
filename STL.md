@@ -1,6 +1,6 @@
-## C++标准模板库(STL)介绍
+# C++标准模板库(STL)介绍
 
-### 常用容器的特点及适用情况
+## 常用容器的特点及适用情况
 
 string：与vector相似的容器，专门用于存储字符。随机访问快，在尾位置插入/删除速度快
 
@@ -79,7 +79,11 @@ hash_multimap：底层为哈希表，无序，可重复
 
 ---
 
-### 1. vector
+## 1. vector
+
+https://hackingcpp.com/cpp/std/vector.html
+
+
 
 向量，“变长数组”，“长度根据需要而自动改变的数组”。有时会碰到只用普通数组会超内存的情况，这种情况使用vector会便捷许多。vector还可以以邻接表的方式储存图，对**无法使用邻接矩阵**的题目（结点数太多）、又害怕**使用指针实现邻接表**的读者十分友好。
 
@@ -92,7 +96,7 @@ using namespace std;
 
 ---
 
-#### 1.1 vector定义
+### 1.1 vector定义
 
 ```c++
 vector<typename> name;//等同于一维数组name[SIZE],只不过其长度可以根据需要进行变化，比较节省空间。
@@ -127,7 +131,7 @@ vector<vector<int>> dp(m, vector<int>(n, 0));  //二维向量mxn 初始化为0
 
 ---
 
-#### 1.2 vector容器内元素的访问
+### 1.2 vector容器内元素的访问
 
 1. 通过下标访问
 
@@ -194,7 +198,7 @@ int main(){
 
 ---
 
-#### 1.3 vector常用函数
+### 1.3 vector常用函数
 
 1. push_back(i) / emplace_back(i)
 
@@ -347,6 +351,21 @@ for (auto first = demo.begin(); first < iter;++first) {	// 1 4 5
 
 
 
+8. reverse() 直接翻转vector
+
+```c++
+vector<int> demo{ 1,3,3,4,3,5 };
+
+for (int v : demo)
+    cout << v;
+// 1 3 3 4 3 5
+
+reverse(demo.begin(), demo.end());
+for (int v : demo)
+    cout << v;
+// 5 3 4 3 3 1    
+```
+
 
 
 
@@ -377,7 +396,7 @@ bool operator!=( const vector<T,Alloc>& lhs,
 
 ---
 
-#### 1.4 vector的常见用途
+### 1.4 vector的常见用途
 
 1. 储存数据
 
@@ -396,7 +415,7 @@ bool operator!=( const vector<T,Alloc>& lhs,
 
 ------
 
-### 2. set
+## 2. set
 
 ​	集合，是一个**内部自动有序**且**不包含重复元素**的容器。有可能出现需要去掉重读元素的情况，有可能元素比较大或者类型不是 `int` 型而不能直接开散列表，这种情况可以用set**保留元素本身而不是考虑它的个数**。	也可以再开一个数组进行下标和元素的对应来解决。
 
@@ -574,7 +593,7 @@ int main(){
 
 ---
 
-### 3. string
+## 3. string
 
 ​	在c语言中，一般使用字符数组`char str[]`来存放字符串，但是使用字符数组有时会显得操作麻烦。
 
@@ -840,7 +859,7 @@ cout << b ; // 00000001
 
 ------
 
-### 4. map-映射
+## 4. map-映射
 
 ​	映射，普通数组是`int`型映射到其他类型。`map`可以将**任何基本类型**（包括STL容器）映射到**任何基本类型**（包括STL容器）.
 
@@ -1021,7 +1040,7 @@ int main() {
 
 ------
 
-### 5. queue-队列
+## 5. queue-队列
 
 队列，实现**先进先出**的容器
 
@@ -1110,7 +1129,7 @@ printf("%d %d",q.front(),q.back());//1 5
 
 ------
 
-### 6. priority_queue-优先队列
+## 6. priority_queue-优先队列
 
 优先队列，其底层是用堆来进行实现的.优先队列中,**队首元素一定是当前队列中优先级最高**的那一个.例如在队列有如下元素,且定义好了优先级
 
@@ -1307,7 +1326,7 @@ bool operator () (const fruit &f1, const fruit &f2){
 
 ------
 
-### 7. stack-栈
+## 7. stack-栈
 
 栈，后进先出的容器
 
@@ -1398,7 +1417,7 @@ printf("%d",st.top());//5
 
 ------
 
-### 8. pair
+## 8. pair
 
 ​	pair,当想要将两个元素绑在一起作为一个合成元素,又不想要因此定义结构体时,使用pair可以很方便的作为一个替代品.也就是说,pair实际上可以看作一个内部有两个元素的结构体,且这两个元素的类型是可以指定的.
 
@@ -1501,7 +1520,7 @@ for(map<string,int>::iterator it=mp.begin();it!=mp.begin();it++){
 
 ---
 
-### 9. algorithm头文件下的常用函数
+## 9. algorithm头文件下的常用函数
 
 #### 9.1 max()、min()和abs()
 

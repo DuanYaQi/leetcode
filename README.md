@@ -482,8 +482,11 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[77. Combinations](Alog_BackTracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
+|[216. Combination Sum III](/Alog_BackTracking/216+Combination%20Sum%20III.cpp) | | 与77的区别就是,终止条件多了一个 |
 |[51. N-Queens](/Alog_BackTracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
 |[37. Sudoku Solver](/Alog_BackTracking/37+Sudoku%20Solver.cpp) | |判断合法后再递归 |
+|[17. Letter Combinations of a Phone Number](/Alog_BackTracking/17+Letter%20Combinations%20of%20a%20Phone%20Number.cpp) | | char数组未初始化元素为'\000' |
+| | | |
 | | | |
 | | | |
 | | | |
@@ -1229,17 +1232,13 @@ https://visualgo.net/zh
 
 
 
-新手会归并排序，快排，翻转链表，前中后序二叉树，二分法，dfs和bfs各一道，加01背包，以及股票问题就够了。 不面头部四家，这个难度差不多够用了
+新手会归并排序，快排，翻转链表，前中后序二叉树，二分法，dfs和bfs各一道，加01背包，以及股票问题就够了。 不面头部四家，这个难度差不多够用了 
 
 
 
-主要我觉得国内公司考图的概率太小了
+主要我觉得国内公司考图的概率太小了，面试不考，笔试总有
 
-面试不考，笔试总有
-
-
-
-笔试考图特别多，不过也基本上不涉及这些算法，都是用并查集来做
+笔试考图特别多，不过也基本上不涉及这些算法，都是用**并查集**来做
 
 
 
@@ -1249,13 +1248,32 @@ https://visualgo.net/zh
 
 真没听说过谁面阿里手撕红黑树代码的，插入删除讲个流程就差不多了
 
-家里人，安全部门
-
 
 
 
 
 https://www.cxyxiaowu.com/7072.html
+
+
+
+四个月 solve 约 550 道题 (难度分布大概是 4 : 6 : 1)
+
+下面这篇文章是我通过大约五天时间训练完绝大部分 滑动窗口 类型的经典题后，再用 2 天时间归纳总结的一套思维框架。运用它可以很快秒杀绝大部分该类型中档题。而那些同类型的困难题，到头来你会发现也只是基于同一框架多加了几个 components (其他框架) 而已 ，其核心思想依旧不变。
+[滑动窗口真滴简单!] 闪电五连鞭带你秒杀12道中档题 (附详情解析)https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/yi-ge-mo-ban-miao-sha-10dao-zhong-deng-n-sb0x/
+
+
+
+**一段时间内 (一般是5 ~ 7天) 只做该类型题目, 结合其他质量高的题解以及自身的见解归纳总结出一套属于自己的框架。**
+
+
+
+
+
+
+
+
+
+
 
 
 
