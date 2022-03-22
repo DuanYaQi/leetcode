@@ -14,7 +14,7 @@ DAG 的问题就 dfs+memo
 
 问是否可以，也很有可能 DP
 
-求所有解的，基本 backtracking
+求**所有解**的（排列/组合/切割/子集/棋盘），基本 backtracking
 
 排序总是可以想一想的
 
@@ -22,9 +22,7 @@ DAG 的问题就 dfs+memo
 
 找规律试试Stack
 
-问连续通常都是滑动窗口
-
-
+问**连续**通常都是滑动窗口
 
 
 
@@ -482,15 +480,17 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[77. Combinations](Alog_BackTracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
+|[39. Combination Sum](/Alog_BackTracking/39+Combination%20Sum.cpp) | | 跟216的区别就是下一层的循环起始位置 |
 |[216. Combination Sum III](/Alog_BackTracking/216+Combination%20Sum%20III.cpp) | | 与77的区别就是,终止条件多了一个 |
 |[51. N-Queens](/Alog_BackTracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
 |[37. Sudoku Solver](/Alog_BackTracking/37+Sudoku%20Solver.cpp) | |判断合法后再递归 |
-|[17. Letter Combinations of a Phone Number](/Alog_BackTracking/17+Letter%20Combinations%20of%20a%20Phone%20Number.cpp) | | char数组未初始化元素为'\000' |
+|[17. Letter Combinations of a Phone Number](/Alog_BackTracking/17+Letter%20Combinations%20of%20a%20Phone%20Number.cpp) | | char数组未初始化元素为'\000' <br> `s[i] - '0'` char转int|
+|[40. Combination Sum II](/Alog_BackTracking/40+Combination%20Sum%20II.cpp) | | 加特判过掉重复的步骤<br> 跳过**同一树层**的先前相同值|
+|[131. Palindrome Partitioning](/Alog_BackTracking/131+Palindrome%20Partitioning.cpp) | |分割问题就是组合问题 <br>start和end模拟切割线|
+|[93. Restore IP Addresses](/Alog_BackTracking/93+Restore%20IP%20Addresses.cpp) | | 分割注意处理start和end|
+|[78. Subsets](/Alog_BackTracking/78+Subsets.cpp) | | 注意排序|
 | | | |
 | | | |
-| | | |
-| | | |
-
 
 ---
 

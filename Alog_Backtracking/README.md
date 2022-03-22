@@ -406,7 +406,7 @@ void dfs(string &digits, int start){
         int number = digits[i] - '0';
         for (int j = 0; j <= 3; ++j) {
             char c = a[number][j];
-            if (c != '\000') {	//注意char数组末尾为\000
+            if (c != '\000') {	
                 resT.push_back(c);
                 dfs(digits, i+1);
                 resT.pop_back();
@@ -429,13 +429,76 @@ vector<string> letterCombinations(string digits) {
 
 
 
+**优化**
+
+```c++
+const string letterMap[10] = {
+    "", // 0
+    "", // 1
+    "abc",  // 2
+    "def",  // 3
+    "ghi",  // 4
+    "jkl",  // 5
+    "mno",  // 6
+    "pqrs", // 7
+    "tuv",  // 8
+    "wxyz", // 9
+};
+```
+
+![image-20220321182311076](assets/image-20220321182311076.png)
+
+
+
 
 
 ---
 
-### 39. 
+### 39. 组合总和
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(int sum, int target, vector<int>& candidates, int start){
+    if (sum == target) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i < candidates.size(); ++i) {
+        if (sum + candidates[i] <= target) {
+            resT.push_back(candidates[i]);
+            sum += candidates[i];
+            dfs(sum, target, candidates, i);
+            sum -= candidates[i];
+            resT.pop_back();
+        }
+    }
+
+    return;
+}
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
 
 
+    dfs(0, target, candidates, 0);
+    return res;
+}
+```
+
+![image-20220321183719789](assets/image-20220321183719789.png)
+
+
+
+对总集合排序之后，如果下⼀层的sum（就是本层的 sum + candidates[i]）已经⼤于target，就可以结束本轮for循环的遍历。
+
+```c++
+for (int i = startIndex; i < candidates.size() && sum + candidates[i] <=
+target; i++)
+    
+sort(candidates.begin(), candidates.end()); // 需要排序
+```
 
 
 
@@ -443,13 +506,56 @@ vector<string> letterCombinations(string digits) {
 
 ---
 
-### 40.
+### 40. 组合总和II
+
+本题的难点在于区别2中：集合（数组candidates）有重复元素，但还不能有重复的组合。
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(vector<int>& candidates, int target, int sum, int start) {
+    if (sum == target) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i < candidates.size(); ++i) {
+        if (i > 0 && candidates[i] == candidates[i-1]  && i > start) {
+            continue;
+        }
+        if (sum + candidates[i] <= target) {
+            sum += candidates[i];
+            resT.push_back(candidates[i]);
+            dfs(candidates, target, sum, i+1);
+            resT.pop_back();
+            sum -= candidates[i];
+        }
+    }
+
+    return;
+}
+
+
+vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+    sort(candidates.begin(), candidates.end());
+    dfs(candidates, target, 0, 0);
+
+    return res;
+}
+```
 
 
 
+如果 candidates[i] == candidates[i - 1] 并且 used[i - 1] == false ，就说明：前⼀个树枝，使⽤了candidates[i - 1]，也就是说**同⼀树层**使用过candidates[i - 1]。
+
+![image-20220321191559303](assets/image-20220321191559303.png)
 
 
 
+在图中将 used 的变化用橘黄色标注上，可以看出在 candidates[i] == candidates[i - 1] 相同的情况下：
+used[i - 1] == true，说明同⼀**树支** candidates[i - 1] 使用过 （还没回溯）
+used[i - 1] == false，说明同⼀**树层** candidates[i - 1] 使用过（回溯过了）
 
 
 
@@ -459,15 +565,155 @@ vector<string> letterCombinations(string digits) {
 
 ## 3. 分割
 
+### 131. 分割回文串
+
+其实切割问题类似组合问题。
+
+例如对于字符串abcdef：
+组合问题：选取⼀个a之后，在bcdef中再去选取第⼆个，选取b之后在cdef中在选组第三个.....。
+切割问题：切割⼀个a之后，在bcdef中再去切割第⼆段，切割b之后在cdef中在切割第三段.....。
+
+![image-20220321225802289](assets/image-20220321225802289.png)
+
+
+
+```c++
+vector<vector<string>> res;
+vector<string> resT;
+
+bool check(string &s, int start, int end) {
+    for (int i = start, j = end; i < j; ++i, --j) {
+        if (s[i] != s[j])
+            return false;
+    }
+    return true;
+}
+
+void dfs(string &s, int start) {
+    if (start == s.size()) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int end = start; end < s.size(); ++end) {	//start 
+        if (check(s, start, end)) {
+            resT.push_back(s.substr(start, end-start+1));
+            dfs(s, end+1);
+            resT.pop_back();
+        }
+    }                  
+}
+
+vector<vector<string>> partition(string s) {
+    dfs(s, 0);
+    return res;
+}   
+```
+
+
+
+---
+
+### 93. 复原IP地址
+
+```c++
+vector<string> res;
+
+bool isValid(string s) {	// 判断数字是否合法
+    if (s.size() == 1) return true;
+    if (s[0] - '0' == 0 || s.size() > 3) return false;
+
+    long long num = 0;
+    for (int i = 0; i < s.size(); ++i) {
+        num = num*10L + s[i] - '0';
+    }
+
+    return num > 255 ? false : true;
+}
+
+
+void dfs(string &s, int start, string sT, int cnt) {
+    if (cnt > 4) {
+        return;
+    }
+
+    if (start == s.size() && cnt == 4) {
+        sT = sT.substr(0, sT.size()-1);
+        res.push_back(sT);
+    }
+
+    for (int end = start; end <= start+3 && end < s.size(); ++end) {
+        if (isValid(s.substr(start, end-start+1))) {
+            string tmp = s.substr(start, end-start+1);
+            dfs(s, end+1, sT + tmp + '.', cnt+1); //注意这里第二个参数传入end+1
+        }
+    }
+
+    return;
+
+}
+
+
+vector<string> restoreIpAddresses(string s) {
+    string sT;
+    dfs(s, 0, sT, 0);
+
+    return res;
+}
+```
+
+![image-20220322092240000](assets/image-20220322092240000.png)
+
 
 
 ## 4. 子集
 
+### 78. 子集
 
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+void dfs(vector<int>& nums, int start){
+    res.push_back(resT);
+
+
+    for (int i = start; i < nums.size(); ++i) {
+        resT.push_back(nums[i]);
+        dfs(nums, i + 1);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> subsets(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    dfs(nums, 0);
+    return res;
+}
+```
+
+
+
+
+
+### 90. 
 
 
 
 ## 5. 排列
+
+### 46. 
+
+
+
+
+
+### 47.
+
+
+
+
 
 
 
