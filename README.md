@@ -489,6 +489,11 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 |[131. Palindrome Partitioning](/Alog_BackTracking/131+Palindrome%20Partitioning.cpp) | |分割问题就是组合问题 <br>start和end模拟切割线|
 |[93. Restore IP Addresses](/Alog_BackTracking/93+Restore%20IP%20Addresses.cpp) | | 分割注意处理start和end|
 |[78. Subsets](/Alog_BackTracking/78+Subsets.cpp) | | 注意排序|
+|[491. Increasing Subsequences](/Alog_BackTracking/491+Increasing%20Subsequences.cpp) | |用函数内unordered_set来记录同层已取过的节点，**避免重复取用** |
+|[90. Subsets II](/Alog_BackTracking/90+Subsets%20II.cpp) | | 注意要先排序|
+|[46. Permutations](/Alog_BackTracking/46+Permutations.cpp) | |用全局unordered_set来记录已取过的节点 |
+|[47. Permutations II](/Alog_BackTracking/47+Permutations%20II.cpp) | |用全局unordered_set记录已取过的节点<br>用函数内unordered_set记录同层已取过的节点|
+| | | |
 | | | |
 | | | |
 

@@ -670,10 +670,15 @@ vector<string> restoreIpAddresses(string s) {
 
 ### 78. 子集
 
+集合中元素是不同的
+
 ```c++
 vector<vector<int>> res;
 vector<int> resT;
 void dfs(vector<int>& nums, int start){
+    if (start >= nums.size()) {
+        return;
+    }
     res.push_back(resT);
 
 
@@ -693,29 +698,195 @@ vector<vector<int>> subsets(vector<int>& nums) {
 }
 ```
 
+![image-20220322094321463](assets/image-20220322094321463.png)
 
 
 
 
-### 90. 
+
+### 491. 递增子序列
+
+![image-20220322102801690](assets/image-20220322102801690.png)
 
 
+
+在图中可以看出，同⼀父节点下的同层上使用过的元素就不能在使用了
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+void dfs(vector<int>& nums, int start) {
+    if (resT.size() >= 2) {
+        res.push_back(resT);
+    }
+
+    unordered_set<int> uset;
+
+    for (int i = start; i < nums.size(); ++i) {
+        if (uset.find(nums[i]) != uset.end()) {
+            continue;
+        }
+
+        if (resT.size() == 0 || nums[i] >= resT.back()) {
+            uset.insert(nums[i]);
+            resT.push_back(nums[i]);
+            dfs(nums, i+1);
+            resT.pop_back();
+        }
+    }
+
+    return;
+}
+
+vector<vector<int>> findSubsequences(vector<int>& nums) {
+
+    dfs(nums, 0);
+    return res;
+}
+```
+
+
+
+
+
+
+
+---
+
+### 90. 子集II
+
+集合中元素可以相同
+
+```c++
+
+    vector<vector<int>> res;
+    vector<int> resT;
+
+    void dfs(vector<int>& nums, int start) {
+        res.push_back(resT);
+
+        unordered_set<int> uset;
+        for (int i = start; i < nums.size(); ++i) {
+            if (uset.find(nums[i]) != uset.end()) {
+                continue;
+            }
+            uset.insert(nums[i]);
+            resT.push_back(nums[i]);
+            dfs(nums, i+1);
+            resT.pop_back();
+        }
+
+        return;
+    }
+
+
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end()); // ！！！！！！！！！！！！
+        dfs(nums, 0);
+        return res;
+    }
+
+```
+
+
+
+---
 
 ## 5. 排列
 
-### 46. 
+### 46. 全排列
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;  
+unordered_set<int> uset;
+
+void dfs(vector<int>& nums) {
+    if (resT.size() == nums.size()) {
+        res.push_back(resT);
+        return;
+    }
+
+
+    for (int i = 0; i < nums.size(); ++i) {
+        if (uset.find(nums[i]) == uset.end()) {
+            uset.insert(nums[i]);
+            resT.push_back(nums[i]);
+            dfs(nums);
+            resT.pop_back();
+            uset.erase(nums[i]);
+        }
+    }
+
+
+    return;
+}
+
+vector<vector<int>> permute(vector<int>& nums) {
+    //sort(nums.begin(), nums.end());
+    dfs(nums);
+
+    return res;
+}   
+```
+
+
+
+![image-20220322134105400](assets/image-20220322134105400.png)
+
+
+
+---
+
+### 47. 全排列 II
+
+
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+unordered_set<int> uset;  // 存下标
+
+void dfs(vector<int>& nums) {
+    if (resT.size() == nums.size()) {
+        res.push_back(resT);
+        return;
+    }
+
+    unordered_set<int> uuset; // 存数字
+
+    for (int i = 0; i < nums.size(); ++i) {
+        if (uuset.find(nums[i]) != uuset.end())
+            continue;
+
+        if (uset.find(i) == uset.end()) {
+            uuset.insert(nums[i]);
+            uset.insert(i);
+            resT.push_back(nums[i]);
+            dfs(nums);
+            resT.pop_back();
+            uset.erase(i);
+        }
+
+    }
+
+    return;
+}
+
+
+vector<vector<int>> permuteUnique(vector<int>& nums) {
+    dfs(nums);
+    return res;
+}
+```
+
+![image-20220322140844850](assets/image-20220322140844850.png)
 
 
 
 
 
-### 47.
-
-
-
-
-
-
+---
 
 ## 6. 棋盘问题
 
@@ -953,3 +1124,122 @@ bool isValid(int row, int col, char val, vector<vector<char>>& board) {
 ---
 
 ## 7. 其他
+
+### 去重
+
+```c++
+sort(nums.begin(), nums.end()); // 排序
+vector<bool> used(nums.size(), false);
+```
+
+
+
+大家发现，去重最为关键的代码为：
+
+```c++
+if (i > 0 && nums[i] == nums[i - 1] && used[i - 1] == false) { 
+    continue;
+}
+```
+
+**「如果改成 `used[i - 1] == true`， 也是正确的!」**，去重代码如下：
+
+```c++
+if (i > 0 && nums[i] == nums[i - 1] && used[i - 1] == true) { 
+    continue;
+}
+```
+
+这是为什么呢，就是上面我刚说的，如果要对树层中前一位去重，就用`used[i - 1] == false`，如果要对树枝前一位去重用`used[i - 1] == true`。
+
+**「对于排列问题，树层上去重和树枝上去重，都是可以的，但是树层上去重效率更高！」**
+
+
+
+
+
+树层上去重(used[i - 1] == false)，的树形结构如下：
+
+![图片](assets/640754156126.png)
+
+
+
+树枝上去重（used[i - 1] == true）的树型结构如下：
+
+![图片](assets/64084489849.png)
+
+**大家应该很清晰的看到，树层上对前一位去重非常彻底，效率很高，树枝上对前一位去重虽然最后可以得到答案，但是做了很多无用搜索。**
+
+
+
+
+
+需要注意的是：使用set去重的版本相对于used数组的版本效率都要低很多。
+
+原因在回溯算法：递增子序列中也分析过，主要是因为程序运行的时候对unordered_set 频繁的 insert，unordered_set 需要做哈希映射（也就是把key通过hash function映射为唯⼀的哈希值）相对费时间，而且insert的时候其底层的符号表也要做相应的扩充，也是费时的。而使用used数组在时间复杂度上几乎没有额外负担！
+
+使用set去重，不仅时间复杂度高了，空间复杂度也高了，组合，子集，排列问题的空间复杂度都是O(n)，但如果使用set去重，空间复杂度就变成了O(n^2)，因为每⼀层递归都有⼀个set集合，系统栈空间是n，每⼀个空间都有set集合。
+
+而used数组可是全局变量，每层与每层之间公用⼀个used数组，所以空间复杂度是O(n + n)，最终空间复杂度还是O(n)。
+
+
+
+----
+
+### 332. 重新安排行程
+
+
+
+
+
+
+
+
+
+
+
+----
+
+### 491. 递增子序列
+
+![image-20220322102801690](assets/image-20220322102801690.png)
+
+
+
+在图中可以看出，同⼀父节点下的同层上使用过的元素就不能在使用了
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+void dfs(vector<int>& nums, int start) {
+    if (resT.size() >= 2) {
+        res.push_back(resT);
+    }
+
+    unordered_set<int> uset;
+
+    for (int i = start; i < nums.size(); ++i) {
+        if (uset.find(nums[i]) != uset.end()) {
+            continue;
+        }
+
+        if (resT.size() == 0 || nums[i] >= resT.back()) {
+            uset.insert(nums[i]);
+            resT.push_back(nums[i]);
+            dfs(nums, i+1);
+            resT.pop_back();
+        }
+    }
+
+    return;
+}
+
+vector<vector<int>> findSubsequences(vector<int>& nums) {
+
+    dfs(nums, 0);
+    return res;
+}
+```
+
+
+
