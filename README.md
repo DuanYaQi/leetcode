@@ -225,7 +225,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 ---
 ## 1. 数据结构专题
 
-### 1.1. [树](DS_Tree/README.md)
+### 1.1. [树(并查集/堆)](DS_Tree/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|

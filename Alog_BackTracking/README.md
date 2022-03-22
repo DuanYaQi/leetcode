@@ -1188,6 +1188,52 @@ if (i > 0 && nums[i] == nums[i - 1] && used[i - 1] == true) {
 
 ### 332. 重新安排行程
 
+```c++
+class Solution {
+public:
+    vector<string> resT;
+    vector<vector<string>> res;
+    int ticketNum = 0;
+
+    void dfs(unordered_map<string, map<string, int>> &umap, string start, int cnt) {
+        if (cnt == ticketNum) {
+            res.push_back(resT);
+            return ;
+        }
+
+
+        for (int i = 0; i < umap[start].size(); ++i) {
+            string tmp = umap[start][i];
+            resT.push_back(tmp);
+            umap[start].erase(umap[start].begin() + i);
+            dfs(umap, tmp, cnt+1);
+            umap[start].insert(umap[start].begin() + i, tmp);
+            resT.pop_back();
+        }
+
+        return;
+    }
+
+
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        unordered_map<string, map<string, int>> umap; // ["JFK": "SFO:1", "ATL:1"]
+
+        for (int i = 0; i < tickets.size(); ++i) {
+            umap[tickets[i][0]][tickets[i][1]]++;
+        }
+
+        // sort umap
+
+        ticketNum = tickets.size();
+
+        resT.push_back("JFK");
+        dfs(umap, "JFK", 0);
+        //sort(res.begin(), res.end());
+        return res[0];
+    }
+};
+```
+
 
 
 
