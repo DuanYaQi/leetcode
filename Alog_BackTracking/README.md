@@ -1,0 +1,955 @@
+# 回溯
+
+**第一遍不要去考虑剪枝！！！**
+
+
+
+
+
+## 基础
+
+回溯法也可以叫做回溯搜索法，它是⼀种搜索的⽅式。（属于DFS）
+
+在二叉树系列中，我们已经不止⼀次，提到了回溯，**回溯是递归的副产品，只要有递归就会有回溯**。
+
+**所以以下讲解中，回溯函数也就是递归函数，指的都是⼀个函数。**
+
+
+
+
+
+---
+
+### 效率
+
+回溯法的性能如何呢，这里要和大家说清楚了，**虽然回溯法很难，很不好理解，但是回溯法并不是什么高效的算法**。
+
+**因为回溯的本质是穷举，穷举所有可能，然后选出我们想要的答案**，如果想让回溯法⾼效⼀些，可以加⼀些**剪枝**的操作，但也改不了回溯法就是穷举的本质。
+
+那么既然回溯法并不高效为什么还要用它呢？
+
+因为没得选，⼀些问题能暴力搜出来就不错了，撑死了再剪枝⼀下，还没有更高效的解法。
+
+
+
+
+
+回溯法，一般可以解决如下几种问题：
+
+- 组合问题：N个数里面按一定规则找出k个数的集合
+- 切割问题：一个字符串按一定规则有几种切割方式
+- 子集问题：一个N个数的集合里有多少符合条件的子集
+- 排列问题：N个数按一定规则全排列，有几种排列方式
+- 棋盘问题：N皇后，解数独等等
+
+
+
+**组合是不强调元素顺序的**，**排列是强调元素顺序**。**组合无序**，**排列有序**，
+
+
+
+
+
+----
+
+### 理解
+
+回溯法解决的问题都可以**抽象为树形结构**，是的，我指的是**所有**回溯法的问题都可以抽象为树形结构！
+
+因为回溯法解决的都是在**集合**中**递归查找子集**，**集合的大小**就构成了树的宽度，**递归的深度**构成了树的深度。
+
+递归就要有终止条件，所以必然是⼀颗**高度有限**的树（N叉树）。
+
+
+
+
+
+---
+
+### 模板
+
+在讲二叉树的递归中我们说了**递归三部曲**，这⾥我再给⼤家列出**回溯三部曲**。
+
+递归三要素
+
+1. **确定递归函数的参数和返回值**：确定哪些参数是递归过程中需要处理的，就在函数中加此参数。并且还要明确每次递归的返回值，确定递归函数返回类型。
+2. **确定终止条件**：防止栈溢出。
+3. **确定单层递归的逻辑**：确定每层递归要处理的信息。
+
+
+
+回溯三部曲
+
+1. **回溯函数模板返回值以及参数**
+
+回溯算法中函数返回值⼀般为 void。再来看⼀下参数，因为回溯算法需要的参数可不像⼆叉树递归的时候那么容易⼀次性确定下来，所以⼀般是先写逻辑，然后需要什么参数，就填什么参数。
+
+```c++
+void backtracking(参数)
+```
+
+
+
+2. **回溯函数终止条件**
+
+既然是**树形结构**，那么我们在讲解⼆叉树的递归的时候，就知道遍历树形结构⼀定要有终止条件。所以回溯也有要终止条件。
+
+什么时候达到了终止条件，树中就可以看出，⼀般来说**搜到叶子节点**了，也就找到了满⾜条件的⼀条答案，把这个答案存放起来，并结束本层递归。
+
+```c++
+if (终止条件) {
+    存放结果;
+    return;
+}
+```
+
+
+
+3. **回溯搜索的遍历过程**
+
+在上⾯我们提到了，回溯法⼀般是在**集合中递归搜索**，集合的大小构成了树的宽度，递归的深度构成的树的深度。
+
+![image-20210426232904221](assets/image-20210426232904221.png)
+
+注意图中，特意举例集合大小和孩子的数量是相等的！回溯函数遍历过程伪代码如下：
+
+```c++
+for (选择: 本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+    处理节点;
+    backtracking(路径, 选择列表); //递归
+    回溯，撤销处理结果;
+}
+```
+
+`for` 循环就是遍历集合区间，可以理解⼀个节点有多少个孩子，这个 `for` 循环就执⾏多少次。`backtracking` 这⾥自己调用自己，实现递归。
+
+从图中看出 `for` 循环可以理解是横向遍历，`backtracking`（递归）就是纵向遍历，这样就把这棵树全遍历完了，⼀般来说，搜索叶子节点就是找的其中⼀个结果了。
+
+分析完过程，回溯算法模板框架如下：
+
+```c++
+void backtracking(参数) {
+	if (终止条件) {
+        存放结果;
+        return;
+    }
+    
+    for (选择: 本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+        处理节点;
+        backtracking(路径, 选择列表); //递归
+        回溯，撤销处理结果;
+    }
+}
+```
+
+
+
+
+
+
+
+---
+
+## 2. 组合
+
+### 77. 组合
+
+![image-20210426233635237](assets/image-20210426233635237.png)
+
+**取过的数，不在重复取**
+
+**图中每次搜索到了叶⼦节点，我们就找到了⼀个结果。**
+
+**图中可以发现n相当于树的宽度，k相当于树的深度。**
+
+
+
+
+
+1. **回溯函数模板返回值以及参数**
+
+```c++
+void backtracking(int n, int k, int start);
+// n上限数字 k上限个数 start当前取到的数字
+```
+
+
+
+2. **回溯函数终止条件**
+
+**搜到叶子节点**了，也就找到了满⾜条件的⼀条答案，把这个答案存放起来，并结束本层递归。
+
+```c++
+if (resT.size() == k) {
+    存放结果;
+    return;
+}
+```
+
+
+
+3. **回溯搜索的遍历过程**
+
+回溯法⼀般是在**集合中递归搜索**，集合的大小构成了树的宽度，递归的深度构成的树的深度。
+
+```c++
+for (int i = start; i < n; ++i) {
+    resT.push_back(i);
+    backtracking(n, k, i + 1); //递归
+    resT.pop_back();
+}
+```
+
+
+
+
+
+注意下边的优化，要**全局变量/引用**，不要传值(堆栈会爆内存)
+
+```C++
+// 	24 ms	9.7 MB
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(int start, int cnt, int n, int k) {
+    if (cnt == k) {
+        res.push_back(resT);
+    }
+
+    for (int i = start + 1; i <= n; ++i) {
+        resT.push_back(i);
+        dfs(i, cnt + 1, n, k);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> combine(int n, int k) {
+    vector<int> resT;
+    dfs(0, 0, n, k);    
+
+    return res;
+}
+
+
+
+```
+
+
+
+```C++
+// 	24 ms	9.7 MB
+vector<vector<int>> res;
+    
+void dfs(int start, int cnt, int n, int k, vector<int> &resT) {
+    if (cnt == k) {
+        res.push_back(resT);
+    }
+
+    for (int i = start + 1; i <= n; ++i) {
+        resT.push_back(i);
+        dfs(i, cnt + 1, n, k, resT);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> combine(int n, int k) {
+    vector<int> resT;
+    dfs(0, 0, n ,k, resT);    
+
+    return res;
+}
+```
+
+
+
+```C++
+//548 ms	164.4 MB
+vector<vector<int>> res;
+    
+void dfs(int start, int cnt, int n, int k, vector<int> resT) {
+    if (cnt == k) {
+        res.push_back(resT);
+    }
+
+    for (int i = start + 1; i <= n; ++i) {
+        resT.push_back(i);
+        dfs(i, cnt + 1, n, k, resT);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> combine(int n, int k) {
+    vector<int> resT;
+    dfs(0, 0, n ,k, resT);    
+
+    return res;
+}
+```
+
+
+
+
+
+**剪枝**
+
+
+
+
+
+---
+
+### 216题. 组合总和III
+
+
+
+1. **回溯函数模板返回值以及参数**
+
+```c++
+void backtracking(int n, int k, int start, int sum);
+// n上限数字 k上限个数 start当前取到的数字
+```
+
+
+
+2. **回溯函数终止条件**
+
+**搜到叶子节点**了，也就找到了满⾜条件的⼀条答案，把这个答案存放起来，并结束本层递归。
+
+```c++
+if (resT.size() == k && sum == n) {
+    存放结果;
+    return;
+}
+```
+
+
+
+3. **回溯搜索的遍历过程**
+
+回溯法⼀般是在**集合中递归搜索**，集合的大小构成了树的宽度，递归的深度构成的树的深度。
+
+```c++
+for (int i = start; i <= 9; ++i) {
+    if (sum + i <= n) {
+        resT.push_back(i);
+        sum += i;
+        backtracking(n, k, i + 1); //递归
+        sum -= i;
+        resT.pop_back();
+    }
+}
+```
+
+
+
+
+
+
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(int k, int n, int start, int sum) {
+    if (resT.size() == k && sum == n) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i <= 9; ++i) {
+        if (sum + i <= n) {		//这里不剪枝 也不会降低效率
+            resT.push_back(i);
+            sum += i;
+            dfs(k, n, i+1, sum);
+            sum -= i;
+            resT.pop_back();
+        }
+    }
+
+
+    return;
+}
+
+vector<vector<int>> combinationSum3(int k, int n) {
+    dfs(k, n, 1, 0);
+
+    return res;
+}
+```
+
+
+
+---
+
+### 17. 电话号码的字母组合
+
+```c++
+vector<string> res;
+string resT;
+
+char a[10][4] = {{}, {}, {'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, 
+                 {'j', 'k', 'l'}, {'m', 'n', 'o'}, {'p', 'q', 'r', 's'}, {'t', 'u', 'v'}, {'w', 'x', 'y', 'z'} };
+
+void dfs(string &digits, int start){
+    if (resT.size() == digits.size()) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i < digits.size(); ++i) {
+        int number = digits[i] - '0';
+        for (int j = 0; j <= 3; ++j) {
+            char c = a[number][j];
+            if (c != '\000') {	
+                resT.push_back(c);
+                dfs(digits, i+1);
+                resT.pop_back();
+            }
+        }
+    }   
+
+
+    return;     
+}
+
+vector<string> letterCombinations(string digits) {
+    if (digits.size() == 0) return res;     
+
+    dfs(digits, 0);
+
+    return res;
+}
+```
+
+
+
+**优化**
+
+```c++
+const string letterMap[10] = {
+    "", // 0
+    "", // 1
+    "abc",  // 2
+    "def",  // 3
+    "ghi",  // 4
+    "jkl",  // 5
+    "mno",  // 6
+    "pqrs", // 7
+    "tuv",  // 8
+    "wxyz", // 9
+};
+```
+
+![image-20220321182311076](assets/image-20220321182311076.png)
+
+
+
+
+
+---
+
+### 39. 组合总和
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(int sum, int target, vector<int>& candidates, int start){
+    if (sum == target) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i < candidates.size(); ++i) {
+        if (sum + candidates[i] <= target) {
+            resT.push_back(candidates[i]);
+            sum += candidates[i];
+            dfs(sum, target, candidates, i);
+            sum -= candidates[i];
+            resT.pop_back();
+        }
+    }
+
+    return;
+}
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+
+
+    dfs(0, target, candidates, 0);
+    return res;
+}
+```
+
+![image-20220321183719789](assets/image-20220321183719789.png)
+
+
+
+对总集合排序之后，如果下⼀层的sum（就是本层的 sum + candidates[i]）已经⼤于target，就可以结束本轮for循环的遍历。
+
+```c++
+for (int i = startIndex; i < candidates.size() && sum + candidates[i] <=
+target; i++)
+    
+sort(candidates.begin(), candidates.end()); // 需要排序
+```
+
+
+
+
+
+---
+
+### 40. 组合总和II
+
+本题的难点在于区别2中：集合（数组candidates）有重复元素，但还不能有重复的组合。
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+
+void dfs(vector<int>& candidates, int target, int sum, int start) {
+    if (sum == target) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int i = start; i < candidates.size(); ++i) {
+        if (i > 0 && candidates[i] == candidates[i-1]  && i > start) {
+            continue;
+        }
+        if (sum + candidates[i] <= target) {
+            sum += candidates[i];
+            resT.push_back(candidates[i]);
+            dfs(candidates, target, sum, i+1);
+            resT.pop_back();
+            sum -= candidates[i];
+        }
+    }
+
+    return;
+}
+
+
+vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+    sort(candidates.begin(), candidates.end());
+    dfs(candidates, target, 0, 0);
+
+    return res;
+}
+```
+
+
+
+如果 candidates[i] == candidates[i - 1] 并且 used[i - 1] == false ，就说明：前⼀个树枝，使⽤了candidates[i - 1]，也就是说**同⼀树层**使用过candidates[i - 1]。
+
+![image-20220321191559303](assets/image-20220321191559303.png)
+
+
+
+在图中将 used 的变化用橘黄色标注上，可以看出在 candidates[i] == candidates[i - 1] 相同的情况下：
+used[i - 1] == true，说明同⼀**树支** candidates[i - 1] 使用过 （还没回溯）
+used[i - 1] == false，说明同⼀**树层** candidates[i - 1] 使用过（回溯过了）
+
+
+
+
+
+---
+
+## 3. 分割
+
+### 131. 分割回文串
+
+其实切割问题类似组合问题。
+
+例如对于字符串abcdef：
+组合问题：选取⼀个a之后，在bcdef中再去选取第⼆个，选取b之后在cdef中在选组第三个.....。
+切割问题：切割⼀个a之后，在bcdef中再去切割第⼆段，切割b之后在cdef中在切割第三段.....。
+
+![image-20220321225802289](assets/image-20220321225802289.png)
+
+
+
+```c++
+vector<vector<string>> res;
+vector<string> resT;
+
+bool check(string &s, int start, int end) {
+    for (int i = start, j = end; i < j; ++i, --j) {
+        if (s[i] != s[j])
+            return false;
+    }
+    return true;
+}
+
+void dfs(string &s, int start) {
+    if (start == s.size()) {
+        res.push_back(resT);
+        return;
+    }
+
+    for (int end = start; end < s.size(); ++end) {	//start 
+        if (check(s, start, end)) {
+            resT.push_back(s.substr(start, end-start+1));
+            dfs(s, end+1);
+            resT.pop_back();
+        }
+    }                  
+}
+
+vector<vector<string>> partition(string s) {
+    dfs(s, 0);
+    return res;
+}   
+```
+
+
+
+---
+
+### 93. 复原IP地址
+
+```c++
+vector<string> res;
+
+bool isValid(string s) {	// 判断数字是否合法
+    if (s.size() == 1) return true;
+    if (s[0] - '0' == 0 || s.size() > 3) return false;
+
+    long long num = 0;
+    for (int i = 0; i < s.size(); ++i) {
+        num = num*10L + s[i] - '0';
+    }
+
+    return num > 255 ? false : true;
+}
+
+
+void dfs(string &s, int start, string sT, int cnt) {
+    if (cnt > 4) {
+        return;
+    }
+
+    if (start == s.size() && cnt == 4) {
+        sT = sT.substr(0, sT.size()-1);
+        res.push_back(sT);
+    }
+
+    for (int end = start; end <= start+3 && end < s.size(); ++end) {
+        if (isValid(s.substr(start, end-start+1))) {
+            string tmp = s.substr(start, end-start+1);
+            dfs(s, end+1, sT + tmp + '.', cnt+1); //注意这里第二个参数传入end+1
+        }
+    }
+
+    return;
+
+}
+
+
+vector<string> restoreIpAddresses(string s) {
+    string sT;
+    dfs(s, 0, sT, 0);
+
+    return res;
+}
+```
+
+![image-20220322092240000](assets/image-20220322092240000.png)
+
+
+
+## 4. 子集
+
+### 78. 子集
+
+```c++
+vector<vector<int>> res;
+vector<int> resT;
+void dfs(vector<int>& nums, int start){
+    res.push_back(resT);
+
+
+    for (int i = start; i < nums.size(); ++i) {
+        resT.push_back(nums[i]);
+        dfs(nums, i + 1);
+        resT.pop_back();
+    }
+
+    return;
+}
+
+vector<vector<int>> subsets(vector<int>& nums) {
+    sort(nums.begin(), nums.end());
+    dfs(nums, 0);
+    return res;
+}
+```
+
+
+
+
+
+### 90. 
+
+
+
+## 5. 排列
+
+### 46. 
+
+
+
+
+
+### 47.
+
+
+
+
+
+
+
+## 6. 棋盘问题
+
+### 51. N皇后
+
+同一行/列/斜线 不能有两个Queen
+
+1. **回溯函数模板返回值以及参数**
+
+```c++
+vector<vector<string>> result;
+void bt(int cnt, int n, vector<string> &queen, vector<vector<int>> &attack, vector<vector<string>> &solve)
+```
+
+参数n是棋牌的大小，然后用 cnt 来记录当前遍历到棋盘的第几行了。
+
+
+
+
+
+2. **回溯函数终止条件**
+
+```c++
+if (cnt == n) {     //放皇后的数目, 也表示行数
+    solve.push_back(queen);
+    return;
+}
+```
+
+
+
+3. **回溯搜索的遍历过程**
+
+递归深度就是 cnt 控制棋盘的行，每⼀层里 for 循环的 col 控制棋盘的**列**，一行一列，确定了放置皇后的位置。每次都是要从新的一行的起始位置开始搜，所以都是从 0 开始。
+
+```c++
+for (int i = 0; i < n; ++i) {
+    if(attack[cnt][i] == 0) {
+        queen[cnt][i] = 'Q';
+        vector<vector<int>> tmp = attack;
+        putQueen(cnt, i, attack);
+        bt(cnt+1, n, queen, attack, solve);
+        attack = tmp;
+        queen[cnt][i] = '.';
+    }
+}
+```
+
+
+
+
+
+**放 Queen，更新 Attack数组**
+
+```c++
+void putQueen(int x, int y, vector<vector<int>> &attack) {
+    int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+    int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+    attack[x][y] = 1;
+
+    for (int i = 1; i < attack.size(); ++i) {
+        for (int j = 0; j < 8; ++j) {
+            int ax = x + i * dx[j];
+            int ay = y + i * dy[j];
+
+            if (ax >= 0 && ax < attack.size() && ay >=0 && ay < attack.size()) {
+                attack[ax][ay] = 1;
+            }
+        }
+    }
+
+}
+```
+
+
+
+**递归 + 回溯**
+
+```c++
+void bt(int cnt, int n, vector<string> &queen, vector<vector<int>> &attack, vector<vector<string>> &solve) {
+
+    if (cnt == n) {     //放皇后的数目, 也表示行数
+        solve.push_back(queen);
+        return;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        if(attack[cnt][i] == 0) {
+            queen[cnt][i] = 'Q';
+            vector<vector<int>> tmp = attack;
+            putQueen(cnt, i, attack);
+            bt(cnt+1, n, queen, attack, solve);
+            attack = tmp;
+            queen[cnt][i] = '.';
+        }
+    }
+}
+```
+
+
+
+**主函数**
+
+```c++
+vector<vector<string>> solveNQueens(int n) {
+    vector<vector<string>> solve;
+    vector<vector<int>> attack;
+    vector<string> queen;
+
+    for (int i = 0; i < n; ++i) {	
+        attack.push_back(vector<int>());
+        for (int j = 0; j < n; ++j) {
+            attack[i].push_back(0);
+        }
+        queen.push_back("");
+        queen[i].append(n, '.');
+    }
+
+
+    bt(0, n, queen, attack, solve);
+
+
+    return solve;
+}
+```
+
+
+
+
+
+---
+
+### 37. 解数独
+
+本题中棋盘的每⼀个位置都要放⼀个数字，并检查数字是否合法，解数独的树形结构要比N皇后更宽更深。
+
+
+
+
+
+1. **回溯函数模板返回值以及参数**
+
+```c++
+bool backtracking(vector<vector<char>>& board)
+```
+
+
+
+2. **回溯函数终止条件**
+
+本题递归不用终止条件，解数独是要遍历整个树形结构寻找可能的叶子节点就立刻返回。
+
+递归的下⼀层的棋盘⼀定比上⼀层的棋盘多⼀个数，等数填满了棋盘自然就终止（填满当然好了，说明找到结果了），所以不需要终止条件
+
+
+
+
+
+3. **回溯搜索的遍历过程**
+
+⼀个for循环遍历棋盘的行，⼀个for循环遍历棋盘的列，⼀行⼀列确定下来之后，递归遍历这个位置放9个数字的可能性！
+
+```c++
+bool backtracking(vector<vector<char>>& board) {
+    
+    for (int i = 0; i < board.size(); i++) { // 遍历⾏
+        for (int j = 0; j < board[0].size(); j++) { // 遍历列
+            
+            if (board[i][j] != '.') continue;
+            
+            for (char k = '1'; k <= '9'; k++) { // (i, j) 这个位置放k是否合适
+                if (isValid(i, j, k, board)) {
+                    board[i][j] = k; // 放置k
+                	if (backtracking(board)) return true; // 如果找到合适⼀组⽴刻返回
+                    board[i][j] = '.'; // 回溯，撤销k
+                }
+            }
+            return false; // 9个数都试完了，都不行，那么就返回false
+        }
+    }
+    return true; // 遍历完没有返回false，说明找到了合适棋盘位置了
+}
+```
+
+注意这里 return false的地方：因为如果⼀行一列确定下来了，这⾥尝试了9个数都不行，说明这个棋盘找不到解决数独问题的解！
+
+那么会直接返回， 这也就是为什么没有终止条件也不会永远填不满棋盘而无限递归下去！
+
+
+
+
+
+
+
+**判断棋盘是否合法有如下三个维度**：
+
+同行是否重复
+同列是否重复
+9宫格里是否重复
+
+```c++
+bool isValid(int row, int col, char val, vector<vector<char>>& board) {
+    for (int i = 0; i < 9; i++) { // 判断行里是否重复
+        if (board[row][i] == val) {
+        	return false;
+        }
+    }
+    
+    for (int j = 0; j < 9; j++) { // 判断列里是否重复
+        if (board[j][col] == val) {
+            return false;
+        }
+    }
+    
+    int startRow = (row / 3) * 3;
+    int startCol = (col / 3) * 3;
+    
+    for (int i = startRow; i < startRow + 3; i++) { // 判断9方格里是否重复
+        for (int j = startCol; j < startCol + 3; j++) {
+            if (board[i][j] == val ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+```
+
+
+
+
+
+
+
+---
+
+## 7. 其他
