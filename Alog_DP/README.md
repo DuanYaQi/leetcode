@@ -4,7 +4,7 @@
 
 
 
-
+推荐做atcoder的dp contest 包含常见种类的dp入门题 https://atcoder.jp/contests/dp/tasks
 
 
 

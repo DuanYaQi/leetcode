@@ -1,5 +1,13 @@
 # 京东 
 
+https://www.nowcoder.com/discuss/868347
+
+https://www.nowcoder.com/discuss/868359
+
+https://www.nowcoder.com/discuss/868356
+
+https://www.nowcoder.com/discuss/868365
+
 
 
 ## 3.19 第一题 分鸡蛋

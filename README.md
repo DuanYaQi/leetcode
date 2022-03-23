@@ -37,6 +37,9 @@ DAG 的问题就 dfs+memo
 ## TODO
 - [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
 - [x] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
+
+- [ ] 440. K-th Smallest in Lexicographical Order
+
 - [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
 - [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
 
@@ -225,7 +228,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 ---
 ## 1. 数据结构专题
 
-### 1.1. [树(并查集/堆)](DS_Tree/README.md)
+### 1.1. [树](DS_Tree/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -367,6 +370,34 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[2192.All Ancestors of a Node in a Directed Acyclic Graph](DS_Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
 | | | |
 | | | |
+
+
+
+
+
+---
+
+### 1.7. [并查集](DS_UF/README.md)
+
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+|[547. Number of Provinces](/DS_UF/547+Number%20of%20Provinces.cpp)      |        | 注意遍历的时候，就要使用函数合并到一个省里     |
+|[1202. Smallest String With Swaps](/DS_UF/1202+Smallest%20String%20With%20Swaps.cpp)      |        | 注意找连通分量，并且排好序   |
+|[990. Satisfiability of Equality Equations](/DS_UF/990+Satisfiability%20of%20Equality%20Equations.cpp)      |        |   先判断==, 再判断!=  相同的元素抽象到同一个子集中 |
+|      |        |      |
+
+
+
+---
+
+### 1.8. [堆(优先队列)](DS_Heap/README.md)
+
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
 
 
 
@@ -543,18 +574,20 @@ DP
 
 ---
 
-### 2.8. DFS/BFS
-
-[树](DS_Tree/README.md) 中 **Sec 4.2 + Sec 4.3** 迭代遍历为 DFS，**Sec 4.4** 层序遍历为 BFS
-
-[图](DS_Graph/README.md) 中 **图的遍历** 有 DFS/ BFS 详细概述
+### 2.8. [DFS/BFS](Alog_D_BFS/README.md)
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[547. Number of Provinces](/Alog_D_BFS/547+Number%20of%20Provinces.cpp) | | vis[]数组配合|
+| | | |
+| | | |
+| | | |
 
 
 
 
 
 ---
-### 2.9. [Math](Math_数论/README.md)
+### 2.9. [数论](Math_数论/README.md)
 
 
 
@@ -1274,11 +1307,365 @@ https://www.cxyxiaowu.com/7072.html
 
 
 
+一个齐全的板子
+
+http://pepcy.cf/icpc-templates/003Graph/sssp.html
+
+
+
+**ACM/ICPC Tricks**
+
+一些基本算法和数据结构(队列 栈 树 图 并查集 堆 DFS BFS 最短路 最小生成树 拓扑排序 动态规划 贪心 搜索 KMP 哈希 Trie AC自动机 快速幂 逆元 费马小定理 欧拉函数 素数筛 分解质因数)
+
+[[kuangbin带你飞\]专题一 简单搜索](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/65959%23overview)[[kuangbin带你飞\]专题四 最短路练习](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/66569%23overview)
+[[kuangbin带你飞\]专题五 并查集](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/66964%23overview)
+[[kuangbin带你飞\]专题六 最小生成树 ](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/66965%23overview)
+[[kuangbin带你飞\]专题十二 基础DP1](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/68966%23overview)
+[[kuangbin带你飞\]专题十四 数论基础](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/70017%23overview)
+[[kuangbin带你飞\]专题十六 KMP & 扩展KMP & Manacher](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/70325%23overview)
+[[kuangbin带你飞\]专题十七 AC自动机](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/70326%23overview)
+
+
+
+一些进阶的算法以及复杂一些的数据结构（树状数组 线段树 平衡树 后缀数组 二分图匹配 网络流 费用流 割点 桥 强联通 双联通 最近公共祖先 四大DP(数位dp 区间dp 状压dp 概率dp) 博弈论SG函数 ）
+
+[[kuangbin带你飞\]专题七 线段树](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/66989%23overview)[[kuangbin带你飞\]专题九 连通图](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/67418%23overview)
+[[kuangbin带你飞\]专题十 匹配问题](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/68127%23overview)
+[[kuangbin带你飞\]专题十一 网络流](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/68128%23overview)
+[[kuangbin带你飞\]专题十五 数位DP](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/70324%23overview)
+[[kuangbin带你飞\]专题十八 后缀数组](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/70655%23overview)
+[[kuangbin带你飞\]专题二十一 概率&期望](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/76505%23overview)
+[[kuangbin带你飞\]专题二十二 区间DP](https://link.zhihu.com/?target=http%3A//vjudge.net/contest/77874%23overview)
+
+
+
+值得一提的是位运算，应当了解电脑中数据的存储方式，很多时候利用位运算帮助做题非常重要，如[树状数组](https://www.zhihu.com/search?q=树状数组&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A127318167})的lowbit，状压DP，快速幂等，每次我看到这些的时候都深深的感受到二进制的神奇。
+
+
+
+基础的内容：
+
+BFS、DFS、二分、三分、筛法求素数、快速幂、并查集、矩阵运算及快速幂、最短路相关（Dijkstra， floyd，ford，SPFA）、基础DP（LIS、LCS、记忆化搜索等）、网络流（EK、Dinic、ISAP+gap）、KMP、线段树、树状数组、二分图、最小生成树（Prim、Kruskal）、计算几何基础等
 
 
 
 
 
+
+
+
+
+第一阶段：练经典常用算法，下面的每个算法给我打上十到二十遍，同时自己精简代码，因为太常用，所以要练到写时不用想，10-15分钟内打完，甚至关掉显示器都可以把程序打
+
+1.最短路(Floyd、Dijstra,BellmanFord)
+
+2.最小生成树(先写个prim,kruscal要用并查集，不好写)
+
+3.大数（高精度）加减乘除
+
+4.[二分查找](https://www.zhihu.com/search?q=二分查找&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A12752031}). (代码可在五行以内)
+
+5.[叉乘](https://www.zhihu.com/search?q=叉乘&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A12752031})、判线段相交、然后写个凸包.
+
+6.BFS、DFS,同时熟练hash表(要熟，要灵活,代码要简)
+
+7.数学上的有：辗转相除（两行内），线段交点、[多角形](https://www.zhihu.com/search?q=多角形&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A12752031})面积公式.
+
+8.调用系统的qsort, 技巧很多，慢慢掌握.
+
+9.任意进制间的转换
+
+
+
+
+
+第二阶段：练习复杂一点，但也较常用的算法。
+
+1.二分图匹配（匈牙利），最小路径覆盖
+
+2.网络流，最小费用流。
+
+3.线段树.
+
+4.并查集。
+
+5.熟悉动态规划的各个典型：LCS、最长递增子串、三角剖分、记忆化dp
+
+
+
+
+
+
+
+
+
+
+
+
+
+**图论部分**：(非常独立)
+
+（其实图论方向没有太明显的"难度区分"，你可以先学完1和2就直接去学二分图匹配……不过按顺序来总是不会错哒。）
+
+1. 图的邻接表存储（不需要学邻接矩阵，那个没用）: [邻接表存储](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_42241901/article/details/81489645)
+
+2. 图的深度优先搜索和广度优先搜索，网上资料实在太多啦！
+
+3. 拓扑排序：[拓扑排序](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_41713256/article/details/80805338)
+
+4. 最短路：SPFA算法和(堆优化的)Dijkstra算法，理解**最短路图**的概念，理解平面图最小割与最短路的关系：
+
+5. 1. [SPFA](https://link.zhihu.com/?target=https%3A//blog.csdn.net/weixin_43902449/article/details/88605417)正式比赛慎用。
+   2. [堆优化Dijkstra](https://link.zhihu.com/?target=https%3A//blog.csdn.net/zyq_20030305/article/details/81709212) 
+
+6. 欧拉回路：[欧拉回路](https://link.zhihu.com/?target=https%3A//blog.csdn.net/u011466175/article/details/18861415)
+
+7. tarjan算法求强联通分量、求边的双联通分量、求割点、求桥：[tarjan求强连通分量+缩点+割点/割桥（点双/边双）以及一些证明 - Styx-ferryman - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/stxy-ferryman/p/7779347.html)
+
+8. 二分图的概念，匈牙利算法和时间复杂度为(n^3)的KM算法：
+
+9. 时间复杂度为n^3的KM算法可以只知道用途并且把代码抄到板子上，代码参考[UOJ](https://link.zhihu.com/?target=http%3A//uoj.ac/)上面比较快的二分图最大权匹配的板子即可。
+
+10. 匈牙利算法要熟悉原理及其变形：[匈牙利算法](https://link.zhihu.com/?target=https%3A//blog.csdn.net/u013384984/article/details/90718287)
+
+11. 用Dinic算法求网络流，费用流：[[算法\]网络最大流Dinic - LinZhengmin - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/linzhengmin/p/9313216.html)
+
+
+
+
+
+**数论/数学部分：**
+
+1. 费马小定理、欧拉定理：[费马小定理及欧拉定理](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/zylAK/p/9569668.html)，并且会：
+
+2. 1. 利用它们在O(logn)的时间复杂度内计算一个数的逆元
+
+3. 素数筛法，请务必掌握的是"线性筛"：[线性筛筛积性函数 - yyys - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/yyys-/p/11285342.html)
+
+4. 1. 另外，请一定要记住"线性筛"强调的是"线性筛不仅能筛出素数，**还能筛一些积性函数**"。
+   2. 上面说的这句话在"莫比乌斯反演"题目里尤为重要。
+
+5. 容斥原理（基础）。
+
+6. 辗转相除法，扩展欧几里得算法，会抄不互质的CRT的板子：
+
+7. 1. [扩展欧几里得](https://link.zhihu.com/?target=https%3A//blog.csdn.net/destiny1507/article/details/81750874) 
+
+8. Lucas定理等一系列组合数取模的计算：[组合数取模方法总结](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/fzl194/p/9095177.html)
+
+9. 解二次剩余：[二次剩余Cipolla算法学习笔记 - bztMinamoto - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/bztMinamoto/p/10664973.html)
+
+10. BSGS算法：[BSGS算法 - 小蒟蒻yyb - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/cjyyb/p/8810050.html)
+
+11. 线性基：[线性基](https://link.zhihu.com/?target=https%3A//blog.csdn.net/a_forever_dream/article/details/83654397)
+
+12. 高斯消元：[高斯消元](https://link.zhihu.com/?target=https%3A//blog.csdn.net/u011815404/article/details/88890702)，另外注意在模意义下高斯消元的时候把除法改为乘以逆元。
+
+13. 莫比乌斯反演及一系列反演问题：
+
+14. 1. 学会简单的莫比乌斯反演并推出式子，更深的就稍微放过吧。[ACdreamer的博客](https://link.zhihu.com/?target=https%3A//blog.csdn.net/acdreamers/article/details/8542292) 
+
+15. 多做点基于容斥的计数题，会抄FFT的板子。
+
+
+
+
+
+**图论与数学同时比较相关**的似乎只有一个定理：
+
+https://www.cnblogs.com/twilight-sx/p/9064208.html
+
+
+
+
+
+**字符串（"基本上"一定复合动态规划(DP)）**：
+
+1. KMP算法：[KMP算法](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_37969433/article/details/82947411)
+
+2. 扩展KMP：[扩展KMP算法小记 - Dilthey - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/dilthey/p/8620119.html)
+
+3. 字符串HASH：[字符串HASH](https://link.zhihu.com/?target=https%3A//blog.csdn.net/sodacoco/article/details/83240305)
+
+4. 1. PS: 关于hash类的题目有不少，比如奇怪的树hash，需要单独去学。
+   2. 有概率配合哈希表(C++中的map)使用，比赛时智力记得上线。
+
+5. Manacher：[Manacher算法的详细讲解](https://link.zhihu.com/?target=https%3A//www.jianshu.com/p/116aa58b7d81)
+
+6. 1. 知道manacher的[回文半径](https://www.zhihu.com/search?q=回文半径&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A927853763})有什么用，怎么用，稍微做两道题就行了。
+
+7. Trie树/字典树：[Trie（前缀树/字典树）及其应用 - bonelee - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/bonelee/p/8830825.html)
+
+8. AC自动机及Trie图：[Trie图（DFA），AC自动机 - AC_Von - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/vongang/archive/2012/07/24/2606494.html)
+
+9. 1. 学完Trie图之后对于AC自动机的用法会减少，基本都是用Trie图的。
+   2. 意识到fail指针形成了一棵树，并学会在fail树/Trie图上进行DP
+   3. 做几道相关的DP题
+
+10. 后缀数组(SA)：[后缀数组](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_37774171/article/details/81776029)
+
+11. 1. 其实下面的SAM可以求后缀数组，不想学就算了。**(碰到出题人卡SAM就喷出题人)**
+
+12. 后缀自动机(SAM)：[后缀自动机](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_35649707/article/details/66473069)
+
+13. 1. 依旧是需要学会SAM上的DP，并意识到parent树的niubi之处。多做题。
+    2. 但一般SAM上面的DP就会比较难，甚至可以复合其它的数据结构，比如Link-Cut-Tree（LCT）：（据某毒瘤出题人说“我出的那道LCT+SAM的题被学军的同学A穿了，感觉OI选手还是强啊”）
+
+14. 回文树：[回文树算法](https://link.zhihu.com/?target=https%3A//blog.csdn.net/litble/article/details/80128287)，建议去看看论文。
+
+
+
+
+
+
+
+
+
+**动态规划(DP)：**
+
+很不幸，这种类型的题目没有板子一说，也没有一个人敢说"碰到DP我一定能做出来"，它想出得有多难就有多难。而且可以和数据结构/字符串的题目进行复合，难度从最低到最高的题目都有。
+
+凡是谁说了解"动态规划的本质"就会做动态规划都是在耍流氓（笑
+
+在这里只能总结一下出现的比较经典的类型。想提升考场上做出来dp题的概率只能靠**疯狂刷题**。
+
+从图论角度理解DP：[什么是动态规划（Dynamic Programming）？动态规划的意义是什么？](https://www.zhihu.com/question/23995189/answer/913255963)
+
+
+
+**"哪怕不写代码也写出递推式试试看吧"，抱着这种心态去做题吧！**
+
+1. 记忆化搜索：[主要用于不是循环结构的递推表达式状态的计算](https://link.zhihu.com/?target=https%3A//blog.csdn.net/hjf1201/article/details/78680814)
+
+2. [背包dp](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_43851106/article/details/88256598)：我的观点是**没必要看背包九讲**，之后自己刷题刷多了自然都会了。
+
+3. 树形dp：[树形DP入门学习 - seaupnice - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/seaupnice/p/9471700.html)
+
+4. 1. 树形dp比较常见，虽然知道这一点并不能帮你做题。
+   2. 一般是考虑子树/相邻儿子对于当前节点的贡献，需要多刷题总结。
+
+5. [区间dp](https://www.zhihu.com/search?q=区间dp&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A927853763})：[入门题](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_40772692/article/details/80183248)
+
+6. 状态压缩dp：[一些题目](https://link.zhihu.com/?target=https%3A//blog.csdn.net/huang_ke_hai/article/details/86669489)
+
+7. 1. [一些另外的题目](https://link.zhihu.com/?target=https%3A//blog.csdn.net/u013377068/article/details/81054112)：为什么只有题目？……这个问题问得好啊，因为这个只能刷题QAQ
+
+8. 插头dp：两篇文章: [插头dp](https://link.zhihu.com/?target=https%3A//blog.csdn.net/litble/article/details/79369147) && [基于连通性状态压缩的动态规划问题 - 百度文库](https://link.zhihu.com/?target=https%3A//wenku.baidu.com/view/9cfbb16e011ca300a6c390d5.html%3Fqq-pf-to%3Dpcqq.group)
+
+9. 1. 题目自己找咯~
+
+10. 基于数据结构优化的dp：(ps：**以后会稍微谈谈各种递推式的优化，优化套路差不多**)
+
+11. 1. 前缀和/前缀最大值/...优化dp：[CF601C Kleofáš and the n-thlon(期望+前缀和优化dp)](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/sdfzsyq/p/10051176.html)
+    2. 单调队列优化dp：[不太像dp的dp](https://link.zhihu.com/?target=https%3A//blog.csdn.net/Ever_glow/article/details/81449670)
+    3. 树状数组/线段树优化dp：[noip科普]关于LIS和一类可以用树状数组优化的DP - liu_runda - 博客园
+    4. 斜率优化dp：[制糕神的算法工坊：动态规划的斜率优化——从入门到入土](https://zhuanlan.zhihu.com/p/94046596)
+
+12. 一个奇怪的dp思想：[管道取珠](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_42112677/article/details/80345796)
+
+
+
+
+
+
+
+
+
+
+
+**数据结构（可以跟很多东西沾边）**：
+
+1. 链表：[链表实战（带图分析）](https://link.zhihu.com/?target=https%3A//www.jianshu.com/p/9a4561d42e9a)
+
+2. 哈希表(C++常用MAP)：[制糕神的算法工坊：OI/ACM中的哈希表，一些哈希算法以及题目](https://zhuanlan.zhihu.com/p/89381173)
+
+3. ST表：[ST表的原理及其实现 - 真是啰嗦 - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/qq965921539/p/9608980.html)
+
+4. 堆：C++里的priority_queue……会用就可以啦，原理不是必须要懂。
+
+5. 并查集：[并查集](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_39216184/article/details/83023669)
+
+6. 1. 如果不会线段树分治，可以只学习路径压缩的并查集。
+   2. 如果会线段树分治，"按大小启发式合并的并查集"非常合适。
+
+7. 单调队列：[简单数据结构总结--单调队列 - dreagonm - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/dreagonm/p/9347966.html)
+
+8. 树状数组：[树状数组详解 - Xenny - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/xenny/p/9739600.html)
+
+9. 线段树：[线段树 从入门到进阶 - Dijkstra·Liu - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/jason2003/p/9676729.html)
+
+10. 1. 线段树的动态开点形式：[线段树 动态开点 - Lonely.Devil - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/wangyifan124/p/10306840.html)
+
+11. 平衡树：
+
+12. 1. 旋转Treap&&非旋转Treap：[旋转/非旋转treap的简单操作 - F.W.Nietzsche - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/nietzsche-oier/p/6748292.html)
+    2. Splay：[Splay详解 - JSOI爆零珂学家yzhang - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/yzhang-rp-inf/p/9957906.html) (其实Splay不算是平衡树)
+    3. 其实旋转的Treap用处不是太大……
+
+13. 启发式合并：[数据结构：启发式合并 - 静听风吟。 - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/aininot260/p/9531766.html)
+
+14. 1. 合并的对象不仅限于并查集，线段树，平衡树。
+    2. 其基本思想有点类似于贪心。
+
+15. 树链剖分，可以用于求LCA，一般绑定线段树使用：[树链剖分详解 - Ivanovcraft - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/ivanovcraft/p/9019090.html)
+
+16. K-Dtree: [K-D TREE算法原理及实现 - 采男孩的小蘑菇 - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/flyinggod/p/8727584.html)
+
+17. 莫队算法：[莫队算法--从入门到黑题 - WAMonster - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/WAMonster/p/10118934.html)
+
+18. 可持久化数据结构：[可持久化线段树总结（可持久化线段树，线段树） - Flash_Hu - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/flashhu/p/8297581.html)
+
+19. 1. [可持久化Treap - permui - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/owenyu/p/6724602.html) 
+
+    2. **如果可以离线，请千万不要为了秀自己的代码能力而写可持久化，因为：**
+
+    3. 1. 写出来是在秀自己的代码能力
+       2. 写不出来是在秀自己的智力
+
+20. 线段树分治： [[学习笔记\]线段树分治 - *Miracle* - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/Miracevin/p/10355084.html) 
+
+21. CDQ分治：[CDQ分治总结（CDQ，树状数组，归并排序） - Flash_Hu - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/flashhu/p/9381075.html)
+
+22. 1. 常用来解决3维偏序问题，离线+排序降一维，CDQ分治降一维，线段树降一维。
+
+23. **放弃那些奇奇怪怪的树套树吧，比赛的时候没人愿意考也没人愿意写。**
+
+
+
+
+
+
+
+
+
+
+
+
+
+**计算几何**(非常独立)**：**
+
+先参考这个模板里面提到的东西：[计算几何 · GitBook](https://link.zhihu.com/?target=http%3A//pepcy.cf/icpc-templates/006Geometry/)
+
+1. 基本的点积、叉积概念，基本[向量代数](https://www.zhihu.com/search?q=向量代数&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A927853763})运算，会推微积分的式子。
+
+2. 凸包的计算(用叉积，尽量规避三角函数)：[向量积&&凸包算法 - Go!Adela - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/adelalove/p/8465055.html)
+
+3. 1. 哪怕凸包不会求，凸壳也要会求，这句话是写给要学习"动态规划"的ACMer的。
+
+4. 旋转卡壳: [旋转卡壳](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_34921856/article/details/80690822)
+
+5. 1. 利用旋转卡壳O(n)求极大三角形的算法已经被hack掉了，如果之后在网上看到请不要抄O(n)做法。
+
+6. 半平面交:（先看4.1中的内容） [半平面交](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_40861916/article/details/83541403)
+
+7. 1. 半平面交与凸包表现出高度一致性：[半平面交对偶转凸包问题 - 博客 - Trinkle的博客](https://link.zhihu.com/?target=http%3A//trinkle.blog.uoj.ac/blog/235)
+   2. 心疼一秒做DP题的：上面的半平面交对偶转凸包的东西在斜率优化里依然需要用到。
+
+8. k次圆覆盖问题：[k次圆覆盖](https://link.zhihu.com/?target=https%3A//blog.csdn.net/jk_chen_acmer/article/details/89670754)
+
+9. 辛普森积分：[辛普森积分暴力大法好](https://link.zhihu.com/?target=https%3A//blog.csdn.net/VictoryCzt/article/details/80660113)
+
+10. 模拟退火：[浅谈玄学算法--模拟退火 - M_sea 的博客 - 洛谷博客](https://link.zhihu.com/?target=https%3A//www.luogu.com.cn/blog/m-sea/qian-tan-SA)
 
 
 

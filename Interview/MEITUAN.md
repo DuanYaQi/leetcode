@@ -352,3 +352,471 @@ int main() {
 
 
 
+
+
+---
+
+## 3.5 笔试
+
+https://blog.csdn.net/qq_38649940/article/details/123292226
+
+
+
+第一题就是贪心
+
+第二题dp
+
+第三题维护最长xyz片段
+
+第四题差分数组+贪心（查询最多的点乘最大的点，依次递推）
+
+第五题我写的dfs搜索只过了64，换成bfs过了82
+
+
+
+
+
+### 第一题
+
+类似leetcode 128
+
+
+
+
+
+给出 $n$ 个数，让你选出一个最大的子集，使得任意两个数的差>1
+`n <= 1e5 , a[i] <= 2e5`
+
+显然直接用 `dp[i]`  表示现在最大的数选到 `i`，最大的子集是多少，然后直接转移即可。
+
+
+
+
+
+给一个带有重复数字的数组，找出最长的不连续的序列的长度（好像是上升的）。
+
+输入：1,2,3,5,6,7
+
+输出：4，最长为【1,3,5,7】
+
+我的思路：签到题，排序一下，然后一个个找即可。
+
+
+
+```c++
+int dp[maxn],n,a[maxn],v[maxn];
+
+int main()
+{
+	n=read(); rep(i,1,n) a[i]=read(),v[a[i]+1]=1;
+	rep(i,2,200001) dp[i]=max(dp[i-1],dp[i-2]+v[i]);
+	cout<<dp[200001]<<endl;
+	return 0;
+}
+```
+
+
+
+```c++
+bool IsNear(int& n1, int& n2)
+{
+	return abs(n1 - n2) <= 1;
+}
+
+int main()
+{
+	int n;
+	while ( cin >> n )
+	{
+		vector<int>numVec(n);
+		for ( auto i = 0; i < n; ++i )
+		{
+			cin >> numVec[i];
+		}
+		sort(numVec.begin(), numVec.end());
+		int sum = 0;
+		int length = 1;
+		for ( auto i = 1; i <= n; ++i )
+		{
+			if ( IsNear(numVec[i - 1], numVec[i]) )
+			{
+				length++;
+			}
+			else
+			{
+				if ( length % 2 == 1 )
+					++length;
+				sum += length / 2;
+				length = 1;
+			}
+		}
+		cout << sum << endl;
+	}
+	return 0;
+}
+```
+
+
+
+----
+
+### 第二题
+
+给一个数组，你可以将其中某一段翻转，然后求连续子数组的最大和
+
+输入：-1,3,-5,2,-1,3
+
+输出：7（将数组下标1-2的元素翻转，然后求得3+2+-1+3 = 7，另有别的翻转方法）
+
+我的思路：瞎想了半小时，求两个数组，left[i]保存i左边的连续子数组最大和，right[i]保存右边的，然后相加即可。估计边界有问题，只过了90%。
+
+
+
+
+
+题目大意：给出长度为n的数组，可以翻转任意一段，问翻转一段之后的数组最大子段和为多少    `n<=1e5,-1e3<=a[i]<=1e3`
+
+可以发现：翻转操作只是相当于，我们可以选择两个子段进行统计答案。
+所以我们从前往后做一遍存到 dp1，从后往前做一遍存存到 dp2，分别表示，从该位开始的最大子段和为多少。
+然后我们记录一下 dp1数组的前缀 max，就可以直接统计答案了
+
+```C++
+ll n,a[maxn],dp1[maxn],dp2[maxn],ans,pmx[maxn];
+
+int main()
+{
+	n=read(); rep(i,1,n) a[i]=read();
+	rep(i,1,n) dp1[i]=max(0ll,dp1[i-1])+a[i],pmx[i]=max(pmx[i-1],dp1[i]);
+	per(i,n,1) dp2[i]=max(dp2[i+1],0ll)+a[i];
+	rep(i,1,n) ans=max(ans,pmx[i]+dp2[i+1]);
+	cout<<ans<<endl;
+	return 0;
+}
+
+```
+
+
+
+
+
+----
+
+### 第三题
+
+切豆腐，豆腐是正方体，边长n，一共切m刀。  每刀对着x、y、z轴之一垂直切，切的轴上的坐标会告诉你。  输出每刀切完后，剩下的豆腐块中最大的豆腐体积。 
+
+ 输入： 
+
+ 2 3 
+
+ x y z 
+
+ 1 1 1 
+
+ 输出： 
+
+ 4 
+
+ 2 
+
+ 1 
+
+
+
+
+
+
+
+切豆腐。给定正立方体的边长n。对立方体进行若干次垂直与坐标轴（x,y,z）的切割操作，求每一次操作结束后最大切块的体积，求操作结束后的最大切块的体积。
+
+有一个`n∗n∗n` 大小的立方体，进行 `m` 次操作，每次操作选择从 `x` 或 `y` 或 `z` 的一个面进行切割(给定操作,例如给 `x=4` 就是沿着 `x=4` 的面进行切割)，问 `m` 次操作时，每次操作后最大体积的立方块大小。 `n,m<=1000`
+
+可以发现，xyz三个维度是独立的，我们每次操作就相当于，在xyz三个线段中选择一个线段从中间断开。
+那么我们维护一下这个过程，每次统计答案就是最大的x\*最大的y\*最大的z了。
+本人直接使用了set维护，简单暴力，当然应该有更好的维护方法。
+
+```c++
+int n,m,a[maxn],A[4];
+char opt[maxn];
+struct node{int l,r;};
+
+inline bool operator < (node a,node b)
+{
+	if(a.l!=b.l) return a.l<b.l;
+	return a.r<b.r;
+}
+
+multiset <node> sx[4];
+multiset <node>::iterator it;
+
+int main()
+{
+	n=read(); m=read(); rep(i,1,m) cin>>opt[i]; rep(i,1,m) a[i]=read();
+	rep(i,0,2) sx[i].ins({0,n}),A[i]=n;
+	rep(i,1,m)
+	{
+		int id;
+		if(opt[i]=='x') id=0;
+		else if(opt[i]=='y') id=1;
+		else id=2;
+		
+		for(it=sx[id].begin();it!=sx[id].end();it++)
+		{
+			node tmp=*it;
+			if(a[i]>=tmp.l&&a[i]<=tmp.r)
+			{
+				sx[id].ins({tmp.l,a[i]});
+				sx[id].ins({a[i],tmp.r});
+				sx[id].erase(it); break;
+			}
+		}
+		A[id]=0;
+		for(it=sx[id].begin();it!=sx[id].end();it++)
+		{
+			node tmp=*it; //cout<<tmp.l<<" "<<tmp.r<<endl;
+			A[id]=max(A[id],tmp.r-tmp.l);
+		}
+		cout<<A[0]*A[1]*A[2]<<endl;
+	}
+	return 0;
+}
+
+```
+
+
+
+```c++
+int GetMaxLenth(set<int> disSet, int n)
+{
+	int maxx = 0;
+	int last = 0;
+	for ( auto i = disSet.begin(); i != disSet.end(); ++i )
+	{
+		if ( i == disSet.begin() )
+		{
+			maxx = *disSet.begin();
+			last = *disSet.begin();
+		}
+		maxx = max(*i - last, maxx);
+		last = *i;
+	}
+	maxx = max(n - last, maxx);
+	return maxx;
+}
+int main()
+{
+	int n, m;
+	while ( cin >> n >> m )
+	{
+		int xMax = n;
+		int yMax = n;
+		int zMax = n;
+		vector<string> posVec;
+		vector<int> disVec;
+		set<int> disXVec;
+		set<int> disYVec;
+		set<int> disZVec;
+		for ( auto i = 0; i < m; ++i )
+		{
+			string posStr;
+			cin >> posStr;
+			posVec.push_back(posStr);
+		}
+		for ( auto i = 0; i < m; ++i )
+		{
+			int dis;
+			cin >> dis;
+			disVec.push_back(dis);
+		}
+		for ( auto i = 0; i < m; ++i )
+		{
+			if ( posVec[i].compare("x") == 0 )
+			{
+				disXVec.insert(disVec[i]);
+				xMax = GetMaxLenth(disXVec, n);
+			}
+			if ( posVec[i].compare("y") == 0 )
+			{
+				disYVec.insert(disVec[i]);
+				yMax = GetMaxLenth(disYVec, n);
+			}
+			if ( posVec[i].compare("z") == 0 )
+			{
+				disZVec.insert(disVec[i]);
+				zMax = GetMaxLenth(disZVec, n);
+			}
+			cout << xMax * yMax * zMax << endl;
+		}
+	}
+}
+```
+
+
+
+
+
+### 第四题
+
+给定一个数组rec。给定n个操作 【L,R,K】，表示对[L,R]范围内的数+K。给定m个查询【L,R】，表示求【L,R】范围内的和。在允许重新排列原始数组rec的情况下，计算经过n此操作后，m次查询的结果的最大值。
+
+
+
+
+
+
+
+给个数组，给操作，重排后找出操作后的最大和
+
+
+
+
+
+
+
+题目大意：给你q次区间加，区间求和的操作，需要你重新排列一下原数组，使得每次查询区间和的答之和最大。
+
+`n<=1000,q<=500`
+
+发现只需要统计一下每个位置的数对答案的贡献就ok了。
+所以我们每次区间加，就是区间内每个点的贡献+1，然后区间加操作照常就好。
+然后根据贪心思想，贡献越多的地方，应该放的数就越大，排个序统计贡献就做完了。
+
+然后由于这个数据范围很小，并不需要真的写一个线段树，暴力处理就ok了。
+
+```c++
+ll n,Q,a[maxn],cnt[maxn],ans,nw[maxn];
+
+int main()
+{
+	n=read(); Q=read(); rep(i,1,n) a[i]=read();
+	while(Q--)
+	{
+		int opt=read();
+		if(opt==1)
+		{
+			int l=read(),r=read();
+			rep(i,l,r) ans+=nw[i],cnt[i]++;
+		}
+		else
+		{
+			int l=read(),r=read(),w=read();
+			rep(i,l,r) nw[i]+=w;
+		}
+	}
+	sort(cnt+1,cnt+n+1); sort(a+1,a+n+1);
+	rep(i,1,n) ans+=a[i]*cnt[i];
+	cout<<ans<<endl;
+	return 0;
+}
+
+```
+
+
+
+
+
+```c++
+bool firstIsHigh(vector<pair<int, int>>&writeMap, int k1, int k2)
+{
+	int k1P = 0;
+	int k2P = 0;
+	for ( auto i : writeMap )
+	{
+		if ( i.first == k1 )
+			k1P = i.second;
+		if ( i.first == k2 )
+			k2P = i.second;
+	}
+	return k1 > k2;
+}
+int main()
+{
+	int n, m;
+	while ( cin >> n >> m )
+	{
+		vector<int>numVec(n);
+		vector<vector<int>>opVec;
+		vector<pair<int, int>>readMap(n);
+		vector<pair<int, int>>writeMap(n);
+		for ( auto i = 0; i < n; ++i )
+		{
+			cin >> numVec[i];
+		}
+		int sum = 0;
+		for ( auto i = 0; i < m; ++i )
+		{
+			vector<int>lines(4);
+			cin >> lines[0];
+			if ( lines[0] == 1 )
+			{
+				cin >> lines[1] >> lines[2];
+				for ( auto i = lines[1] - 1; i < lines[2]; ++i )
+				{
+					readMap[i].first = i;
+					readMap[i].second++;
+				}
+			}
+			else if ( lines[0] == 2 )
+			{
+				cin >> lines[1] >> lines[2] >> lines[3];
+				for ( auto i = lines[1] - 1; i < lines[2]; ++i )
+				{
+					writeMap[i].first = i;
+					writeMap[i].second++;
+				}
+			}
+			opVec.push_back(lines);
+		}
+		sort(readMap.begin(), readMap.end(), [](pair<int, int>a, pair<int, int>b)->bool{return a.second > b.second; });
+		sort(numVec.begin(), numVec.end(), greater<int>());
+		vector<int>newVec(n);
+		for ( auto i = 0; i < n; ++i )
+		{
+			if ( readMap[i].second > readMap[i + 1].second && i != n - 1 )
+			{
+				newVec[readMap[i].first] = numVec[i];
+			}
+			else if ( readMap[i].second == readMap[i + 1].second && i != n - 1 )
+			{
+				if ( firstIsHigh(writeMap, readMap[i].first, readMap[i].second) )
+				{
+					newVec[readMap[i].first] = numVec[i];
+				}
+				else
+				{
+					newVec[readMap[i + 1].first] = numVec[i];
+					newVec[readMap[i].first] = numVec[i + 1];
+					++i;
+					if ( i + 1 == n )
+					{
+						break;
+					}
+				}
+			}
+			if ( i == n - 1 )
+			{
+				newVec[readMap[i].first] = numVec[i];
+			}
+		}
+		for ( auto op : opVec )
+		{
+			if ( op[0] == 1 )
+			{
+				for ( auto i = op[1] - 1; i < op[2]; ++i )
+					sum += newVec[i];
+			}
+			else if ( op[0] == 2 )
+			{
+				for ( auto i = op[1] - 1; i < op[2]; ++i )
+					newVec[i] += op[3];
+			}
+		}
+		cout << sum << endl;
+	}
+	return 0;
+}
+```
+
+
+
+第四题 差分+前缀和能做，每次排序一下然后根据query的数量进行
