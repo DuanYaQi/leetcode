@@ -35,10 +35,12 @@ DAG 的问题就 dfs+memo
 ---
 
 ## TODO
-- [x] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
-- [x] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
+- [ ] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
+- [ ] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
 
 - [ ] 440. K-th Smallest in Lexicographical Order
+
+- [ ] 面试题 17.07. Baby Names LCCI
 
 - [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
 - [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
@@ -384,9 +386,14 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[547. Number of Provinces](/DS_UF/547+Number%20of%20Provinces.cpp)      |        | 注意遍历的时候，就要使用函数合并到一个省里     |
 |[1202. Smallest String With Swaps](/DS_UF/1202+Smallest%20String%20With%20Swaps.cpp)      |        | 注意找连通分量，并且排好序   |
 |[990. Satisfiability of Equality Equations](/DS_UF/990+Satisfiability%20of%20Equality%20Equations.cpp)      |        |   先判断==, 再判断!=  相同的元素抽象到同一个子集中 |
+|[721. Accounts Merge](/DS_UF/721+Accounts%20Merge.cpp)     |        |注意merge(x,y)是把y合并到x中去<br> 可以利用这点来排字典序    |
 |      |        |      |
-
-
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
 
 ---
 
@@ -578,7 +585,7 @@ DP
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[547. Number of Provinces](/Alog_D_BFS/547+Number%20of%20Provinces.cpp) | | vis[]数组配合|
-| | | |
+|[399. Evaluate Division](/Alog_D_BFS/399+Evaluate%20Division.cpp) |带权并查集 | 重点是建图的思路 + dfs计算倍率<br> 初始化倍率数组<0，起点倍率为1，一直搜索直到目标倍率>0|
 | | | |
 | | | |
 

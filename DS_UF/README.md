@@ -194,12 +194,16 @@ struct DSU {
         else return find(fa[x]);
     }
     
-    // void merge(int x, int y) { fa[find(y)] = find(x); }
+    /* void merge(int x, int y) { fa[find(y)] = find(x); }
+    	merge 函数其实就是普通的 add_edge() 函数
+    */
     void merge(int x, int y) { 	//O(1)
     	int faA = find(a);		 // a的根结点
         int faB = find(b);		 // b的根结点
-        if(faA != faB) fa[faA] = faB;// 不属于同一个集合合并			
+        if(faA != faB) fa[faB] = faA;// 不属于同一个集合合并			
     }   
+    
+    // 是y合并到x中去
     
     bool isConnected(int x, int y) { return find(x) == find(y); }
     
@@ -377,6 +381,8 @@ public:
 
 ## 990. 等式方程的可满足性
 
+
+
 ```c++
 struct UF{
     int fa[30];
@@ -419,19 +425,143 @@ bool equationsPossible(vector<string>& equations) {
 
 
 
+----
 
+## 721. 账户合并
+
+```c++
+struct UF {
+    unordered_map<string, string> fa;
+
+    string find(string x) {
+        if (x == fa[x]) return x;
+        else {
+            string F = find(fa[x]);
+            fa[x] = F;
+            return F;
+        }
+    }
+
+    void merge(string x, string y) { fa[find(y)] = find(x); }
+
+} uf;
+
+
+vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+    /*init*/
+    unordered_map<string, string> umap;
+    for(auto account : accounts) {
+        for (int i = 1; i < account.size(); ++i) {
+            uf.fa[account[i]] = account[i];
+            umap[account[i]] = account[0];
+        } 
+    }
+
+    for (auto& account : accounts) {
+        int size = account.size();
+        if (size == 2) continue;
+
+        sort(account.begin()+1, account.end());
+
+        for (int i = 1;  i < account.size(); ++i) {
+            uf.merge(account[1], account[i]);
+        }
+    }
+
+    unordered_map<string, vector<string>> resumap;
+    vector<vector<string>> res;
+    for (auto ump : umap) {
+        string mail = ump.first;
+        string name = ump.second;
+        string fa = uf.find(mail);
+        resumap[fa].push_back(mail);
+    }
+
+
+    for (auto resump : resumap) {
+        vector<string> resT;
+        sort(resump.second.begin(), resump.second.end());
+        for (int i = 0; i < resump.second.size(); ++i) {
+            if (i == 0) {
+                resT.push_back(umap[resump.second[i]]);
+            }
+            resT.push_back(resump.second[i]);
+        }
+        res.push_back(resT);
+    }
+
+    return res;
+}
+```
 
 
 
 ---
 
-## 116. 填充每个节点的下一个右侧节点指针
+## 399. 除法求值
+
+==**带权并查集**==
 
 
 
 
 
+观察题目, 我们如果能够利用已知条件, 将有关系的变量都转换成同一个变量的若干倍, 这样在计算的时候直接将倍数相除即可
 
+
+
+并查集的思路, 将已知的方程式的两个变量合并起来, 这样如果它们有关系的话, 它们一定会有**共同祖先**
+
+
+
+但是如果只保存当前变量的祖先变量还是不够的, 因为变量之间存在倍数关系, 只保存变量名就会把这个信息丢掉. 所以我们需要把 pre 字典进行改造, **key 还是存变量名**, **但是 value 就要转变成`(祖先变量名, 当前变量相比祖先变量的倍数)`了**, 这样才能正确保存倍数关系, 用于最终的方程式的求值
+
+
+
+特别注意的是, 加了倍数之后, 在**路径压缩**和**合并**的时候, 都要计算当前变量相对新的祖先的新倍数
+
+- - 路径压缩
+
+  - - 先拿到当前祖先 pre[x] 的祖先 px
+    - 然后将当前变量的祖先设为新的祖先, 这样倍数自然要为两个倍数的乘积了
+    - 举个例子(这里只关心倍数): 例如 `x=5pre[x]`, `pre[x] = 5px`, 那么 `x=(5*5)px=25px`
+
+  - 合并
+
+  - - 拿到当前 x 和 y 的祖先 px 和 py
+    - 将 px 的祖先设为 py, 倍数也要随之变化
+    - 举个例子(这里只关心倍数): 假设当前倍数(即 x/y) 是 5, 即 `x=5y`, 然后 `x=4px`, `y=3py`, 那么要求 px/py 的话, 代入即可得 `px = 5*3/4 py`, 5 是当前倍数 multiple, 3 是 py[1], 4 是 px[1], 这就得到了新的倍数
+
+
+
+- **实现**
+
+- - 遍历已知方程式, 对变量进行合并
+  - 遍历要查询的方程式, 根据两个变量之间的关系得出其相除后的值
+
+
+
+
+
+设节点 $x$ 的值（即对应变量的取值）为 $v[x]$。对于任意两点 $x$，$y$，假设它们在并查集中具有共同的父亲 $f$，且 $\frac{v[x]}{v[f]}=a$，$\frac{v[y]}{v[f]}=b$，则有 $\frac{v[x]}{v[y]}=\frac{a}{b}$。
+
+对于每个节点 $x$ 而言，除了维护其父亲 $f[x]$ 之外，还要维护其权值之间的比值。换言之，有
+$$
+w[x] = \frac{v[x]}{v[f(x)]}
+$$
+**当查询节点 $x$ 父亲时**，如果 $f[x] \ne x$ ，我们需要先找到 $f[x]$ 的父亲 $\textit{father}$，并将 $f[x]$ 更新为 $\textit{father}$。此时，我们有
+$$
+\begin{aligned} w[x] &\leftarrow \frac{v[x]}{v[\textit{father}]} \\ &= \frac{v[x]}{v[f[x]]} \cdot \frac{v[f[x]]}{v[\textit{father}]} \\ &= w[x] \cdot w[f[x]] \end{aligned}
+$$
+也就是说，我们要将 $w[x]$ 更新为 $w[x] \cdot w[f[x]]$。
+
+
+
+**当合并两个节点 $x,y$ 时**，我们首先找到两者的父亲 $f_x, f_y$ ，并将 $f[f_x]$ 更新为 $f_y$ 。此时，我们有
+$$
+\begin{aligned} w[f_x] &\leftarrow \frac{v[f_x]}{v[f_y]} \\ &= \frac{v[x]/w[x]}{v[y]/w[y]} \\ &= \frac{v[x]}{v[y]} \cdot \frac{w[y]}{w[x]} \end{aligned}
+$$
+也就是说，当在已有的图中添加一条方程式 $\frac{v[x]}{v[y]}=k $ 时，需要将 $w[f_x]$ 更新为 $k\cdot \frac{w[y]}{w[x]}$ 。
 
 
 
@@ -446,14 +576,6 @@ bool equationsPossible(vector<string>& equations) {
 ---
 
 ## 130. 被围绕的区域
-
-
-
-
-
-----
-
-## 721. 账户合并
 
 
 
@@ -552,4 +674,61 @@ https://zhuanlan.zhihu.com/p/350894462
 ## 399. 除法求值
 
 
+
+
+
+
+
+```C++
+class Solution {
+public:
+    //方法二：DFS深搜
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        //构建映射关系
+        unordered_map<string,int> hash;
+        int count=0;
+        int n=equations.size();
+        for(int i=0;i<n;i++){
+            if(hash.find(equations[i][0])==hash.end())hash[equations[i][0]]=count++;
+            if(hash.find(equations[i][1])==hash.end())hash[equations[i][1]]=count++;
+        }
+
+        //建图
+        vector<vector<pair<int,double>>> graph(count);
+        for(int i=0;i<n;i++){
+            int ida=hash[equations[i][0]];
+            int idb=hash[equations[i][1]];
+            graph[ida].push_back({idb,values[i]});
+            graph[idb].push_back({ida,1.0/values[i]});
+        }
+
+        for(auto& q:queries){
+            double answer=-1.0;
+            if(hash.find(q[0])!=hash.end() && hash.find(q[1])!=hash.end()){
+                int pa=hash[q[0]];
+                int pb=hash[q[1]];
+                if(pa==pb)answer=1.0;
+                vector<double> ratio(count,-1.0);
+                ratio[pa]=1.0;
+                dfs(pa,pb,graph,ratio);
+                answer=ratio[pb];
+            }
+            res.push_back(answer);
+        }
+
+        return res;
+    }
+private:
+    vector<double> res;
+    void dfs(int x,int y,vector<vector<pair<int,double>>> graph,vector<double>& ratio){
+        if(ratio[y]>0)return;
+        for(const auto [tx,tval]:graph[x]){
+            if(ratio[tx]<0){
+                ratio[tx]=ratio[x]*tval;
+                dfs(tx,y,graph,ratio);
+            }
+        }
+    }
+};
+```
 

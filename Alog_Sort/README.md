@@ -344,19 +344,156 @@ for (it = vec.begin(); it != vec.end(); it++) {
 
 ## 快速排序 - 比较
 
+https://mp.weixin.qq.com/s/8ZTMhvHJK_He48PpSt_AmQ
+
+**快速排序是先将一个元素排好序，然后再将剩下的元素排好序**。
+
+**快速排序的过程是一个构造二叉搜索树的过程**。
+
+
+
 快速排序的基本思想：通过一趟排序将待排记录**分隔成独立的两部分**，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。
 
 
 
+实现逻辑:
+
+> 快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法流程如下：
+>
+> 从数列中挑出一个元素，称为 “基准”（pivot）；
+>
+> 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+>
+> 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
+
+
+
+### 随机快速排序
+
+> （交换排序; 时间A:NlogN,B:NlogN,E:NlogN;空间logN;不稳定）
+
+
+
+```c++
+void sort(int[] nums, int lo, int hi) {
+    if (lo >= hi) {
+        return;
+    }
+    // 对 nums[lo..hi] 进行切分
+    // 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
+    int p = partition(nums, lo, hi);
+    // 去左右子数组进行切分
+    sort(nums, lo, p - 1);
+    sort(nums, p + 1, hi);
+}
+```
+
+
+
+快速排序的核心无疑是 `partition` 函数， `partition` 函数的作用是在 `nums[lo..hi]` 中寻找一个分界点 `p`，通过交换元素使得 `nums[lo..p-1]` 都小于等于 `nums[p]`，且 `nums[p+1..hi]` 都大于 `nums[p]`：
+
+
+
+![image-20220325123415928](assets/image-20220325123415928.png)
+
+ `partition` 函数干的事情，其实就是把 `nums[p]` 这个元素排好序了。
+
+剩下的元素有哪些？左边区域，右边区域，对子数组进行递归，用 `partition` 函数把剩下的元素也排好序。
+
+![图片](assets/6400.gif)
+
+ `partition` 函数每次都将数组切分成左小右大两部分，恰好和二叉搜索树左小右大的特性吻合。
+
+```c++
+int partition(int[] nums, int lo, int hi) {
+    int pivot = nums[lo];
+    // 关于区间的边界控制需格外小心，稍有不慎就会出错
+    // 我这里把 i, j 定义为开区间，同时定义：
+    // [lo, i) <= pivot；(j, hi] > pivot
+    // 之后都要正确维护这个边界区间的定义
+    int i = lo + 1, j = hi;
+    // 当 i > j 时结束循环，以保证区间 [lo, hi] 都被覆盖
+    while (i <= j) {
+        while (i < hi && nums[i] <= pivot) {
+            i++;
+            // 此 while 结束时恰好 nums[i] > pivot
+        }
+        while (j > lo && nums[j] > pivot) {
+            j--;
+            // 此 while 结束时恰好 nums[j] <= pivot
+        }
+        // 此时 [lo, i) <= pivot && (j, hi] > pivot
+
+        if (i >= j) {
+            break;
+        }
+        swap(nums, i, j);
+    }
+    // 将 pivot 放到合适的位置，即 pivot 左边元素较小，右边元素较大
+    swap(nums, lo, j);
+    return j;
+}
+```
+
+其中swap
+
+```c++
+// 原地交换数组中的两个元素
+void swap(int[] nums, int i, int j) {
+    nums[i] = nums[i] ^ nums[j];
+    nums[j] = nums[i] ^ nums[j];
+    nums[i] = nums[i] ^ nums[j];
+}
+```
+
+
+
+**你甚至可以这样理解：快速排序的过程是一个构造二叉搜索树的过程**。
+
+
+
+如果你每次运气都特别背，有一边的元素特别少的话，这样会导致二叉树生长不平衡：
+
+这样的话，时间复杂度会大幅上升，后面分析时间复杂度的时候再细说。
+
+**我们为了避免出现这种极端情况，需要引入随机性**。
+
+常见的方式是在进行排序之前对整个数组执行 **洗牌算法** 进行打乱，或者在 `partition`函数中**随机选择数组元素**作为分界点，本文会使用前者。
+
+
+
+```c++
+// 洗牌算法，将输入的数组随机打乱
+void shuffle(int[] nums) {
+    Random rand = new Random();
+    int n = nums.length;
+    for (int i = 0 ; i < n; i++) {
+        // 生成 [i, n - 1] 的随机数
+        int r = i + rand.nextInt(n - i);
+        swap(nums, i, r);
+    }
+}
+```
 
 
 
 
 
+快速排序就是一个**二叉树的前序遍历**
 
-
-
-
+```c++
+/* 二叉树遍历框架 */
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    /****** 前序位置 ******/
+    print(root.val);
+    /*********************/
+    traverse(root.left);
+    traverse(root.right);
+}
+```
 
 
 
@@ -404,9 +541,7 @@ for (it = vec.begin(); it != vec.end(); it++) {
 
 ## 冒泡排序 - 比较
 
-
-
-
+https://zhuanlan.zhihu.com/p/39516615
 
 
 
