@@ -289,6 +289,18 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 ---
+### 1.2. [列表](DS_Array/README.md)
+
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[2210. Count Hills and Valleys in an Array](/DS_Array/2210+Count%20Hills%20and%20Valleys%20in%20an%20Array.cpp) | | 去重+与前后元素差值相乘大于0|
+| | | |
+| | | |
+| | | |
+
+
+
+---
 
 ### 1.2. [链表](DS_Linked_list/README.md)
 
@@ -431,7 +443,14 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 ---
 
 ### 2.2. [排序](Alog_BinarySearch/README.md)
-
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[75. Sort Colors](/Alog_Sort/75+Sort%20Colors.cpp) | 快排 | shuffle |
+|[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
+|[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle |
+| | | |
+| | | |
+| | | |
 
 
 ---

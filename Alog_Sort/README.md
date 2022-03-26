@@ -332,11 +332,147 @@ for (it = vec.begin(); it != vec.end(); it++) {
 
 ## 归并排序 - 归并
 
+归并排序就是先把左半边数组排好序，再把右半边数组排好序，然后把两半数组合并。和**二叉树**的**后序遍历**很像
+
+```c++
+void sort(int nums[], int lo, int hi) {
+    if (lo == hi) 
+        return;
+    
+    int mid = (lo + hi) / 2;
+    
+    sort(nums, lo, mid);
+    sort(nums, mid + 1, hi);
+    
+    /*后序位置*/
+    merge(nums, lo, mid, hi);
+}
+```
 
 
 
+**归并排序的过程可以在逻辑上抽象成一棵二叉树，树上的每个节点的值可以认为是`nums[lo..hi]`，叶子节点的值就是数组中的单个元素**：
+
+![img](assets/9.jpeg)
+
+然后，在每个节点的后序位置（左右子节点已经被排好序）的时候执行`merge`函数，合并两个子节点上的子数组：
+
+![图片](assets/8.jpeg)
+
+这个 `merge` 操作会在二叉树的每个节点上都执行一遍，执行顺序是二叉树后序遍历的顺序。结合上述基本分析，我们把 `nums[lo..hi]` 理解成二叉树的节点，`sort` 函数理解成二叉树的遍历函数，整个归并排序的执行过程就是以下描述：
+
+![图片](assets/6401.gif)
 
 
+
+```c++
+class Merge {
+
+    // 用于辅助合并有序数组
+    private static int[] temp;
+
+    public static void sort(int[] nums) {
+        // 先给辅助数组开辟内存空间
+        temp = new int[nums.length];
+        // 排序整个数组（原地修改）
+        sort(nums, 0, nums.length - 1);
+    }
+
+    // 定义：将子数组 nums[lo..hi] 进行排序
+    private static void sort(int[] nums, int lo, int hi) {
+        if (lo == hi) {
+            // 单个元素不用排序
+            return;
+        }
+        // 这样写是为了防止溢出，效果等同于 (hi + lo) / 2
+        int mid = lo + (hi - lo) / 2;
+        // 先对左半部分数组 nums[lo..mid] 排序
+        sort(nums, lo, mid);
+        // 再对右半部分数组 nums[mid+1..hi] 排序
+        sort(nums, mid + 1, hi);
+        // 将两部分有序数组合并成一个有序数组
+        merge(nums, lo, mid, hi);
+    }
+
+    // 将 nums[lo..mid] 和 nums[mid+1..hi] 这两个有序数组合并成一个有序数组
+    private static void merge(int[] nums, int lo, int mid, int hi) {
+        // 先把 nums[lo..hi] 复制到辅助数组中
+        // 以便合并后的结果能够直接存入 nums
+        for (int i = lo; i <= hi; i++) {
+            temp[i] = nums[i];
+        }
+
+        // 数组双指针技巧，合并两个有序数组
+        int i = lo, j = mid + 1;
+        for (int p = lo; p <= hi; p++) {
+            if (i == mid + 1) {
+                // 左半边数组已全部被合并
+                nums[p] = temp[j++];
+            } else if (j == hi + 1) {
+                // 右半边数组已全部被合并
+                nums[p] = temp[i++];
+            } else if (temp[i] > temp[j]) {
+                nums[p] = temp[j++];
+            } else {
+                nums[p] = temp[i++];
+            }
+        }
+    }
+    
+    
+}
+```
+
+
+
+`sort` 函数对 `nums[lo..mid]` 和 `nums[mid+1..hi]` 递归排序完成之后，我们没有办法原地把它俩合并，所以需要 copy 到temp数组里面，然后通过**双指针**技巧将 `nums[lo..hi]` 合并成一个有序数组：
+
+![图片](assets/6402.jpeg)
+
+对于归并排序来说，时间复杂度显然集中在 `merge` 函数遍历 `nums[lo..hi]` 的过程，但每次 `merge` 输入的 `lo` 和 `hi` 都不同，所以不容易直观地看出时间复杂度。
+
+
+
+`merge` 函数到底执行了多少次？每次执行的时间复杂度是多少？总的时间复杂度是多少？
+
+![图片](assets/6403.jpeg)
+
+**执行的次数**是**二叉树节点的个数**，每次**执行的复杂度**就是每个节点代表的**子数组的长度**，所以**总的时间复杂度**就是**整棵树中「数组元素」的个数**。
+
+所以从整体上看，这个二叉树的高度是 `logN`，其中每一层的元素个数就是原数组的长度 `N`，所以总的时间复杂度就是 `O(NlogN)`。
+
+
+
+> 序列合并问题。假设有两个递增序列 A 与 B，要求将它们合并为一个递增序列 C。可以设置两个下标 i 和 j，初值均为 0，表示分别指向序列 A 和 B 的第一个元素，然后根据 A[i] 与 B[j] 的大小来决定哪一个放入序列 C。
+>
+> ① 若 A[i] < B[j]，把小的 A[i] 放入序列 C 中，并且 i++
+>
+> ② 若 A[i] > B[j]，把小的 B[j] 放入序列 C 中，并且 j++
+>
+> ③ 若 A[i] == B[j]，随便选一个放，放A就i++/放B就j++
+>
+> 直到 i、j 中的一个到达序列末端为止，然后将另一个序列的所有元素依次加入序列 C 中
+>
+> ```c++
+> void merge(int A[], int B[], int C[], int n, int m) {	// n m 为 A B 的长度
+>     int i = 0, j = 0, index = 0;	// i指向A[0], j指向B[0]
+>     while (i < n && j < m) {
+>         if (A[i] <= B[j]) {
+>             C[index++] = A[i++];
+>         } else {
+>             C[index++] = B[j++];
+>         }
+>     }
+>     
+>     while (i < n) C[index++] = A[i++];	// 将序列A的剩余元素加入序列C
+>     while (j < m) C[index++] = B[j++];	// 将序列B的剩余元素加入序列C
+>     // 上边两个while只会执行一个
+>     
+>     return;
+> }
+> ```
+>
+> 
 
 
 
@@ -345,6 +481,10 @@ for (it = vec.begin(); it != vec.end(); it++) {
 ## 快速排序 - 比较
 
 https://mp.weixin.qq.com/s/8ZTMhvHJK_He48PpSt_AmQ
+
+
+
+
 
 **快速排序是先将一个元素排好序，然后再将剩下的元素排好序**。
 
@@ -440,6 +580,12 @@ int partition(int[] nums, int lo, int hi) {
 ```c++
 // 原地交换数组中的两个元素
 void swap(int[] nums, int i, int j) {
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
+}
+
+void swap(int[] nums, int i, int j) {
     nums[i] = nums[i] ^ nums[j];
     nums[j] = nums[i] ^ nums[j];
     nums[i] = nums[i] ^ nums[j];
@@ -499,7 +645,10 @@ void traverse(TreeNode root) {
 
 
 
+### 912. 排序数组（中等）
 
+```c++
+```
 
 
 
@@ -667,7 +816,7 @@ https://zhuanlan.zhihu.com/p/39516615
 
 ---
 
-# 内部非内部
+## 内部非内部
 
 ![img](assets/v2-5ab3d2cfc00f3d4e61f0a7d9c1103f9c_720w.jpg)
 
@@ -681,7 +830,7 @@ https://zhuanlan.zhihu.com/p/39516615
 
 ---
 
-# 比较非比较
+## 比较非比较
 
 - **比较类排序**：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序。
 - **非比较类排序**：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。 
@@ -709,7 +858,7 @@ https://zhuanlan.zhihu.com/p/39516615
 
 ---
 
-# 稳定非稳定
+## 稳定非稳定
 
 ![排序算法的稳定性](assets/v2-0872ff222124611b3403a888be76c2b9_1440w.jpg)
 
@@ -731,4 +880,106 @@ https://zhuanlan.zhihu.com/p/39516615
 
 
 
+
+
+
+
+
+
 ---
+
+# **快速选择算法**
+
+快速排序算法本身很有意思，而且它还有一些有趣的变体，最有名的就是快速选择算法（Quick Select）。
+
+
+
+**快速选择算法是快速排序的变体，效率更高**
+
+
+
+首先，题目问「第 `k` 个最大的元素」，相当于数组升序排序后「排名第 `n - k` 的元素」，为了方便表述，后文另 `k' = n - k`。
+
+如何知道「排名第 `k'` 的元素」呢？其实在快速排序算法 `partition` 函数执行的过程中就可以略见一二。
+
+我们刚说了，`partition` 函数会将 `nums[p]` 排到正确的位置，使得 `nums[lo..p-1] < nums[p] < nums[p+1..hi]`：
+
+这时候，虽然还没有把整个数组排好序，但我们已经让 `nums[p]` 左边的元素都比 `nums[p]` 小了，也就知道 `nums[p]` 的排名了。
+
+**那么我们可以把 `p` 和 `k'` 进行比较，如果 `p < k'` 说明第 `k'` 大的元素在 `nums[p+1..hi]` 中，如果 `p > k'` 说明第 `k'` 大的元素在 `nums[lo..p-1]` 中**。
+
+进一步，去 `nums[p+1..hi]` 或者 `nums[lo..p-1]` 这两个子数组中执行 `partition` 函数，就可以进一步缩小排在第 `k'` 的元素的范围，最终找到目标元素。
+
+
+
+
+
+### 215. 数组中的第 K 个最大元素
+
+这种问题有两种解法，一种是二叉堆（优先队列）的解法，另一种就是快速选择算法，我们分别来看。
+
+```c++
+int findKthLargest(vector<int>& nums, int k) {
+    /*I. */
+    shuffle(nums);
+    int n = nums.size();
+    int lo = 0, hi = n - 1;
+    
+    while (lo <= hi) {
+        p = partition(nums, lo, hi);
+        if (p > n-k) {
+            hi = p - 1;
+        } else if (p < n+k) {
+            lo = p + 1;
+        } else {
+            return nums[p];
+        }
+    }
+
+    return -1;
+}
+
+
+// 对 nums[lo..hi] 进行切分
+int partition(int[] nums, int lo, int hi) {
+    // 见前文
+}
+
+// 洗牌算法，将输入的数组随机打乱
+void shuffle(int[] nums) {
+    // 见前文
+}
+
+// 原地交换数组中的两个元素
+void swap(int[] nums, int i, int j) {
+    // 见前文
+}
+```
+
+
+
+这个代码框架其实非常像我们前文 **二分搜索框架** 的代码，这也是这个算法高效的原因，但是时间复杂度为什么是 `O(N)` 呢？
+
+显然，这个算法的时间复杂度也主要集中在 `partition` 函数上，我们需要估算 `partition` 函数执行了多少次，每次执行的时间复杂度是多少。
+
+最好情况下，每次 `partition` 函数切分出的 `p` 都恰好是正中间索引 `(lo + hi) / 2`（二分），且每次切分之后会到左边或者右边的子数组继续进行切分，那么 `partition` 函数执行的次数是 logN，每次输入的数组大小缩短一半。
+
+所以总的时间复杂度为：
+
+```
+# 等差数列
+N + N/2 + N/4 + N/8 + ... + 1 = 2N = O(N)
+```
+
+当然，类似快速排序，快速选择算法中的 `partition` 函数也可能出现极端情况，最坏情况下 `p` 一直都是 `lo + 1` 或者一直都是 `hi - 1`，这样的话时间复杂度就退化为 `O(N^2)` 了：
+
+```
+N + (N - 1) + (N - 2) + ... + 1 = O(N^2)
+```
+
+这也是我们在代码中使用 `shuffle` 函数的原因，通过**引入随机性来避免极端情况的出现**，让算法的效率保持在比较高的水平。随机化之后的**快速选择算法的复杂度可以认为是 O(N)**。
+
+从二叉树的视角来理解快速排序算法和快速选择算法的思路应该是不难的。
+
+
+
