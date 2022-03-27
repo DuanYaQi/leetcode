@@ -335,7 +335,7 @@ for (it = vec.begin(); it != vec.end(); it++) {
 归并排序就是先把左半边数组排好序，再把右半边数组排好序，然后把两半数组合并。和**二叉树**的**后序遍历**很像
 
 ```c++
-void sort(int nums[], int lo, int hi) {
+void sort(vector<int>& nums, int lo, int hi) {
     if (lo == hi) 
         return;
     
@@ -345,7 +345,7 @@ void sort(int nums[], int lo, int hi) {
     sort(nums, mid + 1, hi);
     
     /*后序位置*/
-    merge(nums, lo, mid, hi);
+    merge(nums, lo, mid, mid, hi);
 }
 ```
 
@@ -366,60 +366,21 @@ void sort(int nums[], int lo, int hi) {
 
 
 ```c++
-class Merge {
+const int maxn = 5e4 + 10;
 
-    // 用于辅助合并有序数组
-    private static int[] temp;
-
-    public static void sort(int[] nums) {
-        // 先给辅助数组开辟内存空间
-        temp = new int[nums.length];
-        // 排序整个数组（原地修改）
-        sort(nums, 0, nums.length - 1);
-    }
-
-    // 定义：将子数组 nums[lo..hi] 进行排序
-    private static void sort(int[] nums, int lo, int hi) {
-        if (lo == hi) {
-            // 单个元素不用排序
-            return;
-        }
-        // 这样写是为了防止溢出，效果等同于 (hi + lo) / 2
-        int mid = lo + (hi - lo) / 2;
-        // 先对左半部分数组 nums[lo..mid] 排序
-        sort(nums, lo, mid);
-        // 再对右半部分数组 nums[mid+1..hi] 排序
-        sort(nums, mid + 1, hi);
-        // 将两部分有序数组合并成一个有序数组
-        merge(nums, lo, mid, hi);
-    }
-
-    // 将 nums[lo..mid] 和 nums[mid+1..hi] 这两个有序数组合并成一个有序数组
-    private static void merge(int[] nums, int lo, int mid, int hi) {
-        // 先把 nums[lo..hi] 复制到辅助数组中
-        // 以便合并后的结果能够直接存入 nums
-        for (int i = lo; i <= hi; i++) {
-            temp[i] = nums[i];
-        }
-
-        // 数组双指针技巧，合并两个有序数组
-        int i = lo, j = mid + 1;
-        for (int p = lo; p <= hi; p++) {
-            if (i == mid + 1) {
-                // 左半边数组已全部被合并
-                nums[p] = temp[j++];
-            } else if (j == hi + 1) {
-                // 右半边数组已全部被合并
-                nums[p] = temp[i++];
-            } else if (temp[i] > temp[j]) {
-                nums[p] = temp[j++];
-            } else {
-                nums[p] = temp[i++];
-            }
-        }
+void merge(vector<int>& nums, int l1, int r1, int l2, int r2) {
+    int i = l1, j = l2, index = 0;
+    int tmp[maxn];
+    
+    while (i <= r1 && j <= r2) {
+        if (nums[i] < nums[j]) tmp[index++] = nums[i++];
+        else tmp[index++] = nums[j++];
     }
     
+    while (i <= r1) tmp[index++] = nums[i++];
+    while (j <= r2) tmp[index++] = nums[j++];
     
+    for (int i = 0; i < index; ++i) nums[l1+i] = tmp[i];
 }
 ```
 
@@ -472,7 +433,28 @@ class Merge {
 > }
 > ```
 >
-> 
+
+
+
+### 315. 计算右侧小于当前元素的个数
+
+在 `merge` 函数，我们在合并两个有序数组的时候，其实是可以知道一个数字 `x` 后边有多少个数字比 `x`小的。
+
+![图片](assets/6404.jpeg)
+
+这时候我们应该把 `temp[i]` 放到 `nums[p]` 上，因为 `temp[i] < temp[j]`。
+
+但就在这个场景下，我们还可以知道一个信息：5 后面比 5 小的元素个数就是 `j` 和 `mid + 1` 之间的元素个数，即 2 个。
+
+即 **在对`nuns[lo..hi]`合并的过程中，每当执行`nums[p] = temp[i]`时，就可以确定`temp[i]`这个元素后面比它小的元素个数为`j - mid - 1`**。
+
+
+
+因为在排序过程中，每个元素的索引位置会不断改变，所以我们用一个`Pair`类封装每个元素及其在原始数组`nums`中的索引，以便`count`数组记录每个元素之后小于它的元素个数。
+
+
+
+
 
 
 

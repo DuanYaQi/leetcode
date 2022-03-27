@@ -448,7 +448,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[75. Sort Colors](/Alog_Sort/75+Sort%20Colors.cpp) | 快排 | shuffle |
 |[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
 |[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle |
-| | | |
+|[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array_MergeSort.cpp) | 归并排序 | 需要单独开tmp数组记录 |
 | | | |
 | | | |
 

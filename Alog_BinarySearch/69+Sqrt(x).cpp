@@ -1,12 +1,10 @@
 int mySqrt(int x) {
-    int left = 1;  
-    int right = x;
-    int mid;
+    int left = 1, right = x;
 
     while (left <= right) {
-        mid = left + (right - left) / 2;
+        int mid = left + (right - left) / 2;
 
-        if (pow(mid, 2) > x) {
+        if ((long long)mid * mid > x) {
             right = mid - 1;
         } else {
             left  = mid + 1; 
