@@ -266,7 +266,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[404. Sum of Left Leaves](DS_Tree/404+sumOfLeftLeaves.cpp):(   |后序  |R|
 |[513. Find Bottom Left Tree Value](DS_Tree/513+findBottomLeftValue_Queue_BFS.cpp)*:(   |回溯  |R Q BFS|
 |[112. Path Sum](DS_Tree/112+hasPathSum.cpp):(   | 回溯 |R|
-|[113. Path Sum II](DS_Tree/113+pathSum.cpp)   | 回溯|R |
+|2+[113. Path Sum II](DS_Tree/113+pathSum.cpp)   | 回溯|R |
 |[617. Merge Two Binary Trees](DS_Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
 |[700. Search in a Binary Search Tree](DS_Tree/700+searchBST.cpp)   |  |R|
 |[98. Validate Binary Search Tree](DS_Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
@@ -307,12 +307,12 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[203. Remove Linked List Elements](DS_Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
-|[707. Design Linked List](DS_Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置|
+|2+[203. Remove Linked List Elements](DS_Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
+|2+[707. Design Linked List](DS_Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置，注意几个输入index的判断|
 |[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
 |[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
 |💛[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
-|[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R|
+|2+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意灵活运用虚拟头结点|
 |[234. Palindrome Linked List](DS_Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 | | | |
 | | | |
@@ -370,7 +370,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[剑指 Offer 58 - II. 左旋转字符串](DS_String/J58II+reverseLeftWords.cpp) | 左旋| |
 |[28. Implement strStr()](DS_String/28+strStr.cpp) | kmp | kmp算法 |
 |[459. Repeated Substring Pattern](DS_String/459+repeatedSubstringPattern.cpp) | 子序列| kmp注意审题，由子串多次构成，next数组中前边几个-1的位置都是子串|
-| | | |
+|[415. Add Strings](/DS_String/415+Add%20Strings.cpp) | |进位|
 | | | |
 
 
@@ -461,8 +461,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
 |[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
 |[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
+|[14. Longest Common Prefix](/Alog_BinarySearch/14+Longest%20Common%20Prefix.cpp) | | 从长度最小的字符串进行判断，二分最小的字符串 |
 | | | |
-
+| | | |
+| | | |
+| | | |
 
 
 ---

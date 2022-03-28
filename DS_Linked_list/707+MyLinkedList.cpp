@@ -69,9 +69,7 @@ public:
         while(index--) {
             cur = cur->next;
         }
-        LinkedNode* tmp = cur->next;
         cur->next = cur->next->next;
-        delete tmp;
         _size--;
     }
 

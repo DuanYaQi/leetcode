@@ -769,7 +769,7 @@ bool isBalanced(TreeNode* root) {
 
 
 
-## 10. 二叉树的所有路径
+## 113. 二叉树的所有路径
 
 ```c++
 void dps (TreeNode* root, vector<string> &res, string ans) {
@@ -1261,9 +1261,7 @@ private:
 
 # 二叉树公共祖先问题
 
-## 21. 二叉树的最近公共祖先
-
-**236. 二叉树的最近公共祖先**
+## 236. 二叉树的最近公共祖先LCA
 
 ```c++
 TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
@@ -1282,6 +1280,8 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
     return NULL;
 }
 ```
+
+
 
 
 
