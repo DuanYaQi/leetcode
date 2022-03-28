@@ -1633,3 +1633,77 @@ int maxProfit(vector<int>& prices, int fee) {
 
 大家也可以发现，情况三，那块代码是可以删掉的，我是为了让代码表达清晰，所以没有精简。
 
+
+
+
+
+---
+
+# 接雨水
+
+## 42. 接雨水
+
+对于下标 i，下雨后水能到达的最大高度等于下标 i 两边的最大高度的最小值，下标 i 处能接的雨水量等于下标 i 处的水能到达的最大高度减去 $\textit{height}[i]$。
+
+朴素的做法是对于数组 $\textit{height}$ 中的每个元素，分别向左和向右扫描并记录左边和右边的最大高度，然后计算每个下标位置能接的雨水量。假设数组 $\textit{height}$ 的长度为 $n$，该做法需要对每个下标位置使用 $O(n)$ 的时间向两边扫描并得到最大高度，因此总时间复杂度是 $O(n^2)$。
+
+
+
+上述做法的时间复杂度较高是因为需要对每个下标位置都向两边扫描。如果已经知道每个位置两边的最大高度，则可以在 O(n) 的时间内得到能接的雨水总量。使用动态规划的方法，可以在 O(n) 的时间内预处理得到每个位置两边的最大高度。
+
+创建两个长度为 n 的数组 $\textit{leftMax}$ 和 $\textit{rightMax}$。对于 $0 \le i<n$，$\textit{leftMax}[i]$ 表示下标 i 及其左边的位置中，$\textit{height}$ 的最大高度，$\textit{rightMax}[i]$ 表示下标 i 及其右边的位置中，$\textit{height}$ 的最大高度。
+
+显然，$\textit{leftMax}[0]=\textit{height}[0]$，$\textit{rightMax}[n-1]=\textit{height}[n-1]$。两个数组的其余元素的计算如下：
+
+当 $1 \le i \le n-1$ 时，$\textit{leftMax}[i]=\max(\textit{leftMax}[i-1], \textit{height}[i])$；
+
+当 $0 \le i \le n-2$ 时，$\textit{rightMax}[i]=\max(\textit{rightMax}[i+1], \textit{height}[i])$。
+
+因此可以正向遍历数组 $\textit{height}$ 得到数组 $\textit{leftMax}$ 的每个元素值，反向遍历数组 $\textit{height}$ 得到数组 $\textit{rightMax}$ 的每个元素值。
+
+在得到数组 $\textit{leftMax}$ 和 $\textit{rightMax}$ 的每个元素值之后，对于 $0 \le i<n$，下标 i 处能接的雨水量等于 $\min(\textit{leftMax}[i],\textit{rightMax}[i])-\textit{height}[i]$。遍历每个下标位置即可得到能接的雨水总量。
+
+动态规划做法可以由下图体现。
+
+![fig1](assets/23036.png)
+
+
+
+```c++
+int trap(vector<int>& height) {
+    int n = height.size();
+    if (n == 0) {
+        return 0;
+    }
+    vector<int> leftMax(n);
+    leftMax[0] = height[0];
+    for (int i = 1; i < n; ++i) {
+        leftMax[i] = max(leftMax[i - 1], height[i]);
+    }
+
+    vector<int> rightMax(n);
+    rightMax[n - 1] = height[n - 1];
+    for (int i = n - 2; i >= 0; --i) {
+        rightMax[i] = max(rightMax[i + 1], height[i]);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; ++i) {
+        ans += min(leftMax[i], rightMax[i]) - height[i];
+    }
+    return ans;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

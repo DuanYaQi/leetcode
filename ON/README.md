@@ -16,6 +16,10 @@ $O(n\log n)$的算法，1s内大概计算机可以运行 $2 * 10^7$ 次计算。
 
 
 
+- [ ] 验证 286 周赛5253题，数据 n 为 $5 * 10^4$ 一定是让 nlogn 解决，即 n次二分
+
+
+
 https://programmercarl.com/%E5%89%8D%E5%BA%8F/%E5%85%B3%E4%BA%8E%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%EF%BC%8C%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E9%83%BD%E5%9C%A8%E8%BF%99%E9%87%8C%EF%BC%81.html#%E7%A9%B6%E7%AB%9F%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6
 
 

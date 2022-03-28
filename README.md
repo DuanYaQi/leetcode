@@ -37,11 +37,12 @@ DAG 的问题就 dfs+memo
 ## TODO
 - [ ] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
 - [ ] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
-
 - [ ] 440. K-th Smallest in Lexicographical Order
-
 - [ ] 面试题 17.07. Baby Names LCCI
-
+- [ ] 蓄水池算法
+- [ ] 接雨水
+- [ ] bitmap
+- [ ] 字典树
 - [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
 - [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
 
@@ -387,11 +388,24 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 
+---
+
+### 1.7. [堆(优先队列)](DS_Heap/README.md)
+
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+
+
+
 
 
 ---
 
-### 1.7. [并查集](DS_UF/README.md)
+### 1.8. [并查集](DS_UF/README.md)
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
@@ -407,12 +421,23 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |      |        |      |
 |      |        |      |
 
+
+
+
+
 ---
 
-### 1.8. [堆(优先队列)](DS_Heap/README.md)
+### 1.9. [字典树](DS_Trie/README.md)
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
 |      |        |      |
 |      |        |      |
 |      |        |      |
@@ -591,7 +616,7 @@ DP
 |[213. House Robber II](Alog_DP/213%2BHouse%20Robber%20II.cpp) | | 把困难问题分情况，每种情况都很简单<br>索引搞不懂就画图 |
 |[337. House Robber III](Alog_DP/337%2BHouse%20Robber%20III.cpp) |树形DP |两种情况，选/不选<br>两种情况结果的保存可以用 vector<int> {0，0} |
 |[53. Maximum Subarray](Alog_DP/53%2BMaximum%20Subarray.cpp) | | 两种情况，选/不选|
-| | | |
+|[42. Trapping Rain Water](/Alog_DP/42+Trapping%20Rain%20Water.cpp) |  |先预处理,再DP |
 | | | |
 | | | |
 | | | |
