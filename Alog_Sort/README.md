@@ -345,7 +345,7 @@ void sort(vector<int>& nums, int lo, int hi) {
     sort(nums, mid + 1, hi);
     
     /*后序位置*/
-    merge(nums, lo, mid, mid, hi);
+    merge(nums, lo, mid, mid+1, hi);
 }
 ```
 
@@ -527,7 +527,7 @@ void sort(int[] nums, int lo, int hi) {
  `partition` 函数每次都将数组切分成左小右大两部分，恰好和二叉搜索树左小右大的特性吻合。
 
 ```c++
-int partition(int[] nums, int lo, int hi) {
+int partition(int nums[], int lo, int hi) {
     int pivot = nums[lo];
     // 关于区间的边界控制需格外小心，稍有不慎就会出错
     // 我这里把 i, j 定义为开区间，同时定义：
@@ -596,8 +596,16 @@ void shuffle(int[] nums) {
     Random rand = new Random();
     int n = nums.length;
     for (int i = 0 ; i < n; i++) {
-        // 生成 [i, n - 1] 的随机数
+        
         int r = i + rand.nextInt(n - i);
+        swap(nums, i, r);
+    }
+}
+
+void shuffle(vector<int>& nums) {
+    int n = nums.size();
+    for (int i = 0; i < n; ++i) {
+        int r = i + rand() % (n - i); // 生成 [i, n - 1] 的随机数
         swap(nums, i, r);
     }
 }
@@ -630,6 +638,7 @@ void traverse(TreeNode root) {
 ### 912. 排序数组（中等）
 
 ```c++
+
 ```
 
 
@@ -674,6 +683,20 @@ void traverse(TreeNode root) {
 
 https://zhuanlan.zhihu.com/p/39516615
 
+\1. 初级写法：一边比较一边向后两两交换，将最大值 或 最小值冒泡到最后一位；
+
+\2. 经过优化的写法：使用一个变量记录当前轮次的比较是否发生过交换，如果没有发生交换表示已经有序，不再继续排序；
+
+\3.进一步优化的写法：除了使用变量记录当前轮次是否发生交换外，再使用一个变量记录上次发生交换的位置，下一轮排序时到达上次交换的位置就停止比较。
+
+
+
+最外层的 for 循环每经过一轮，剩余数字中的最大值就会被移动到当前轮次的最后一位，中途也会有一些相邻的数字经过交换变得有序。总共比较次数是(n-1)+(n-2)+(n-3)+…+1。
+
+
+
+
+
 
 
 ---
@@ -696,6 +719,79 @@ https://zhuanlan.zhihu.com/p/39516615
 
 ## 选择排序 - 选择
 
+选择排序的思想是：双重循环遍历数组，每经过一轮比较，找到最小元素的下标，将其交换至首位。
+
+\1. 不稳定，破坏顺序结构 $O(N^2) + O(1)$
+
+```c++
+void swap(int arr[], int x, int y) {
+	int tmp = arr[x];
+    arr[x] = arr[y];
+    arr[y] = tmp;
+}
+
+void selectSort(int arr[]) {
+    int minIndex;  //保存最小值的索引下标
+    int n = sizeof(arr) / sizeof(int); 
+    // sizeof(arr) / sizeof(arr[0])
+    // sizeof(arr) / sizeof(*arr);
+    
+    for (int i = 0; i < n; ++i) {
+        minIndex = i;
+        
+        for (int j = i+1; j < n; ++j) {	//循环找[i+1, n]最小值的位置
+            if (arr[minIndex] > arr[j]) {
+                minIndex = j;
+            }
+        }
+        
+        swap(arr, minIndex, i); //交换当前位置和最小值的位置
+    }
+    
+    return;
+}
+```
+
+![在这里插入图片描述](assets/557c46d53d74f17be4b81d1f97336192.gif#pic_center)
+
+
+
+\2. 冒泡排序二元选择排序 $O(N^2) + O(1)$
+
+使用二元选择排序，每轮选择时记录最小值和最大值，可以把数组需要遍历的范围缩小一倍。
+
+```c++
+void selectSort(int arr[]) {
+    int minIndex, maxIndex;  //保存最小值的索引下标
+    int n = sizeof(arr) / sizeof(int); 
+    // sizeof(arr) / sizeof(arr[0])
+    // sizeof(arr) / sizeof(*arr);
+    for (int i = 0; i < n / 2; ++i) {	//范围减一半
+        minIndex = maxIndex = i;
+        
+        for (int j = i+1; j < n; ++j) {	//循环找[i+1, n]最小值的位置
+            if (arr[minIndex] > arr[j]) {
+                minIndex = j;
+            }
+            if (arr[maxIndex] < arr[j]) {
+                maxIndex = j;
+            }
+        }
+        
+        if (minIndex == maxIndex) break;	//说明剩下所有元素都相等
+        
+        // 交换最小值与当前位置i
+        swap(arr, minIndex, i);
+        
+        ////i已经和minIndex交换过位置，如果maxIndex和i相同，就进行和MinIndex
+        if (maxIndex == i) maxIndex = minIndex;
+        
+        swap(arr, maxIndex, n-i-1); //交换当前位置和最小值的位置
+    }
+    
+    return;
+}
+```
 
 
 
@@ -703,6 +799,7 @@ https://zhuanlan.zhihu.com/p/39516615
 
 
 
+\3. 
 
 
 
@@ -962,6 +1059,108 @@ N + (N - 1) + (N - 2) + ... + 1 = O(N^2)
 这也是我们在代码中使用 `shuffle` 函数的原因，通过**引入随机性来避免极端情况的出现**，让算法的效率保持在比较高的水平。随机化之后的**快速选择算法的复杂度可以认为是 O(N)**。
 
 从二叉树的视角来理解快速排序算法和快速选择算法的思路应该是不难的。
+
+
+
+
+
+---
+
+# 桶排序
+
+我们思考这样一个问题
+某天老师让全班同学各自说出自己的出生日期，然后统计一下出生日期相差小于等于30天的同学。我们很容易想到，出生在同一个月的同学，一定满足上面的条件。出生在相邻月的同学，也有可能满足那个条件，这就需要计算一下来确定了。但如果月份之间相差了两个月，那就不可能满足这个条件了。
+例如某同学出生于6月10日，其他6月出生的同学，都与其相差小于30天。另一些5月20日和7月10日的同学也满足条件。但是4月份的和8月份的同学就不可能满足条件了。
+
+
+
+**先来讲讲分桶是什么意思，实际上我们的一个桶内同一时刻只会有一个元素**
+
+要满足，**同一个桶**中的任两个元素之差的绝对值**小于等于**t，**相邻桶**中的某两个元素之差的绝对值**可能小于等于**t（通过计算判断是否真的小于等于t），**不同相邻的桶**中的元素之差的绝对值**不可能满足小于等于**t
+
+
+
+那么我们如何划分桶呢？我们给每一个桶标上ID，进行一种映射。首先我们容易直接想到的是，题目中的t值就类似于引言中提到的“月份”，是一种模，我们可以采用 “ID = 元素值 ÷ t” 的方法，也就是商作为ID，商相同的元素属于同一个桶，这样会产生下面的桶。
+
+![N{{9GHPYTL12HEBZIMVFG6U.png](assets/1618629733-PywaTa-N{{9GHPYTL12HEBZIMVFG6U.png)
+
+但是存在两个问题，也是这道题巧妙的地方。
+（1）题目中 t 的取值是 0<= t <= 2^31 - 1，t可以等于0，所以“ID = 元素值 ÷ t ” 的方法行不通。
+（2）对应于上面的图，其实我们还可以把｛0，1，2，3｝划分在一桶，因为也满足桶内任两个元素绝对值之差小于等于t（这里t = 3），那么我们是不是可以以t+1为桶的模？
+
+对此我们进行改造“ID = 元素值 ÷（t + 1）”，产生如下的桶的划分
+
+![8ACRVDF1.png](assets/1618630082-OLVDF1.png)
+
+这样就保证每个桶内任两个元素之差的绝对值小于t，相邻的桶内的某两个元素之差的绝对值可能小于t，而不相邻的桶则不可能。
+
+上面我们仅仅考虑的 `nums[i]>=0` 的情况，进行分桶。对于**负数**我们要做一些小小的调整。如果 `nums = {-4,-3,-2,-1,0,1,2,3}`，那么，元素 -4 被分到了ID为-1的桶中，其余元素都被放在了ID为0的桶里（如图）
+
+![image.png](assets/1618631878-MBvTVX-image.png)
+
+但是3-（-3）= 6大于了我们的 t = 3。对于这样的**负数**我们可以在求出商之后，把**商-1**，也就是ID向左偏一个，变成下面的样子
+
+![image.png](assets/1618632141-dPwXAf-image.png)
+
+-4还是没进来，原因是-4÷（t+1）-1 = -2 与-3，-2，-1不相同。不过如果我们把**负数数值整体增大一**，变成-3，-2，-1，-0， 这样就分到同一个桶中了。对应下面的图
+
+![image.png](assets/1618632393-vUkFBd-image.png)
+
+核心思路
+我们从头开始遍历数组，对于当前下标i，有效的桶是下标为 `[i-k,i+k]` 的元素构造的桶，对于每一个 `i` 我们只需要看前面是否有无效的桶即可，后面的元素我们没遍历到，自然也不会产生桶，所以 `[i-k，i]` 的桶是有效的，如果 `nums[i-(k+1)]` 产生的桶存在，我们要把其删除掉。因为 `abs(i-(i-(k+1))) = abs(k+1) = k+1 > k`。这是不在我们下标范围内的元素产生的桶，我们不需要判断是否满足条件，直接把这个桶删除了。
+
+
+
+对于遍历到的元素 `nums[i]` 进行分桶，获取当前桶 ID，如果当前桶中已经有元素了，那么说明能找到符合条件的元素，直接返回 true（因此，我们每个桶中最多只可能有一个元素，多了我们会直接返回结果）。如果当前桶没有元素，那么看看前相邻的桶有没有元素，如果有元素，那么进行做差比较，判断是否满足条件，满足则返回 true。如果没有找到，那么把这个元素装入桶中，供别的元素判断。如果到最后都没有找到满足条件的元素，我们就返回 false;
+
+```c++
+long getID(long x, long t){
+    //如果x元素大于等于零,直接分桶
+    if(x>=0){
+        return x / ( t + 1 );
+    }else{
+        //如果x元素小于零,偏移后再分桶
+        return ( x + 1 )/( t + 1 ) - 1 ;
+    }
+    return 0;
+}
+
+bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+    int n = nums.size();
+    //我们用unordered_map来实现桶,其底层实现是一个哈希表.
+    unordered_map<int, int> m;
+    for(int i = 0 ; i < n; i++ ){
+        //当前元素
+        long  x = nums[i];
+        //给当前元素生成id,这里我们同一个id的桶内元素满足abs(nums[i] - nums[j]) <= t
+        int id = getID(x,t);
+        //前面的i-(k+1)是超出了范围的桶,我们把它提前删除,以免影响判断
+        if( i-(k+1) >= 0 ){
+            //把下标不满足我们判断范围的桶删除了
+            m.erase(getID(nums[i-(k+1)],t));
+        }
+        //看看当前元素属于的桶中有没有元素
+        if(m.find(id)!=m.end()){
+            return true;
+        }
+        //看看前面相邻桶有没有符合条件的
+        if(m.find(id - 1) != m.end() && abs(m[id-1]-x) <= t){
+            return true;
+        }
+        //看看后面相邻桶有没有符合条件的
+        if(m.find(id + 1) != m.end() && abs(m[id+1]-x) <= t){
+            return true;
+        }
+        //分桶,把这个元素放入其属于的桶
+        m[id] = x;
+    }
+    return false;
+}
+```
+
+
+
+
 
 
 

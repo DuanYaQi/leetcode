@@ -905,3 +905,51 @@ bool isValid(int row, int col, char val, vector<vector<char>>& board) {
  }
 ```
 
+
+
+
+
+# 计算机相关
+
+进制转换
+
+
+
+
+
+位图
+
+
+
+
+
+LRU
+
+
+
+大数相加
+
+
+
+
+
+大数相乘
+
+
+
+
+
+浮点数相乘
+
+
+
+
+
+
+
+---
+
+# 升级题库
+
+## N数之和
+

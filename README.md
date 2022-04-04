@@ -54,7 +54,6 @@ DAG 的问题就 dfs+memo
 <details>
   <summary>学习网站汇总</summary>
 **教学**
-
 [代码随想录Github](https://github.com/youngyangyang04/leetcode-master)　　[代码随想录Wechat](https://mp.weixin.qq.com/s/weyitJcVHBgFtSc19cbPdw)
 
 [labuladong 的算法小抄Github](https://github.com/labuladong/fucking-algorithm)　　[labuladong 的算法小抄Wechat](https://mp.weixin.qq.com/s/AWsL7G89RtaHyHjRPNJENA)　　[labuladong 的算法小抄Gitbook](https://labuladong.gitee.io/algo/)
@@ -371,6 +370,9 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[28. Implement strStr()](DS_String/28+strStr.cpp) | kmp | kmp算法 |
 |[459. Repeated Substring Pattern](DS_String/459+repeatedSubstringPattern.cpp) | 子序列| kmp注意审题，由子串多次构成，next数组中前边几个-1的位置都是子串|
 |[415. Add Strings](/DS_String/415+Add%20Strings.cpp) | |进位|
+|[13. Roman to Integer](/DS_String/13+Roman%20to%20Integer.cpp) | | 注意观察规律，对应值小的在对应值大的左侧（必须紧挨），则该值为减不为加|
+| | | |
+| | | |
 | | | |
 
 
@@ -470,14 +472,14 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 2.2. [排序](Alog_BinarySearch/README.md)
+### 2.2. [排序](Alog_Sort/README.md)
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[75. Sort Colors](/Alog_Sort/75+Sort%20Colors.cpp) | 快排 | shuffle |
-|[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
-|[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle |
-|[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array_MergeSort.cpp) | 归并排序 | 需要单独开tmp数组记录 |
-| | | |
+|2+[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
+|3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle<br>partition中i < hi && nums[i] <= pivot  注意是j-- |
+|3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array_MergeSort.cpp) | 归并排序 | 需要单独开tmp数组记录<br>注意merge最后nums[lo+i]而不是nums[i] |
+|[315. Count of Smaller Numbers After Self](/Alog_Sort/315+Count%20of%20Smaller%20Numbers%20After%20Self.cpp) | |结构体+cnt数组辅助记录右侧小值<br>tmp结构体数组记录，要整体转换，不要只转换val，忽略id |
 | | | |
 
 
@@ -1310,6 +1312,10 @@ return (some_long_condition &&
 
 [hacking C++](https://hackingcpp.com/index.html)
 
+https://oi-wiki.org/graph/shortest-path/#_1
+
+
+
 
 
 Data Structure Visualizations
@@ -1321,6 +1327,12 @@ https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
 VisuAlgo.net/zh 数据结构和算法动态可视化 (Chinese)
 
 https://visualgo.net/zh
+
+
+
+https://algorithm-visualizer.org/greedy/kruskals-minimum-spanning-tree
+
+
 
 
 

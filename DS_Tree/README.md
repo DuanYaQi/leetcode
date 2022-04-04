@@ -638,7 +638,7 @@ bool isSymmetric(TreeNode* root) {
 
 ---
 
-## 7. 二叉树的深度
+## 104. 二叉树的深度
 
 **104. Maximum Depth of Binary Tree**
 
@@ -704,7 +704,7 @@ int minDepth(TreeNode* root) {
 
 ---
 
-## 8. 二叉树节点数
+## 222. 二叉树节点数
 
 **222. Count Complete Tree Nodes**
 
@@ -954,7 +954,7 @@ void traversal(TreeNode* root, int targetSum, int count) {
 
 # 二叉树的修改与构造
 
-## 14.  构造二叉树
+## 106.  构造二叉树
 
 **106. 从中序和后序遍历序列构造二叉树**
 
@@ -1030,7 +1030,7 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
 
 ---
 
-## 15. 构造一颗最大的二叉树
+## 654. 构造一颗最大的二叉树
 
 **654. 最大二叉树**
 
@@ -1410,7 +1410,6 @@ TreeNode* convertBST(TreeNode* root) {
 涉及到二叉树的构造,无论普通二叉树还是二叉搜索树一定前序,都是先构造中节点。
 求普通二叉树的属性,一般是后序,一般要通过递归函数的返回值做计算。
 求二叉搜索树的属性,一定是中序了,要不白瞎了有序性了。
-
 
 
 
