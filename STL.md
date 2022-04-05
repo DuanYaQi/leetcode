@@ -1536,7 +1536,7 @@ for(map<string,int>::iterator it=mp.begin();it!=mp.begin();it++){
 
 ```c++
 int x=1,y=2;
-swap(x,y);
+swap(x, y);
 printf("%d %d",x,y);
 //2 1
 ```
@@ -1693,20 +1693,125 @@ sort(首元素地址(必填),尾元素地址的*下一个地址(必填),比较�
 
 ```c++
 int a[10]={1,2,2,3,3,3,5,5,5,5};
-int *lowerPos=lower_bound(a,a+10,-1);
-int *upperPos=upper_bound(a,a+10,-1);
-printf("%d %d",lowerPos-a,upperPos-a);//0 0
-int *lowerPos=lower_bound(a,a+10,1);
-int *upperPos=upper_bound(a,a+10,1);
-printf("%d %d",lowerPos-a,upperPos-a);//0 1
-int *lowerPos=lower_bound(a,a+10,3);
-int *upperPos=upper_bound(a,a+10,3);
-printf("%d %d",lowerPos-a,upperPos-a);//3 6
-int *lowerPos=lower_bound(a,a+10,4);
-int *upperPos=upper_bound(a,a+10,4);
-printf("%d %d",lowerPos-a,upperPos-a);//6 6
-int *lowerPos=lower_bound(a,a+10,6);
-int *upperPos=upper_bound(a,a+10,6);
-printf("%d %d",lowerPos-a,upperPos-a);//10 10
+int *lowerPos=lower_bound(a, a+10, -1);
+int *upperPos=upper_bound(a, a+10, -1);
+printf("%d %d", lowerPos-a,upperPos-a);//0 0
+int *lowerPos=lower_bound(a, a+10, 1);
+int *upperPos=upper_bound(a, a+10,1);
+printf("%d %d", lowerPos-a,upperPos-a);//0 1
+int *lowerPos=lower_bound(a, a+10,3);
+int *upperPos=upper_bound(a, a+10,3);
+printf("%d %d", lowerPos-a,upperPos-a);//3 6
+int *lowerPos=lower_bound(a, a+10,4);
+int *upperPos=upper_bound(a, a+10,4);
+printf("%d %d", lowerPos-a,upperPos-a);//6 6
+int *lowerPos=lower_bound(a, a+10,6);
+int *upperPos=upper_bound(a, a+10,6);
+printf("%d %d", lowerPos-a, upperPos-a);//10 10
+```
+
+
+
+
+
+---
+
+#### 9.8. min_element() 和 max_element() 和 accumulate()
+
+头文件`#include <algorithm>`
+
+**1.求数组的最大值或最小值**
+
+1）[vector](https://so.csdn.net/so/search?q=vector&spm=1001.2101.3001.7020)容器
+
+```c++
+vector vec
+int maxValue = *max_element(v.begin(), v.end());
+int minValue = *min_element(v.begin(), v.end());
+// max_element() 返回的是iterator
+```
+
+
+
+2）普通数组
+
+```c++
+a[]={1,2,3,4,5,6};
+int maxValue = *max_element(a,a+6);
+int minValue = *min_element(a,a+6);
+// max_element() 返回的是指针
+```
+
+
+
+
+
+**2.求数组最大值最小值对应的下标**
+
+1）vector容器
+
+```c++
+vector vec
+int maxPosition = max_element(v.begin(), v.end()) - v.begin();
+int minPosition = min_element(v.begin(), v.end()) - v.begin();
+```
+
+
+
+2）普通数组
+
+```c++
+a[]={1,2,3,4,5,6};
+int maxPosition = max_element(a, a+6) - a;
+int minPosition = min_element(a, a+6) - a;
+```
+
+
+
+
+
+3.求和函数
+
+头文件`#include <numeric>`
+
+```c++
+a[]={1,2,3,4,5,6};
+int sum = accumulate(a, a + 6, 0);	//第三个参数累加的初值
+vector<int> nums = {1, 2, 3, 4, 5};
+int res = accumulate(nums.begin(), nums.end(), 0); 
+```
+
+可以使用 accumulate 把 string 型的 vector 容器中的元素连接起来：
+
+```c++
+string sum = accumulate(v.begin() , v.end() , string(" "));  
+```
+
+
+
+
+
+
+
+#### 9.9. unique() / erase()
+
+```c++
+unique(vec.begin(), vec.end())	// 将相同的元素移到vec后边了，返回第一个相同元素坐标
+vec.erase(unique(vec.begin(), vec.end()), vec.end()); //第一个相同元素坐标到结束前部删点
+```
+
+
+
+
+
+#### 9.10 排序map
+
+```c++
+vector<pair<int, int>> vec(mp.begin(), mp.end());
+        sort(vec.begin(), vec.end(), cmp);
+
+bool static cmp (const pair<int, int> a, const pair<int, int> b) {
+    return a.second > b.second ? true : false;
+}
 ```
 

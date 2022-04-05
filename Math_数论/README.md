@@ -6,7 +6,70 @@ https://blog.csdn.net/qq_44013342/article/details/88023526#t9
 
 
 
+---
 
+## 1979. 最大公约数
+
+欧几里得算法，即辗转相除法
+$$
+gcd(a,b)=gcd(b,a \operatorname{mod} b).
+$$
+
+
+```c++
+int gcd(int a, int b) {
+        if (b == 0) return a;
+
+        return gcd(b, a % b);
+    }
+
+
+int findGCD(vector<int>& nums) {
+    int maxn = *max_element(nums.begin(), nums.end());
+    int minn = *min_element(nums.begin(), nums.end());
+
+    return gcd(maxn, minn);
+}
+```
+
+时间复杂度：$O(n + \log M)$，其中 n 为 $\textit{nums}$ 的长度，$M$ 为 $\textit{nums}$ 的最大值。遍历数组寻找最大值与最小值的时间复杂度为 $O(n)$，计算最大公约数的时间复杂度为 $O(\log M)$。
+
+空间复杂度：O(1)O(1)。
+
+
+
+
+
+---
+
+## 最小公倍数
+
+```c++
+int lcm(int a, int b){
+    int g = gcd(a, b);
+    return a * b / g;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
 
 ## 62.不同路径
 
@@ -69,6 +132,220 @@ int main(int m, int n) {
 
 
 ---
+
+## 48. 旋转图像
+
+用翻转代替旋转
+
+我们还可以另辟蹊径，用翻转操作代替旋转操作。我们还是以题目中的示例二
+
+$$
+\begin{bmatrix} 5 & 1 & 9 & 11 \\ 2 & 4 & 8 & 10 \\ 13 & 3 & 6 & 7 \\ 15 & 14 & 12 & 16 \end{bmatrix}
+$$
+
+
+作为例子，先将其通过水平轴翻转得到：
+
+$$
+\begin{bmatrix} 5 & 1 & 9 & 11 \\ 2 & 4 & 8 & 10 \\ 13 & 3 & 6 & 7 \\ 15 & 14 & 12 & 16 \end{bmatrix} \xRightarrow[]{水平翻转} \begin{bmatrix} 15 & 14 & 12 & 16 \\ 13 & 3 & 6 & 7 \\ 2 & 4 & 8 & 10 \\ 5 & 1 & 9 & 11 \end{bmatrix}
+$$
+再根据主对角线翻转得到：
+$$
+\begin{bmatrix} 15 & 14 & 12 & 16 \\ 13 & 3 & 6 & 7 \\ 2 & 4 & 8 & 10 \\ 5 & 1 & 9 & 11 \end{bmatrix} \xRightarrow[]{主对角线翻转} \begin{bmatrix} 15 & 13 & 2 & 5 \\ 14 & 3 & 4 & 1 \\ 12 & 6 & 8 & 9 \\ 16 & 7 & 10 & 11 \end{bmatrix}
+$$
+就得到了答案。这是为什么呢？对于水平轴翻转而言，我们只需要枚举矩阵上半部分的元素，和下半部分的元素进行交换，即
+
+$$
+\textit{matrix}[\textit{row}][\textit{col}] \xRightarrow[]{水平轴翻转}\textit{matrix}[n - \textit{row} - 1][\textit{col}]
+$$
+对于主对角线翻转而言，我们只需要枚举对角线左侧的元素，和右侧的元素进行交换，即
+
+$$
+\textit{matrix}[\textit{row}][\textit{col}] \xRightarrow[]{主对角线翻转} \textit{matrix}[\textit{col}][\textit{row}]
+$$
+
+
+将它们联立即可得到：
+
+$$
+\begin{aligned} \textit{matrix}[\textit{row}][\textit{col}] & \xRightarrow[]{水平轴翻转} \textit{matrix}[n - \textit{row} - 1][\textit{col}] \\ &\xRightarrow[]{主对角线翻转} \textit{matrix}[\textit{col}][n - \textit{row} - 1] \end{aligned}
+$$
+
+
+```c++
+void rotate(vector<vector<int>>& matrix) {
+    int row = matrix.size();
+
+    for (int i = 0; i < row / 2; ++i) {
+        for (int j = 0; j < row; ++j) {
+            swap(matrix[i][j], matrix[row - i - 1][j]);
+        }
+    }
+
+    for (int i = 0; i < row; ++i) {
+        for (int j = i + 1; j < row; ++j) {
+            swap(matrix[i][j], matrix[j][i]);
+        }
+    }
+}
+```
+
+
+
+---
+
+## 223. 矩形面积
+
+两个单独的矩阵面积 - 重复的面积，注意要判断重复部分的高，负值表示不重叠。
+
+```c++
+int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+    int s1 = (ax2 - ax1) * (ay2 - ay1);
+    int s2 = (bx2 - bx1) * (by2 - by1);
+
+    int overlapWidth = min(ax2, bx2) - max(ax1, bx1), overlapHeight = min(ay2, by2) - max(ay1, by1);
+
+    int coverArea = max(overlapWidth, 0) * max(overlapHeight, 0);
+
+
+    return s1 + s2 - coverArea;
+}
+```
+
+
+
+---
+
+## 50. Pow(x, n)
+
+快速幂本质是分治，当 n 为负数时，可以计算正数，再取倒数。
+
+
+
+如果我们要计算 $x^{64}$，我们可以按照：
+$$
+x→x^2
+ →x^4
+ →x^8
+ →x^{16}
+ →x^{32}
+ →x^{64}
+$$
+的顺序，从 x 开始，每次直接把上一次的结果进行平方，计算 6 次就可以得到 $x^{64}$ 的值，而不需要对 x 乘 63 次 x。
+
+
+
+如果我们要计算 $x^{77}$ ，我们可以按照：
+
+$$
+x \to x^2 \to x^4 \to x^9 \to x^{19} \to x^{38} \to x^{77}
+$$
+的顺序，在 $x \to x^2，x^2 \to x^4，x^{19} \to x^{38}$ 这些步骤中，我们直接把上一次的结果进行平方，而在 $x^4 \to x^9，x^9 \to x^{19}，x^{38} \to x^{77}$，这些步骤中，我们把上一次的结果进行平方后，还要额外乘一个 x。
+
+直接从左到右进行推导看上去很困难，因为在每一步中，我们不知道在将上一次的结果平方之后，还需不需要额外乘 x。但如果我们从右往左看，分治的思想就十分明显了：
+
+- 当我们要计算 $x^n$  时，我们可以先递归地计算出 $y = x^{\lfloor n/2 \rfloor}$，其中 $\lfloor a \rfloor$ 表示对 a 进行下取整；
+
+- 根据递归计算的结果，如果 $n$ 为偶数，那么 $x^n = y^2$ ；如果 n 为奇数，那么 $x^n = y^2 \times x$；
+
+- 递归的边界为 $n = 0$，任意数的 0 次方均为 1。
+
+由于每次递归都会使得指数减少一半，因此递归的层数为 $O(\log n)$，算法可以在很快的时间内得到结果。
+
+```c++
+double quickMul(double x, long long N) {
+    if (N == 0) {
+        return 1.0;
+    }
+    double y = quickMul(x, N / 2);
+    return N % 2 == 0 ? y * y : y * y * x;
+}
+
+double myPow(double x, int n) {
+    long long N = n;
+    return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, N);
+}
+```
+
+
+
+时间复杂度：$O(\log n)$，即为递归的层数。
+
+空间复杂度：$O(\log n)$，即为递归的层数。这是由于递归的函数调用会使用栈空间。
+
+
+
+由于递归需要使用额外的栈空间，我们试着将递归转写为迭代。在方法一中，我们也提到过，从左到右进行推导是不容易的，因为我们不知道是否需要额外乘 x。但我们不妨找一找规律，看看哪些地方额外乘了 x，并且它们对答案产生了什么影响。
+
+
+
+我们还是以 $x^{77}$  作为例子：
+$$
+x \to x^2 \to x^4 \to^+ x^9 \to^+ x^{19} \to x^{38} \to^+ x^{77}
+$$
+
+并且把需要额外乘 x 的步骤打上了 + 标记。可以发现：
+
+$x^{38} \to^+ x^{77}$ 中额外乘的 x 在 $x^{77}$ 中贡献了 $x$；
+
+$x^9 \to^+ x^{19}$  中额外乘的 x 在之后被平方了 2 次，因此在 $x^{77}$ 中贡献了 $x^{2^2} = x^4$ ；
+
+$x^4 \to^+ x^9$ 中额外乘的 x 在之后被平方了 3 次，因此在 $x^{77}$ 中贡献了 $x^{2^3} = x^8$ ；
+
+最初的 x 在之后被平方了 6 次，因此在 $x^{77}$ 中贡献了 $x^{2^6} = x^{64}$ 。
+
+
+
+我们把这些贡献相乘，$x \times x^4 \times x^8 \times x^{64}$,  恰好等于 $x^{77}$ 。而这些贡献的指数部分又是什么呢？它们都是 2 的幂次，这是因为每个额外乘的 xx 在之后都会被平方若干次。而这些指数 1，4，8 和 64，恰好就对应了 77 的二进制表示 $(1001101)_2$ 中的每个 11！
+
+因此我们借助整数的二进制拆分，就可以得到迭代计算的方法，一般地，如果整数 nn 的二进制拆分为
+
+$$
+n = 2^{i_0} + 2^{i_1} + \cdots + 2^{i_k}
+$$
+
+那么
+
+$$
+x^n = x^{2^{i_0}} \times x^{2^{i_1}} \times \cdots \times x^{2^{i_k}}
+$$
+这样以来，我们从 x 开始不断地进行平方，得到 $x^2, x^4, x^8, x^{16}, \cdots$ ，如果 n 的第 k 个（从右往左，从 0 开始计数）二进制位为 1，那么我们就将对应的贡献 $x^{2^k}$ 计入答案。
+
+```c++
+double quickMul(double x, long long N) {
+    double ans = 1.0;
+    // 贡献的初始值为 x
+    double x_contribute = x;
+    // 在对 N 进行二进制拆分的同时计算答案
+    while (N > 0) {
+        if (N % 2 == 1) {
+            // 如果 N 二进制表示的最低位为 1，那么需要计入贡献
+            ans *= x_contribute;
+        }
+        // 将贡献不断地平方
+        x_contribute *= x_contribute;
+        // 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可
+        N /= 2;
+    }
+    return ans;
+}
+
+double myPow(double x, int n) {
+    long long N = n;
+    return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+}
+```
+
+
+
+- 时间复杂度：$O(\log n)$，即为对 n 进行二进制拆分的时间复杂度。
+- 空间复杂度：$O(1)$。
+
+
+
+
+
+----
 
 # CS
 
@@ -301,4 +578,92 @@ int类型数值“-1”的32位二进制就是原码，即10000000 00000000 0000
 即**int类型在内存中，以补码的形式存储**。
 
 而且我们还知道了为何int类型的取值范围中负数的最小值的绝对值比正数的最大值大1的原因，即-2^31的补码是10000000 00000000 00000000 00000000，原本-0的位置被-2^31取代了。
+
+
+
+
+
+---
+
+## 146. LRU（最近最少使用）
+
+缓存淘汰策略
+
+计算机的缓存容量有限，如果缓存满了就要删除一些内容，给新内容腾位置。
+
+LRU，Least Recently Used，认为最近使用过的数据都是有用的，很久都没用过的数据应该是无用的，内存满了就优先删除很久没用过的数据。
+
+
+
+首先接受一个 capacity 参数作为缓存的最大容量，实现两个 API，一个是
+
+
+
+
+
+
+
+
+
+## LFU
+
+
+
+## 进制转换
+
+
+
+---
+
+## 位图
+
+
+
+
+
+
+
+
+
+---
+
+## 大数相加
+
+
+
+---
+
+## 大数相乘
+
+
+
+---
+
+## 浮点数相乘
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

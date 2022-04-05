@@ -644,8 +644,17 @@ DP
 
 ---
 ### 2.9. [数论](Math_数论/README.md)
-
-
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[48. Rotate Image](Math_数论/48+Rotate%20Image.cpp) | |旋转公式 |
+|[1979. Find Greatest Common Divisor of Array](/Math_数论/1979+findGCD.cpp) | 最大公约数|辗转相除，判0 |
+|[50. Pow(x, n)](/Math_数论/50+Pow.cpp) | 快速幂|  |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
 
 
 
