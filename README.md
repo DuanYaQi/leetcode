@@ -649,9 +649,9 @@ DP
 |[48. Rotate Image](Math_数论/48+Rotate%20Image.cpp) | |旋转公式 |
 |[1979. Find Greatest Common Divisor of Array](/Math_数论/1979+findGCD.cpp) | 最大公约数|辗转相除，判0 |
 |[50. Pow(x, n)](/Math_数论/50+Pow.cpp) | 快速幂|  |
-| | | |
-| | | |
-| | | |
+|[224. Basic Calculator](/Math_数论/224+Basic%20Calculator.cpp) | | 注意( |
+|[227. Basic Calculator II](/Math_数论/227+Basic%20Calculator%20II.cpp) | | 注意( |
+|[16.26. Calculator LCCI](/16.26) | | 计算器 |
 | | | |
 | | | |
 | | | |
