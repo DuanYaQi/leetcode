@@ -1263,23 +1263,113 @@ private:
 
 ## 236. 二叉树的最近公共祖先LCA
 
+**祖先**的定义： 若节点 p 在节点 root 的左（右）子树中，或 p = root ，则称 root 是 p 的祖先。
+
+**最近公共祖先**的定义： 设节点 root 为节点 p, q 的某公共祖先，若其左子节点 root.left 和右子节点 root.right 都不是 p,q 的公共祖先，则称 root 是 “最近的公共祖先” 。
+
+
+
+
+
+
+
+自底向上查找就好了
+
+回溯啊，⼆叉树回溯的过程就是从低到上。
+
+后序遍历就是天然的回溯过程，最先处理的⼀定是叶子节点。
+
+
+
+如何判断⼀个节点是节点 q 和节点 p 的公共公共祖先呢？
+
+如果找到⼀个节点，发现左子树出现结点p，右子树出现节点q，或者 左子树出现结点q，右子树出现节点p，那么该节点就是节点p和q的最近**公共祖先**。
+
+
+
+**自底向上**从叶子节点开始更新的，所以在所有满足条件的公共祖先中一定是**深度最大的祖先先被访问到**
+
 ```c++
-TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-    if (root == p || root == q || root == NULL) return root;
-    TreeNode* left = lowestCommonAncestor(root->left, p, q);
-    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+TreeNode* ans;
+bool dfs(TreeNode* root, TreeNode* p, TreeNode* q) {
+    // 当越过叶节点，则直接返回 null
+    if (root == nullptr) return false;
 
-    if (left && right) return root;
-
-    if (left != NULL && right == NULL) {
-        return left;
-    } else if (left == NULL && right != NULL) {
-        return right;
+    bool lson = dfs(root->left, p, q);
+    bool rson = dfs(root->right, p, q);
+    // 当 root 等于 p, q 则直接返回 root
+    if (lson && rson) {
+        ans = root;
     }
 
-    return NULL;
+    //  x 恰好是 p 节点或 q 节点且它的左子树或右子树有一个包含了另一个节点的情况
+    if ((root->val == p->val || root->val == q->val) && (lson || rson)) {    
+        ans = root;
+    }
+
+    return lson || rson || (root->val == p->val || root->val == q->val);
+}
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    dfs(root, p, q);
+    return ans;
 }
 ```
+
+
+
+![Picture1.png](assets/1599885247-rxcHcZ-Picture1.png)
+
+
+
+根据以上定义，若 root 是 p, q 的 最近公共祖先 ，则只可能为以下情况之一：
+
+- p 和 q 在 root 的子树中，且分列 root 的 异侧（即分别在左、右子树中）；
+- p = root ，且 q 在 root 的左或右子树中；
+- q = root ，且 p 在 root 的左或右子树中；
+
+
+
+![Picture2.png](assets/1599885247-mgYjRv-Picture2.png)
+
+- 终止条件：
+
+  - 当越过叶节点，则直接返回 null；
+
+  - 当 root 等于 p 或 q，则直接返回 root ；
+
+- 递推工作：
+
+  - 开启递归左子节点，返回值记为 left；
+
+  - 开启递归右子节点，返回值记为 right ；
+
+- 返回值： 根据 left 和 right，可展开为四种情况；
+  1. 当 left 和 right 同时为空 ：说明 root 的左 / 右子树中都不包含 p,q 返回 null；
+  2. 当 left 和 right 同时不为空 ：说明 p, q 分列在 root 的 异侧 （分别在 左 / 右子树），因此 root 为最近公共祖先，返回 root；
+  3. 当 left 为空 ，right 不为空 ：p,q 都不在 root 的左子树中，直接返回 right。具体可分为两种情况：
+     - p,q 其中一个在 root 的 右子树 中，此时 right 指向 p（假设为 p ）；
+     - p,q 两节点都在 root 的 右子树 中，此时的 right 指向 最近公共祖先节点 ；
+  4. 当 left 不为空 ， right 为空 ：与情况 3. 同理；
+
+
+
+```c++
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {		
+    if (root == nullptr) return nullptr;		// 终止条件1
+    if (root == p || root == q) return root;	// 终止条件2
+    
+    TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+    
+    if (left == nullptr && right == nullptr) return nullptr; // 1.
+    if (left == nullptr) return right; // 3.
+    if (right == nullptr) return left; // 4.
+    return root; // 2. if (left != null && right != null)
+}
+```
+
+
 
 
 

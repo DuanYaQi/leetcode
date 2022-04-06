@@ -1752,18 +1752,207 @@ dp[0] = 1;
 
 5. 举例推导dp数组
 
+
+
+<img src="assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNzY1MTE0,size_16,color_FFFFFF,t_70.png" alt="在这里插入图片描述" style="zoom: 50%;" />
+
+
+
+<img src="assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNzY1MTE0,size_16,color_FFFFFF,t_70-16492104292793.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+
+
+<img src="assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNzY1MTE0,size_16,color_FFFFFF,t_70-16492104358815.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+
+
+<img src="assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNzY1MTE0,size_16,color_FFFFFF,t_70-16492104399287.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+
+
+<img src="assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNzY1MTE0,size_16,color_FFFFFF,t_70-16492104735069.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+
+
+
+
+
+
+---
+
+### 1143. 最长公共子序列 LCS
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i][j]: 长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j]
+    
+i    : 以 i 结尾
+```
+
+
+
+2. 确定**递推公式**
+
+主要就是两⼤情况： text1[i - 1] 与 text2[j - 1]相同，text1[i - 1] 与 text2[j - 1]不相同
+
+- 如果text1[i - 1] 与 text2[j - 1]相同，那么找到了⼀个公共元素，所以`dp[i][j] = dp[i - 1][j - 1] + 1;`
+- 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看 `text1[0, i - 2]与text2[0, j - 1]` 的最长公共子序列 和 `text1[0, i - 1]与text2[0, j - 2]` 的最长公共子序列，取最⼤的。即 `dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);`
+
 ```c++
-N = 10;
-dp[0] = 0; dp[1] = 1;
-dp[2] = 1 + 0 = 1;
-dp[3] = 1 + 1 = 2;
-dp[4] = 2 + 1 = 3;
-dp[5] = 3 + 2 = 5;
-dp[6] = 5 + 3 = 8;
-dp[7] = 8 + 5 = 13;
-dp[8] = 13 + 8 = 21;
-dp[9] = 21 + 13 = 34;
-dp[10] = 34 + 21 = 55;
+if (text1[i - 1] == text2[j - 1]) {
+	dp[i][j] = dp[i - 1][j - 1] + 1;
+} else {
+	dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+}
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+test1[0, i-1]和空串的最长公共⼦序列自然是0，所以dp[i][0] = 0
+同理dp[0][j]也是0。
+其他下标都是随着递推公式逐步覆盖，初始为多少都可以，那么就统⼀初始为0。
+vector<vector<int>> vec(text.size()+1, vector<int>(text2.size()+1, 0)); 
+```
+
+
+
+4. 确定**遍历顺序**
+
+从前向后，从上到下来遍历这个矩阵。
+
+
+
+5. 举例推导dp数组
+
+
+
+![image-20220406093936394](assets/image-20220406093936394.png)
+
+
+
+
+
+---
+
+### 1035. 不相交的线
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i][j]: 以 i-1 结尾的字符串和 以j-1 结尾的子序列的最大连线数
+i       : 以 i 结尾
+```
+
+
+
+2. 确定**递推公式**
+
+- 如果 `nums[i-1] == nums[j-1]`，`dp[i][j] = dp[i-1][j-1] + 1;`
+- 否则 `dp[i][j] = max(dp[i][j-1], dp[j-1][i]);`
+
+
+
+```c++
+if (nums[i-1] == nums[j-1]) {
+    dp[i][j] = dp[i-1][j-1] + 1;
+} else {
+    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+}
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+test1[0, i-1]和空串的最长公共⼦序列自然是0，所以dp[i][0] = 0
+同理dp[0][j]也是0。
+其他下标都是随着递推公式逐步覆盖，初始为多少都可以，那么就统⼀初始为0。
+vector<vector<int>> vec(text.size()+1, vector<int>(text2.size()+1, 0)); 
+```
+
+
+
+4. 确定**遍历顺序**
+
+从前向后，从上到下来遍历这个矩阵。
+
+
+
+5. 举例推导dp数组
+
+
+
+----
+
+## 连续
+
+### 674. 最长连续递增序列
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 以 i 结尾的最长递增子序列长度
+i    : 以 i 结尾
+```
+
+
+
+2. 确定**递推公式**
+
+- 若 nums[i] > nums[i-1]，那么 dp[i] = dp[i-1] + 1 。
+- 若 nums[i] <= nums[i-1]，那么 dp[i] = 1。
+
+```c++
+if (nums[i] > nums[j])  dp[i] = dp[i-1] + 1;
+else dp[i] = 1;
+```
+
+
+
+3. dp数组如何**初始化**
+
+所有连续递增序列默认都为 1，即自身
+
+```c++
+vector<int> dp(nums.size(), 1); 
+```
+
+
+
+4. 确定**遍历顺序**
+
+一层循环，遍历的顺序是从前到后遍历的。
+
+
+
+5. 举例推导dp数组
+
+
+
+```c++
+int findLengthOfLCIS(vector<int>& nums) {
+    vector<int> dp(nums.size(), 1);
+
+    int res = 1;
+    for (int i = 1; i < nums.size(); ++i) {
+        if (nums[i] > nums[i-1]) {
+            dp[i] = dp[i-1] + 1;
+        }
+
+        res = dp[i] > res ? dp[i] : res;
+    }
+
+    return res;
+}
 ```
 
 
@@ -1772,8 +1961,149 @@ dp[10] = 34 + 21 = 55;
 
 ---
 
-### 1143. 最长公共子序列
+### 718. 最长重复子数组
+
+简易版1143. LCS
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i][j]: 长度为 [0, i - 1] 的 nums1 与长度为 [0, j - 1] 的 nums 的连续子序列长度
+    
+i    : 以 i 结尾
+```
+
+
+
+2. 确定**递推公式**
+
+nums[i-1] 与 nums2[i-1]相同
+
+那么找到了⼀个公共元素，所以 `dp[i][j] = dp[i - 1][j - 1] + 1;`
+
+
+
+```c++
+if (nums1[i - 1] == nums2[j - 1]) {
+	dp[i][j] = dp[i - 1][j - 1] + 1;
+}
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+nums1[0, i-1]和空串的最长公共⼦序列自然是0，所以dp[i][0] = 0
+同理dp[0][j]也是0。
+其他下标都是随着递推公式逐步覆盖，初始为多少都可以，那么就统⼀初始为0。
+vector<vector<int>> vec(text.size()+1, vector<int>(text2.size()+1, 0)); 
+```
+
+
+
+4. 确定**遍历顺序**
+
+从前向后，从上到下来遍历这个矩阵。
+
+
+
+5. 举例推导dp数组
+
+![image-20220406123729625](assets/image-20220406123729625.png)
+
+
 
 
 
 ---
+
+### 53. 最大子序和
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 下标为 i 大和连续子数组
+    
+i    : 以 i 结尾
+```
+
+
+
+2. 确定**递推公式**
+
+- 如果 `dp[i-1] + nums[i] >= 0` ， 则 `dp[i] = dp[i-1] + nums[i]`
+- 如果 `dp[i-1] + nums[i] < 0`   ， 则 `dp[i] = nums[i]`
+
+
+
+```c++
+dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+vector<int> dp(nums.size(), 0); 
+dp[0] = nums[0];
+```
+
+
+
+4. 确定**遍历顺序**
+
+从前向后来遍历。
+
+
+
+5. 举例推导dp数组
+
+
+
+---
+
+## 回文
+
+### 647. 回文子串
+
+
+
+
+
+### 516. 最长回文子串
+
+
+
+
+
+
+
+## 编辑距离
+
+### 392. 判断子序列
+
+
+
+
+
+
+
+### 115. 不同的子序列
+
+
+
+
+
+### 583. 两个字符串的删除操作
+
+
+
+
+
+### 72. 编辑距离

@@ -74,6 +74,8 @@ DAG 的问题就 dfs+memo
 
 **模板**
 
+pepcy.cf/icpc-templates/002DataStructure/bit.html
+
 [负雪明烛模板](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
 
 [AlgoWiki模板](https://ojeveryday.github.io/AlgoWiki/#/?id=algowiki)
@@ -110,7 +112,7 @@ https://www.cnblogs.com/MinPage/
 |-2^31~2^31-1 对应 INT_MIN 和 INT_MAX   (少1位是符号位)|
 | (!p &#124;&#124; !q) = (p && !q) &#124;&#124; (!p && q) 　两者状态不同时为true　其中!q代表q为空 |
 | size在for之前取值，防止for循环中size大小改变|
-|tostring()　stoi()|
+|to_string()　stoi()|
 |如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！<br>两种写法注意选择 <br>if(递归函数(left)) return;　　　if(递归函数(right)) return;<br>left = 递归函数(left);　　 　　  right = 递归函数(right);|
 |反中序过程就是从最右侧往最左侧运行|
 |复杂函数放在private会减少执行用时，减少内存消耗|
@@ -619,13 +621,19 @@ DP
 |[96.Unique Binary Search Trees](Alog_DP/96+Unique%20Binary%20Search%20Trees.cpp) | | 左右子树为子空间|
 |[198. House Robber](Alog_DP/198+House%20Robber.cpp) | |根据题意分两种情况<br>还要考虑好边界和特殊输入 |
 |[213. House Robber II](Alog_DP/213%2BHouse%20Robber%20II.cpp) | | 把困难问题分情况，每种情况都很简单<br>索引搞不懂就画图 |
-|[337. House Robber III](Alog_DP/337%2BHouse%20Robber%20III.cpp) |树形DP |两种情况，选/不选<br>两种情况结果的保存可以用 vector<int> {0，0} |
+|💛[337. House Robber III](Alog_DP/337%2BHouse%20Robber%20III.cpp) |树形DP |两种情况，选/不选<br>两种情况结果的保存可以用 vector<int> {0，0} |
 |[53. Maximum Subarray](Alog_DP/53%2BMaximum%20Subarray.cpp) | | 两种情况，选/不选|
 |[42. Trapping Rain Water](/Alog_DP/42+Trapping%20Rain%20Water.cpp) |  |先预处理,再DP |
-|[300. Longest Increasing Subsequence](/Alog_DP/300+Longest%20Increasing%20Subsequence.cpp) | | 两层循环|
+|[300. Longest Increasing Subsequence](/Alog_DP/300+Longest%20Increasing%20Subsequence.cpp) |LIS | 两层循环|
+|[674. Longest Continuous Increasing Subsequence](/Alog_DP/674+Longest%20Continuous%20Increasing%20Subsequence.cpp) |LCIS |一层循环 |
+|💛[1143. Longest Common Subsequence](/Alog_DP/1143+Longest%20Common%20Subsequence.cpp) |LCS |二维dp数组 |
+|[718. Maximum Length of Repeated Subarray](/Alog_DP/718+Maximum%20Length%20of%20Repeated%20Subarray.cpp) |;LCS |连续需要保存最优值 |
+|[1035. Uncrossed Lines](/Alog_DP/1035+Uncrossed%20Lines.cpp) | | 本质就是LCS |
 | | | |
 | | | |
-
+| | | |
+| | | |
+| | | |
 
 
 ---
