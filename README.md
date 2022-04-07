@@ -660,10 +660,12 @@ DP
 |[224. Basic Calculator](/Math_数论/224+Basic%20Calculator.cpp) | | 注意( |
 |[227. Basic Calculator II](/Math_数论/227+Basic%20Calculator%20II.cpp) | | 注意( |
 |[16.26. Calculator LCCI](/16.26) | | 计算器 |
+|[146. LRU Cache](Math_数论/146+LRU%20Cache.cpp| |双向链表+哈希表 |
 | | | |
 | | | |
 | | | |
-
+| | | |
+| | | |
 
 
 

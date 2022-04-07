@@ -666,7 +666,184 @@ LRU，Least Recently Used，认为最近使用过的数据都是有用的，很�
 
 
 
-首先接受一个 capacity 参数作为缓存的最大容量，实现两个 API，一个是
+首先接受一个 capacity 参数作为缓存的最大容量，实现两个 API，一个是 `put(key, val)` 方法存入键值对，另一个是 `get(key)` 方法获取 `key` 对应的 `val`，如果 `key` 不存在则返回 -1。
+
+
+
+```c++
+// 缓存容量为 2
+LRUCache cache = new LRUCache(2);
+
+// cache 理解成一个队列
+// 假设左边是队头， 右边是队尾
+// 最近使用的排在队头，久为使用的排在队尾
+// 圆括号表示键值对 (key, val)
+
+cache.put(1, 1);
+// cache = [(1, 1)]
+
+cache.put(2, 2);
+// cache = [(2, 2), (1, 1)]
+// 最近使用了键 2，放队头
+
+cache.get(1);	// 返回 1
+// cache = [(1, 1), (2, 2)]
+// 解释：最近访问了键 1，放队头
+// 返回键 1 对应的值 1
+
+cache.put(3, 3);
+// cache = [(3, 3), (1, 1)]
+// 容量满了，删除内容空出位置
+// 优先删除久未使用的数据，即队尾的数据
+// 然后把新的数据插入队头
+
+cache.get(2);	// 返回 -1 没找大
+ // cache = [(3, 3), (1, 1)]   
+
+cache.put(1, 4);
+// cache = [(1, 4), (3, 3)]  
+
+```
+
+
+
+要让 `put` 和 `get` 方法的时间复杂度为 O(1)，我们可以总结出 `cache` 这个数据结构必要的条件：
+
+1、显然 `cache` 中的元素必须有时序，以区分最近使用的和久未使用的数据，当容量满了之后要删除最久未使用的那个元素腾位置；
+
+2、我们要在 `cache` 中快速找某个 `key` 是否已存在并得到对应的 `val`；
+
+3、每次访问 `cache` 中的某个 `key`，需要将这个元素变为最近使用的，也就是说 `cache` 要支持在任意位置快速插入和删除元素。
+
+
+
+
+
+LRU 缓存算法的核心数据结构就是**哈希链表**，**双向链表**和**哈希表**的结合体。这个数据结构长这样：
+
+![img](assets/4.jpg)
+
+1、如果我们每次默认从链表尾部添加元素，那么显然越靠尾部的元素就是最近使用的，越靠头部的元素就是最久未使用的。
+
+2、对于某一个 `key`，我们可以通过哈希表快速定位到链表中的节点，从而取得对应 `val`。
+
+3、链表显然是支持在任意位置快速插入和删除的，改改指针就行。只不过传统的链表无法按照索引快速访问某一个位置的元素，而这里借助哈希表，可以通过 `key` 快速映射到任意一个链表节点，然后进行插入和删除。
+
+
+
+为什么必须要用双向链表?
+
+因为我们需要删除操作。删除一个节点不光要得到该节点本身的指针，也需要操作其前驱节点的指针，而双向链表才能支持直接查找前驱，保证操作的时间复杂度 O(1)。
+
+
+
+```c++
+struct DLinkedNode{
+    int key, value;
+    DLinkedNode* next;
+    DLinkedNode* prev;
+    DLinkedNode() : key(0), val(0), prev(nullptr), next(nullptr) {}
+    DLinkedNode(int k, int v) : key(k), val(v), prev(nullptr), next(nullptr) {}
+}
+```
+
+首先使用哈希表定位，找出缓存项在双向链表中的位置，随后将其移动到双向链表的头部，即可在 $O(1)$ 的时间内完成 `get` 或者 `put` 操作。具体方法如下：
+
+- 对于 `get` 操作，首先判断 `key` 是否存在：
+
+  - 如果 `key` 不存在，则返回 `-1`；
+  - 如果 `key` 存在，则 `key` 对应的节点是最近被使用的节点。通过哈希表定位到该节点在双向链表中的位置，并将其移动到双向链表的头部，最后返回该节点的值
+
+- 对于 `put` 操作，首先判断 `key` 是否存在：
+
+  - 如果 `key` 不存在，使用 `key` 和 `value` 创建一个新的节点，在双向链表头部添加该节点；并将 `key` 和该节点添加到哈希表中。然后判断双向链表的节点数是否超出容量，如果超出容量，则删除双向链表的尾部节点，并删除哈希表中对应的项；
+  - 如果 `key` 存在，则与 `get` 操作类似，先通过哈希表定位，再将对应的节点的值更新为 `value`，并将该节点移到双向链表的头部。
+
+  
+
+在双向链表的实现中，使用一个伪头部（dummy head）和伪尾部（dummy tail）标记界限，这样在添加节点和删除节点的时候就不需要检查相邻的节点是否存在。
+
+
+
+
+
+```c++
+class LRUCache {
+private:
+	unordered_map<int, DLinkedNode*> _cache;
+    DLinkedNode* _head;
+    DLinkedNode* _tail;
+    int _size;
+    int _capacity;
+    
+public:
+    LRUCache(int _capacity): capacity(_capacity), size(0) {
+        // 使用伪头部和伪尾部节点
+        _head = new DLinkedNode();
+        _tail = new DLinkedNode();
+        _head->next = _tail;
+        _tail->prev = _head;
+    }
+    
+    void put(int key, int value) {
+        if (!_cache.count(key)) { // 如果 key 不存在，添加一个新的节点
+            DLinkedNode* node = new DLinkedNode(key, value);
+            _cache[key] = node;
+            addToHead(node);
+            ++_size;
+            
+            if (_size > _capacity) {
+                // 删除双向链表的尾部节点
+                DLinkedNode* removed = removeTail();
+                // 删除哈希表中对应的项
+                _cache.erase(removed->key);
+                // 防止内存泄露
+                deletd removed;
+                --_size;
+            }
+        } else {			// key 存在，修改value，并移至头部
+            DLinkedNode* node = cache[key];
+            node->value = value;
+            moveToHead(node);
+        }        
+    }
+    
+    int get(int key) {
+        if (!_cache.count(key)) {
+            return -1;
+        }
+        // 如果 key 存在，先通过哈希表定位，再移到头部
+        DLinkedNode* node = cache[key];
+        moveToHead(node);
+        return node->value;
+    }
+    
+    void moveToHead(DLinkedNode* node) {
+    	removeNode(node);
+        addToHead(node);
+    }
+    
+    void addToHead(DLinkedNode* node) {
+        node->prev = head;
+        node->next = head->next;
+        head->next->prev = node;
+        head->next = node;
+    }
+    
+	void removeNode(DLinkedNode* node) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+    
+    DLinkedNode* removeTail() {
+        DLinkedNode node = tail->prev;
+        removeNode(node);
+        return node;
+    }
+    
+    
+}
+```
 
 
 
@@ -675,12 +852,62 @@ LRU，Least Recently Used，认为最近使用过的数据都是有用的，很�
 
 
 
+
+---
 
 ## LFU
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 进制转换
+
+### 504. 七进制数
+
+```c++
+string convertToBase7(int num) {
+    string ans = "";
+    bool flag = true;	// 是否是正数
+    
+    if (num == 0) return "0";
+    if (num < 0) {
+        num -= num;
+        flag = false;
+    }
+    
+    while (num >= 7) {
+        int a = num % 7;
+        ans = to_string(a) + ans;
+        num = num / 7;
+    }
+    
+    ans = to_string(num) + ans;
+    if (flag)
+        return ans;
+   	else 
+        return "-" + ans;   
+   
+}
+```
+
+
+
+
 
 
 
@@ -853,6 +1080,7 @@ int calculate(string s) {
 
 
 ```c++
+
 ```
 
 
