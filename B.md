@@ -1,31 +1,6 @@
+# DP
+
 ## 14. 最长公共前缀
-
-编写一个函数来查找字符串数组中的最长公共前缀。
-
-如果不存在公共前缀，返回空字符串 `""`。
-
-
-
-```
-输入：strs = ["flower","flow","flight"]
-输出："fl"
-```
-
-
-
-分治
-
-```c++
-
-```
-
-
-
-
-
-
-
-
 
 
 
@@ -904,5 +879,4 @@ bool isValid(int row, int col, char val, vector<vector<char>>& board) {
      return true;
  }
 ```
-
 

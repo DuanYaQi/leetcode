@@ -659,11 +659,11 @@ DP
 |[50. Pow(x, n)](/CS_Math/50+Pow.cpp) | 快速幂|  |
 |[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | | 注意( |
 |[227. Basic Calculator II](/CS_Math/227+Basic%20Calculator%20II.cpp) | | 注意( |
-|[16.26. Calculator LCCI](/CS_Math/16.26.%20Calculator%20LCCI.cpp) | | 计算器 |
+|[16.26. Calculator LCCI](/CS_Math/16.26+Calculator%20LCCI.cpp) | | 计算器 |
 |[146. LRU Cache](/CS_Math/146+LRU%20Cache.cpp)| |双向链表+哈希表 |
 |[460. LFU Cache](/CS_Math/460+LFU%20Cache.cpp) | | 两个哈希表|
-| | | |
-| | | |
+|[504. Base 7](/CS_Math/504+Base%207.cpp) | | 注意特判0，翻转 |
+|[136. Single Number](CS_Math/136+Single%20Number.cpp) | | 任何数和 0 做异或运算，结果仍然是原来的数 <br>任何数和其自身做异或运算，结果是 0<br>异或运算满足交换律和结合律|
 | | | |
 | | | |
 
