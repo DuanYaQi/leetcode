@@ -855,7 +855,170 @@ public:
 
 ---
 
-## LFU
+## 460. LFU
+
+LFU 算法是淘汰**访问频次最低**的数据，如果访问频次最低的数据有多条，需要**淘汰最旧**的数据。
+
+`get(key)` 方法会去缓存中查询键 `key`，如果 `key` 存在，则返回 `key` 对应的 `val`，否则返回 -1。
+
+`put(key, value)` 方法插入或修改缓存。如果 `key` 已存在，则将它对应的值改为 `val`；如果 `key` 不存在，则插入键值对 `(key, val)`。
+
+当缓存达到容量 `capacity` 时，则应该在插入新的键值对之前，删除使用频次（后文用 `freq` 表示）最低的键值对。如果 `freq` 最低的键值对有多个，则删除其中最旧的那个。
+
+```c++
+// 构建一个容量为 2 的 LFU 缓存
+LFUCache cache = new LFUCache(2);
+
+// 插入两对 (key, val),对应的 freq 变为1
+cache.put(1, 10);
+cache.put(2, 20);
+
+// 查询 key 为 1 对应的 val
+// 返回 10，同时键 1 对应的 freq 变为 2
+cache.get(1);
+
+// 容量已满，淘汰 freq 最小的键 2
+// 插入键值对 (3, 30)，对应的 freq 为 1
+cache.put(3, 30);
+
+// 键 2 已经被淘汰删除，返回 -1
+cache.get(2);
+```
+
+
+
+- 一个 map 存储 key 到 val 的映射，可以快速计算 `get(key)`。
+- 一个 map 存储 key 到 freq 的映射
+
+```c++
+unordered_map<int, int> key2Val;
+unordered_map<int, int> key2Freq;
+```
+
+
+
+
+
+如果在容量满了的时候进行插入，则需要将 `freq` 最小的 `key` 删除，如果最小的 `freq` 对应多个 `key`，则删除其中最旧的那一个。
+
+1.首先，需要 `freq` 到 `key` 的映射，用来找到 `freq` 最小的 `key`。
+
+2.将 `freq` 最小的 `key` 删除，那你就得快速得到当前所有 `key` 最小的 `freq`是多少。用一个变量 `minFreq` 来记录当前最小的 `freq`。
+
+3.多个 `key` 可能拥有相同的 `freq`，所以 `freq` 对 `key` 是一对多的关系，一个 `freq` 对应一个 `key` 的列表。
+
+4.`freq` 对应的 `key` 的列表是存在时序的，便于快速查找并删除最旧的 `key`。
+
+5.希望能够快速删除 `key` 列表中的任何一个 `key` ，因为如果频次为 `freq` 的某个 `key` 被访问，那么它的频次就会 +1，就应该从 `freq` 对应的 `key` 列表中删除，加到 `freq+1` 对应的 `key` 的列表中。 
+
+
+
+
+
+```c++
+// 缓存的节点信息
+struct Node {
+    int key, val, freq;
+    Node(int _key,int _val,int _freq): key(_key), val(_val), freq(_freq){}
+};
+class LFUCache {
+    int minfreq, capacity;
+    unordered_map<int, list<Node>::iterator> key_table;
+    unordered_map<int, list<Node>> freq_table;
+public:
+    LFUCache(int _capacity) {
+        minfreq = 0;
+        capacity = _capacity;
+        key_table.clear();
+        freq_table.clear();
+    }
+    
+    int get(int key) {
+        if (capacity == 0) return -1;
+        auto it = key_table.find(key);
+        if (it == key_table.end()) return -1;
+        list<Node>::iterator node = it -> second;
+        int val = node -> val, freq = node -> freq;
+        freq_table[freq].erase(node);
+        // 如果当前链表为空，我们需要在哈希表中删除，且更新minFreq
+        if (freq_table[freq].size() == 0) {
+            freq_table.erase(freq);
+            if (minfreq == freq) minfreq += 1;
+        }
+        // 插入到 freq + 1 中
+        freq_table[freq + 1].push_front(Node(key, val, freq + 1));
+        key_table[key] = freq_table[freq + 1].begin();
+        return val;
+    }
+    
+    void put(int key, int value) {
+        if (capacity == 0) return;
+        auto it = key_table.find(key);
+        if (it == key_table.end()) {
+            // 缓存已满，需要进行删除操作
+            if (key_table.size() == capacity) {
+                // 通过 minFreq 拿到 freq_table[minFreq] 链表的末尾节点
+                auto it2 = freq_table[minfreq].back();
+                key_table.erase(it2.key);
+                freq_table[minfreq].pop_back();
+                if (freq_table[minfreq].size() == 0) {
+                    freq_table.erase(minfreq);
+                }
+            } 
+            freq_table[1].push_front(Node(key, value, 1));
+            key_table[key] = freq_table[1].begin();
+            minfreq = 1;
+        } else {
+            // 与 get 操作基本一致，除了需要更新缓存的值
+            list<Node>::iterator node = it -> second;
+            int freq = node -> freq;
+            freq_table[freq].erase(node);
+            if (freq_table[freq].size() == 0) {
+                freq_table.erase(freq);
+                if (minfreq == freq) minfreq += 1;
+            }
+            freq_table[freq + 1].push_front(Node(key, value, freq + 1));
+            key_table[key] = freq_table[freq + 1].begin();
+        }
+    }
+};
+```
+
+
+
+
+
+充分感受C++面向对象（OOP）和结构化设计的思想
+
+相比于LRU缓存经典问题手撸（完全自行设计）双向链表那一道题目，这个题目我们觉得更应该将关注点转向面向对象中模板抽象和数据封装、类与对象设计的思想，这道题目我们采用的思路是利用C++set容器的特性，并且自定义一个Node结构体来表征缓存的各种信息，而不需为了设计单纯的内置类型（如int）的单一关系容器而苦恼，事实上，我们可以发现，在自定义Node结构体并利用重载、模板、封装的特性，我们的set容器和映射hash容器很好的实现了键值对的映射、对于要删除的缓存节点的自排序、以及对于单一映射实现了一对多的映射关系，这便是结构化设计和封装类与对象设计的优雅之处。我们也可以发现，在之前所做的一些问题中，比如图论中抽象信息建图、最小生成树优先队列的设计、Dijkstra算法优先队列节点的设计，我们都是通过将多种节点信息抽象封装成一个结构体来简化，这是非常优雅，同时也是非常精彩的设计思路。
+
+另外，就本题C++解法中还需要提及的一些注意点。首先，本题还融入了一些精彩的C++设计特性，也就是迭代器设计，我们知道，C++在类与对象的抽象封装中引入了迭代器的概念，也可以理解成为一种广义指针，来模板化对各种容器的引用与访问，因此，本题利用迭代器的设计，巧妙地设计了代码，更加清晰。其次，本题还有一个重要的思路设计：时间戳的概念。我们知道，本题设计的一个难点就在于如果存在**最小频率相等的缓存，应该删除最近最久未使用的键**，而维护一个全局时间戳来记录每个键值对使用更新时对应的时间戳，我们能够极好地表示一个缓存使用的时长，于是在Node结构化我们重载<运算符的时候便方便地在结构体中抽象了本题中最难的设计所在，这是极为巧妙的！
+
+有了基于上述的思路，我们设计代码的同时时刻记得维护你自己的数据结构和全局变量，那么整个代码时极为简洁和清晰的。
+
+
+
+![image-20220408111726496](assets/image-20220408111726496.png)
+
+
+
+![image-20220408111740813](assets/image-20220408111740813.png)
+
+
+
+![image-20220408111804395](assets/image-20220408111804395.png)
+
+![image-20220408111815280](assets/image-20220408111815280.png)
+
+![image-20220408111828175](assets/image-20220408111828175.png)
+
+
+
+![image-20220408111842044](assets/image-20220408111842044.png)
+
+
+
+![image-20220408111903147](assets/image-20220408111903147.png)
 
 
 
@@ -863,17 +1026,7 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+----
 
 ## 进制转换
 

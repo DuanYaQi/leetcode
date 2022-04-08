@@ -651,17 +651,17 @@ DP
 
 
 ---
-### 2.9. [数论](Math_数论/README.md)
+### 2.9. [CS_Math](CS_Math/README.md)
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[48. Rotate Image](Math_数论/48+Rotate%20Image.cpp) | |旋转公式 |
-|[1979. Find Greatest Common Divisor of Array](/Math_数论/1979+findGCD.cpp) | 最大公约数|辗转相除，判0 |
-|[50. Pow(x, n)](/Math_数论/50+Pow.cpp) | 快速幂|  |
-|[224. Basic Calculator](/Math_数论/224+Basic%20Calculator.cpp) | | 注意( |
-|[227. Basic Calculator II](/Math_数论/227+Basic%20Calculator%20II.cpp) | | 注意( |
-|[16.26. Calculator LCCI](/16.26) | | 计算器 |
-|[146. LRU Cache](Math_数论/146+LRU%20Cache.cpp| |双向链表+哈希表 |
-| | | |
+|[48. Rotate Image](CS_Math/48+Rotate%20Image.cpp) | |旋转公式 |
+|[1979. Find Greatest Common Divisor of Array](/CS_Math/1979+findGCD.cpp) | 最大公约数|辗转相除，判0 |
+|[50. Pow(x, n)](/CS_Math/50+Pow.cpp) | 快速幂|  |
+|[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | | 注意( |
+|[227. Basic Calculator II](/CS_Math/227+Basic%20Calculator%20II.cpp) | | 注意( |
+|[16.26. Calculator LCCI](/CS_Math/16.26.%20Calculator%20LCCI.cpp) | | 计算器 |
+|[146. LRU Cache](/CS_Math/146+LRU%20Cache.cpp)| |双向链表+哈希表 |
+|[460. LFU Cache](/CS_Math/460+LFU%20Cache.cpp) | | 两个哈希表|
 | | | |
 | | | |
 | | | |
@@ -1259,7 +1259,61 @@ int main() {
 
 ## Style
 
+Nvidia & Google Style
+
+
+
+**当只有数据成员时使用 `struct`, 其它一概使用 `class`.**
+
+
+
 https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/formatting/#section-7
+
+- 命名
+
+```C++
+// 文件命名
+- 全部小写
+- 分割用下划线_
+- .cpp 源文件
+- .h   头文件    
+- 内联函数尽量放在 .h 文件中
+    
+    
+    
+// 类型命名
+- 首字母均大写
+- 不包含下划线
+- 先public 后private    
+class UrlTable { ...
+class UrlTableTester { ...
+struct UrlTableProperties { ...
+typedef hash_map<UrlTableProperties *, string> PropertiesMap;
+using PropertiesMap = hash_map<UrlTableProperties *, string>;
+enum UrlTableErrors {}
+    
+
+// 变量命名
+- 一律小写
+- 单词之间用下划线连接
+- 类的成员变量以 "m" 开头不用接下划线，struct 不用
+    
+// 常量命名 具有静态存储类型的变量 静态变量或全局变量
+- 命名时以 "k" 开头, 大小写混合
+
+// 函数命名
+- 大小写混合
+- 取值和设值函数则要求与变量名
+
+```
+
+
+
+
+
+
+
+
 
 - 循环和条件语句
 
