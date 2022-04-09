@@ -310,16 +310,20 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |  :----  |:----:|:----:|
 |2+[203. Remove Linked List Elements](DS_Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
 |2+[707. Design Linked List](DS_Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置，注意几个输入index的判断|
-|[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
-|[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
+|2+[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
+|2+[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
 |💛[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
-|2+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意灵活运用虚拟头结点|
+|3+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意灵活运用虚拟头结点|
 |[234. Palindrome Linked List](DS_Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
+|[剑指 Offer 18. 删除链表的节点](/DS_Linked_list/Offer%2018.%20删除链表的节点.cpp) | |记录前驱节点 |
+|[Offer 06. 从尾到头打印链表](DS_Linked_list/Offer%2006.%20从尾到头打印链表.cpp) | | |
+|[876. Middle of the Linked List](DS_Linked_list/876+Middle%20of%20the%20Linked%20List.cpp) | | 快慢指针|
+|[160. Intersection of Two Linked Lists](/DS_Linked_list/160+Intersection%20of%20Two%20Linked%20Lists.cpp) | | 数学公式推导|
+|[19. Remove Nth Node From End of List](/DS_Linked_list/19+Remove%20Nth%20Node%20From%20End%20of%20List.cpp) | | 快慢指针|
 | | | |
 | | | |
 | | | |
 | | | |
-
 
 
 ---
@@ -599,8 +603,8 @@ Greedy
 |[121.Best Time to Buy and Sell Stock I](/Alog_Greedy/121+Best%20Time%20to%20Buy%20and%20Sell%20Stock.cpp) | |找左边的最小值和最大的差值 |
 |[122.Best Time to Buy and Sell Stock II](Alog_Greedy/122+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20II.cpp) | |只需要考虑正利润区间 |
 |[1005. Maximize Sum Of Array After K Negations](Alog_Greedy/1005+Maximize%20Sum%20Of%20Array%20After%20K%20Negations.cpp) | |用绝对值大小排序 |
-| | | |
-| | | |
+|[55. Jump Game](Alog_Greedy/55+Jump%20Game.cpp) | | |
+|[45. Jump Game II](/Alog_Greedy/45+Jump%20Game%20II.cpp) | | |
 | | | |
 
 
@@ -643,10 +647,13 @@ DP
 |  :----  |:----:|:----:|
 |[547. Number of Provinces](/Alog_D_BFS/547+Number%20of%20Provinces.cpp) | | vis[]数组配合|
 |[399. Evaluate Division](/Alog_D_BFS/399+Evaluate%20Division.cpp) |带权并查集 | 重点是建图的思路 + dfs计算倍率<br> 初始化倍率数组<0，起点倍率为1，一直搜索直到目标倍率>0|
+|[210. Course Schedule II](/Alog_D_BFS/210+Course%20Schedule%20II.cpp) | |DFS好理解,抽象为图要 |
+|[207. Course Schedule](Alog_D_BFS/207+Course%20Schedule.cpp) | |与201相同 |
 | | | |
 | | | |
-
-
+| | | |
+| | | |
+| | | |
 
 
 
