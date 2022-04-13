@@ -38,6 +38,8 @@ DAG 的问题就 dfs+memo
 - [ ] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
 - [ ] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
 - [ ] 440. K-th Smallest in Lexicographical Order
+- [ ] 416
+- [ ] https://blog.csdn.net/u012139398/article/details/43346667
 - [ ] 面试题 17.07. Baby Names LCCI
 - [ ] 蓄水池算法
 - [ ] 接雨水
@@ -118,7 +120,6 @@ https://www.cnblogs.com/MinPage/
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |数组构造二叉树，不要定义新的数组，通过索引在原数组上操作。|
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
-||
 |剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
 |**回溯递归是一一对应的，有一个递归，就要有一个回溯**|
 |回溯隐藏，直接在给函数**传参**时**加**计算，函数执行完，不改变原值<br>而**不是加等**计算|
@@ -128,6 +129,9 @@ https://www.cnblogs.com/MinPage/
 |如果题目关键的部分直接用库函数就可以解决，建议**不要**使用库函数。|
 ||
 |其实很多**数组填充**类的问题，都可以先**预先**给数组**扩容**带填充后的大小，然后在**从后向前**进行操作。|
+||
+|判断奇偶 `sum & 1` |
+||
 ||
 |`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
 |`unordered_set` 与 `vector` 之间迭代器传递|
@@ -1019,42 +1023,87 @@ Eating our own dog food
 
 https://blog.csdn.net/cleveland_/article/details/89373062
 
-### vector输入
+https://www.nowcoder.com/question/next?pid=27976983&qid=235783&tid=55263574
 
-#### **万能版**
 
-[1,2,5,46,51] - Leetcode 
 
-或
+最后不输出空格
 
-1 2 5 46 51 - 普通OJ
+```C++
+for (int i= 0; i < N; ++i) {
+    cout << (i != N-1 ? (to_string(nums[i]) + " ") : to_string(nums[i]));
+}
+```
+
+
 
 ```c++
-// 一维vector
+for (int i= 0; i < N; ++i) {
+    if (i == 0) cout << nums[i];
+    else cout << " " << nums[i];
+}
+
+for (int i= 0; i < N; ++i) {
+    if(i == 0) printf("%d",a[i]);
+    else printf(" %d",a[i]);
+}
+```
+
+
+
+
+
+### scanf/printf 法
+
+```c++
+// [23,12,34,56,33]
+#include<stdio.h>
+
+int main(void) {
+    vector<int> a(5, 0);
+    scanf("[%d,%d,%d,%d,%d]", &a[0], &a[1], &a[2], &a[3], &a[4]);
+    for(auto b:a) {
+		cout << b << " ";
+	}
+    return 0;
+}
+// 23 12 34 56 33
+```
+
+
+
+```c++
+// [23,12,34,56,33]
+#include<stdio.h>
+
+int main(void) {
+    vector<int> a(5, 0);
+    scanf("[%d,%d,%d,%d,%d]", &a[0], &a[1], &a[2], &a[3], &a[4]);
+    printf("[%d-*,%d-*,%d-*,%d-*,%d-*]", a[0], a[1], a[2], a[3], a[4]);
+    return 0;
+}
+// [23-*,12-*,34-*,56-*,33-*]
+```
+
+
+
+
+
+### cin/cout 法
+
+#### 特殊字符
+
+```C++
+// 23，12，34，56，33
+// 23,12,34,56,33
+// 23-12-34-56-33
+// 23 12 34 56 33
 int main() {
 	vector<int> a; //最终输出
-	cin.clear();
-	cin.sync();
-	string str;
-	int temp = 0;
-	bool flag = false;
-	
-    getline(cin, str);
-    for (int i = 0; i != str.size(); ++i) {
-        if (isdigit(str[i])) {
-            temp = temp*10 + (str[i]-48);
-            flag = true;
-        } else {
-            if(flag) {
-                a.push_back(temp);
-                temp = 0;
-            }
-            flag = false;
-        }
-        
-        if (i == (str.size() - 1) && flag) {
-            a.push_back(temp);
-        }
+	int tmp;
+    while (cin >> tmp) {
+        a.push_back(tmp);
+        if (cin.get() == '\n') break;
     }
  
 	for(auto b:a) {
@@ -1063,200 +1112,66 @@ int main() {
  
 	return 0;
 }
+// 23 12 34 56 33
 ```
 
 
 
-
-
-2                             这个 2 可能需要单独指定输入
-[1,5,6,5,8496]
-[16,6,94,848,4]
-
-或
-
-2
-1 5 6 5 8496
-16 6 94 848 4
-
 ```c++
-//二维vector
+/*
+6
+0,2,200,0,1
+1,4,330,2,1
+2,3,400,3,1
+3,3,310,1,1
+4,3,320,8,1
+5,3,330,0,1
+*/
 int main() {
-	int row;
-	cin >> row;
-	vector<vector<int>> a(row); //最终输出
-	cin.clear();
-	cin.sync();
-	string str;
-	int temp = 0;
-	bool flag = false;
-	for(int j = 0; j < row; j++) {
-		cin.sync();
-		getline(cin, str);
-		for (int i = 0; i != str.size(); ++i) {
-			if (isdigit(str[i])) {
-				temp = temp* 10 + (str[i] - 48);
-				flag = true;
-			} else {
-				if(flag) {
-					a[j].push_back(temp);
-					temp = 0;
-				}
-				flag = false;
- 
-			}
-            
-			if (i == (str.size() - 1) && flag) {
-				a[j].push_back(temp);
-			}
-		}
+	int M;
+    cin >> M;
+    vector<vector<int>> data(M, vector<int>(5, 0));	// M 行 5 列
         
-		temp = 0;
-		flag = false;
-		cin.sync();
-	}
-
-	for(auto c:a) {
-		for(auto d:c)
-			cout << d << " ";
-		cout << endl;
-	}
- 
-	return 0;
-}
-```
-
-
-
-[1,5,6,5,8496]
-[16,6,94,848,4]
-
-​                           // 注意这里空行也需要输入
-
-或
-
-1 5 6 5 8496
-16 6 94 848 4
-
-​                           // 注意这里空行也需要输入
-
-```c++
-int main() {
-	vector<vector<int>> a; //最终输出
-	cin.clear();
-	cin.sync();
-	string str;
-	int temp = 0;
-	bool flag = false;
-	while(getline(cin,str) && !str.empty()) {
-		cin.sync();
-		vector<int> tmpList;
-		for (int i = 0; i != str.size(); ++i) {
-			if (isdigit(str[i])) {
-				temp = temp* 10 + (str[i] - 48);
-				flag = true;
-			} else {
-				if(flag) {
-					tmpList.push_back(temp);
-					temp = 0;
-				}
-				flag = false;
-			}
-            
-			if (i == (str.size() - 1) && flag) {
-				tmpList.push_back(temp);
-			}
-		}
-        
-		temp = 0;
-		flag = false;
-		cin.sync();
-        a.push_back(tmpList);
-	}
- 
-	for(auto c:a) {
-		for(auto d:c)
-			cout << d << " ";
-		cout << endl;
-	}
- 
-	return 0;
-}
-```
-
-
-
-
-
-----
-
-#### **精简版**
-
-长度为 n 的 vector 输入
-
-```c++
-//单个案例
-// Input: 2
-//        5 6
-
-int main() {
-    int n;
-   	cin >> n;	// 表示 vecotr 的元素数
-   	vector<int> data(n);
-   	for (int i = 0; i < n; ++i)
-   		cin >> data[i];
-    return 0;
-}
-
-或
-    
-int main() {
-	int n;
-    cin >> n; 	// 表示 vecotr 的元素数
-    vector<int> data;
-    for(int i = 0; i < n; ++i) {
-        int temp;
-        cin >> temp;
-        data.push_back(temp);
+    for (int i = 0; i < M; ++i) {
+        int tmp;
+        int idx = 0;
+        while (cin >> tmp) {
+            data[i][idx++] = tmp;
+            if (cin.get() == '\n') break;
+        }
     }
-	return 0;
 }
 ```
 
 
 
 
+
+
+
+**无脑法**
 
 ```c++
-//多个案例
-// Input: 5 
-//		  2
-//        1 4
-//        3 5
-//        5 5
-//        6 9
-//        8 9
+cin>>ch>>age>>ch>>id>>ch>>a>>ch>>b>>ch>>c>>ch>>d;
+
+// 23，12，34，56，33
+// 23,12,34,56,33
+// 23-12-34-56-33
+// 23 12 34 56 33
 int main() {
-	int n = 0;		// 共几个案例
-	int m = 0;		// 每个案例几个元素
-	while(cin >> n >> m) { //关键步骤
-		vector<vector<int>> num;
-		for(int i = 0; i < n; i++) {	
-			vector<int> tmpList;
-			for(int j = 0; j < m; j++) {
-				int temp;
-				cin >> temp;
-				tmpList.push_back(temp);
-			}
-			num.push_back(tmpList);	
-		}
-	}		
-   	func(num);	//[[1, 4], [3, 5], [5, 5], [6, 9], [8, 9]]
+	vector<int> a(5); //最终输出
+	char ch;
+    
+    cin >> a[0] >> ch >> a[1] >> ch >> a[2] >>ch >> a[3] >> ch >> a[4];
+ 
+	for(auto b:a) {
+		cout << b << " ";
+	}
+ 
 	return 0;
 }
+// 23 12 34 56 33
 ```
-
-
 
 
 
@@ -1538,6 +1453,10 @@ BFS、DFS、二分、三分、筛法求素数、快速幂、并查集、矩阵�
 5.熟悉动态规划的各个典型：LCS、最长递增子串、三角剖分、记忆化dp
 
 
+
+
+
+https://blog.csdn.net/u012139398/article/details/43346667
 
 
 
