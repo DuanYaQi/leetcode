@@ -395,6 +395,10 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |  :----  |:----:|:----:|
 |[797+All Paths From Source to Target](DS_Graph/797+All%20Paths%20From%20Source%20to%20Target.cpp) | DFS | 重点为 `pop_back()` 和 `vis[v] = false;`|
 |[2192.All Ancestors of a Node in a Directed Acyclic Graph](DS_Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
+|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time.cpp) | Dijkstra | 每次找离flag节点最近的点,更新距离,贪心 |
+|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Heap.cpp) | 堆优化 | 优先队列 pair 邻接表 |
+| | | |
+| | | |
 | | | |
 | | | |
 

@@ -407,7 +407,155 @@ https://labuladong.gitee.io/algo/2/20/48/
 
 
 
+### 普通版单源最短路径算法Dijkstra
 
+主要思想是贪心
+
+将所有节点分成两类：**已确定从起点到当前点的最短路长度的节点**，以及**未确定从起点到当前点的最短路长度的节点**（下面简称「未确定节点」和「已确定节点」）。
+
+
+
+每次从「未确定节点」中取一个与起点距离最短的点，将它归类为「已确定节点」，并用它「更新」从起点到其他所有「未确定节点」的距离。直到所有点都被归类为「已确定节点」
+
+> 用节点 A「更新」节点 B 的意思是，用起点到节点 A 的最短路长度加上从节点 A 到节点 B 的边的长度，去比较起点到节点 B 的最短路长度，如果前者小于后者，就用前者更新后者。这种操作也被叫做「**松弛**」。
+>
+> 
+
+
+
+有向带权图，圆圈中为节点序号，箭头上为边权，右侧为所有点距离源点 `0` 的距离。
+
+![img](assets/1627869535-JqaTqX-image.png)
+
+
+
+将顶点 `0` 进行标识，并作为点 x，更新其到其他所有点的距离。一轮循环结束![image.png](assets/1627869608-ZNeWka-image.png)
+
+![image.png](assets/1627869851-VtwdFS-image.png)
+
+将顶点 `2` 进行标识，并作为新的点 x，更新。我们看到，原本点 `1` 的最短距离为 `5`，被更新为了 `3`。同理还更新了点 `3` 和点 `4` 的最短距离。
+
+![image.png](assets/1627869870-IgtqGV-image.png)
+
+![image.png](assets/1627869881-fDnltO-image.png)
+
+将顶点 1 进行标识，并作为新的点 x，同样更新了点 4 到源点的最短距离。
+
+![image.png](assets/1627869914-XQvKqz-image.png)
+
+再分别标识点 `4` 和点 `3`，循环结束。
+
+
+
+**枚举**
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+    vector<vector<int>> g(n + 1, vector<int>(n + 1, inf));
+
+    for (auto &t : times) {
+        int x = t[0], y = t[1];
+        g[x][y] = t[2];
+    }
+
+    vector<int> dist(n + 1, inf);   // 从起点到 i 的最短距离
+    dist[k] = 0;    // 自身到自身为0
+    vector<int> used(n + 1);
+
+    for (int i = 1; i <= n; ++i) {
+        int x = -1;
+        for (int y = 1; y <= n; ++y) {  // 循环找出离当前flag节点最近的点x.   i=1 时找出来的是 k 即起点
+            if (!used[y] && (x == -1 || dist[y] < dist[x])) {
+                x = y;
+            }
+        }
+
+        used[x] = true;
+        for (int y = 1; y <= n; ++y) {  // 更新所有最短距离
+            dist[y] = min(dist[y], dist[x] + g[x][y]);  // 从起点到节点flag节点x的最短距离 dist[x]
+        }
+    }
+
+    int ans = *max_element(++dist.begin(), dist.end());
+    return ans == inf ? -1 : ans;
+}
+```
+
+枚举写法的复杂度如下：
+
+时间复杂度：$O(n^2+m)$，其中 m 是数组 times 的长度。
+
+空间复杂度：$O(n^2)$。邻接矩阵需占用 $O(n^2)$ 的空间。
+
+m 为 **边数**，n 为**点数**
+
+m最大6000，n最大100，最坏时间复杂度 O(10000 + 6000) = O(16000)
+
+
+
+**小根堆**
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+    vector<vector<pair<int, int>>> g(n + 1);    // 邻接表
+
+    /*建图*/
+    for (auto &t : times) {
+        g[t[0]].emplace_back(t[1], t[2]);
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+
+
+    // 默认以 pair 的 first 元素来排序 greater<>表示数字小的优先级越大 less<>表示数字大的优先级越大
+    // 等价于 priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
+    q.emplace(0, k);
+
+    while (!q.empty()) {
+        auto p = q.top(); q.pop();
+
+        int time = p.first, x = p.second;   // 得到当前优先队列中头部元素，具有最短路径的属性
+        //if (dist[x] < time) continue; // 没有设置访问数组，所以有重复节点入队列，如果后续对已经在队列中的节点的time进行了更新，那么之前队列中该节点存储的time值就失效了
+
+        for (auto &e : g[x]) {
+            int y = e.first, d = dist[x] + e.second;
+            if (d < dist[y]) {
+                dist[y] = d;
+                q.emplace(d, y);
+            }
+        }
+
+    }
+
+    int ans = *max_element(++dist.begin(), dist.end());
+    return ans == inf ? -1 : ans;
+
+}
+```
+
+堆的写法复杂度如下：
+
+时间复杂度：$O(m\log m)$，其中 m 是数组 times 的长度。即**边数**
+
+空间复杂度：$O(n+m)$。
+
+m 为 **边数**，n 为**点数**
+
+m最大6000，n最大100，最坏时间复杂度 O(6000 log 6000) = O(22668)
+
+
+
+
+
+值得注意的是，由于本题**边数远大于点数**，是一张**稠密图**，因此在运行时间上，**枚举写法要略快于堆的写法**。
+
+
+
+---
 
 ### 五种最短路径算法总结
 
@@ -423,9 +571,72 @@ https://leetcode-cn.com/problems/network-delay-time/solution/wang-luo-yan-chi-sh
 
 
 
+## 单源算法——Dirkdtra算法(使用最广且必须掌握的算法)
+
+每次找到离源点最近的一个点，以该点为中心，更新源点到其他源点的最短路径，贪心的思想。该算法无法判断是否存在负权环路，如果存在，算法将失效。算法的正确性不作证明，可参考力扣官方题解。
 
 
 
+```c++
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<vector<int>> g(n + 1, vector<int>(n + 1, INT_MAX / 2));//键图
+        //dis[i]代表源点到点i的最短路，初始化为INT_MAX / 2防止溢出
+        vector<int> dis(n + 1, INT_MAX / 2), visit(n + 1, 0);
+        /*初始化邻接矩阵与dis数组*/
+        for (auto& it : times) {
+            g[it[0]][it[1]] = it[2]; //g[i][j]表示i到j的权重
+            //如果起点为源点，更新dis数组
+            //邻接源点的点一定是最短的
+            //上面的描述是错的，下面的代码也是不需要的，看到这里请思考思考为什么
+            if (it[0] == k) {
+                dis[it[1]] = it[2];
+            }
+        }
+        /*源点k无需访问,dis[0]是个不需要的值,防止后面查找最大值错误*/
+        dis[k] = 0, visit[k] = 1, dis[0] = 0;
+        for (int cnt = 1; cnt < n; cnt++) {
+            /*找到离源点最短的点，并记录*/
+            int mi = INT_MAX / 2, book = 0;
+            for (int i = 1; i <= n; i++) {
+                if (dis[i] < mi && !visit[i]) {
+                    mi = dis[i];
+                    book = i;
+                }
+            }
+
+            /*如果源点无法到达任何一个点,直接返回*/
+            if (mi == INT_MAX / 2)    return -1;
+            visit[book] = 1;//标记
+
+            /*松弛操作,以book为中心点进行扩展*/
+            for (int i = 1; i <= n; i++) {
+                /*如果book到i不为无穷，即有一条边的话，进行松弛操作*/
+                if (g[book][i] != INT_MAX / 2 && dis[i] > dis[book] + g[book][i]) {
+                    dis[i] = dis[book] + g[book][i];
+                }               
+            }
+        }
+        /*答案处理*/
+        int ret = *max_element(dis.begin(), dis.end());
+        return ret == INT_MAX / 2 ? -1 : ret;
+    }
+};
+```
+
+**时间复杂度：O(N^2)**
+**空间复杂度：O(N^2)**
+
+
+
+
+
+
+
+
+
+---
 
 ### c++/python3/java （1）朴素dijkstra算法 （2）最小堆+visited+dijkstra算法 （3）最小堆+dijkstra算法 （4）spfa算法--队列实现 （5）floyd算法
 
