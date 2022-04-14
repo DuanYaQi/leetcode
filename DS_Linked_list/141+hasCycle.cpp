@@ -24,3 +24,57 @@ public:
         return true;
     }
 };
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        unordered_map<ListNode*, int> ump;
+        ListNode* curr = head;
+
+        while (curr != nullptr) {
+            if (ump[curr] == 1) {
+                return true;
+            }
+            ump[curr]++;
+            curr = curr->next;
+        }
+
+        return false;
+    }
+};
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        unordered_set<ListNode*> uset;
+        ListNode* curr = head;
+
+        while (curr != nullptr) {
+            if (uset.count(curr) == 1) {
+                return true;
+            }
+            uset.insert(curr);
+            curr = curr->next;
+        }
+
+        return false;
+    }
+};
+
