@@ -397,7 +397,7 @@ https://labuladong.gitee.io/algo/2/20/38/
 
 ## DIJKSTRA 算法
 
-
+https://labuladong.gitee.io/algo/2/20/48/
 
 [743. 网络延迟时间（中等）](https://leetcode-cn.com/problems/network-delay-time)
 
