@@ -180,6 +180,24 @@ public:
 
 ## 630. 课程表 III
 
+
+
+
+
+
+
+
+
+
+
+---
+
+## 1462. 课程表 IV
+
+
+
+## 
+
 1. 构建一个图表示从i到j是否可达，默认为false
 2. 构建方式
    - prerequisites来直接构建
@@ -206,7 +224,7 @@ public:
             graph[data[0]][data[1]] = true;
         }
 	
-        // i 是 k 的先导课程，k 是 j 的先导课程
+        
         // Floyd算法的本质是DP，而k是DP的阶段，因此要写最外面
         for (int k = 0; k < numCourses; ++k) {
             for (int i = 0; i < numCourses; ++i) {
@@ -275,7 +293,6 @@ public:
 
 
 ```c++
-
 class Solution {
 public:
     vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
@@ -324,14 +341,6 @@ private:
 ```
 
 
-
-
-
-
-
----
-
-## 1462. 课程表 IV
 
 
 

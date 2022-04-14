@@ -359,8 +359,6 @@ https://labuladong.gitee.io/algo/2/20/37/
 
 
 
-### 2
-
 
 
 
@@ -399,11 +397,45 @@ https://labuladong.gitee.io/algo/2/20/38/
 
 ## DIJKSTRA 算法
 
+
+
 [743. 网络延迟时间（中等）](https://leetcode-cn.com/problems/network-delay-time)
 
 [1514. 概率最大的路径（中等）](https://leetcode-cn.com/problems/path-with-maximum-probability)
 
 [1631. 最小体力消耗路径（中等）](https://leetcode-cn.com/problems/path-with-minimum-effort)
+
+
+
+
+
+### 五种最短路径算法总结
+
+https://leetcode-cn.com/problems/network-delay-time/solution/dirkdtra-by-happysnaker-vjii/
+
+
+
+
+
+### 单源最短路径的几种基础解法
+
+https://leetcode-cn.com/problems/network-delay-time/solution/wang-luo-yan-chi-shi-jian-dan-yuan-zui-d-m1m3/
+
+
+
+
+
+
+
+### c++/python3/java （1）朴素dijkstra算法 （2）最小堆+visited+dijkstra算法 （3）最小堆+dijkstra算法 （4）spfa算法--队列实现 （5）floyd算法
+
+https://leetcode-cn.com/problems/network-delay-time/solution/cpython3java-1po-su-dijkstrasuan-fa-2zui-ks36/
+
+
+
+
+
+
 
 
 
