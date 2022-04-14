@@ -436,6 +436,54 @@ void merge(vector<int>& nums, int l1, int r1, int l2, int r2) {
 
 
 
+
+
+---
+
+### 88. 合并两个有序数组
+
+```c++
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    vector<int> tmp(nums1.size() + nums2.size(), 0);
+
+    int i = 0, j = 0, index = 0;
+
+    while (i < m && j < n) {
+        if (nums1[i] < nums2[j]) tmp[index++] = nums1[i++];
+        else tmp[index++] = nums2[j++];
+    }
+
+    while (i < m) tmp[index++] = nums1[i++];
+    while (j < n) tmp[index++] = nums2[j++];
+
+    for (int i = 0; i < index; ++i) nums1[i] = tmp[i];
+}
+```
+
+
+
+空间换时间！！！
+
+```c++
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    int i = m - 1, j = n - 1, index = m + n - 1;
+
+    while (i >= 0 && j >= 0 && index >= 0) {
+        if (nums1[i] < nums2[j]) nums1[index--] = nums2[j--];
+        else nums1[index--] = nums1[i--];
+    }
+
+    while (i >= 0 && index >= 0) nums1[index--] = nums1[i--];
+    while (j >= 0 && index >= 0) nums1[index--] = nums2[j--];
+}
+```
+
+
+
+
+
+---
+
 ### 315. 计算右侧小于当前元素的个数
 
 在 `merge` 函数，我们在合并两个有序数组的时候，其实是可以知道一个数字 `x` 后边有多少个数字比 `x`小的。
@@ -649,6 +697,41 @@ void traverse(TreeNode root) {
 
 
 
+---
+
+### Q. 为什么快排不稳定
+
+这个例子 {2, 1, 1, 3} 此时以2为基准向下分治，2就要和第二个1交换，这就不稳定了
+
+
+
+步骤：
+
+1：选取基准数字；
+
+2：将基准数字放在列表头部（尾部）；
+
+3：开始遍历，如果数字比基准大，则位置不变，如果比基准小，则将该值与前面第一个比基准大的值交换位置（此处就会引起相同值的相对位置的变换，即排序不稳定），如果前面没有比基准大的数字就不用替换了；完成一边遍历后；
+
+4：交换头部的基准数字和最后一个比基准数字小的数字的位置，可以保证基准数字前面的值都小，后面的都大。在此交换过程中也会出现排序的不稳定。
+
+5：对基准数字前面和后面序列重复1-4步骤，最终完成排序。
+
+
+
+
+
+1：导致快速排序不稳定的因素（除了递归不适用其他额外空间）：
+
+a:选取基准数字时随机选择；(如果固定选一个位置，a无效)
+
+b:在遍历过程中，将小于基准的数字与第一个大于基准的数字位置交换；
+
+c:在每次遍历完后，将头部的基准数字与最后一个小于基准的数字交换位置。
+
+
+
+2：使用额外辅助空间可以在时间复杂度不变的情况下使得快速排序变得稳定（bc无效），此时空间复杂度会变为O(n+logn).
 
 
 
@@ -656,10 +739,24 @@ void traverse(TreeNode root) {
 
 
 
+如果使用额外的辅助空间，就可以实现稳定的快速排序：代码如下：
+
+```python
+def MySort(self , arr ):  
+    if len(arr) <= 1:  
+        return arr  
+    left, right = [], []  
+    for i in range(1,len(arr)):  
+        if arr[i] < arr[0]:  
+            left.append(arr[i])  
+        else:  
+            right.append(arr[i])  
+    return self.MySort(left) + [arr[0]] + self.MySort(right) 
+```
 
 
 
-
+我们每次选取头部元素作为基准数字arr[0]，在递归中定义左右列表（left，right）分别存储两种数字，并且让小于基准数字的放在左边，大于等于的放在右边（必须是大于等于），这样就保证了相同数字的相对位置，因为我们**选的是头部数字**，它**原本就在与它相同数字的左边**，并且我们**用大于等于限制了与基准数字相同的数字永远在基准数字的右侧**，在返回时，使用self.MySort(left) + [arr[0]] + self.MySort(right) 也进一步保证相同数字的相对位置。
 
 
 

@@ -416,6 +416,82 @@ double myPow(double x, int n) {
 
 
 
+
+
+
+
+## 311. 稀疏矩阵的乘法
+
+暴力
+
+```c++
+vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat2) {
+    vector<vector<int>> res(mat1.size(), vector<int>(mat2[0].size(), 0));
+
+    for (int i = 0; i < mat1.size(); ++i) {
+        for (int j = 0; j < mat2[0].size(); ++j) {
+            for (int k = 0; k < mat1[0].size(); ++k) {
+                res[i][j] += mat1[i][k] * mat2[k][j];
+            }
+        }
+    }
+    return res;
+}
+```
+
+
+
+
+
+三元组
+
+```c++
+struct ijv {
+    int i;
+    int j;
+    int val;
+};
+
+
+vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat2) {
+    vector<vector<int>> res(mat1.size(), vector<int>(mat2[0].size(), 0));
+
+    vector<ijv> m1, m2;
+
+
+    for (int i = 0; i < mat1.size(); ++i) {
+        for (int j = 0; j < mat1[0].size(); ++j) {
+            if (mat1[i][j] != 0) {
+                m1.push_back({i, j, mat1[i][j]});
+            }
+        }
+    }
+
+
+    for (int i = 0; i < mat2.size(); ++i) {
+        for (int j = 0; j < mat2[0].size(); ++j) {
+            if (mat2[i][j] != 0) {
+                m2.push_back({i, j, mat2[i][j]});
+            }
+        }
+    }
+
+    for (auto v1 : m1) {
+        for (auto v2 : m2) {
+            if (v1.j != v2.i) continue;	// a的列 = b的行
+
+            res[v1.i][v2.j] += v1.val * v2.val;
+        }
+    }
+
+    return res;
+}
+```
+
+
+
+
+
 ----
 
 # CS
@@ -1462,9 +1538,6 @@ int calculate(string s) {
     return nums.top();
 }
 ```
-
-
-
 
 
 

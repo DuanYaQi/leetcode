@@ -482,6 +482,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle<br>partition中i < hi && nums[i] <= pivot  注意是j-- |
 |3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array_MergeSort.cpp) | 归并排序 | 需要单独开tmp数组记录<br>注意merge最后nums[lo+i]而不是nums[i] |
 |[315. Count of Smaller Numbers After Self](/Alog_Sort/315+Count%20of%20Smaller%20Numbers%20After%20Self.cpp) | |结构体+cnt数组辅助记录右侧小值<br>tmp结构体数组记录，要整体转换，不要只转换val，忽略id |
+|[88. Merge Sorted Array](/Alog_Sort/88+Merge%20Sorted%20Array.cpp) | 归并| |
+| | | |
+| | | |
+| | | |
+| | | |
 | | | |
 
 
@@ -622,14 +627,14 @@ DP
 |[198. House Robber](Alog_DP/198+House%20Robber.cpp) | |根据题意分两种情况<br>还要考虑好边界和特殊输入 |
 |[213. House Robber II](Alog_DP/213%2BHouse%20Robber%20II.cpp) | | 把困难问题分情况，每种情况都很简单<br>索引搞不懂就画图 |
 |💛[337. House Robber III](Alog_DP/337%2BHouse%20Robber%20III.cpp) |树形DP |两种情况，选/不选<br>两种情况结果的保存可以用 vector<int> {0，0} |
-|[53. Maximum Subarray](Alog_DP/53%2BMaximum%20Subarray.cpp) | | 两种情况，选/不选|
+|[53. Maximum Subarray/Offer 42](Alog_DP/53%2BMaximum%20Subarray.cpp) | | 两种情况，选/不选|
 |[42. Trapping Rain Water](/Alog_DP/42+Trapping%20Rain%20Water.cpp) |  |先预处理,再DP |
 |[300. Longest Increasing Subsequence](/Alog_DP/300+Longest%20Increasing%20Subsequence.cpp) |LIS | 两层循环|
 |[674. Longest Continuous Increasing Subsequence](/Alog_DP/674+Longest%20Continuous%20Increasing%20Subsequence.cpp) |LCIS |一层循环 |
 |💛[1143. Longest Common Subsequence](/Alog_DP/1143+Longest%20Common%20Subsequence.cpp) |LCS |二维dp数组 |
 |[718. Maximum Length of Repeated Subarray](/Alog_DP/718+Maximum%20Length%20of%20Repeated%20Subarray.cpp) |;LCS |连续需要保存最优值 |
 |[1035. Uncrossed Lines](/Alog_DP/1035+Uncrossed%20Lines.cpp) | | 本质就是LCS |
-| | | |
+|[121. Best Time to Buy and Sell Stock](/Alog_DP/121+Best%20Time%20to%20Buy%20and%20Sell%20Stock.cpp) | |二维dp数组，有两种状态|
 | | | |
 | | | |
 | | | |
