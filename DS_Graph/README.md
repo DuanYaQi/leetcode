@@ -347,31 +347,27 @@ https://labuladong.gitee.io/algo/2/20/37/
 
 环检测和拓扑排序（编译器循环引用检测就是类似的算法）
 
-[207. 课程表](https://leetcode-cn.com/problems/course-schedule/)
-
-[210. 课程表 II](https://leetcode-cn.com/problems/course-schedule-ii/)
+### 207. 课程表I
 
 
 
-如果一个有向图的任意顶点都无法通过一些有向边到自身，那么称这个图为有向无环图（Directed Acyclic Graph，DAG）
+### 210. 课程表 II
+
+
+
+见 D_BFS 里 210. 课程表 II
+
+
+
+### 2
 
 
 
 
 
-
-
-
-
-
+---
 
 ### 有向图的环检测
-
-
-
-
-
-### 拓扑排序算法
 
 
 

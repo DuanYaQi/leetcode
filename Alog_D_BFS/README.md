@@ -119,6 +119,12 @@ BFS为什么不用特地判断是否有环：在任何时候（包括初始情�
 
 
 
+![img](assets/fig1.png)
+
+
+
+![0210.gif](assets/ca22fa351d5278e95c4c8c94aba6da42ae45d465ff3e8e82149777274293e194-0210.gif)
+
 在广度优先搜索的过程结束后。如果答案中包含了这 n 个节点，那么我们就找到了一种拓扑排序，否则说明图中存在环，也就不存在拓扑排序了。
 
 ```c++
@@ -135,37 +141,32 @@ public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         edges.resize(numCourses);
         indeg.resize(numCourses);
+        
         for (const auto& info: prerequisites) {
-            edges[info[1]].push_back(info[0]);
+            edges[info[1]].push_back(info[0]);	// 注意这里
             ++indeg[info[0]];
         }
 
         queue<int> q;
         // 将所有入度为 0 的节点放入队列中
         for (int i = 0; i < numCourses; ++i) {
-            if (indeg[i] == 0) {
-                q.push(i);
-            }
+            if (indeg[i] == 0) q.push(i);
         }
 
         while (!q.empty()) {
             // 从队首取出一个节点
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             // 放入答案中
             result.push_back(u);
             for (int v: edges[u]) {
                 --indeg[v];
                 // 如果相邻节点 v 的入度为 0，就可以选 v 对应的课程了
-                if (indeg[v] == 0) {
-                    q.push(v);
-                }
+                if (indeg[v] == 0) q.push(v);
             }
         }
 
-        if (result.size() != numCourses) {
-            return {};
-        }
+        if (result.size() != numCourses) return {};
+
         return result;
     }
 };
@@ -175,9 +176,162 @@ public:
 
 
 
+---
+
+## 630. 课程表 III
+
+1. 构建一个图表示从i到j是否可达，默认为false
+2. 构建方式
+   - prerequisites来直接构建
+   - 基于中间k点即Flyod方式来判断是否可达
 
 
 
+
+
+floyed 算法
+判断从 i 到 j 是否有路径。
+判断从 i 途径 mid 到 j 是否有路径。
+
+```c++
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        // 先修课程，grpah[i][j] = 1 表示 i 是 j 的先修课程
+        bool graph[numCourses][numCourses];
+        memset(graph, 0, sizeof(bool)*numCourses*numCourses);
+		
+         // 构建图
+        for (const auto &data : prerequisites) {
+            graph[data[0]][data[1]] = true;
+        }
+	
+        // i 是 k 的先导课程，k 是 j 的先导课程
+        // Floyd算法的本质是DP，而k是DP的阶段，因此要写最外面
+        for (int k = 0; k < numCourses; ++k) {
+            for (int i = 0; i < numCourses; ++i) {
+                for (int j = 0; j < numCourses; ++j) {
+                    // i 是 k 的先导课程，k 是 j 的先导课程
+                    if (graph[i][k] && graph[k][j]) {
+                        graph[i][j] = true;
+                    }
+                }
+            }
+        }
+       
+        // 遍历quries直接从graph得到结果
+        vector<bool> res;
+        for (const auto &q : queries) {
+            if (graph[q[0]][q[1]]) res.push_back(true);
+            else res.push_back(false);
+        }
+
+        return res;
+    }
+
+     
+};
+
+```
+
+
+
+```c++
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        int n = numCourses;
+        vector<vector<int>> graph(n);
+
+        for (auto &pre : prerequisites) {
+            graph[pre[0]].push_back(pre[1]);
+        }
+
+        vector<vector<bool>> isReached(n, vector<bool>(n));
+        for (int i = 0; i < n; i++) {
+            queue<int> q;
+            q.push(i);
+            while (!q.empty()) {
+                int u = q.front();
+                q.pop();
+                for (auto &v : graph[u]) {
+                    if (!isReached[i][v]) { /* 从课程i到达的其他课程进行标记 */
+                        isReached[i][v] = true;
+                        q.push(v);
+                    }
+                }
+            }
+        }
+
+        vector<bool> ans;
+        for (auto &query : queries) {
+            ans.push_back(isReached[query[0]][query[1]]);
+        }
+        return ans;
+    }
+};
+```
+
+
+
+```c++
+
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+		edges.resize(numCourses);
+        indeg.resize(numCourses);
+        pre.resize(numCourses);
+        
+        for(auto &v:prerequisites){
+            int v1=v[0],v2=v[1];
+            edges[v1].push_back(v2);
+            indeg[v2]++;
+        }
+
+        queue<int> q;
+        for(int i=0;i<numCourses;i++){
+            if(degree[i]==0)
+                q.push(i);
+        }
+        while(!q.empty()){
+            int course=q.front();
+            q.pop();
+            for(auto next:edge[course]){
+                degree[next]--;
+                pre[next].insert(pre[course].begin(),pre[course].end());
+                pre[next].insert(course);
+                if(degree[next]==0)
+                    q.push(next);
+            }
+        }
+        vector<bool>res;
+       
+        for(auto q:queries){
+            if(pre[q[1]].find(q[0])!=pre[q[1]].end())
+                res.push_back(true);
+            else
+                res.push_back(false);
+        }
+        return res;
+    }
+    
+private:
+    vector<vector<int>> edge;
+    vector<int> degree;
+    vector<set<int>> pre;
+};
+```
+
+
+
+
+
+
+
+---
+
+## 1462. 课程表 IV
 
 
 
