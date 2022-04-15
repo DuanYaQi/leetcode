@@ -32,3 +32,39 @@ public:
         return ans == inf ? -1 : ans;
     }
 };
+
+
+
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        const int inf = INT_MAX / 2;
+        vector<vector<int>> g(n + 1, vector<int>(n + 1, inf));
+
+        for (auto &t : times) {
+            g[t[0]][t[1]] = t[2];
+        }
+
+        vector<int> dist(n + 1, inf);
+        dist[k] = 0;
+        vector<bool> used(n + 1, false);    //!!!!!!!!!!!!!!!!!!!!! 初始化为false
+
+        for (int i = 1; i <= n; i++) {
+            int x = -1;
+            for (int y = 1; y <= n; ++y) {
+                if (!used[y] && (x == -1 || dist[y] < dist[x])) {
+                    x = y;
+                }
+            }
+            
+            used[x] = true;
+
+            for (int y = 1; y <=n; ++y) {
+                dist[y] = min(dist[y], dist[x] + g[x][y]);
+            }
+        }
+
+        int ans = *max_element(++dist.begin(), dist.end());
+        return ans == inf ? -1 : ans;
+    } 
+};

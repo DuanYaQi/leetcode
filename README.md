@@ -397,11 +397,15 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[2192.All Ancestors of a Node in a Directed Acyclic Graph](DS_Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time.cpp) | Dijkstra | 每次找离flag节点最近的点,更新距离,贪心 |
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Heap.cpp) | 堆优化 | 优先队列 pair 邻接表 |
+|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Floyd.cpp) | floyd| 暴力|
+|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_BF.cpp) | BF 松弛操作| |
+|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_SPFA.cpp) |SPFA |BF+队列 |
+|[1514. Path with Maximum Probability](/DS_Graph/1514+Path%20with%20Maximum%20Probability.cpp) | 注意是大顶堆 带起止点 | |
 | | | |
 | | | |
 | | | |
 | | | |
-
+| | | |
 
 
 ---
@@ -1304,6 +1308,31 @@ if (x && !y) {}
 return (some_long_condition &&
         another_condition);
 ```
+
+
+
+- 比较
+
+```c++
+A．假设布尔变量名字为flag，它与零值比较的标准if语句如下。
+1　if (flag)
+2　if (!flag)
+    
+B．假设整型变量的名字为value，它与零值比较的标准if语句如下。
+1　if (value == 0)
+2　if (value != 0)
+
+C．假设浮点变量的名字为 x，它与 0.0的比较如下。
+1　if ((x >= -EPSINON) && (X <= EPSINON))
+2　if ((x < -EPSINON) || (X > EPSINON))
+其中，EPSINON是允许的误差（精度）。
+    
+D．指针变量 p与 0的比较如下。
+1　if (p == NULL)
+2　if (p != NULL)
+```
+
+
 
 
 

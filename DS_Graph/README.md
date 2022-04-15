@@ -399,15 +399,90 @@ https://labuladong.gitee.io/algo/2/20/38/
 
 https://labuladong.gitee.io/algo/2/20/48/
 
-[743. 网络延迟时间（中等）](https://leetcode-cn.com/problems/network-delay-time)
-
-[1514. 概率最大的路径（中等）](https://leetcode-cn.com/problems/path-with-maximum-probability)
-
-[1631. 最小体力消耗路径（中等）](https://leetcode-cn.com/problems/path-with-minimum-effort)
 
 
 
-### 普通版单源最短路径算法Dijkstra
+
+**dijkstra+堆优化+vis数组** 一招吃天下，特殊情况看 SPFA
+
+
+
+### 743. 网络延迟时间（中等）
+
+
+
+| 方法                    | 适用场景                           | 特点                                   | 时间复杂度   | 空间复杂度 |
+| ----------------------- | ---------------------------------- | -------------------------------------- | ------------ | ---------- |
+| dijkstra                | 1.数据量比较小<br/>2.稠密图        | 不支持负边权                           | $O(N^2+E)$   | $O(N+E)$   |
+| dijkstra+堆优化         | 稀疏图                             | 不支持负边权                           | $O(E\log E)$ | $O(N+E)$   |
+| dijkstra+堆优化+vis数组 | 1.稀疏图<br/>2.不适合visited的情形 | 不支持负边权                           | $O(E\log N)$ | $O(N+E)$   |
+| Floyd                   | 1.多对多<br/>2.数据范围比较小      | 允许负边权。但回路中边的权值不能为负。 | $O(N^3)$     | $O(N^2)$   |
+| 朴素Bellman Ford        |                                    | 支持负边权<br/>不用建图                | $O(NE)$      | $O(N)$     |
+| SPFA                    | 差分约束                           | 支持负边权<br/>适应性很强              | $O(KE)$      | $O(N+E)$   |
+
+> N 为**点数**，E 为 **边数**，$E > N$ 否则必没有最短路径
+>
+> 建图默认为邻接表 $O(N+E)$，若邻接矩阵则为 $O(N^2)$，
+>
+> BF 不涉及建图 $O(N)$ 为 dist  数组 
+>
+> SPFA 中 $K$ 是节点被平均入队的次数，有关数据表明 $K$一般都是一个趋近于2的常数，故 SPFA 复杂度主要依赖于边数 $E$。
+
+
+
+
+
+
+
+
+
+**当 $E = N$ 时**
+
+| 方法                    | 时间复杂度   | 变为         |
+| ----------------------- | ------------ | ------------ |
+| dijkstra                | $O(N^2+E)$   | $O(N^2)$     |
+| dijkstra+堆优化         | $O(E\log E)$ | $O(E\log E)$ |
+| dijkstra+堆优化+vis数组 | $O(E\log N)$ | $O(E\log E)$ |
+| Floyd                   | $O(N^3)$     | $O(N^3)$     |
+| 朴素Bellman Ford        | $O(NE)$      | $O(N^2)$     |
+| SPFA                    | $O(KE)$      | $O(KE)$      |
+
+dijkstra+堆优化+vis数组 / SPFA 最优
+
+
+
+
+
+**当 $E = N^2$ 时，有向完全稠密**
+
+| 方法                    | 时间复杂度   | 变为             |
+| ----------------------- | ------------ | ---------------- |
+| dijkstra                | $O(N^2+E)$   | $O(N^2)$         |
+| dijkstra+堆优化         | $O(E\log E)$ | $O(N^2\log N^2)$ |
+| dijkstra+堆优化+vis数组 | $O(E\log N)$ | $O(N^2\log N)$   |
+| Floyd                   | $O(N^3)$     | $O(N^3)$         |
+| 朴素Bellman Ford        | $O(NE)$      | $O(N^3)$         |
+| SPFA                    | $O(KE)$      | $O(KN^2)$        |
+
+dijkstra+堆优化+vis数组 最优
+
+
+
+
+
+---
+
+### 松弛
+
+松弛操作原理是 三角形 两边之和大于第三边，例子：求源点 A 到其他结点的最短距离，有两个结点 B 和 C 与源点 A 的距离为 x，y，若 B 到 C 之间有一条边 z，那么此时可以考虑通过 B 到达 C，距离为 x+z，若 x + z < y，说明通过 B 到达 C 的距离更短，就可以更新 C 与源点 A 的最短路径
+
+![image.png](assets/1626791780-kUJTRy-image.png)
+
+
+
+---
+
+### Dijkstra-不支持负边权
 
 主要思想是贪心
 
@@ -419,7 +494,6 @@ https://labuladong.gitee.io/algo/2/20/48/
 
 > 用节点 A「更新」节点 B 的意思是，用起点到节点 A 的最短路长度加上从节点 A 到节点 B 的边的长度，去比较起点到节点 B 的最短路长度，如果前者小于后者，就用前者更新后者。这种操作也被叫做「**松弛**」。
 >
-> 
 
 
 
@@ -447,7 +521,15 @@ https://labuladong.gitee.io/algo/2/20/48/
 
 
 
-**枚举**
+
+
+
+
+#### **naive**
+
+适用情况：
+1.数据量比较小
+2.稠密图
 
 ```c++
 int networkDelayTime(vector<vector<int>>& times, int n, int k) {
@@ -484,17 +566,31 @@ int networkDelayTime(vector<vector<int>>& times, int n, int k) {
 
 枚举写法的复杂度如下：
 
-时间复杂度：$O(n^2+m)$，其中 m 是数组 times 的长度。
+**时间复杂度**：$O(N^2+E)$，其中 M 是数组 times 的长度。$O(N^2)$ 是寻找最短路径， $O(E)$ 是建图
 
-空间复杂度：$O(n^2)$。邻接矩阵需占用 $O(n^2)$ 的空间。
-
-m 为 **边数**，n 为**点数**
-
-m最大6000，n最大100，最坏时间复杂度 O(10000 + 6000) = O(16000)
+**空间复杂度**：$O(N^2)$/$O(N+E)$。邻接矩阵/邻接表的空间。
 
 
 
-**小根堆**
+N 为**点数**，E 为 **边数**
+
+N 最大100，E 最大6000 ( $N<E<N^2$)，最坏时间复杂度 O(10000 + 6000) = O(16000)
+
+
+
+当**边数远大于点数**，是一张**稠密图**，在运行时间上，**枚举写法要略快于堆的写法**。
+
+
+
+
+
+---
+
+#### **堆优化**
+
+适用情况：
+1.稀疏图
+2.不适合visited的情形
 
 ```c++
 int networkDelayTime(vector<vector<int>>& times, int n, int k) {
@@ -523,7 +619,7 @@ int networkDelayTime(vector<vector<int>>& times, int n, int k) {
 
         for (auto &e : g[x]) {
             int y = e.first, d = dist[x] + e.second;
-            if (d < dist[y]) {
+            if (d < dist[y]) { // 松弛
                 dist[y] = d;
                 q.emplace(d, y);
             }
@@ -539,116 +635,410 @@ int networkDelayTime(vector<vector<int>>& times, int n, int k) {
 
 堆的写法复杂度如下：
 
-时间复杂度：$O(m\log m)$，其中 m 是数组 times 的长度。即**边数**
+时间复杂度：$O(E\log E)$
 
-空间复杂度：$O(n+m)$。
+**空间复杂度**：$O(N^2)$/$O(N+E)$。邻接矩阵/邻接表的空间。
 
-m 为 **边数**，n 为**点数**
+N 为**点数**，E 为 **边数**
 
-m最大6000，n最大100，最坏时间复杂度 O(6000 log 6000) = O(22668)
-
-
+N 最大100，E 最大6000，最坏时间复杂度 O(6000 log 6000) = O(22668)
 
 
 
-值得注意的是，由于本题**边数远大于点数**，是一张**稠密图**，因此在运行时间上，**枚举写法要略快于堆的写法**。
+
+
+>对队列进行研究，我们希望每一个点仅入队出队一次，期望的时间复杂度为 $O(N\log N)$，但实际中并不如此，节点可能被入队出队多次，因此实际性能略差，可能的时间复杂度为 $O(E\log E)$，其中 $E$ 是全部节点入队的总次数
 
 
 
 ---
 
-### 五种最短路径算法总结
+#### 堆优化+vis数组 - 邻接表
 
-https://leetcode-cn.com/problems/network-delay-time/solution/dirkdtra-by-happysnaker-vjii/
+适用情况：
+1.稀疏图
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+    vector<vector<pair<int, int>>> g(n + 1);
+
+    for (auto &t : times) {
+        g[t[0]].emplace_back(t[1], t[2]);
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+    vector<bool> visit(n + 1, false);
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
+    q.emplace(0, k);
+
+    while (q.size()) {
+        auto p = q.top(); q.pop();
+        int time = p.first, flag = p.second;
+
+        if (visit[flag]) continue;
+        visit[flag] = true;
+
+        for (auto &e : g[flag]) {
+            int y = e.first, d = dist[flag] + e.second;
+            if (d < dist[y]) { // 松弛
+                dist[y] = d;
+                q.emplace(d, y);
+            }
+        }
+
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());
+    return res == inf ? -1 : res;
+}
+```
+
+堆的写法复杂度如下：
+
+时间复杂度：$O(E\log N)$
+
+**空间复杂度**：$O(N+E)$。
+
+N 为**点数**，E 为 **边数**
+
+N 最大100，E 最大6000，最坏时间复杂度 O(6000 log 10) = O(6000)
+
+
+
+> 对队列进行研究，我们希望每一个点仅入队出队一次，期望的时间复杂度为 $O(N\log N)$，但实际中并不如此，节点可能被入队出队多次，因此实际性能略差，可能的时间复杂度为 $O(E\log E)$，其中 $E$ 是全部节点入队的总次数，
+>
+> **如果加入 visited 数组**，由于一旦节点出队，便再也不可能入队(visit = false)，因此 $E$ 依然小于 $N^2$，即 $E\log E < E\log(N^2) = 2E\log N$，即最终的时间复杂度为$O(E\log N)$，其中 $N <= E < N^2$。
 
 
 
 
 
-### 单源最短路径的几种基础解法
+---
 
-https://leetcode-cn.com/problems/network-delay-time/solution/wang-luo-yan-chi-shi-jian-dan-yuan-zui-d-m1m3/
+#### 堆优化+vis数组 - 邻接矩阵
+
+适用情况：
+1.稀疏图
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+    vector<vector<int>> g(n + 1, vector<int>(n + 1, inf));	//!!!1
+	
+    //!!!2
+    for (auto &t : times) {
+        g[t[0]][t[1]] = t[2];
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+    vector<bool> visit(n + 1, false);
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
+    q.emplace(0, k);
+
+    while (q.size()) {
+        auto p = q.top(); q.pop();
+        int time = p.first, flag = p.second;
+
+        if (visit[flag]) continue;
+        visit[flag] = true;
+
+        for (int i = 0; i <= n; ++i) {	//!!!3
+            int d = dist[flag] + g[flag][i];	///!!!4
+            if (d < dist[i]) { // 松弛
+                dist[i] = d;
+                q.emplace(d, i);
+            }
+        }
+
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());
+    return res == inf ? -1 : res;
+}
+```
+
+堆的写法复杂度如下：
+
+时间复杂度：$O(E\log N)$
+
+**空间复杂度**：$O(N^2)$
+
+N 为**点数**，E 为 **边数**
+
+N 最大100，E 最大6000，最坏时间复杂度 O(6000 log 10) = O(6000)
 
 
 
-## 单源算法——Dirkdtra算法(使用最广且必须掌握的算法)
+> 对队列进行研究，我们希望每一个点仅入队出队一次，期望的时间复杂度为 $O(N\log N)$，但实际中并不如此，节点可能被入队出队多次，因此实际性能略差，可能的时间复杂度为 $O(E\log E)$，其中 $E$ 是全部节点入队的总次数，
+>
+> **如果加入 visited 数组**，由于一旦节点出队，便再也不可能入队(visit = false)，因此 $E$ 依然小于 $N^2$，即 $E\log E < E\log(N^2) = 2E\log N$，即最终的时间复杂度为$O(E\log N)$，其中 $N <= E < N^2$。
 
-每次找到离源点最近的一个点，以该点为中心，更新源点到其他源点的最短路径，贪心的思想。该算法无法判断是否存在负权环路，如果存在，算法将失效。算法的正确性不作证明，可参考力扣官方题解。
+
+
+
+
+
+
+---
+
+### Floyd
+
+适应情况：
+1.多对多
+2.数据范围比较小
+
+特点：允许边的权值为负。但回路中边的权值不能为负。
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+    vector<vector<int>> g(n + 1, vector<int>(n + 1, inf));
+
+    for (auto &t : times) {
+        g[t[0]][t[1]] = t[2];
+    }
+
+
+    for (int x = 1; x <= n; x ++)
+        g[x][x] = 0;
+
+
+    for (int mid = 1; mid <= n; mid++) {
+        for (int x = 1; x <= n; ++x) {
+            for (int y = 1; y <= n; ++y) {
+                g[x][y] = min(g[x][y], g[x][mid] + g[mid][y]);
+            }
+        }
+    }
+
+    int res = *max_element(++g[k].begin(), g[k].end());
+    return res == inf ? -1 : res;
+}
+```
+
+Floyd 写法的复杂度如下：
+
+**时间复杂度**：$O(N^3)$
+
+**空间复杂度**：$O(N^2)$。邻接矩阵空间。
+
+
+
+N 为**点数**，E 为 **边数**
+
+N 最大100，E 最大6000，最坏时间复杂度 O(100 * 100 * 100) = O(1000000)
+
+
+
+
+
+---
+
+### 朴素Bellman Ford
+
+执行 $N-1$ 次松弛操作即可保证所有边达到最小值
+
+松弛操作原理是 三角形 两边之和大于第三边，例子：求源点 A 到其他结点的最短距离，有两个结点 B 和 C 与源点 A 的距离为 x，y，若 B 到 C 之间有一条边 z，那么此时可以考虑通过 B 到达 C，距离为 x+z，若 x + z < y，说明通过 B 到达 C 的距离更短，就可以更新 C 与源点 A 的最短路径
+
+![image.png](assets/1626791780-kUJTRy-image.png)
+
+
+
+```c++
+#define inf 0x3f3f3f3f
+
+class Solution {
+public:
+    vector<unordered_map<int, int>> mp;
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        // 记录结点最早收到信号的时间
+        vector<int> r(n + 1, inf);
+        r[k] = 0;
+
+        // n - 1 次松弛操作
+        for (int i = 1; i < n; ++i) {
+            bool t = false;
+            for (auto& edg : times) {
+                if (r[edg[1]] > r[edg[0]] + edg[2]) {// 松弛
+                    r[edg[1]] = r[edg[0]] + edg[2];
+                    t = true;
+                }
+            }
+            if (!t) break;
+        }
+
+        int minT = -1;
+        for (int i = 1; i <= n; ++i)
+            minT = max(minT, r[i]);
+        return minT == inf ? -1 : minT;
+    }
+};
+```
+
+BF写法的复杂度如下：
+
+**时间复杂度**：$O(NE)$
+
+**空间复杂度**：$O(N)$，dist 数组，不需要建图。
+
+
+
+N 为**点数**，E 为 **边数**
+
+N 最大100，E 最大6000，最坏时间复杂度 O(100*6000) = O(600000)
+
+
+
+> 最坏情况当 $E = N^2$，此时复杂度是 $O(N^3)$
+>
+> 本题 ( $N<E<N^2$)
+
+
+
+
+
+
+
+---
+
+### SPFA-支持负边权
+
+**不建议用邻接矩阵来做，否则将破坏该算法精妙的时间复杂度。**
+
+因为松弛操作只会发生在上一轮松弛过的结点的边上，所以可以**维护一个队列保存松驰过的结点**，该方法即 SPFA 算法，可以遍历所有边执行松弛操作，最坏情况还是会退化成朴素 BF
+
+
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+    vector<vector<pair<int, int>>> g(n + 1);
+
+    for (auto &t : times) {
+        g[t[0]].emplace_back(t[1], t[2]);
+    }
+
+    // 记录最短路径
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+
+    queue<int> q;
+    q.emplace(k);
+    unordered_set<int> s;
+    s.emplace(k);
+
+
+    while (q.size()) {
+        int cur = q.front(); q.pop();
+        s.erase(cur);
+
+        for (auto &e : g[cur]) {
+            int x = e.first, d = dist[cur] + e.second;
+            if (dist[x] > d) {			// 松弛
+                dist[x] = d;
+
+                if (s.count(x) == 0) {  // x不在集合中
+                    q.emplace(x);
+                    s.emplace(x);
+                }
+            }
+        }
+    }
+
+
+    int res = *max_element(++dist.begin(), dist.end());
+    return res == inf ? -1 : res;
+}
+```
+
+SPFA 的写法复杂度如下：
+
+时间复杂度：$O(KE)$
+
+**空间复杂度**：$O(N+E)$。邻接表的空间。
+
+N 为**点数**，E 为 **边数**，$K$ 是节点被平均入队的次数，有关数据表明 $K$一般都是一个趋近于2的常数，故该**算法的复杂度主要依赖于边的个数**。
+
+N 最大100，E 最大6000，最坏时间复杂度 O(2 * 6000) = O(12000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+> 五种最短路径算法总结 https://leetcode-cn.com/problems/network-delay-time/solution/dirkdtra-by-happysnaker-vjii/
+>
+> 
+>
+> 单源最短路径的几种基础解法https://leetcode-cn.com/problems/network-delay-time/solution/wang-luo-yan-chi-shi-jian-dan-yuan-zui-d-m1m3/
+>
+> 
+>
+> c++/python3/java （1）朴素dijkstra算法 （2）最小堆+visited+dijkstra算法 （3）最小堆+dijkstra算法 （4）spfa算法--队列实现 （5）floyd算法 https://leetcode-cn.com/problems/network-delay-time/solution/cpython3java-1po-su-dijkstrasuan-fa-2zui-ks36/
+
+
+
+
+
+---
+
+### 1514. 概率最大的路径
+
+变种的最短路径问题。特殊点在于，我们选取的每一条边对答案的贡献是以**相乘**的形式，**而不是相加的形式**。
 
 
 
 ```c++
 class Solution {
 public:
-    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        vector<vector<int>> g(n + 1, vector<int>(n + 1, INT_MAX / 2));//键图
-        //dis[i]代表源点到点i的最短路，初始化为INT_MAX / 2防止溢出
-        vector<int> dis(n + 1, INT_MAX / 2), visit(n + 1, 0);
-        /*初始化邻接矩阵与dis数组*/
-        for (auto& it : times) {
-            g[it[0]][it[1]] = it[2]; //g[i][j]表示i到j的权重
-            //如果起点为源点，更新dis数组
-            //邻接源点的点一定是最短的
-            //上面的描述是错的，下面的代码也是不需要的，看到这里请思考思考为什么
-            if (it[0] == k) {
-                dis[it[1]] = it[2];
-            }
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        vector<vector<pair<double, int>>> graph(n);
+        for (int i = 0; i < edges.size(); i++) {
+            auto& e = edges[i];
+            graph[e[0]].emplace_back(succProb[i], e[1]);
+            graph[e[1]].emplace_back(succProb[i], e[0]);
         }
-        /*源点k无需访问,dis[0]是个不需要的值,防止后面查找最大值错误*/
-        dis[k] = 0, visit[k] = 1, dis[0] = 0;
-        for (int cnt = 1; cnt < n; cnt++) {
-            /*找到离源点最短的点，并记录*/
-            int mi = INT_MAX / 2, book = 0;
-            for (int i = 1; i <= n; i++) {
-                if (dis[i] < mi && !visit[i]) {
-                    mi = dis[i];
-                    book = i;
+
+        priority_queue<pair<double, int>> que;
+        vector<double> prob(n, 0);
+
+        que.emplace(1, start);
+        prob[start] = 1;
+        while (!que.empty()) {
+            auto [pr, node] = que.top();
+            que.pop();
+            if (pr < prob[node]) {
+                continue;
+            }
+            for (auto& [prNext, nodeNext] : graph[node]) {
+                if (prob[nodeNext] < prob[node] * prNext) {
+                    prob[nodeNext] = prob[node] * prNext;
+                    que.emplace(prob[nodeNext], nodeNext);
                 }
             }
-
-            /*如果源点无法到达任何一个点,直接返回*/
-            if (mi == INT_MAX / 2)    return -1;
-            visit[book] = 1;//标记
-
-            /*松弛操作,以book为中心点进行扩展*/
-            for (int i = 1; i <= n; i++) {
-                /*如果book到i不为无穷，即有一条边的话，进行松弛操作*/
-                if (g[book][i] != INT_MAX / 2 && dis[i] > dis[book] + g[book][i]) {
-                    dis[i] = dis[book] + g[book][i];
-                }               
-            }
         }
-        /*答案处理*/
-        int ret = *max_element(dis.begin(), dis.end());
-        return ret == INT_MAX / 2 ? -1 : ret;
+        return prob[end];
     }
 };
 ```
 
-**时间复杂度：O(N^2)**
-**空间复杂度：O(N^2)**
 
 
 
 
-
-
-
-
-
----
-
-### c++/python3/java （1）朴素dijkstra算法 （2）最小堆+visited+dijkstra算法 （3）最小堆+dijkstra算法 （4）spfa算法--队列实现 （5）floyd算法
-
-https://leetcode-cn.com/problems/network-delay-time/solution/cpython3java-1po-su-dijkstrasuan-fa-2zui-ks36/
-
-
-
-
-
-
-
-
+### 1631. 最小体力消耗路径
 
 
 
