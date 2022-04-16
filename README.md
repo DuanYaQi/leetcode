@@ -130,7 +130,12 @@ https://www.cnblogs.com/MinPage/
 ||
 |其实很多**数组填充**类的问题，都可以先**预先**给数组**扩容**带填充后的大小，然后在**从后向前**进行操作。|
 ||
-|判断奇偶 `sum & 1` |
+||
+|判断奇偶 `sum & 1` , true 为奇数，false 为偶数 |
+|`1<<i` 是将 1 左移了 i 位，即第 i 位为1，其余位为 0； |
+|`n & (1<<i) == 0` 判断 n 的第 i 位是否为 0|
+|`(n & (n - 1) ) == 0` 判断 n 是否为 2 的幂次方|
+||
 ||
 ||
 |`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
@@ -400,8 +405,9 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Floyd.cpp) | floyd| 暴力|
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_BF.cpp) | BF 松弛操作| |
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_SPFA.cpp) |SPFA |BF+队列 |
+|[优先队列再优化](/DS_Graph/743+Network%20Delay%20Time_Heap_best.cpp)||HeapNode/myCmp|
 |[1514. Path with Maximum Probability](/DS_Graph/1514+Path%20with%20Maximum%20Probability.cpp) | 注意是大顶堆 带起止点 | |
-| | | |
+|💛[1631. Path With Minimum Effort](DS_Graph/1631+Path%20With%20Minimum%20Effort.cpp) | 极大值最小化| 抽象为图 |
 | | | |
 | | | |
 | | | |
@@ -414,10 +420,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
+|[253. Meeting Rooms II](/DS_Heap/253+Meeting%20Rooms%20II.cpp)   |  |  按照 开始时间 对会议进行排序,小顶堆，键值为结束时间|
+|[252. Meeting Rooms](/DS_Heap/252+Meeting%20Rooms.cpp) | |同253 |
+| | | |
+| | | |
+| | | |
 
 
 
@@ -539,7 +546,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[1248.] | 前缀和| |
 |[974.] | 前缀和| |
 | | | |
-
+| | | |
 
 
 ---
@@ -606,6 +613,9 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 | | | |
 | | | |
 | | | |
+|[LCP 51. 烹饪料理](Alog_BackTracking/LCP%2051.%20烹饪料理.cpp) |回溯 | 注意这种满足两种要求的，不能满足一种要求就return<br>注意visited=true 后边不能有continue或break，要确保visted=false能执行到|
+| | | |
+| | | |
 
 ---
 
@@ -623,7 +633,9 @@ Greedy
 |[55. Jump Game](Alog_Greedy/55+Jump%20Game.cpp) | | |
 |[45. Jump Game II](/Alog_Greedy/45+Jump%20Game%20II.cpp) | | |
 | | | |
-
+| | | |
+| | | |
+| | | |
 
 
 ---
@@ -675,10 +687,11 @@ DP
 |[207. Course Schedule](Alog_D_BFS/207+Course%20Schedule.cpp) | |与201相同 |
 |[1462. Course Schedule IV](/Alog_D_BFS/1462+Course%20Schedule%20IV.cpp) | | Floyd算法 |
 | | | |
+|[LCP 52. 二叉搜索树染色](Alog_D_BFS/LCP%2052.%20二叉搜索树染色.cpp) |逆向推理 |注意剪枝 |
 | | | |
 | | | |
 | | | |
-
+| | | |
 
 
 ---
