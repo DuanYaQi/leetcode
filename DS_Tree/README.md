@@ -34,6 +34,12 @@
 
 
 
+一个二叉搜索树，那么**中序遍历的结果就会是一个递增序列**，因此只需要判断每次节点上的值是否大于前一个值，如果大于就继续向后遍历，直到最后一个空节点，如果出现后一个节点的值小于前一个节点，就直接返回false。
+
+
+
+
+
 ### 1.4. 平衡二叉搜索树
 
 AVL（Adelson-Velsky and Landis）树，它是一棵空树或它的左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一颗平衡二叉树。
@@ -67,6 +73,47 @@ C++中**map、set、multimap，multiset**的底层实现都是**平衡二叉搜�
 链式存储，指针，不连续
 
 顺序存储，数组，连续	父节点数组下标为 `i`， 左孩子为`i*2+1` ，右孩子为 `i*2 + 2`
+
+```c++
+for (int i = 0; i < N; ++i) {
+    cin >> tree1[i];
+}
+
+for (int i = 0; i < N; ++i) {
+    cin >> tree2[i];
+}
+
+TreeNode* root = new TreeNode();
+root = traverse(tree1, 0, N - 1, tree2, 0, N - 1);
+
+
+TreeNode* traverse(vector<int> &inorder, int inStart, int inEnd, 
+            vector<int> &postorder, int postStart, int postEnd) {
+    
+    if (inStart > inEnd || postStart > postEnd) {
+        return nullptr;
+    }
+
+    int midIdx = -1;
+    int midV = postorder[postEnd];
+    for (int i = inStart; i <= inEnd; ++i) {
+        if (inorder[i] == midV) {
+            midIdx = i;
+            break;
+        }
+    }
+
+    TreeNode* root = new TreeNode(midV);
+
+    root->left = traverse(inorder, inStart, midIdx-1,
+            postorder, postStart, postStart + midIdx - inStart - 1);
+    root->right = traverse(inorder, midIdx + 1, inEnd,
+            postorder, postStart + midIdx - inStart, postEnd - 1);
+    return root;
+}
+```
+
+
 
 
 
@@ -120,6 +167,35 @@ struct TreeNode{
 [144. Binary Tree Preorder Traversal](144+preorderTraversal.cpp)
 
 [145. Binary Tree Postorder Traversal](145+postorderTraversal.cpp)
+
+```c++
+void traversal(TreeNode* cur, vector<int>& vec) {
+    if (cur == NULL) return;
+    
+    
+    traversal(cur->left, vec); // 左
+    vec.push_back(cur->val); // 中
+    traversal(cur->right, vec); // 右
+}
+
+void traversal(TreeNode* cur, vector<int>& vec) {
+    if (cur == NULL) return;
+    
+    vec.push_back(cur->val); // 中
+    traversal(cur->left, vec); // 左
+    traversal(cur->right, vec); // 右
+}
+
+
+void traversal(TreeNode* cur, vector<int>& vec) {
+    if (cur == NULL) return;
+    
+    traversal(cur->left, vec); // 左
+    traversal(cur->right, vec); // 右
+    vec.push_back(cur->val); // 中
+}
+
+```
 
 
 
@@ -1502,6 +1578,99 @@ TreeNode* convertBST(TreeNode* root) {
 求二叉搜索树的属性,一定是中序了,要不白瞎了有序性了。
 
 
+
+
+
+
+
+---
+
+# 珂朵莉树
+
+要求我们实现一种数据结构，可以较快地实现：
+
+- 区间加
+- 区间赋值
+- 求区间第k大值
+- 求区间n次方和
+
+
+
+起源于[CF896C](https://link.zhihu.com/?target=https%3A//codeforces.com/problemset/problem/896/C)
+
+
+
+珂朵莉树的思想在于随机数据下的区间赋值操作很可能让**大量元素变为同一个数**。所以我们以三元组 <l,r,v> 的形式保存数据（区间 $[l,r]$ 中的元素的值都是v）：
+
+![img](assets/v2-e2bfb654e0549283734097606845b695_720w.jpg)
+
+```c++
+using ll = long long;
+
+struct Node {
+  	ll l, r;
+  	mutable ll v;	// 这里mutable 防止CE
+    Node(ll l, ll r, ll v) : l(l), r(r), v(v) {} //构造函数
+    bool operator<(const Node &node) const {	// 重载小于运算符
+        return l < node.l;
+    }
+};
+// mutable 突破 const 的限制而设置的。被 mutable 修饰的变量（mutable 只能用于修饰类中的非静态数据成员），将永远处于可变的状态，即使在一个 const 函数中。
+
+// 这意味着，我们可以直接修改已经插入 set 的元素的 v 值，而不用将该元素取出后重新加入 set
+```
+
+
+
+把这些三元组存储到set里
+
+```c++
+set<Node> tree;
+```
+
+要把结构体放进 `set` 里需要重载小于运算符， `set` 会保证内部元素有序（插入、删除和查询的时间复杂度都是 $O(\log n)$）。
+
+
+
+然而，进行区间操作时并不总是那么幸运，可能会把原本连续的区间断开。需要一个函数实现 “断开” 的操作，把 <l, r, v> 断成 <l, pos-1, v> 和 <pos, r, v>
+
+```c++
+auto split(ll pos) {	// 若不支持 c++14，auto必须改为 set<node>::iterator
+    auto it = tree.lower_bound(Node(pos, 0, 0));	// 寻找左端点>= pos的第一个结点
+    // 若不支持C++11，auto须改为set<node>::iterator
+    if (it != tree.end() && it->l == pos) //如果存在以pos为左端点的节点，直接返回
+        return it;
+    
+    it--;	//否则往前数一个节点
+    ll l = it->l, r = it->r, v = it->v;
+    tree.erase(it);
+    tree.insert(Node(l, pos - 1, v)); //插入 <l, pos-1, v> 和 <pos, r, v>
+	return tree.insert(Node(pos, r, v)).first;	// 返回以pos开头的节点的迭代器
+    // insert默认返回值是一个pair，第一个成员是我们要的
+}
+```
+
+
+
+例如刚刚的情况，如果要split(4)会发生什么？
+
+![img](assets/v2-e2bfb654e0549283734097606845b695_720w-16501085948492.jpg)
+
+首先 `lower_bound`，找到左端点大于等于4的节点 <5,6,3>。它的左端点不是4，所以回退，得<2,4,2>。我们把节点<2,4,2>删除，然后插入<2,3,2>及<4,4,2>即可。
+
+
+
+珂朵莉树的精髓在于**区间赋值**。而区间赋值操作的写法也极其简单：
+
+```c++
+void assign(ll l, ll r, ll v)  {
+    auto end = split(r + 1), begin = split(l);	// 顺序不能颠倒
+    tree.erase(begin, end);	// 清除一系列节点
+    tree.insert(Node(l, r, v));	// 插入新的节点
+}
+```
+
+把范围内的节点全部删除，然后换上新的（范围较大的）节点而已。只是需要注意求end和begin的顺序不能颠倒，因为split(end)可能把begin原来所在的节点断开。
 
 
 

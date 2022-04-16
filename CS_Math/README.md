@@ -287,7 +287,7 @@ int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, i
 
 ## 50. Pow(x, n)
 
-快速幂本质是分治，当 n 为负数时，可以计算正数，再取倒数。
+**快速幂**本质是分治，当 n 为负数时，可以计算正数，再取倒数。
 
 
 
@@ -1538,7 +1538,6 @@ int calculate(string s) {
     return nums.top();
 }
 ```
-
 
 
 

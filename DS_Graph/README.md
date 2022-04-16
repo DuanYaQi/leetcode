@@ -1,4 +1,4 @@
-# Graph
+​	Graph
 
 https://labuladong.gitee.io/algo/2/20/36/
 
@@ -26,7 +26,7 @@ https://labuladong.gitee.io/algo/2/20/36/
 
 -----
 
-## 图的逻辑结构和具体实现
+# 图的逻辑结构和具体实现
 
 `G(V, E)` 图 G 的顶点集 `V`、边集 `E`。
 
@@ -102,7 +102,7 @@ bool matrix[5][5];
 
 ---
 
-## 图的遍历
+# 图的遍历
 
 参考多叉树，多叉树的遍历框架如下
 
@@ -126,7 +126,7 @@ void traverse(TreeNode* root) {
 
 ---
 
-### DFS
+## DFS
 
 以深度作为第一关键词，每次都是沿着路径到**不能再前进时**才**退回**到**最近的岔道口**。
 
@@ -222,7 +222,7 @@ void DFSTrave() {	//遍历图G
 
 ---
 
-### BFS
+## BFS
 
 以**广度**作为关键词，每次以**扩散**的方式向外访问顶点。需要一个**队列**，通过**反复取出队首顶点**，将该顶点**可到达的未曾加入过队列**的顶点全部入队，直到**队列为空**时遍历结束。
 
@@ -341,17 +341,17 @@ void BFSTrave() {	//遍历图G
 
 ---
 
-## 拓扑排序
+# 拓扑排序
 
 https://labuladong.gitee.io/algo/2/20/37/
 
 环检测和拓扑排序（编译器循环引用检测就是类似的算法）
 
-### 207. 课程表I
+## 207. 课程表I
 
 
 
-### 210. 课程表 II
+## 210. 课程表 II
 
 
 
@@ -365,7 +365,7 @@ https://labuladong.gitee.io/algo/2/20/37/
 
 ---
 
-### 有向图的环检测
+## 有向图的环检测
 
 
 
@@ -375,7 +375,7 @@ https://labuladong.gitee.io/algo/2/20/37/
 
 ---
 
-## 二分图
+# 二分图
 
 https://labuladong.gitee.io/algo/2/20/38/
 
@@ -395,7 +395,7 @@ https://labuladong.gitee.io/algo/2/20/38/
 
 ---
 
-## DIJKSTRA 算法
+# 最短路径
 
 https://labuladong.gitee.io/algo/2/20/48/
 
@@ -407,7 +407,7 @@ https://labuladong.gitee.io/algo/2/20/48/
 
 
 
-### 743. 网络延迟时间（中等）
+## 743. 网络延迟时间（中等）
 
 
 
@@ -472,7 +472,7 @@ dijkstra+堆优化+vis数组 最优
 
 ---
 
-### 松弛
+## 松弛
 
 松弛操作原理是 三角形 两边之和大于第三边，例子：求源点 A 到其他结点的最短距离，有两个结点 B 和 C 与源点 A 的距离为 x，y，若 B 到 C 之间有一条边 z，那么此时可以考虑通过 B 到达 C，距离为 x+z，若 x + z < y，说明通过 B 到达 C 的距离更短，就可以更新 C 与源点 A 的最短路径
 
@@ -482,7 +482,7 @@ dijkstra+堆优化+vis数组 最优
 
 ---
 
-### Dijkstra-不支持负边权
+## Dijkstra-不支持负边权
 
 主要思想是贪心
 
@@ -525,7 +525,7 @@ dijkstra+堆优化+vis数组 最优
 
 
 
-#### **naive**
+### **naive**
 
 适用情况：
 1.数据量比较小
@@ -586,7 +586,7 @@ N 最大100，E 最大6000 ( $N<E<N^2$)，最坏时间复杂度 O(10000 + 6000) 
 
 ---
 
-#### **堆优化**
+### **堆优化**
 
 适用情况：
 1.稀疏图
@@ -653,7 +653,7 @@ N 最大100，E 最大6000，最坏时间复杂度 O(6000 log 6000) = O(22668)
 
 ---
 
-#### 堆优化+vis数组 - 邻接表
+### 堆优化+vis数组 - 邻接表
 
 适用情况：
 1.稀疏图
@@ -718,7 +718,7 @@ N 最大100，E 最大6000，最坏时间复杂度 O(6000 log 10) = O(6000)
 
 ---
 
-#### 堆优化+vis数组 - 邻接矩阵
+### 堆优化+vis数组 - 邻接矩阵
 
 适用情况：
 1.稀疏图
@@ -786,7 +786,7 @@ N 最大100，E 最大6000，最坏时间复杂度 O(6000 log 10) = O(6000)
 
 ---
 
-### Floyd
+## Floyd
 
 适应情况：
 1.多对多
@@ -839,7 +839,7 @@ N 最大100，E 最大6000，最坏时间复杂度 O(100 * 100 * 100) = O(100000
 
 ---
 
-### 朴素Bellman Ford
+## 朴素Bellman Ford
 
 执行 $N-1$ 次松弛操作即可保证所有边达到最小值
 
@@ -850,34 +850,28 @@ N 最大100，E 最大6000，最坏时间复杂度 O(100 * 100 * 100) = O(100000
 
 
 ```c++
-#define inf 0x3f3f3f3f
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
 
-class Solution {
-public:
-    vector<unordered_map<int, int>> mp;
-    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        // 记录结点最早收到信号的时间
-        vector<int> r(n + 1, inf);
-        r[k] = 0;
+    // 记录最短路径
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
 
-        // n - 1 次松弛操作
-        for (int i = 1; i < n; ++i) {
-            bool t = false;
-            for (auto& edg : times) {
-                if (r[edg[1]] > r[edg[0]] + edg[2]) {// 松弛
-                    r[edg[1]] = r[edg[0]] + edg[2];
-                    t = true;
-                }
+    // n-1次松弛操作 不断更新最短路径
+    for (int i = 1; i < n; ++i) {
+        bool flag = false;
+        for (auto &t : times) {
+            if (dist[t[1]] > dist[t[0]] + t[2]) {
+                dist[t[1]] = dist[t[0]] + t[2];
+                flag = true;
             }
-            if (!t) break;
         }
-
-        int minT = -1;
-        for (int i = 1; i <= n; ++i)
-            minT = max(minT, r[i]);
-        return minT == inf ? -1 : minT;
+        if (!flag) break;   // 当这次不更新了 之后一定不会更新了 直接退出
     }
-};
+
+    int res = *max_element(++dist.begin(), dist.end());
+    return res == inf ? -1 : res;
+}
 ```
 
 BF写法的复杂度如下：
@@ -906,7 +900,7 @@ N 最大100，E 最大6000，最坏时间复杂度 O(100*6000) = O(600000)
 
 ---
 
-### SPFA-支持负边权
+## SPFA-支持负边权
 
 **不建议用邻接矩阵来做，否则将破坏该算法精妙的时间复杂度。**
 
@@ -992,9 +986,19 @@ N 最大100，E 最大6000，最坏时间复杂度 O(2 * 6000) = O(12000)
 
 
 
+
+
+
+
+
+
+
+
+
+
 ---
 
-### 1514. 概率最大的路径
+## 1514. 概率最大的路径
 
 变种的最短路径问题。特殊点在于，我们选取的每一条边对答案的贡献是以**相乘**的形式，**而不是相加的形式**。
 
@@ -1038,7 +1042,527 @@ public:
 
 
 
-### 1631. 最小体力消耗路径
+## 1631. 最小体力消耗路径
+
+```c++
+class Solution {
+private:
+    static constexpr int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m = heights.size();
+        int n = heights[0].size();
+        
+        auto tupleCmp = [](const auto& e1, const auto& e2) {
+            auto&& [x1, y1, d1] = e1;
+            auto&& [x2, y2, d2] = e2;
+            return d1 > d2;
+        };
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, decltype(tupleCmp)> q(tupleCmp);
+        q.emplace(0, 0, 0);
+
+        vector<int> dist(m * n, INT_MAX);
+        dist[0] = 0;
+        vector<int> seen(m * n);
+
+        while (!q.empty()) {
+            auto [x, y, d] = q.top();
+            q.pop();
+            int id = x * n + y;
+            if (seen[id]) {
+                continue;
+            }
+            if (x == m - 1 && y == n - 1) {
+                break;
+            }
+            seen[id] = 1;
+            for (int i = 0; i < 4; ++i) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if (nx >= 0 && nx < m && ny >= 0 && ny < n && max(d, abs(heights[x][y] - heights[nx][ny])) < dist[nx * n + ny]) {
+                    dist[nx * n + ny] = max(d, abs(heights[x][y] - heights[nx][ny]));
+                    q.emplace(nx, ny, dist[nx * n + ny]);
+                }
+            }
+        }
+        
+        return dist[m * n - 1];
+    }
+};
+
+```
+
+
+
+
+
+
+
+---
+
+# 优化
+
+## 优先队列自定义优化
+
+- 优先队列自定义排序函数
+
+```c++
+auto tupleCmp = [](const auto& e1, const auto& e2) {
+            auto&& [x1, y1, d1] = e1;
+            auto&& [x2, y2, d2] = e2;
+            return d1 > d2;
+        };
+
+priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, decltype(tupleCmp)> pq(tupleCmp);
+pq.emplace(0, 0, 0);
+pq.emplace(nx, ny, dist[nx * n + ny]);
+```
+
+
+
+- 优先队列自定义输入结构体
+
+```c++
+struct HeapNode {
+    int d;
+    int u;
+ 
+    HeapNode(int dd, int uu) : d(dd), u(uu) {}
+ 
+    bool operator<(const HeapNode &node) const {	// 重写<
+        return d > node.d;
+    }
+};
+
+
+priority_queue<HeapNode> pq;	
+pq.push(HeapNode(0, 0));
+HeapNode node = pq.top();
+pq.push(HeapNode(d[v], v));
+```
+
+
+
+
+
+
+
+## 链式前向星 C(可以先不看)
+
+https://www.luogu.com.cn/blog/2018--haha/lian-shi-qian-xiang-xing
+
+
+
+邻接表适合存储稀疏图，它不会像邻接矩阵一样浪费大量空间，而是把所有的边存在一个表里面，在需要的时候，就遍历该表，然后找出自己想要的边。
+
+只需要开一个数组存储每个点引出的第一条边，然后存储每个点作为起点的每条边，这样就可以做到不重不漏。
+
+```c++
+struct Edge{
+    int next;		// 记录其兄弟
+    int to;			// 终点
+} edges[maxn];
+
+// 表e的第i个位置存了可以从点u到点v的边
+int head[maxn];		//结点i的第一个儿子存在了edge[head[i]]里面
+int cnt = 0 // 指针
+```
+
+![image-20220416110007758](assets/image-20220416110007758.png)
+
+有向图，输入是：
+
+```c++
+1 2
+1 3
+1 4
+2 3
+```
+
+
+
+- 输入1 2，即 1 指向 2 的一条边
+
+```c++
+cnt++;	       	 	// 结构体下标，计数用的
+
+head[1] = cnt;		// 结点 1 的第一个儿子存在了 edge[cnt] 里
+
+edge[cnt].to = 2;	// 结点 1 的儿子是 2
+```
+
+此时 cnt = 1
+
+| edge | cnt=1  | cnt=2  | cnt=3  | cnt=4  |
+| :--: | :----: | :----: | :----: | :----: |
+|  to  |   2    |        |        |        |
+| next |   0    |        |        |        |
+|      |        |        |        |        |
+| head | 下标=1 | 下标=2 | 下标=3 | 下标=4 |
+|  值  |   1    |        |        |        |
+
+
+
+- 输入1 3，即 1 指向 3 的一条边
+
+```c++
+cnt++;	       	 	// 结构体下标，计数用的
+
+head[1] = cnt;		// 结点 1 的第一个儿子存在了 edge[cnt] 里
+
+edge[cnt].to = 3;	// 结点 1 的儿子是 3
+
+
+// 3 成为了结点 1 的儿子，原来的 2 被挤下去了
+// 所有通过引入结构体中 next 元素，记录：3 还有个兄弟 next 是2
+// 代码更换为
+cnt++;
+edge[cnt].to = 3;			// 结点 1 连向 3
+edge[cnt].next = head[1];	// 3 的兄弟是 2
+head[1] = cnt;				// 更新 head，结点 1 的第一个儿子存在了 edge[cnt] 中
+```
+
+此时 cnt = 2
+
+| edge | cnt=1  | cnt=2  | cnt=3  | cnt=4  |
+| :--: | :----: | :----: | :----: | :----: |
+|  to  |   2    |   3    |        |        |
+| next |   0    |   1    |        |        |
+|      |        |        |        |        |
+| head | 下标=1 | 下标=2 | 下标=3 | 下标=4 |
+|  值  |   2    |        |        |        |
+
+
+
+
+
+- 输入1 4，即 1 指向 4 的一条边
+
+```c++
+// 4 成为了结点 1 的儿子，原来的 3 被挤下去了
+// 所有通过引入结构体中 next 元素，记录：4 还有个兄弟 next 是3
+// 代码更换为
+cnt++;						// 3
+edge[cnt].to = 4;			// 结点 1 连向 3
+edge[cnt].next = head[1];	// 3 的兄弟是 2
+head[1] = cnt;				// 更新 head，结点 1 的第一个儿子存在了 edge[cnt] 中
+```
+
+此时 cnt = 3
+
+| edge | cnt=1  | cnt=2  | cnt=3  | cnt=4  |
+| :--: | :----: | :----: | :----: | :----: |
+|  to  |   2    |   3    |   4    |        |
+| next |   0    |   1    |   2    |        |
+|      |        |        |        |        |
+| head | 下标=1 | 下标=2 | 下标=3 | 下标=4 |
+|  值  |   3    |        |        |        |
+
+
+
+- 输入2 3，即 2 指向 3 的一条边
+
+```c++
+// 3 成为了结点 2 的儿子
+
+cnt++;						// 4
+edge[cnt].to = 3;			// 结点 2 连向 3
+edge[cnt].next = head[2];	// 3 的兄弟是 2
+head[2] = cnt;				// 更新 head，结点 1 的第一个儿子存在了 edge[cnt] 中
+```
+
+此时 cnt = 4
+
+| edge | cnt=1  | cnt=2  | cnt=3  | cnt=4  |
+| :--: | :----: | :----: | :----: | :----: |
+|  to  |   2    |   3    |   4    |   3    |
+| next |   0    |   1    |   2    |   0    |
+|      |        |        |        |        |
+| head | 下标=1 | 下标=2 | 下标=3 | 下标=4 |
+|  值  |   3    |   4    |        |        |
+
+
+
+>  `edge[cnt].next`  和 `head[1]` 存贮的都是结构体下标（即 `cnt` 的值）
+>
+> 访问指向的边的编号，分别用 `edge[edge[cnt].next].to`，`edge[head[1]].to`
+
+
+
+若要记录权重，在结构体中加入 w 元素即可
+
+```c++
+struct Edge{
+    int to;			// 终点
+    int w;			// 边权
+    int next;		// 记录其兄弟
+} edges[maxn];		// maxn为边数
+
+// 表e的第i个位置存了可以从点u到点v的边
+int head[N];		//结点i的第一个儿子存在了edge[head[i]]里面 N为节点数
+int cnt = 0 // 指针
+```
+
+
+
+
+
+创建一个可以存储两点（一条边）的函数 `addEdge()`
+
+```c++
+void addEdge(int u, int v, int w){	// u 是起点  v 是终点 w是边权
+	++cnt;
+	edge[cnt].to = v;
+	edge[cnt].w = w;	// 指向我的上一条边的id号
+    edge[cnt].next = haed[u];	// 更新cnt
+    head[u] = cnt;
+}
+```
+
+
+
+
+
+
+
+---
+
+## Dijkstra
+
+- 初始化四，图，距离矩阵，visited数组（从0开始，大小N；从1开始，大小N+1）和堆`vector<vector<pair<int, int>>>`,`vector<int>`,
+
+  `vector<bool>`,`priority_queue<pair<int, int>>`
+
+- 开始 BFS
+
+  - 取数据
+  - 判visited
+  - 循环取以它为结点的边
+    - 松弛并加入队列
+
+- 输出结果
+
+  - 固定终点即输出指定下标 dist[n]
+  - 否则为 `*max_element()`或 `*min_element()`
+
+
+
+
+
+---
+
+### 堆优化+vis数组 - 邻接表
+
+- cmp
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+
+    vector<vector<pair<int, int>>> g(n + 1);
+    for (auto &t : times) {
+        g[t[0]].emplace_back(t[1], t[2]);
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+
+    vector<bool> visited(n + 1, false);
+
+    /*queue*/
+    auto myCmp = [](const auto& e1, const auto& e2) {
+        auto&& [to1, w1] = e1;
+        auto&& [to2, w2] = e2;
+        return w1 > w2; // 小顶堆 返回的是下沉规则，true则下沉 即值大的下沉
+    };
+    priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(myCmp)> pq(myCmp);
+    pq.emplace(k, 0);
+
+    while (pq.size()) {
+        auto p = pq.top(); pq.pop();
+        int x = p.first;
+
+        if (visited[x]) continue;
+        visited[x] = true;
+
+        for (auto &e : g[x]) {
+            int y = e.first, d = dist[x] + e.second;
+            if (dist[y] > d) {
+                dist[y] = d;
+                pq.emplace(y, d);
+            }
+        }
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());    
+    return res == inf ? -1 : res;    
+}
+```
+
+
+
+- heapNode
+
+```c++
+struct HeapNode {
+    int u;
+    int d;
+
+    HeapNode(int uu, int dd) : u(uu), d(dd) { }
+
+    bool operator<(const HeapNode &node) const {
+        return d > node.d;  // 小顶堆
+    }
+};
+
+
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+
+    vector<vector<pair<int, int>>> g(n + 1);
+    for (auto &t : times) {
+        g[t[0]].emplace_back(t[1], t[2]);
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+
+    vector<bool> visited(n + 1, false);
+
+    /*queue*/
+    priority_queue<HeapNode> pq;
+    pq.emplace(k, 0);
+
+    while (pq.size()) {
+        auto p = pq.top(); pq.pop();
+        int x = p.u;
+
+        if (visited[x]) continue;
+        visited[x] = true;
+
+        for (auto &e : g[x]) {
+            int y = e.first, d = dist[x] + e.second;
+            if (dist[y] > d) {
+                dist[y] = d;
+                pq.emplace(y, d);
+            }
+        }
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());    
+    return res == inf ? -1 : res;    
+}
+```
+
+
+
+---
+
+### 堆优化+vis数组 - 邻接矩阵
+
+- CMP
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+
+    vector<vector<int>> g(n + 1, vector<int>(n + 1, inf));
+    for (auto &t : times) {
+        g[t[0]][t[1]] = t[2];
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+
+    vector<bool> visited(n + 1, false);
+
+    /*queue*/
+    auto myCmp = [](const auto& e1, const auto& e2) {
+        auto&& [to1, w1] = e1;
+        auto&& [to2, w2] = e2;
+        return w1 > w2; // 小顶堆
+    };
+    priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(myCmp)> pq(myCmp);
+    pq.emplace(k, 0);
+
+    while (pq.size()) {
+        auto p = pq.top(); pq.pop();
+        int x = p.first;
+
+        if (visited[x]) continue;
+        visited[x] = true;
+
+        for (int y = 1; y <= n; ++y) {
+            int d = dist[x] + g[x][y];
+            if (dist[y] > d) {
+                dist[y] = d;
+                pq.emplace(y, d);
+            }
+        }
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());    
+    return res == inf ? -1 : res;    
+}
+```
+
+
+
+- heapNode
+
+```c++
+struct HeapNode {
+    int u;
+    int d;
+
+    HeapNode(int uu, int dd) : u(uu), d(dd) { }
+
+    bool operator<(const HeapNode &node) const {
+        return d > node.d;  // 小顶堆
+    }
+};
+
+
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = INT_MAX / 2;
+
+    vector<vector<int>> g(n + 1, vector<int>(n + 1, inf));
+    for (auto &t : times) {
+        g[t[0]][t[1]] = t[2];
+    }
+
+    vector<int> dist(n + 1, inf);
+    dist[k] = 0;
+
+    vector<bool> visited(n + 1, false);
+
+    /*queue*/
+    priority_queue<HeapNode> pq;
+    pq.push(HeapNode(k, 0));
+
+    while (pq.size()) {
+        auto p = pq.top(); pq.pop();
+        int x = p.u;
+
+        if (visited[x]) continue;
+        visited[x] = true;
+
+        for (int y = 1; y <= n; ++y) {
+            int d = dist[x] + g[x][y];
+            if (dist[y] > d) {
+                dist[y] = d;
+                pq.push(HeapNode(y, d));
+            }
+        }
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());    
+    return res == inf ? -1 : res;    
+}
+```
+
+
 
 ```c++
 class Solution {
@@ -1098,7 +1622,7 @@ public:
 
 ---
 
-## 并查集算法详解
+# 并查集算法详解
 
 https://labuladong.gitee.io/algo/2/20/39/
 
@@ -1112,6 +1636,94 @@ https://labuladong.gitee.io/algo/2/20/39/
 
 
 
+## 1631. 最小体力消耗路径
+
+我们将这 mn 个节点放入并查集中，实时维护它们的连通性。
+
+由于我们需要找到从左上角到右下角的最短路径，因此我们可以将图中的所有边按照权值从小到大进行排序，并依次加入并查集中。当我们加入一条权值为 x 的边之后，如果左上角和右下角从非连通状态变为连通状态，那么 x 即为答案。
+
+```c++
+// 并查集模板
+class UnionFind {
+public:
+    vector<int> parent;
+    vector<int> size;
+    int n;
+    // 当前连通分量数目
+    int setCount;
+    
+public:
+    UnionFind(int _n): n(_n), setCount(_n), parent(_n), size(_n, 1) {
+        iota(parent.begin(), parent.end(), 0);
+    }
+    
+    int findset(int x) {
+        return parent[x] == x ? x : parent[x] = findset(parent[x]);
+    }
+    
+    bool unite(int x, int y) {
+        x = findset(x);
+        y = findset(y);
+        if (x == y) {
+            return false;
+        }
+        if (size[x] < size[y]) {
+            swap(x, y);
+        }
+        parent[y] = x;
+        size[x] += size[y];
+        --setCount;
+        return true;
+    }
+    
+    bool connected(int x, int y) {
+        x = findset(x);
+        y = findset(y);
+        return x == y;
+    }
+};
+
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m = heights.size();
+        int n = heights[0].size();
+        vector<tuple<int, int, int>> edges;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int id = i * n + j;
+                if (i > 0) {
+                    edges.emplace_back(id - n, id, abs(heights[i][j] - heights[i - 1][j]));
+                }
+                if (j > 0) {
+                    edges.emplace_back(id - 1, id, abs(heights[i][j] - heights[i][j - 1]));
+                }
+            }
+        }
+        sort(edges.begin(), edges.end(), [](const auto& e1, const auto& e2) {
+            auto&& [x1, y1, v1] = e1;
+            auto&& [x2, y2, v2] = e2;
+            return v1 < v2;
+        });
+
+        UnionFind uf(m * n);
+        int ans = 0;
+        for (const auto [x, y, v]: edges) {
+            uf.unite(x, y);
+            if (uf.connected(0, m * n - 1)) {
+                ans = v;
+                break;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+
+
+
+
 
 
 
@@ -1120,7 +1732,7 @@ https://labuladong.gitee.io/algo/2/20/39/
 
 ---
 
-## KRUSKAL 最小生成树算法
+# KRUSKAL 最小生成树算法
 
 
 
@@ -1140,7 +1752,7 @@ https://labuladong.gitee.io/algo/2/20/39/
 
 ---
 
-## PRIM 最小生成树算法
+# PRIM 最小生成树算法
 
 [1135. 最低成本联通所有城市（中等）](https://leetcode-cn.com/problems/connecting-cities-with-minimum-cost/)
 
@@ -1152,8 +1764,8 @@ https://labuladong.gitee.io/algo/2/20/39/
 
 
 
---
+---
 
-## 名流问题
+# 名流问题
 
 [277. 搜索名人（中等）](https://leetcode-cn.com/problems/find-the-celebrity/)

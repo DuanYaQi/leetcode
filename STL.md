@@ -1606,6 +1606,10 @@ fill(a,a+5,233);
 
 #### 9.6 sort()
 
+C++sort函数原理：先使用快排，当分割的次数（递归层数）过多时，采用堆排序；若分割次数很少，则采用插入排序即可。
+
+
+
 1. sort的函数形式
 
 ```c++
@@ -1804,14 +1808,62 @@ vec.erase(unique(vec.begin(), vec.end()), vec.end()); //第一个相同元素坐
 
 
 
-#### 9.10 排序map
+#### 9.10 cmp()
+
+##### sort
 
 ```c++
 vector<pair<int, int>> vec(mp.begin(), mp.end());
-        sort(vec.begin(), vec.end(), cmp);
+sort(vec.begin(), vec.end(), cmp);
 
 bool static cmp (const pair<int, int> a, const pair<int, int> b) {
     return a.second > b.second ? true : false;
 }
 ```
 
+return a > b 当 a>b 时把 a 放在 b 前面，值大的在前边，从大到小排序
+
+return a < b 当 a<b 时把 a 放在 b 后面，值小的在前边，从小到大排序
+
+1. 当cmp函数中为小于号时，为从小到大排序，为大于号时，为从大到小排序；
+2. 至于其他的排序规则，比如按照绝对值、平方等等，原理都是类似的；**当参数a和b相比时，a相对于b的排序规则（大小等等），就是整个序列的排序规则**
+
+
+
+
+
+##### priority_queue
+
+```c++
+using P = pair<string, int>;
+
+struct cmp{
+    bool operator()(const P& p1, const P& p2) {
+        if(p1.second == p2.second) return p1.first > p2.first;
+        return p1.second < p2.second;
+    }
+};
+
+priority_queue<P, vector<P>, cmp> q;
+
+// 或者
+
+auto cmp = [](const P& p1, const P& p2){
+    if(p1.second == p2.second) return p1.first > p2.first;
+    return p1.second < p2.second;
+};
+
+priority_queue<P, vector<P>, decltype(cmp)> q(cmp);
+```
+
+return a > b 当 a>b 时把 a 下沉，值大的下沉，小顶堆
+
+return a < b 当 a<b 时把 a 下沉，值小的下沉，大顶堆
+
+**当cmp的参数a和b相比时，a相对于b的排序规则的节点会下沉**
+
+
+
+
+
+https://blog.csdn.net/qq_42138623/article/details/115319432
