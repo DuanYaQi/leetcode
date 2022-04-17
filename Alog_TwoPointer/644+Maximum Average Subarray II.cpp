@@ -1,3 +1,4 @@
+/*
 644. 子数组最大平均数 II
 给你一个包含 n 个整数的数组 nums ，和一个整数 k 。
 
@@ -25,43 +26,44 @@
 n == nums.length
 1 <= k <= n <= 104
 -104 <= nums[i] <= 104
-
-
+*/
 
 class Solution {
 public:
-    bool check(vector<int> nums, double mid, int k) {
+    bool check(vector<int>& nums, double mid, int k) {
         int n = nums.size();
-        vector<double> preSum(n + 1, 0);    // 存储从第k个位置开始的累加和
-        
-        for (int i = 1; i <= n; ++i) 
-            preSum[i] = preSum[i-1] + nums[i-1] - mid;
-        
-        
-        double preMin = 0;
-        for (int i = k; i <= n; ++i) {
-            if (preSum[i] - preMin >= 0) return true; // 满足条件意味着 sum - minSum 这一部分的元素和大于0，即可以满足mid为平均值时
-            preMin = min(preMin, preSum[i - k + 1]);  // minSum 记录最小preSum[i - k + 1]
+
+        vector<double> preSum(n + 1, 0);
+
+        for (int i = 1; i <= n; ++i) {
+            preSum[i] = preSum[i - 1] + nums[i - 1] - mid;
         }
-        
+
+        double preMin = preSum[0];
+        for (int i = k; i <= n; ++i) {
+            preMin = min(preMin, preSum[i - k]);    //   每次更新 preMin 最小值
+            if (preSum[i] - preMin >= 0) return true;
+        }
+
         return false;
     }
 
     double findMaxAverage(vector<int>& nums, int k) {
         int n = nums.size();
-        
         double maxV = *max_element(nums.begin(), nums.end());
         double minV = *min_element(nums.begin(), nums.end());
-        
-        while ((maxV - minV) >= 1e-5) {
-            double mid = (maxV + minV) / 2;
-            if (check(nums, mid, k)) {  // 如果存在长度 >= k 的子数组之和 >= 0
+
+        while ((maxV - minV) >  1e-5) {
+            double mid = minV + (maxV - minV) / 2;
+
+            if (check(nums, mid, k)) {
                 minV = mid;
-            } else {                    // 不满足说明值太大，所以maxV变小为mid
+            } else {
                 maxV = mid;
             }
+
         }
-        
-        return minV;
+
+        return maxV;
     }
 };
