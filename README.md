@@ -710,9 +710,10 @@ DP
 |[460. LFU Cache](/CS_Math/460+LFU%20Cache.cpp) | | 两个哈希表|
 |[504. Base 7](/CS_Math/504+Base%207.cpp) | | 注意特判0，翻转 |
 |[136. Single Number](CS_Math/136+Single%20Number.cpp) | | 任何数和 0 做异或运算，结果仍然是原来的数 <br>任何数和其自身做异或运算，结果是 0<br>异或运算满足交换律和结合律|
+|[6062. Design an ATM Machine](/CS_Math/6062+Design%20an%20ATM%20Machine.cpp) |系统设计 | |
 | | | |
 | | | |
-
+| | | |
 
 
 
