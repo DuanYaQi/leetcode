@@ -36,7 +36,6 @@ DAG 的问题就 dfs+memo
 - [ ] 116 Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
 - [ ] 440 K-th Smallest in Lexicographical Order
 - [ ] 416
-- [ ] 644
 - [ ] 523
 - [ ] https://blog.csdn.net/u012139398/article/details/43346667
 - [ ] 面试题 17.07. Baby Names LCCI
@@ -547,9 +546,14 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[560.] | 前缀和| |
 |[1248.] | 前缀和| |
 |[974.] | 前缀和| |
+|[644. Maximum Average Subarray II](/Alog_TwoPointer/644+Maximum%20Average%20Subarray%20II.cpp) | | 不固定k，维护一个最小值即可|
+|[643. Maximum Average Subarray I](Alog_TwoPointer/643+Maximum%20Average%20Subarray%20I.cpp) | | 固定k|
+| | | |
 |[6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和| 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
 | | | |
-
+| | | |
+| | | |
+| | | |
 
 ---
 

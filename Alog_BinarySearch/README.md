@@ -374,21 +374,6 @@ public class Solution {
 ```c++
 class Solution {
 public:
-    double findMaxAverage(vector<int>& nums, int k) {
-        double minn = INT_MAX, maxn = INT_MIN;
-        for(int i = 0; i < nums.size(); i++){
-            minn = min(minn, (double)nums[i]);
-            maxn = max(maxn, (double)nums[i]);
-        }
-        while((maxn - minn) > 0.000001){
-            double mid = (minn + maxn)/2;
-            if(check(nums, k, mid))
-                minn = mid;
-            else
-                maxn = mid;
-        }
-        return minn;
-    }
     
     bool check(vector<int>& nums, int k , double mid){
         vector<double> delta(nums.size());
@@ -404,6 +389,23 @@ public:
         }
         if((sum - min_sum) >= 0) return true;
         return false;
+    }
+    
+    
+    double findMaxAverage(vector<int>& nums, int k) {
+        double minn = INT_MAX, maxn = INT_MIN;
+        for(int i = 0; i < nums.size(); i++){
+            minn = min(minn, (double)nums[i]);
+            maxn = max(maxn, (double)nums[i]);
+        }
+        while((maxn - minn) > 0.000001){
+            double mid = (minn + maxn)/2;
+            if(check(nums, k, mid))
+                minn = mid;
+            else
+                maxn = mid;
+        }
+        return minn;
     }
 };
 ```
@@ -421,4 +423,46 @@ public:
 前缀和add，维护ij，addj-minAddi来求平均数，不需要固定i，只需要维护历史上最小的addi，也就是只需要固定j
 
 
+
+---
+
+## 643. 子数组最大平均数 I
+
+```c++
+class Solution {
+public:
+    bool check(vector<int>& nums, double mid, int k) {
+        int n = nums.size();
+        vector<double> preSum(n + 1, 0);
+
+        for (int i = 1; i <= n; ++i) {
+            preSum[i] = preSum[i-1] + nums[i-1] - mid;
+        }
+        
+
+        for (int i = k; i <= n; ++i) {
+            if (preSum[i] - preSum[i-k] >= 0) return true;
+        }
+
+        return false;
+    }
+
+    double findMaxAverage(vector<int>& nums, int k) {
+        int n = nums.size();
+        double maxV = *max_element(nums.begin(), nums.end());
+        double minV = *min_element(nums.begin(), nums.end());
+
+        while (maxV - minV > 1e-5) {
+            double mid = minV + (maxV - minV) / 2;
+            if (check(nums, mid, k)) {
+                minV = mid;
+            } else {    // 不满足说明值太大，所以maxV变小为mid
+                maxV = mid;
+            }
+        }
+
+        return minV;
+    }
+};
+```
 
