@@ -38,7 +38,7 @@ public:
                 int newIdx = newX * n + newY;
 
                 if (newX >= 0 && newX < m && newY >= 0 && newY < n) {   // 不越界
-                    int nowD = max(d, abs(heights[x][y] - heights[newX][newY]));    // 新的距离 极大值
+                    int nowD = max(d, abs(heights[x][y] - heights[newX][newY]));    // 新的距离 极大值 注意如果d更大，值就保留d
 
                     if (dist[newIdx] > nowD) {  // 松弛 最小化
                         dist[newIdx] = nowD;
