@@ -1,4 +1,4 @@
-# Leetcode
+Leetcode
 
 如果问最短，最少，BFS
 
@@ -28,21 +28,19 @@ DAG 的问题就 dfs+memo
 
 
 
-回溯注意进来的时候，是 `+` 而不是 `+=`
-
 
 
 ---
 
 ## TODO
-- [ ] 429. N-ary Tree Level Order Traversal 为什么可以用`childeren.empty()` 和 `node->children[i]`?
-- [ ] 116. Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
-- [ ] 440. K-th Smallest in Lexicographical Order
+- [ ] 116 Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
+- [ ] 440 K-th Smallest in Lexicographical Order
 - [ ] 416
+- [ ] 644
+- [ ] 523
 - [ ] https://blog.csdn.net/u012139398/article/details/43346667
 - [ ] 面试题 17.07. Baby Names LCCI
 - [ ] 蓄水池算法
-- [ ] 接雨水
 - [ ] bitmap
 - [ ] 字典树
 - [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
@@ -107,24 +105,28 @@ https://www.cnblogs.com/MinPage/
 
 |  技巧  |
 |  :----:  |
-|if (root != NULL)　而不是　if (root)|
+|if (root != nullptr)　而不是　if (root)|
 |深度优先遍历 DFS　　　stack<br> 广度优先遍历 BFS　　　queue|
 |用于储存答案的res直接定义在主函数中，副函数&取值输入，最后直接输出。不要定义在函数外|
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
 |-2^31~2^31-1 对应 INT_MIN 和 INT_MAX   (少1位是符号位)|
 | (!p &#124;&#124; !q) = (p && !q) &#124;&#124; (!p && q) 　两者状态不同时为true　其中!q代表q为空 |
 | size在for之前取值，防止for循环中size大小改变|
-|to_string()　stoi()|
+| |
+|`to_string()`　`stoi()`|
+|`s.substr(i, k);` 如果 i+k 超过 `s.size()`，就不取后半部分|
+||
 |如果需要遍历整棵树，递归函数就不能有返回值。<br>如果需要遍历某一条固定路线，不要求遍历整棵树，递归函数就一定要有返回值！<br>两种写法注意选择 <br>if(递归函数(left)) return;　　　if(递归函数(right)) return;<br>left = 递归函数(left);　　 　　  right = 递归函数(right);|
 |反中序过程就是从最右侧往最左侧运行|
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |数组构造二叉树，不要定义新的数组，通过索引在原数组上操作。|
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
+||
 |剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
 |**回溯递归是一一对应的，有一个递归，就要有一个回溯**|
-|回溯隐藏，直接在给函数**传参**时**加**计算，函数执行完，不改变原值<br>而**不是加等**计算|
+|回溯隐藏，直接在给函数**传参**时**加**计算，函数执行完，不改变原值<br>而**不是加等**计算，是 `+` 而不是 `+=`|
 |自底向上=后序遍历=天然的回溯过程|
-|回溯要注意如果main函数给定root->val，函数里直接加 left->val或right->val<br>否会回少加一层最后|
+|回溯要注意如果main函数给定root->val，函数里直接加 left->val或right->val<br>否则最后会少加一层|
 ||
 |如果题目关键的部分直接用库函数就可以解决，建议**不要**使用库函数。|
 ||
@@ -136,7 +138,7 @@ https://www.cnblogs.com/MinPage/
 |`n & (1<<i) == 0` 判断 n 的第 i 位是否为 0|
 |`(n & (n - 1) ) == 0` 判断 n 是否为 2 的幂次方|
 ||
-||
+|爆int<br>(1)ans = 1ll * a * a;<br/>(2)long long ans = 1e5 * 1e5;|
 ||
 |`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
 |`unordered_set` 与 `vector` 之间迭代器传递|
@@ -387,7 +389,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[415. Add Strings](/DS_String/415+Add%20Strings.cpp) | |进位|
 |[13. Roman to Integer](/DS_String/13+Roman%20to%20Integer.cpp) | | 注意观察规律，对应值小的在对应值大的左侧（必须紧挨），则该值为减不为加|
 | | | |
-| | | |
+|[6070. Calculate Digit Sum of a String](/DS_String/6070+Calculate%20Digit%20Sum%20of%20a%20String.cpp) | |注意 `s.substr()` 超出范围就不取了 |
 | | | |
 
 
@@ -545,7 +547,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[560.] | 前缀和| |
 |[1248.] | 前缀和| |
 |[974.] | 前缀和| |
-| | | |
+|[6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和| 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
 | | | |
 
 

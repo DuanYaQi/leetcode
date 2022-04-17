@@ -308,7 +308,7 @@ min 表示数组 nums 的最小值，max 表示数组 nums 的最大值。最大
 
 
 
-在遍历数组 nums 时，讲 nums[i] - mid 加到 sum[i] 上。如果 sum[k] >= 0，则直接令猜测区间的下界变为 mid。否则，按照下面思路不断求 nums 的前 i 项之和。
+在遍历数组 nums 时，将 nums[i] - mid 加到 sum[i] 上。如果 sum[k] >= 0，则直接令猜测区间的下界变为 mid。否则，按照下面思路不断求 nums 的前 i 项之和。
 
 
 
@@ -326,25 +326,99 @@ min 表示数组 nums 的最小值，max 表示数组 nums 的最大值。最大
 
 
 
+```c++
+public class Solution {
+    public boolean check(int[] nums, double mid, int k) {
+        double sum = 0, prev = 0, min_sum = 0;
+        for (int i = 0; i < k; i++)
+            sum += nums[i] - mid;
+        if (sum >= 0)
+            return true;
+        for (int i = k; i < nums.length; i++) {
+            sum += nums[i] - mid;
+            prev += nums[i - k] - mid;
+            min_sum = Math.min(prev, min_sum);
+            if (sum >= min_sum)
+                return true;
+        }
+        return false;
+    }
+    
+    public double findMaxAverage(int[] nums, int k) {
+        double max_val = Integer.MIN_VALUE;
+        double min_val = Integer.MAX_VALUE;
+        for (int n: nums) {
+            max_val = Math.max(max_val, n);
+            min_val = Math.min(min_val, n);
+        }
+        double prev_mid = max_val, error = Integer.MAX_VALUE;
+        while (error > 0.00001) {
+            double mid = (max_val + min_val) * 0.5;
+            if (check(nums, mid, k))
+                min_val = mid;
+            else
+                max_val = mid;
+            error = Math.abs(prev_mid - mid);
+            prev_mid = mid;
+        }
+        return min_val;
+    }
+    
+}
+```
 
 
 
 
 
+```c++
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+        double minn = INT_MAX, maxn = INT_MIN;
+        for(int i = 0; i < nums.size(); i++){
+            minn = min(minn, (double)nums[i]);
+            maxn = max(maxn, (double)nums[i]);
+        }
+        while((maxn - minn) > 0.000001){
+            double mid = (minn + maxn)/2;
+            if(check(nums, k, mid))
+                minn = mid;
+            else
+                maxn = mid;
+        }
+        return minn;
+    }
+    
+    bool check(vector<int>& nums, int k , double mid){
+        vector<double> delta(nums.size());
+        delta[0] = nums[0] - mid;
+        for(int i = 1; i < nums.size(); ++i){
+            delta[i] = nums[i] - mid + delta[i - 1];
+        }
+        double min_sum = 0, sum = delta[k - 1];
+        for(int i = k; i < delta.size(); ++i){
+            if((sum - min_sum) >= 0) return true;
+            min_sum = min(min_sum, delta[i - k]);
+            sum = delta[i];
+        }
+        if((sum - min_sum) >= 0) return true;
+        return false;
+    }
+};
+```
 
 
 
 
 
+实现 Check函数，就是前缀和的计算，即通过 目前和 - 前缀和 获取当前范围和。
+
+特别要注意的是：条件是说 大于等于 k， 所以我们前缀和的计算数组的大小是 0 到 n-k
 
 
 
-
-
-
-
-
-
+前缀和add，维护ij，addj-minAddi来求平均数，不需要固定i，只需要维护历史上最小的addi，也就是只需要固定j
 
 
 

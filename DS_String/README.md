@@ -39,7 +39,7 @@ for (int i = 0; i < a.size(); i++) {
 
 ---
 
-## 题目：344. 反转字符串
+## 344. 反转字符串
 
 ```c++
 void reverseString(vector<char>& s) {
@@ -55,7 +55,7 @@ void reverseString(vector<char>& s) {
 
 
 
-## 题目：541. 反转字符串II
+## 541. 反转字符串II
 
 让 `i += (2 * k)`，i 每次移动 2 * k 就可以了，然后判断是否需要有反转的区间。
 
@@ -81,7 +81,7 @@ string reverseStr(string s, int k) {
 
 
 
-## 题目：剑指Offer 05.替换空格
+## 剑指Offer 05.替换空格
 
 ```c++
 string replaceSpace(string s) {
@@ -115,7 +115,7 @@ string replaceSpace(string s) {
 
 
 
-## 题目：151.翻转字符串里的单词
+## 151.翻转字符串里的单词
 
 ```c++
 class Solution {
@@ -162,7 +162,7 @@ public:
 
 
 
-## 题目：剑指Offer58-II.左旋转字符串
+## 剑指Offer58-II.左旋转字符串
 
 通过**局部反转+整体反转**
 
@@ -639,7 +639,27 @@ bool repeatedSubstringPattern (string s) {
 
 
 
+## 6070. 计算字符串的数字和
 
+```c++
+string digitSum(string s, int k) {
+    while (s.size() > k) {
+        string tmp;
+        for (int i = 0; i < s.size(); i+=k) {
+            string t = s.substr(i, k);
+            int x = 0;
+            for (char c : t) {
+                x += c - '0';
+            }
+            tmp += to_string(x);
+        }
+
+        s = tmp;            
+    }
+
+    return s;
+}
+```
 
 
 
