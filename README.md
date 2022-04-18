@@ -309,7 +309,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 ---
-### 1.2. [列表](DS_Array/README.md)
+### 1.2. [数组](DS_Array/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -395,6 +395,8 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[459. Repeated Substring Pattern](DS_String/459+repeatedSubstringPattern.cpp) | 子序列| kmp注意审题，由子串多次构成，next数组中前边几个-1的位置都是子串|
 |[415. Add Strings](/DS_String/415+Add%20Strings.cpp) | |进位|
 |[13. Roman to Integer](/DS_String/13+Roman%20to%20Integer.cpp) | | 注意观察规律，对应值小的在对应值大的左侧（必须紧挨），则该值为减不为加|
+| | | |
+| | | |
 | | | |
 |[6070. Calculate Digit Sum of a String](/DS_String/6070+Calculate%20Digit%20Sum%20of%20a%20String.cpp) | |注意 `s.substr()` 超出范围就不取了 |
 | | | |
@@ -527,6 +529,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ### 2.3. [双指针 / 前缀和](Alog_BinarySearch/README.md)
 
+双指针/滑动窗口
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[27. Remove Element](Alog_TwoPointer/27+removeElement_LeftRightPointer.cpp) |  in-place删除|双指针|
@@ -547,9 +550,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[438. Find All Anagrams in a String](/Alog_TwoPointer/438+Find%20All%20Anagrams%20in%20a%20String.cpp) | |固定窗口 |
 | | | |
 | | | |
-| | | |
-| | | |
-| | | |
+
+
+前缀和
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
 |[724. Find Pivot Index](/Alog_TwoPointer/724+Find%20Pivot%20Index.cpp) | 前缀和| |
 |[523. ] | 前缀和| |
 |[560. Subarray Sum Equals K](/Alog_TwoPointer/560+Subarray%20Sum%20Equals%20K.cpp) | 前缀和| |
@@ -584,7 +589,9 @@ b 表示每次递归是原来的N/b之一个规模，$N/b$ 是子过程数据量
 d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，剩余时间复杂度。
 
 ①$\text{if} \quad \log_ba > d      \quad   => 	\quad	O(N^{\log_ba})$
+
 ②$\text{if} \quad \log_ba = d 	\quad	=> \quad O(N^d *\log N)$
+
 ③$\text{if} \quad \log_ba < d	\quad	 => \quad		O(N^d)$
 
 >  注意: 多个递归的规模必须一样，否则master公式失效。
@@ -595,7 +602,7 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 > $$
 > a = 2, b = 2, d = 0
 >
-> $ d < \log_2 2$, 时间复杂度为 $O(n)$
+> $d < \log_2 2$, 时间复杂度为 $O(n)$
 
 
 
@@ -668,10 +675,18 @@ DP
 |[343.Integer Break](Alog_DP/343+Integer%20Break.cpp) | | 最大乘积 需要`max`|
 |[96.Unique Binary Search Trees](Alog_DP/96+Unique%20Binary%20Search%20Trees.cpp) | | 左右子树为子空间|
 | | | |
+
+打家劫舍专题
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
 |[198. House Robber](Alog_DP/198+House%20Robber.cpp) | |根据题意分两种情况<br>还要考虑好边界和特殊输入 |
 |[213. House Robber II](Alog_DP/213%2BHouse%20Robber%20II.cpp) | | 把困难问题分情况，每种情况都很简单<br>索引搞不懂就画图 |
 |💛[337. House Robber III](Alog_DP/337%2BHouse%20Robber%20III.cpp) |树形DP |两种情况，选/不选<br>两种情况结果的保存可以用 vector<int> {0，0} |
-| | | |
+
+
+子序列专题
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
 |[53. Maximum Subarray/Offer 42](Alog_DP/53%2BMaximum%20Subarray.cpp) | | 两种情况，选/不选|
 |[42. Trapping Rain Water](/Alog_DP/42+Trapping%20Rain%20Water.cpp) |  |先预处理,再DP |
 |[300. Longest Increasing Subsequence](/Alog_DP/300+Longest%20Increasing%20Subsequence.cpp) |LIS | 两层循环|
@@ -679,7 +694,11 @@ DP
 |💛[1143. Longest Common Subsequence](/Alog_DP/1143+Longest%20Common%20Subsequence.cpp) |LCS |二维dp数组 |
 |[718. Maximum Length of Repeated Subarray](/Alog_DP/718+Maximum%20Length%20of%20Repeated%20Subarray.cpp) |LCS |连续需要保存最优值 |
 |[1035. Uncrossed Lines](/Alog_DP/1035+Uncrossed%20Lines.cpp) | | 本质就是LCS |
-| | | |
+
+
+股票专题
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
 |[121. Best Time to Buy and Sell Stock](/Alog_DP/121+Best%20Time%20to%20Buy%20and%20Sell%20Stock.cpp) | |二维dp数组，有两种状态|
 |[122. Best Time to Buy and Sell Stock II](/Leetcode/Alog_DP/122+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20II.cpp) |二维dp数组 |两种状态 基于121|
 |[123. Best Time to Buy and Sell Stock III](/Leetcode/Alog_DP/123+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20III.cpp) |二维dp数组 |有五种状态 基于122 |
@@ -687,9 +706,20 @@ DP
 |[309. Best Time to Buy and Sell Stock with Cooldown](/Leetcode/Alog_DP/309+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20with%20Cooldown.cpp) | 基于122| 4种情况|
 |[714. Best Time to Buy and Sell Stock with Transaction Fee](/Alog_DP/714+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20with%20Transaction%20Fee.cpp) | 基于122(121>122>714)| -fee |
 | | | |
+
+
+背包专题
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[416. Partition Equal Subset Sum](/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到本质是target|
 | | | |
 | | | |
 | | | |
+| | | |
+| | | |
+| | | |
+| | | |
+
 
 ---
 
