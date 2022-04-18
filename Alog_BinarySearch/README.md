@@ -327,90 +327,43 @@ min 表示数组 nums 的最小值，max 表示数组 nums 的最大值。最大
 
 
 ```c++
-public class Solution {
-    public boolean check(int[] nums, double mid, int k) {
-        double sum = 0, prev = 0, min_sum = 0;
-        for (int i = 0; i < k; i++)
-            sum += nums[i] - mid;
-        if (sum >= 0)
-            return true;
-        for (int i = k; i < nums.length; i++) {
-            sum += nums[i] - mid;
-            prev += nums[i - k] - mid;
-            min_sum = Math.min(prev, min_sum);
-            if (sum >= min_sum)
-                return true;
-        }
-        return false;
+bool check(vector<int>& nums, double mid, int k) {
+    int n = nums.size();
+
+    vector<double> preSum(n + 1, 0);
+
+    for (int i = 1; i <= n; ++i) {
+        preSum[i] = preSum[i - 1] + nums[i - 1] - mid;
     }
-    
-    public double findMaxAverage(int[] nums, int k) {
-        double max_val = Integer.MIN_VALUE;
-        double min_val = Integer.MAX_VALUE;
-        for (int n: nums) {
-            max_val = Math.max(max_val, n);
-            min_val = Math.min(min_val, n);
-        }
-        double prev_mid = max_val, error = Integer.MAX_VALUE;
-        while (error > 0.00001) {
-            double mid = (max_val + min_val) * 0.5;
-            if (check(nums, mid, k))
-                min_val = mid;
-            else
-                max_val = mid;
-            error = Math.abs(prev_mid - mid);
-            prev_mid = mid;
-        }
-        return min_val;
+
+    double preMin = preSum[0];
+    for (int i = k; i <= n; ++i) {
+        preMin = min(preMin, preSum[i - k]);    //   每次更新 preMin 最小值
+        if (preSum[i] - preMin >= 0) return true;
     }
-    
+
+    return false;
+}
+
+double findMaxAverage(vector<int>& nums, int k) {
+    int n = nums.size();
+    double maxV = *max_element(nums.begin(), nums.end());
+    double minV = *min_element(nums.begin(), nums.end());
+
+    while ((maxV - minV) >  1e-5) {
+        double mid = minV + (maxV - minV) / 2;
+
+        if (check(nums, mid, k)) {
+            minV = mid;
+        } else {
+            maxV = mid;
+        }
+
+    }
+
+    return maxV;
 }
 ```
-
-
-
-
-
-```c++
-class Solution {
-public:
-    
-    bool check(vector<int>& nums, int k , double mid){
-        vector<double> delta(nums.size());
-        delta[0] = nums[0] - mid;
-        for(int i = 1; i < nums.size(); ++i){
-            delta[i] = nums[i] - mid + delta[i - 1];
-        }
-        double min_sum = 0, sum = delta[k - 1];
-        for(int i = k; i < delta.size(); ++i){
-            if((sum - min_sum) >= 0) return true;
-            min_sum = min(min_sum, delta[i - k]);
-            sum = delta[i];
-        }
-        if((sum - min_sum) >= 0) return true;
-        return false;
-    }
-    
-    
-    double findMaxAverage(vector<int>& nums, int k) {
-        double minn = INT_MAX, maxn = INT_MIN;
-        for(int i = 0; i < nums.size(); i++){
-            minn = min(minn, (double)nums[i]);
-            maxn = max(maxn, (double)nums[i]);
-        }
-        while((maxn - minn) > 0.000001){
-            double mid = (minn + maxn)/2;
-            if(check(nums, k, mid))
-                minn = mid;
-            else
-                maxn = mid;
-        }
-        return minn;
-    }
-};
-```
-
-
 
 
 
@@ -424,45 +377,113 @@ public:
 
 
 
+
+
+
+
 ---
 
 ## 643. 子数组最大平均数 I
 
 ```c++
-class Solution {
-public:
-    bool check(vector<int>& nums, double mid, int k) {
-        int n = nums.size();
-        vector<double> preSum(n + 1, 0);
+bool check(vector<int>& nums, double mid, int k) {
+    int n = nums.size();
+    vector<double> preSum(n + 1, 0);
 
-        for (int i = 1; i <= n; ++i) {
-            preSum[i] = preSum[i-1] + nums[i-1] - mid;
-        }
-        
-
-        for (int i = k; i <= n; ++i) {
-            if (preSum[i] - preSum[i-k] >= 0) return true;
-        }
-
-        return false;
+    for (int i = 1; i <= n; ++i) {
+        preSum[i] = preSum[i-1] + nums[i-1] - mid;
     }
 
-    double findMaxAverage(vector<int>& nums, int k) {
-        int n = nums.size();
-        double maxV = *max_element(nums.begin(), nums.end());
-        double minV = *min_element(nums.begin(), nums.end());
 
-        while (maxV - minV > 1e-5) {
-            double mid = minV + (maxV - minV) / 2;
-            if (check(nums, mid, k)) {
-                minV = mid;
-            } else {    // 不满足说明值太大，所以maxV变小为mid
-                maxV = mid;
+    for (int i = k; i <= n; ++i) {
+        if (preSum[i] - preSum[i-k] >= 0) return true;
+    }
+
+    return false;
+}
+
+double findMaxAverage(vector<int>& nums, int k) {
+    int n = nums.size();
+    double maxV = *max_element(nums.begin(), nums.end());
+    double minV = *min_element(nums.begin(), nums.end());
+
+    while (maxV - minV > 1e-5) {
+        double mid = minV + (maxV - minV) / 2;
+        if (check(nums, mid, k)) {
+            minV = mid;
+        } else {    // 不满足说明值太大，所以maxV变小为mid
+            maxV = mid;
+        }
+    }
+
+    return minV;
+}
+```
+
+
+
+
+
+
+
+---
+
+## 209. 长度最小的子数组
+
+```c++
+int minSubArrayLen(int target, vector<int>& nums) {
+    int n = nums.size();
+
+    vector<int> preSum(n + 1, 0);
+
+    for (int i = 0; i < n; ++i) {
+        preSum[i+1] = preSum[i] + nums[i];
+    }
+
+    int res = INT_MAX;
+    for (int i = 1; i <= n; ++i) {
+        int lo = 0, hi = i;
+
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (preSum[i] - preSum[mid] >= target) {
+                res = min(res, i - mid);
+                lo = mid + 1;          
+            } else {
+                hi = mid - 1; 
             }
         }
+    }        
 
-        return minV;
+    return res == INT_MAX ? 0 : res;
+}
+```
+
+
+
+优化一下
+
+```c++
+int minSubArrayLen(int target, vector<int>& nums) {
+    int n = nums.size();
+
+    vector<int> preSum(n + 1, 0);
+
+    for (int i = 0; i < n; ++i) {
+        preSum[i+1] = preSum[i] + nums[i];
     }
-};
+
+    int res = INT_MAX;
+    for (int i = 0; i <= n; ++i) {
+        int findT = preSum[i] + target;
+        auto bound = lower_bound(preSum.begin(), preSum.end(), findT);
+        if (bound != preSum.end()) { //如果存在
+            int nLen = static_cast<int>((bound - preSum.begin()) - i);  // 第一个比findT大的数到i的位置
+            res = min(res, nLen);
+        }
+    }        
+
+    return res == INT_MAX ? 0 : res;
+}
 ```
 

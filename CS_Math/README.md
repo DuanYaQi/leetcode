@@ -6,6 +6,43 @@ https://blog.csdn.net/qq_44013342/article/details/88023526#t9
 
 
 
+
+
+## 定理
+
+| 定理     | 解释                                                         |
+| -------- | ------------------------------------------------------------ |
+| 同余定理 | 给定一个正整数m，如果两个整数a和b满足a-b能够被m整除，即(a-b)/m得到一个整数，那么就称整数a与b对模m同余，记作a≡b(mod m)。对模m同余是整数的一个等价关系。 |
+| 尾随零   | 2 和 5 的个数的最小值，就是尾随零的个数                      |
+|          |                                                              |
+|          |                                                              |
+
+
+
+
+
+
+
+## 1523. 在区间范围内统计奇数数目
+
+把尾部奇数+1变成偶数
+
+把头部奇数-1变成偶数
+
+cnt = (end - start) / 2
+
+```c++
+int countOdds(int low, int high) {
+    if (high & 1) high++;
+    if (low & 1) low--;
+    return (high - low) / 2;
+}
+```
+
+
+
+
+
 ---
 
 ## 1979. 最大公约数
@@ -18,11 +55,9 @@ $$
 
 ```c++
 int gcd(int a, int b) {
-        if (b == 0) return a;
-
-        return gcd(b, a % b);
-    }
-
+    if (b == 0) return a;
+    return gcd(b, a % b);
+}
 
 int findGCD(vector<int>& nums) {
     int maxn = *max_element(nums.begin(), nums.end());
@@ -32,9 +67,9 @@ int findGCD(vector<int>& nums) {
 }
 ```
 
-时间复杂度：$O(n + \log M)$，其中 n 为 $\textit{nums}$ 的长度，$M$ 为 $\textit{nums}$ 的最大值。遍历数组寻找最大值与最小值的时间复杂度为 $O(n)$，计算最大公约数的时间复杂度为 $O(\log M)$。
+时间复杂度：$O(n + \log M)$，其中 n 为 nums 的长度，M 为 nums 的最大值。遍历数组寻找最大值与最小值的时间复杂度为 $O(n)$，计算最大公约数的时间复杂度为 $O(\log M)$。
 
-空间复杂度：O(1)O(1)。
+空间复杂度：O(1)。
 
 
 
@@ -55,7 +90,7 @@ int lcm(int a, int b){
 
 
 
-
+---
 
 ## 43. 字符串相乘
 
@@ -63,8 +98,6 @@ int lcm(int a, int b){
 
 - 乘数 num1 位数为 M，被乘数 num2 位数为 N， `num1 x num2` 结果 res 最大总位数为 `M+N`
 - `num1[i] x num2[j]` 的结果为 tmp(位数为两位，"0x","xy"的形式)，其第一位位于 `res[i+j]`，第二位位于 `res[i+j+1]`。
-
-
 
 
 
@@ -487,6 +520,10 @@ vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat
     return res;
 }
 ```
+
+
+
+
 
 
 

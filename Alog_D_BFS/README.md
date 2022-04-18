@@ -42,20 +42,6 @@ int findCircleNum(vector<vector<int>>& isConnected) {
 
 
 
-
-
----
-
-## 207. 课程表
-
-经典的「拓扑排序」问题。
-
-
-
-
-
-
-
 ----
 
 ## 210. 课程表 II
@@ -171,6 +157,20 @@ public:
     }
 };
 ```
+
+
+
+
+
+
+
+---
+
+## 207. 课程表
+
+经典的「拓扑排序」问题。
+
+看课程表 II
 
 
 
@@ -451,4 +451,107 @@ public:
     }
 };
 ```
+
+
+
+
+
+---
+
+# 322. 零钱兑换-BFS
+
+该问题可建模为以下优化问题：
+
+$$
+\min_{x} \sum_{i=0}^{n - 1} x_i \ \text{subject to} \sum_{i=0}^{n - 1} x_i \times c_i = S
+$$
+其中，S 是总金额，$c_i$  是第 i 枚硬币的面值，$x_i$ 是面值为 $c_i$ 的硬币数量，由于 $x_i \times c_i$ 不能超过总金额 S，可以得出 $x_i$ 最多不会超过 $\frac{S}{c_i}$ ，所以 $x_i$ 的取值范围为 $[{0, \frac{S}{c_i}}]$. 一个简单的解决方案是通过回溯的方法枚举每个硬币数量子集 $[x_0\dots\ x_{n - 1}]$ ，针对给定的子集计算它们组成的金额数，如果金额数为 S，则记录返回合法硬币总数的最小值，反之返回 -1。
+
+该做法的时间复杂度为 $O(S^n)$，会超出时间限制，因此必须加以优化。
+
+
+
+## 方法一：记忆化搜索
+
+利用动态规划，可以在多项式的时间范围内求解。首先，定义：
+
+- $F(S)$：组成金额 S 所需的最少硬币数量
+- $[c_0\dots c_{n-1}]$：可选的 n 枚硬币面额值
+
+这个问题有一个最优子结构的性质。
+
+假设我们知道 $F(S)$，即组成金额 S 最少的硬币数，最后一枚硬币的面值是 C。转移方程为
+$$
+F(S) = F(S-C) +1
+$$
+由于不确定最后一枚硬币面值是什么，所以需要枚举每个硬币面额值 $c_0, c_1, c_2 \ldots c_{n -1}$ 并选择其中的最小值。
+$$
+F(S)=\min _{i=0 . . n-1} F\left(S-c_{i}\right)+1  \ \ \ \text{subject to} \ \ \ S-c_{i} \geq 0 \\
+
+\begin{array}{c}
+F(S)=0, \text { when } S=0 \\
+F(S)=-1, \text { when } n=0
+\end{array}
+$$
+
+
+![img](assets/e0fd2252775b89649ceb6e867ff0e546ec77621edb566693482c8588a98066b8-file_1583404923188.jpeg)
+
+在上面的递归树中，我们可以看到许多子问题被多次计算。例如，$F(1)$ 被计算了13次。为了避免重复计算，我们要将子问题的答案存在一个数组中进行记忆化。保证每个子问题最多只被计算一次。
+
+```c++
+class Solution {
+    vector<int>count;
+    int dp(vector<int>& coins, int rem) {
+        if (rem < 0) return -1;
+        if (rem == 0) return 0;
+        if (count[rem - 1] != 0) return count[rem - 1];
+        int Min = INT_MAX;
+        for (int coin:coins) {
+            int res = dp(coins, rem - coin);
+            if (res >= 0 && res < Min) {
+                Min = res + 1;
+            }
+        }
+        count[rem - 1] = Min == INT_MAX ? -1 : Min;
+        return count[rem - 1];
+    }
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        if (amount < 1) return 0;
+        count.resize(amount);
+        return dp(coins, amount);
+    }
+};
+```
+
+
+
+复杂度分析
+
+**时间复杂度**：$O(Sn)$，其中 S 是金额，n 是面额数。我们一共需要计算 S 个状态的答案，且每个状态 F(S) 由于上面的记忆化的措施只计算了一次，而计算一个状态的答案需要枚举 n 个面额值，所以一共需要 O(Sn) 的时间复杂度。
+
+**空间复杂度**：$O(S)$，我们需要额外开一个长为 S 的数组来存储计算出来的答案 F(S) 。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

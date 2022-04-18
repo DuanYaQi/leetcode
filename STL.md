@@ -1577,7 +1577,7 @@ next_permutation()给出一个序列在全排列中的下一个序列
 int a[10]={1,2,3};
 do{
     printf("%d%d%d\n",a[0],a[1],a[2]);
-}while(next_permutation(a,a+3));
+} while(next_permutation(a,a+3));
 //	123
     132
     213
@@ -1696,21 +1696,25 @@ sort(首元素地址(必填),尾元素地址的*下一个地址(必填),比较�
 如果数组或容器中没有需要寻找的元素，则`lower_bound()`和`upper_bound()`均返回可以插入该元素的位置的指针或迭代器(即假设存在该元素时，该元素应当在的位置)
 
 ```c++
-int a[10]={1,2,2,3,3,3,5,5,5,5};
-int *lowerPos=lower_bound(a, a+10, -1);
-int *upperPos=upper_bound(a, a+10, -1);
-printf("%d %d", lowerPos-a,upperPos-a);//0 0
-int *lowerPos=lower_bound(a, a+10, 1);
-int *upperPos=upper_bound(a, a+10,1);
-printf("%d %d", lowerPos-a,upperPos-a);//0 1
-int *lowerPos=lower_bound(a, a+10,3);
-int *upperPos=upper_bound(a, a+10,3);
+int a[10] = {1,2,2,3,3,3,5,5,5,5};
+int *lowerPos = lower_bound(a, a+10, -1);
+int *upperPos = upper_bound(a, a+10, -1);
+printf("%d %d", lowerPos-a, upperPos-a);//0 0
+
+int *lowerPos = lower_bound(a, a+10, 1);
+int *upperPos = upper_bound(a, a+10, 1);
+printf("%d %d", lowerPos-a, upperPos-a);//0 1
+
+int *lowerPos = lower_bound(a, a+10, 3);
+int *upperPos = upper_bound(a, a+10, 3);
 printf("%d %d", lowerPos-a,upperPos-a);//3 6
-int *lowerPos=lower_bound(a, a+10,4);
-int *upperPos=upper_bound(a, a+10,4);
-printf("%d %d", lowerPos-a,upperPos-a);//6 6
-int *lowerPos=lower_bound(a, a+10,6);
-int *upperPos=upper_bound(a, a+10,6);
+
+int *lowerPos = lower_bound(a, a+10, 4);
+int *upperPos = upper_bound(a, a+10, 4);
+printf("%d %d", lowerPos-a, upperPos-a);//6 6
+
+int *lowerPos = lower_bound(a, a+10, 6);
+int *upperPos = upper_bound(a, a+10, 6);
 printf("%d %d", lowerPos-a, upperPos-a);//10 10
 ```
 

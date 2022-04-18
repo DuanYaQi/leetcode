@@ -22,11 +22,15 @@ DAG 的问题就 dfs+memo
 
 找规律试试Stack
 
-问**连续**通常都是滑动窗口
+问**连续**通常都是滑动窗口（前缀和优化）
+
+前边选择会影响后边状态，大概率逆推比正推好求解
+
+碰到拐点就是选取不同的方向
 
 
 
-
+做题先写数学公式，画出每一个map/set中的变化，然后再写代码
 
 
 
@@ -146,11 +150,15 @@ https://www.cnblogs.com/MinPage/
 ||
 |要保存键值用`map`，不保存用`set`，限制大小用`数组`|
 |比如要求只有小写字母，用数组来代替map |
+|注意 `map` 访问就会加 size，所以要注意访问 |
 ||
 |字符串反转，可以试着从局部反转和全局反转下手|
 ||
 |树每层都处理的话，queue就在while里再for循环，整体处理只用一个while|
 ||
+|双指针滑动窗口，一定要先转移状态，再更换窗口起点位置|
+||
+|难题要用灵活用 min_element() 和 max_element() 和 accumulate()<br>lower_bound()和upper_bound()|
 ||
 
 ```c++
@@ -323,7 +331,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |2+[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
 |2+[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
 |💛[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
-|3+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意灵活运用虚拟头结点|
+|3+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意不要加while套一层循环，注意merge之后要return |
 |[234. Palindrome Linked List](DS_Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 |[剑指 Offer 18. 删除链表的节点](/DS_Linked_list/Offer%2018.%20删除链表的节点.cpp) | |记录前驱节点 |
 |[Offer 06. 从尾到头打印链表](DS_Linked_list/Offer%2006.%20从尾到头打印链表.cpp) | | |
@@ -490,7 +498,8 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
 |[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
 |[14. Longest Common Prefix](/Alog_BinarySearch/14+Longest%20Common%20Prefix.cpp) | | 从长度最小的字符串进行判断，二分最小的字符串 |
-| | | |
+|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) | |前缀和+二分 |
+|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch_best.cpp) | 用lower_bound()代替二分| 注意要计算长度时 需要强制类型转换 static_cast<int>|
 | | | |
 | | | |
 | | | |
@@ -543,12 +552,12 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 | | | |
 |[724. Find Pivot Index](/Alog_TwoPointer/724+Find%20Pivot%20Index.cpp) | 前缀和| |
 |[523. ] | 前缀和| |
-|[560.] | 前缀和| |
+|[560. Subarray Sum Equals K](/Alog_TwoPointer/560+Subarray%20Sum%20Equals%20K.cpp) | 前缀和| |
+|[974. Subarray Sums Divisible by K](/Alog_TwoPointer/974+Subarray%20Sums%20Divisible%20by%20K.cpp) | 前缀和| 注意负数的余数|
 |[1248.] | 前缀和| |
-|[974.] | 前缀和| |
 |[644. Maximum Average Subarray II](/Alog_TwoPointer/644+Maximum%20Average%20Subarray%20II.cpp) | | 不固定k，维护一个最小值即可|
 |[643. Maximum Average Subarray I](Alog_TwoPointer/643+Maximum%20Average%20Subarray%20I.cpp) | | 固定k|
-| | | |
+|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) | |前缀和+二分 |
 |[6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和| 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
 | | | |
 | | | |
