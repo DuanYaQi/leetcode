@@ -18,7 +18,22 @@ https://blog.csdn.net/qq_44013342/article/details/88023526#t9
 |          |                                                              |
 
 
+交换两个数字
+```c++
+// in-place swap
+// 异或 任何数与自己异或为0 与0异或为自己
+a = a ^ b; 
+b = a ^ b; // b = a^b^b = a^0 = a
+a = a ^ b; 
 
+// 加和
+a = a + b;
+b = a - b;
+a = a - b;
+```
+
+
+---
 
 
 

@@ -37,17 +37,16 @@ DAG 的问题就 dfs+memo
 ---
 
 ## TODO
-- [ ] 116 Populating Next Right Pointers in Each Node 为什么不可以 `Node* node, prenode;`
+
 - [ ] 440 K-th Smallest in Lexicographical Order
-- [ ] 416
 - [ ] 523
-- [ ] https://blog.csdn.net/u012139398/article/details/43346667
+- [ ] [UVA 624 CD 01背包 输出解](`https://blog.csdn.net/u012139398/article/details/43346667)
 - [ ] 面试题 17.07. Baby Names LCCI
 - [ ] 蓄水池算法
 - [ ] bitmap
 - [ ] 字典树
-- [ ] 大数的十进制与二进制互转新方法 https://zhuanlan.zhihu.com/p/29768999
-- [ ] 红黑树比 AVL 树具体更高效在哪里？https://www.zhihu.com/question/19856999/answer/258118494
+- [ ] [大数的十进制与二进制互转新方法](https://zhuanlan.zhihu.com/p/29768999)
+- [ ] [红黑树比 AVL 树具体更高效在哪里](https://www.zhihu.com/question/19856999/answer/258118494)
 
 
 
@@ -175,18 +174,6 @@ static const auto io_sync_off = []()
 
 
 
-```c++
-// 不开拖空间swap
-// 异或 任何数与自己异或为0 与0异或为自己
-a = a ^ b; 
-b = a ^ b; // b = a^b^b = a^0 = a
-a = a ^ b; 
-
-// 加和
-a = a + b;
-b = a - b;
-a = a - b;
-```
 
 
 
