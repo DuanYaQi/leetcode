@@ -54,6 +54,12 @@ DAG 的问题就 dfs+memo
 - [ ] 322
 - [ ] 474记忆化搜索  `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
 - [ ] [UVA 624 CD 01背包 输出解](`https://blog.csdn.net/u012139398/article/details/43346667)
+- [ ] [01背包输出路径、完全背包、多重背包](https://blog.csdn.net/qq_51070956/article/details/123155169#01_Knapsack__3)
+- [ ] [01背包的基础和进阶版以及路径的输出问题](https://blog.csdn.net/qq_45859272/article/details/123663552)
+- [ ] [0-1背包问题求解，及输出路径和选择的物品](https://blog.csdn.net/shansharp/article/details/102847600)
+- [ ] [QDU YZM10与大富翁的故事 （01背包+输出路径）](https://www.freesion.com/article/900814173/)
+- [ ] [Codeforces Round #436 (Div. 2)-E-Fire（01背包输出路径）](https://blog.51cto.com/u_15354358/3764897)
+- [ ] [Codeforces Gym-102219 2019 ICPC Malaysia National E. Optimal Slots(01背包+输出路径)](https://www.bbsmax.com/A/Gkz1qjBrzR/)
 - [ ] 面试题 17.07. Baby Names LCCI
 - [ ] 蓄水池算法
 - [ ] bitmap
@@ -61,7 +67,40 @@ DAG 的问题就 dfs+memo
 - [ ] [大数的十进制与二进制互转新方法](https://zhuanlan.zhihu.com/p/29768999)
 - [ ] [红黑树比 AVL 树具体更高效在哪里](https://www.zhihu.com/question/19856999/answer/258118494)
 
-
+```c++
+int n,m;
+int v[MAX],w[MAX];
+int dp[MAX];
+bool path[MAX][MAX];
+int V;
+void solve()
+{
+    memset(dp,0,sizeof(dp));
+   memset(path,false,sizeof(path));
+   for(int i=0;i<n;i++)
+   {
+       for(int j=V;j>=w[i];j--)
+        if(dp[j-w[i]]+v[i]>dp[j])
+        {
+            dp[j]=dp[j-w[i]]+v[i];
+            path[i][j]=true;//cout<<i<<j<<endl;
+        }
+   }
+   cout<<dp[V]<<endl;
+   int ans[MAX];
+   int k=0;
+   for(int i=n-1;i>=0;i--)
+   {
+       if(path[i][V]){
+        ans[++k]=i;
+        V-=w[i];
+       }
+   }
+   //输出所选择的物品
+   for(int i=k;i>0;i--)
+     cout<<ans[i]<<endl;
+}
+```
 
 ---
 
