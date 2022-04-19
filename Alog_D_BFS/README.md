@@ -456,9 +456,480 @@ public:
 
 
 
+
+
+
+
+# 记忆化搜索
+
+## 416. 分割等和子集
+
+递归搜索：常规的递归搜索 dfs(i, *args) 在到达一个位置 i 时无非有两种情况（选或不选）：
+
+- 跳过 i 位置：直接考虑下一步；
+- 选择 i 位置：根据实际情况判断该选择是否可行，以及选择 i 之后的下一步操作如何进行。
+
+恰好对应于选或不选第 ii 件物品。只不过目标为从 nums 中选出若干个数字使其和恰好等于数组总和的一半，记为 $target = \frac{sum}{2}$
+
+![image.png](assets/1602391112-KnTcoJ-image.png)
+
+针对每一个元素，都有“减去”和“不减”两种选项。
+
+输入 [1, 1, 1, 4, 5]，总和 sum 为12，取半half 为6；
+针对第一个元素，减去得 5，不减得 6，依次产生完全二叉树；
+**出现负数直接返回否，等于0直接返回是**。
+
+```c++
+class Solution {
+public:
+    bool dfs(int i, int target, vector<int>& nums) {
+        if (target == 0) return true;
+        // target为负数 或 nums数组遍历完 返回false
+        if (target < 0 || i == nums.size()) return false;
+
+        // 选这个数字   减这个数字
+        bool b1 = dfs(i+1, target - nums[i], nums);
+
+        // 不选这个数字 不减这个数字
+        bool b2 = dfs(i+1, target, nums);
+
+        return b1 || b2;
+    }
+
+    bool canPartition(vector<int>& nums) {
+        int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+        if (sumn & 1) return false;
+
+        int target = sumn / 2;
+
+        return dfs(0, target, nums);
+    }
+};
+```
+
+上述算法的时间复杂度接近 $O(2^n),\ n=len(nums)$ ，因此不适合 nums 中元素较多的情况。
+
+很多**自上而下的递归搜索过程**都可以修改为复杂度更低的**自下而上的动态规划过程**。
+
+
+
+
+
+里面有大量重复元素。思考发现，在二叉树的**同一层**出发，如果剩下的数字`remain`一样大，它后续的分支是完全相同的。
+
+![image.png](assets/1602391190-WnafLv-image.png)
+
+> “只选第一个1”和“只选第二个1”的结果是一样的；
+> 同一层的两个`remain`如果相同，它们的子树就完全相同。
+
+针对这种情况我们引入记忆化搜索。
+
+每次递归，我们检查这个`remain`是否在这一层出现过。如果是，就跳过这个结点。
+
+```c++
+bool dfs(int i, int remain, vector<int>& nums, vector<vector<int>> &memo) {
+    if (remain == 0) return true;
+    if (remain < 0 || i == nums.size()) return false;
+
+    // 记忆化
+    if (memo[i][remain] != -1) return memo[i][remain];
+    memo[i][remain] = dfs(i+1, remain - nums[i], nums, memo) || dfs(i+1, remain, nums, memo);    //注意这里是 || 有一条路可以满足就行   
+
+    /*
+        // 选这个数字   减这个数字
+        bool b1 = dfs(i+1, remain - nums[i], nums)
+        // 不选这个数字 不减这个数字
+        bool b2 = dfs(i+1, remain, nums);
+        */
+
+    return memo[i][remain];
+}
+
+bool canPartition(vector<int>& nums) {
+    int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+    if (sumn & 1) return false;
+
+    int target = sumn / 2;
+
+    vector<vector<int>> memo(nums.size(), vector<int>(target + 1, -1)); //memo[i][j]里存出现过，就直接返回它的值
+
+    return dfs(0, target, nums, memo);
+}    
+```
+
+
+
+![image.png](assets/1602391399-Lobwlk-image.png)
+
+可以看到，现在每一层同一个`remain`数字只出现一次。
+
+
+
+
+
 ---
 
-# 322. 零钱兑换-BFS
+## 474. 一和零
+
+最重要的一点，如果传入的参数中有 cnt，那么 memo 里的索引要有 cnt，i，m，n
+
+暴力遍历 22/71
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int nowM, int nowN, int cnt, int i) {
+    if (nowM > m || nowN > n) return 0; // 超过了 不满足
+    // 以下情况为 nowM <= m 和 nowN <= n的情况
+    if (i == nums.size()) return cnt;   // 题目要求最多 有 m 个 0 和 n 个 1 。 因此不==也可以
+
+    // 要
+    int i1 = dfs(nums, m, n, nowM + nums[i][0], nowN + nums[i][1], cnt + 1, i + 1);
+    // 不要
+    int i2 = dfs(nums, m, n, nowM, nowN, cnt, i+1);
+
+    return max(i1, i2);
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+	vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    int b = dfs(nums, m, n, 0, 0, 0, 0);
+    return b;
+}
+```
+
+
+
+用 `vector<unordered_set<int>>` ，WA 66/71
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int nowM, int nowN, int cnt, int i) {
+    if (nowM > m || nowN > n) return 0; // 超过了 不满足
+    // 以下情况为 nowM <= m 和 nowN <= n的情况
+    if (i == nums.size()) return cnt;   // 题目要求最多 有 m 个 0 和 n 个 1 。 因此不==也可以
+
+    int idx = nowM * 610 + nowN;
+    if (dp[i].find(idx) != dp[i].end()) return 0;
+    dp[i].insert(idx);
+
+    // max(要, 不要)    
+    return max(dfs(nums, m, n, nowM + nums[i][0], nowN + nums[i][1], cnt + 1, i + 1), dfs(nums, m, n, nowM, nowN, cnt, i+1));
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    dp.resize(len);
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    return dfs(nums, m, n, 0, 0, 0, 0);
+}
+
+vector<unordered_set<int>> dp; 
+```
+
+
+
+转成用三维数组存，WA 66/71
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int nowM, int nowN, int cnt, int i, vector<vector<vector<int>>> &memo) {
+    if (i > nums.size() || nowM > m || nowN > n) return 0; // 超过了 不满足
+    // 以下情况为 nowM <= m 和 nowN <= n的情况
+    if (i == nums.size()) return cnt;   // 题目要求最多 有 m 个 0 和 n 个 1 。 因此不==也可以
+
+    if (memo[i][nowM][nowN] != -1) return memo[i][nowM][nowN];
+    memo[i][nowM][nowN] = max(dfs(nums, m, n, nowM + nums[i][0], nowN + nums[i][1], cnt + 1, i + 1, memo), 
+                              dfs(nums, m, n, nowM, nowN, cnt, i+1, memo));
+
+    // max(要, 不要)    
+    return memo[i][nowM][nowN];
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    vector<vector<vector<int>>> memo(len, vector<vector<int>>(m+1, vector<int>(n+1, -1)));
+    return dfs(nums, m, n, 0, 0, 0, 0, memo);
+}
+```
+
+
+
+应该自顶向下，而之前的写法是自底向上！！！！！！！！！
+
+
+
+自顶向下还是 WA 66/71？？？？？？？？
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int cnt, int i, vector<vector<vector<int>>> &memo) {
+    if (m < 0 || n < 0) return 0; // 减成负数了 不满足
+    // 以下情况为 m>=0 和 n>=0 的情况
+    if (i == nums.size()) { return cnt;}   // 题目要求最多 有 m 个 0 和 n 个 1 。 因此不==也可以,这里也相当于剪枝，要求i不越界
+
+
+    if (memo[i][m][n] != -1) return memo[i][m][n];
+
+    int i1 = dfs(nums, m, n, cnt, i+1, memo);
+    int i2 = dfs(nums, m - nums[i][0], n - nums[i][1], cnt + 1, i + 1, memo);
+
+    // max(要, 不要)    
+    memo[i][m][n] = max(i1, i2);        
+    return memo[i][m][n];
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    vector<vector<vector<int>>> memo(len, vector<vector<int>>(m+1, vector<int>(n+1, -1)));
+    return dfs(nums, m, n, 0, 0, memo);
+}
+```
+
+
+
+==不能传cnt进来，如果传进来，就需要单独再开一个维度保存cnt的索引==
+
+
+
+记忆化
+
+```c++
+int dfs(vector<string>& strs, int m, int n, int index, vector<vector<vector<int>>>& meo) {
+    if (index == strs.size()) {
+        return 0;
+    }
+    if (meo[index][m][n] != -1) {
+        return meo[index][m][n];
+    }
+    int zero = count(strs[index].begin(), strs[index].end(), '0');
+    int one = strs[index].size() - zero;
+    int a = dfs(strs, m, n, index + 1, meo);
+    int b = 0;
+    if (m - zero >= 0 && n - one >= 0) {
+        b = 1 + dfs(strs, m - zero, n - one, index + 1, meo);
+    }
+    return meo[index][m][n] = max(a, b);
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    vector<vector<vector<int>>> meo(strs.size(), vector<vector<int>>(m + 1, vector<int>(n + 1, -1)));
+    return dfs(strs, m, n, 0, meo);
+}
+```
+
+
+
+
+
+
+
+
+
+### 答案对但超时
+
+45
+60
+
+```
+["011","1","11","0","010","1","10","1","1","0","0","0","01111","011","11","00","11","10","1","0","0","0","0","101","001110","1","0","1","0","0","10","00100","0","10","1","1","1","011","11","11","10","10","0000","01","1","10","0"]
+44
+39
+```
+
+```
+["1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0","1","0"]
+30
+30
+```
+
+
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int cnt, int i, unordered_map<string, int> &memo) {
+    if (m < 0 || n < 0) return 0;
+    if (i == nums.size()) return cnt;
+
+    string key = to_string(i) + "_" + to_string(m) + "_" + to_string(n) + "_" + to_string(cnt);
+    if (memo.find(key) != memo.end()) return memo[key];
+
+    // max(不要, 要) 
+    return memo[key] = max(dfs(nums, m, n, cnt, i+1, memo), 
+                           dfs(nums, m - nums[i][0], n - nums[i][1], cnt + 1, i + 1, memo));
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    unordered_map<string, int> memo;
+
+    return dfs(nums, m, n, 0, 0, memo);
+}
+```
+
+
+
+### unordered_map 优化
+
+**key 从 string 优化为 int**
+
+优化后，不要用 string 作为 key，用 int，把索引拉平
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int cnt, int i, unordered_map<long long, int> &memo) {
+    if (m < 0 || n < 0) return 0;
+    if (i == nums.size()) return cnt;
+
+    long long key = cnt * (601*101*101) + i * (101*101) + m * (101)  +  n;
+    if (memo.find(key) != memo.end()) return memo[key];
+
+    // max(不要, 要) 
+    return memo[key] = max(dfs(nums, m, n, cnt, i+1, memo), 
+                           dfs(nums, m - nums[i][0], n - nums[i][1], cnt + 1, i + 1, memo));
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    unordered_map<long long, int> memo;
+
+    return dfs(nums, m, n, 0, 0, memo);
+}
+```
+
+
+
+### `vector<unordered_set<int>>` 优化
+
+注意算idx的时候包括cnt，不用算 i 的原因是 `memo[i]`中包括了
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int nowM, int nowN, int cnt, int i, vector<unordered_set<int>> &memo) {
+    if (nowM > m || nowN > n) return 0; // 超过了 不满足
+    // 以下情况为 nowM <= m 和 nowN <= n的情况
+    if (i == nums.size()) return cnt;   // 题目要求最多 有 m 个 0 和 n 个 1 。 因此不==也可以
+
+    int idx = cnt * (101*101) + nowM * 110 + nowN;
+    if (memo[i].find(idx) != memo[i].end()) return -9;
+    memo[i].insert(idx);
+
+    // max(要, 不要)    
+    return max(dfs(nums, m, n, nowM + nums[i][0], nowN + nums[i][1], cnt + 1, i + 1, memo), dfs(nums, m, n, nowM, nowN, cnt, i+1, memo));
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    vector<unordered_set<int>> memo(len); 
+
+    return dfs(nums, m, n, 0, 0, 0, 0, memo);
+}
+```
+
+这里 `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
+
+
+
+
+
+### 三维数组
+
+```c++
+int dfs(const vector<vector<int>> &nums, int m, int n, int i, vector<vector<vector<int>>> &memo) {
+    if (i == nums.size()) { return 0;}   // 题目要求最多 有 m 个 0 和 n 个 1 。 因此不==也可以,这里也相当于剪枝，要求i不越界
+
+    if (memo[i][m][n] != -1) return memo[i][m][n];
+
+    int i1 = dfs(nums, m, n, i+1, memo);
+    int i2 = 0;
+    if (m - nums[i][0] >= 0 && n - nums[i][1] >= 0) {
+        i2 = 1 + dfs(nums, m - nums[i][0], n - nums[i][1], i + 1, memo);
+    }
+    // max(要, 不要)    
+    return memo[i][m][n] = max(i1, i2);
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    } 
+
+    vector<vector<vector<int>>> memo(len, vector<vector<int>>(m + 1, vector<int>(n + 1, -1)));
+    return dfs(nums, m, n, 0, memo);
+}
+```
+
+
+
+
+
+---
+
+## 1755.最接近目标值的子序列和
+
+
+
+## 2035.将数组分成两个数组并最小化数组和的差
+
+
+
+
+
+## 805.数组的均值分割
+
+
+
+
+
+---
+
+## 322. 零钱兑换
 
 该问题可建模为以下优化问题：
 
@@ -471,7 +942,7 @@ $$
 
 
 
-## 方法一：记忆化搜索
+
 
 利用动态规划，可以在多项式的时间范围内求解。首先，定义：
 

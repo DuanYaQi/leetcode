@@ -30,6 +30,17 @@ DAG 的问题就 dfs+memo
 
 
 
+ [ 在数组中**选取子集**，**达到某一目标** ] 这类问题的通用解法。
+
+- 类型1 : 目标值**明确**，可以把目标值看出背包容量，数组值看做物品，转成**背包**问题
+- 类型2 : 目标值**不明确**，容量不知道，不能用背包，只能**枚举**子集的和
+
+
+
+
+
+
+
 做题先写数学公式，画出每一个map/set中的变化，然后再写代码
 
 
@@ -40,6 +51,8 @@ DAG 的问题就 dfs+memo
 
 - [ ] 440 K-th Smallest in Lexicographical Order
 - [ ] 523
+- [ ] 322
+- [ ] 474记忆化搜索  `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
 - [ ] [UVA 624 CD 01背包 输出解](`https://blog.csdn.net/u012139398/article/details/43346667)
 - [ ] 面试题 17.07. Baby Names LCCI
 - [ ] 蓄水池算法
@@ -107,6 +120,10 @@ https://www.cnblogs.com/MinPage/
 
 |  技巧/习惯  |
 |  :----:  |
+| 注意爆 int 要用 long long |
+| 输出具体方案，如果找不到问题，来回排序试一试 |
+|  |
+|  |
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |if (root != nullptr)　而不是　if (root)|
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
@@ -143,11 +160,13 @@ https://www.cnblogs.com/MinPage/
 ||
 
 
+
+
 ||  算法注意事项  |
 |  :----:  |  :----:  |
 || size 在 for 之前取值，防止 for 循环中 size 大小改变|
 |DFS/BFS|深度优先遍历 DFS　　　stack<br> 广度优先遍历 BFS　　　queue|
-|回溯||**回溯递归是一一对应的，有一个递归，就要有一个回溯**|
+|回溯||
 |回溯|剪枝,可以放在递归函数头部,也可以放在调用函数前(即上一层)|
 |回溯|回溯隐藏，直接在给函数**传参**时**加**计算，函数执行完，不改变原值<br>而**不是加等**计算，是 `+` 而不是 `+=`|
 |回溯|自底向上=后序遍历=天然的回溯过程|
@@ -155,7 +174,12 @@ https://www.cnblogs.com/MinPage/
 |||
 |双指针/滑动窗口|双指针滑动窗口，一定要先转移状态，再更换窗口起点位置|
 |||
+|记忆化搜索/回溯|超时的可能原因<br>1. 把几个**返回状态相同**的 if **用 \|\| 合并**成一个 if<br>2.先计算再用计算结果return，可以直接放到return里（如下）|
+||bool b1 = dfs(\*args1)<br>bool b2 = dfs(\*args2)<br>return b1 \|\| b2;<br>换为<br>return dfs(\*args1) \|\| dfs(\*args2)|
 |||
+|||
+
+
 
 
 |  数据结构注意事项  |
@@ -163,9 +187,13 @@ https://www.cnblogs.com/MinPage/
 |要保存键值用`map`，不保存用`set`，限制大小用`数组`|
 |比如要求只有小写字母，用数组来代替map |
 |注意 `map` 访问就会加 size，所以要注意访问 |
+|判断元素是否在map/set中<br>`mp.count(i) != 0` 比 `mp.find(i) != mp.end()` 更快|
 ||
 |字符串反转，可以试着从局部反转和全局反转下手|
 ||
+||
+
+
 
 
 |  函数注意事项  |
@@ -173,8 +201,10 @@ https://www.cnblogs.com/MinPage/
 |难题要用灵活用 min_element() 和 max_element() 和 accumulate()<br>lower_bound()和upper_bound()|
 |`to_string()`　`stoi()` 或者用 sstream流 |
 |`s.substr(i, k);` 如果 i+k 超过 `s.size()`，就不取后半部分|
+|`int zero = count(strs.begin(), strs].end(), '0');`<br>`int one = strs.size() - zero;`|
 ||
-||
+
+
 
 ```c++
 //https://blog.csdn.net/qq_32320399/article/details/81518476
@@ -621,6 +651,8 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
+|[494. Target Sum](/Alog_BackTracking/494+Target%20Sum.cpp) | |回溯模板题 |
+| | | |
 |[77. Combinations](Alog_BackTracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
 |[39. Combination Sum](/Alog_BackTracking/39+Combination%20Sum.cpp) | | 跟216的区别就是下一层的循环起始位置 |
 |[216. Combination Sum III](/Alog_BackTracking/216+Combination%20Sum%20III.cpp) | | 与77的区别就是,终止条件多了一个 |
@@ -635,7 +667,6 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 |[90. Subsets II](/Alog_BackTracking/90+Subsets%20II.cpp) | | 注意要先排序|
 |[46. Permutations](/Alog_BackTracking/46+Permutations.cpp) | |用全局unordered_set来记录已取过的节点 |
 |[47. Permutations II](/Alog_BackTracking/47+Permutations%20II.cpp) | |用全局unordered_set记录已取过的节点<br>用函数内unordered_set记录同层已取过的节点|
-| | | |
 | | | |
 | | | |
 |[LCP 51. 烹饪料理](Alog_BackTracking/LCP%2051.%20烹饪料理.cpp) |回溯 | 注意这种满足两种要求的，不能满足一种要求就return<br>注意visited=true 后边不能有continue或break，要确保visted=false能执行到|
@@ -714,8 +745,8 @@ DP
 背包专题
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[416. Partition Equal Subset Sum](/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到本质是target|
-| | | |
+|2+[416. Partition Equal Subset Sum](/Alog_DP/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到背包容量本质是target,物品的重量是其nums[i]<br>可以用滚动数组优化到1维DP|
+|[474. Ones and Zeroes](/Alog_DP/474+Ones%20and%20Zeroes+.cpp) |01背包 |三维DP数组，滚动优化到2维，需要满足两个条件，才能取 |
 | | | |
 | | | |
 | | | |
@@ -738,6 +769,14 @@ DP
 |[LCP 52. 二叉搜索树染色](Alog_D_BFS/LCP%2052.%20二叉搜索树染色.cpp) |逆向推理 |注意剪枝 |
 | | | |
 | | | |
+| | | |
+| | | |
+
+记忆化搜索
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[416. Partition Equal Subset Sum](/Alog_D_BFS/416+Partition%20Equal%20Subset%20Sum.cpp) | |先写暴力,再找重复,一般是同层重复,记忆化优化 |
+|[474. Ones and Zeroes](/Alog_D_BFS/474+Ones%20and%20Zeroes+.cpp) |01背包 |先写暴力,再找重复,一般是同层重复,记忆化优化 |
 | | | |
 | | | |
 

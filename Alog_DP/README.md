@@ -991,15 +991,35 @@ dp[0] = nums[0];
 
 ![image-20220306154832293](assets/image-20220306154832293.png)
 
-⾄于背包九讲其他背包，⾯试⼏乎不会问，都是竞赛级别的了，leetcode上连多重背包的题⽬都没有，所以题库也告诉我们，01背包和完全背包就够⽤了。
+完全背包⼜是也是01背包稍作变化而来，即：**完全背包的物品数量是无限的**。
 
 
 
-完全背包⼜是也是01背包稍作变化⽽来，即：**完全背包的物品数量是⽆限的**。
-
-背包问题的理论基础重中之重是**01背包**
 
 
+**背包问题具备的特征**：
+
+是否可以根据一个 target（直接给出或间接求出），target 可以是数字也可以是字符串，再给定一个数组 arrs，问：能否使用 arrs 中的元素做各种排列组合得到 target。
+
+
+
+**背包问题解法：**
+01 背包
+如果是 01 背包，即数组中的元素不可重复使用，外循环遍历 arrs，内循环遍历 target，且内循环倒序
+
+完全背包
+（1）如果是完全背包，即数组中的元素可重复使用并且不考虑元素之间顺序，arrs 放在外循环（保证 arrs 按顺序），target在内循环。且内循环正序。
+（2）如果组合问题需考虑元素之间的顺序，需将 target 放在外循环，将 arrs 放在内循环，且内循环正序。
+
+
+
+https://leetcode-cn.com/problems/partition-equal-subset-sum/solution/yi-tao-kuang-jia-jie-jue-bei-bao-wen-ti-p9saf/
+
+
+
+
+
+---
 
 ## 分析
 
@@ -1153,39 +1173,63 @@ dp[i][j] = dp[i-1][j]  \ \ \ or \ \ \ dp[i-1][j - nums[i]]
 $$
 初始化时，`dp[i][0] = true`，表示从前 i 个数字中可以选出若干个使得其和为 0.即不选任何数字即可得到 0.
 
-```python
-class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
 
-        total = sum(nums)
-        if total % 2 == 1:      # 总和无法等分
-            return False
-        
-        target = total // 2
-        if max(nums) > target:  # 最大值大于总和的一半，无法分割
-            return False
-        
-        '''【0/1背包】：从nums中选出的数字刚好能组成target'''
-        n = len(nums)
 
-        # 初始化
-        dp = [[False] * (target+1) for _ in range(n+1)]
-        # dp[i][j]: 从前i个元素中选出若干个数字刚好能够组成j
-        for i in range(n+1):
-            dp[i][0] = True
+#### 二维DP
 
-        # 状态更新
-        for i in range(1, n+1):
-            for j in range(target+1):
-                if j < nums[i-1]:   # 容量有限，无法选择第i个数字nums[i-1]
-                    dp[i][j] = dp[i-1][j]
-                else:               # 可选择第i个数字nums[i-1]，也可不选
-                    dp[i][j] = dp[i-1][j] | dp[i-1][j-nums[i-1]]
-        
-        return dp[n][target]
+```c++
+bool canPartition(vector<int>& nums) {
+    int n = nums.size();
+
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+
+    if (sum & 1) return false;
+    int target = sum / 2;
+
+    vector<vector<bool>> dp(n + 1, vector<bool>(target + 1, false));
+
+    for (int i = 0; i <= n; ++i) // 示从前 i 个数字中可以选出若干个使得其和为 0.   即不选任何数字即可得到 0.
+        dp[i][0] = true;
+
+
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 0; j <= target; ++j) {
+            if (j - nums[i-1] < 0) {    // 容量不够，无法选择第i个数字 nums[i-1]
+            	dp[i][j] = dp[i-1][j];  // 不选, 跟上一个物品的状态一样
+            } else {                    // 容量足够 选或者不选
+               	dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]]; 
+            }
+        }
+    }
+
+    return dp[n][target];
+}
+
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        vector<vector<int>> dp(n, vector<int>(target + 1, 0));
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = true;
+        }
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < n; i++) {
+            int num = nums[i];
+            for (int j = 1; j <= target; j++) {
+                if (j >= num) {
+                    dp[i][j] = dp[i - 1][j] | dp[i - 1][j - num];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        return dp[n - 1][target];
+    }
+};
 ```
 
-我们定义了一个 $(n+1) \times (target+1)(n+1)$ 的二维数组 dpdp，其中第一维为 n+1 也意味着：第 i 个数字为 $nums[i-1]$，第 1 个数字为 nums[0]，第 0 个数字为空。
+我们定义了一个 $(n+1) \times (target+1)$ 的二维数组 dp，其中第一维为 n+1 也意味着：第 i 个数字为 nums[i-1]，第 1 个数字为 nums[0]，第 0 个数字为空。
 
 也可有其他定义方法，比如定义 dp 的第一维为 n，相对应的第 i 个数字为 nums[i]，第 0 个数字即为 nums[0] 而非空。
 
@@ -1197,17 +1241,181 @@ class Solution:
 
 
 
+[1,5,11,5]
+
+<img src="assets/image-20220419132059239.png" alt="image-20220419132059239" style="zoom: 150%;" />
+
+
+
+
+
+#### 一维DP
+
+动态规划的滚动数组优化如下：
+
+在上面的状态转移方程中，每一行的 `dp[i][*]` 状态值都只与上一行的 `dp[i-1][*]` 状态值有关，因此可基于**滚动数组**的思想进行对状态空间 dp 进行优化而省去第一维度：
+$$
+\textcolor{red}{dp[j]}=dp[j] ∣ dp[j−nums[i-1]]\ .
+$$
+
+且需要注意的是第二层的循环我们需要从大到小计算，因为如果我们从小到大更新 dp 值，那么在计算 dp[j] 值的时候，dp[j−nums[i]] 已经是被更新过的状态，不再是上一行的 dp 值。
+
+
+
+```c++
+bool canPartition(vector<int>& nums) {
+    int n = nums.size();
+
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    int maxNum = *max_element(nums.begin(), nums.end());
+
+    if (sum & 1) return false;
+    int target = sum / 2;
+    if (maxNum > target) return false;
+
+    vector<bool> dp(target + 1, false); 
+
+    dp[0] = true;
+
+    for (int i = 1; i < n; ++i) {
+        int num = nums[i];        // 当前重量
+        for (int j = target; j >= 0; --j) {	// 必须逆序，因为要保证 dp[j-num] 是前一时刻的
+            if (j - num < 0) {    // 容量不够，无法选择第i个数字 nums[i-1]
+                dp[j] = dp[j];    // 不选, 跟上一个物品的状态一样   
+                // 后边这个dp[j]是前一时刻的值 即dp[i-1][j]
+            } else {                    // 容量足够 选或者不选
+                dp[j] = dp[j] || dp[j-num]; 
+                // 后边这个dp[j] || dp[j-num] 是前一时刻的值 即dp[i-1][j] || dp[i-1][j-num]
+            }
+        }
+    }
+
+    return dp[target];
+}
+```
+
+时间复杂度：$O(n \times \textit{target})$，其中 n 是数组的长度，target 是整个数组的元素和的一半。需要计算出所有的状态，每个状态在进行转移时的时间复杂度为 $O(1)$。
+
+空间复杂度：$O(\textit{target})$，其中 target 是整个数组的元素和的一半。空间复杂度取决于 dp 数组，在不进行空间优化的情况下，空间复杂度是 $O(n \times \textit{target})$，在进行空间优化的情况下，空间复杂度可以降到 $O(\textit{target})$。
+
+
+
 
 
 ---
 
 ### 474. 一和零
 
+状态转移方程如下：
 
+$$
+\textit{dp}[i][j][k]=\begin{cases} \textit{dp}[i - 1][j][k], & j<\textit{zeros} ~~ | ~~ k<\textit{ones} \\ \max(\textit{dp}[i - 1][j][k], \textit{dp}[i - 1][j - \textit{zeros}][k - \textit{ones}] + 1), & j \ge \textit{zeros} ~ \& ~ k \ge \textit{ones} \end{cases}
+$$
+最终得到 $\textit{dp}[l][m][n]$ 的值即为答案
+
+
+
+三维DP
+
+```c++
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+	/*预处理01个数*/
+    for (int i = 0; i < strs.size(); ++i) {
+        int zeroN = 0, oneN = 0;
+        for (auto &c : strs[i]) {
+            if (c == '0') zeroN++;
+            else oneN++;
+        }
+        nums[i][0] = zeroN;
+        nums[i][1] = oneN;
+    } 
+
+
+    vector<vector<vector<int>>> dp(len + 1, vector<vector<int>>(m + 1, vector<int>(n + 1, 0)));
+
+    for (int i = 1; i <= strs.size(); ++i) {
+        int zeroN = nums[i-1][0], oneN = nums[i-1][1];
+
+        for (int j = m; j >= 0; --j) {      // m 要求 0
+            for (int k = n; k >= 0; --k) {  // n 要求 1
+                if (j - zeroN < 0 || k - oneN < 0) {
+                    dp[i][j][k] = dp[i-1][j][k];
+                } else {
+                    dp[i][j][k] = max(dp[i-1][j][k], dp[i-1][j-zeroN][k-oneN]+1);
+                }
+            }
+        }
+    }
+
+    return dp[len][m][n];
+}
+```
+
+
+
+滚动数组优化至二维
+
+```c++
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+	/*预处理01个数*/
+    for (int i = 0; i < strs.size(); ++i) {
+        int zeroN = 0, oneN = 0;
+        for (auto &c : strs[i]) {
+            if (c == '0') zeroN++;
+            else oneN++;
+        }
+        nums[i][0] = zeroN;
+        nums[i][1] = oneN;
+    } 
+
+
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+
+    for (int i = 0; i < strs.size(); ++i) {
+        int zeroN = nums[i][0], oneN = nums[i][1];
+
+        for (int j = m; j >= 0; --j) {      // m 要求 0
+            for (int k = n; k >= 0; --k) {  // n 要求 1
+                if (j - zeroN < 0 || k - oneN < 0) {
+                    dp[j][k] = dp[j][k];
+                } else {
+                    dp[j][k] = max(dp[j][k], dp[j-zeroN][k-oneN]+1);
+                }
+            }
+        }
+    }
+
+    return dp[m][n];
+}
+```
+
+时间复杂度：$O(lmn + L)$，其中 l 是数组 strs 的长度，m 和 n 分别是 0 和 1 的容量，L 是数组 strs 中的所有字符串的长度之和。
+
+动态规划需要计算的状态总数是 O(lmn)，每个状态的值需要 O(1) 的时间计算。
+对于数组 strs 中的每个字符串，都要遍历字符串得到其中的 0 和 1 的数量，因此需要 O(L) 的时间遍历所有的字符串。
+总时间复杂度是 O(lmn + L)。
+
+空间复杂度：O(mn)，其中 m 和 n 分别是 0 和 1 的容量。使用空间优化的实现，需要创建 m+1 行 n+1 列的二维数组 dp。
+
+
+
+---
 
 ### 494. 目标和
 
+选或不选，选了 +nums[i]，不选 -nums[i]
 
+
+
+
+
+
+
+---
 
 ### 1049. 最后一块石头的重量 II
 

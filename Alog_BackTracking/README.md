@@ -144,6 +144,51 @@ void backtracking(参数) {
 
 
 
+---
+
+## 494. 目标和
+
+```c++
+int cnt = 0;
+void bt(int target, vector<int> &nums, int i, int sumn) {
+    if (i == nums.size()) {
+        if (target == sumn) {
+            cnt++;
+        }
+        return;
+    }
+
+    bt(target, nums, i+1, sumn+nums[i]);
+    bt(target, nums, i+1, sumn-nums[i]);
+
+    return;
+}
+
+int findTargetSumWays(vector<int>& nums, int target) {
+    bt(target, nums, 0, 0);
+    return cnt;
+}
+```
+
+
+
+注意 bt 主体是
+
+```c++
+bt(target, nums, i+1, sumn+nums[i]);
+bt(target, nums, i+1, sumn-nums[i]);
+```
+
+这是因为它只有两个选择，相当于
+
+```c++
+for (auto ops : {'-', '+'})	{
+    bt(target, nums, i+1, sumn op nums[i]);
+}
+```
+
+相当于展开写了
+
 
 
 
