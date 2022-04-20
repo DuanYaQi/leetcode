@@ -1136,6 +1136,46 @@ $$
 
 
 
+**输出路径**
+
+```C++
+int n,m;
+int v[MAX],w[MAX];
+int dp[MAX];
+bool path[MAX][MAX];
+int V;
+void solve() {
+    memset(dp,0,sizeof(dp));
+   	memset(path,false,sizeof(path));
+   	for (int i=0; i<n; i++) {       
+      	for (int j=V; j>=w[i]; j--)
+        	if (dp[j-w[i]]+v[i] > dp[j]) {
+                dp[j] = dp[j-w[i]]+v[i];
+                path[i][j] = true;//cout<<i<<j<<endl;
+        	}
+   	}
+    
+    cout<< dp[V] <<endl;
+    
+    int ans[MAX];    
+    int k=0;    
+    for (int i=n-1;i>=0;i--) {
+        if (path[i][V]){
+            ans[++k]=i;
+        	V-=w[i];
+       	}
+   	}
+    
+   	//输出所选择的物品
+   	for(int i=k;i>0;i--)
+     	cout<<ans[i]<<endl;
+}
+```
+
+
+
+
+
 拓展：
 
 - 「0-1 背包」是「完全背包」的基础，可参考以下题目掌握「0-1 背包问题」：
@@ -1156,6 +1196,10 @@ $$
 | 322. 零钱兑换    | 从0-1背包到完全背包，逐层深入+推导 | 中等     |
 | 518. 零钱兑换 II | 从0-1背包到完全背包，逐层深入+推导 | 中等     |
 | 279. 完全平方数  | 记忆化搜索、动态规划 + 空间优化    | 中等     |
+
+
+
+
 
 
 
@@ -1302,6 +1346,70 @@ bool canPartition(vector<int>& nums) {
 
 
 
+
+
+#### 输出结果
+
+```c++
+bool canPartition(vector<int>& nums) {
+    int n = nums.size();
+
+    int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+    if (sumn & 1) return false;
+
+    int target = sumn / 2;
+
+    vector<bool> dp(target + 1, false);
+    vector<vector<bool>> path(n, vector<bool>(target + 1, false)); // path！！！
+    dp[0] = true;
+
+    for (int i = 0; i < n; ++i) {
+        int num = nums[i];
+        for (int j = target; j >= 0; --j) {
+            if (j - num < 0) {
+                dp[j] = dp[j];
+                //path[i][j] = dp[j];	//！！！！ 注意这句不能要，放不下也没必要记录
+            } else {
+                dp[j] = dp[j] | dp[j-num];
+                path[i][j] = dp[j];	//！！！！ 只记录拿取的就可以
+            }
+        } 
+    }
+
+    /*输出！！！*/
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j <= target; ++j) {
+            cout << path[i][j] << " ";
+        } 
+        cout << endl;
+    }
+        
+
+    int ans[n+1];    // 注意这里是 n+1的大小，有可能全取
+    int idx = 0;    
+    for (int i = n - 1; i >= 0; i--) {
+        if (path[i][target]){
+            ans[++idx] = i;
+            target -= nums[i];
+        }
+    }
+
+    //输出所选择的物品
+    for(int i = idx; i > 0; i--)
+        cout << ans[i] << " ";
+
+
+    return dp[target];
+}
+```
+
+
+
+![image-20220420200834996](assets/image-20220420200834996.png)
+
+​	
+
 ---
 
 ### 474. 一和零
@@ -1403,6 +1511,57 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 
 
+输出结果
+
+```c++
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int len = strs.size();
+
+    vector<vector<int>> nums(len, vector<int>(2, 0));
+    for (int i = 0; i < len; ++i) {
+        nums[i][0] = count(strs[i].begin(), strs[i].end(), '0');
+        nums[i][1] = strs[i].size() - nums[i][0];
+    }
+
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+    vector<vector<vector<int>>> path(len, vector<vector<int>>(m + 1, vector<int>(n + 1, 0)));
+
+    for (int i = 0; i < len; ++i) {
+        int zeroN = nums[i][0], oneN = nums[i][1];
+
+        for (int j = m; j >= 0; --j) {
+            for (int k = n; k >= 0; --k) {
+                if (j - zeroN < 0 || k - oneN < 0) {
+                    dp[j][k] = dp[j][k];
+                } else {
+                    dp[j][k] = max(dp[j][k], dp[j - zeroN][k - oneN] + 1);
+                    path[i][j][k] = dp[j][k];//！！！
+                }
+            }
+        }
+    }
+
+    int ans[len+1];
+    int idx = 0, mm = m, nn = n;
+    for (int i = len - 1; i >= 0; --i) {
+        if (path[i][mm][nn]) {
+            ans[++idx] = i;
+            mm -= nums[i][0];
+            nn -= nums[i][1];
+        }
+    }
+
+    for (int i = idx; i > 0; --i) 
+        cout << ans[i] << " ";
+
+    return dp[m][n];
+}
+```
+
+
+
+
+
 ---
 
 ### 494. 目标和
@@ -1411,13 +1570,246 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 
 
+记数组的元素和为 sum，添加 - 号的元素之和为 neg，则其余添加 + 的元素之和为 sum−neg，得到的表达式的结果为
 
+$$
+(\textit{sum}-\textit{neg})-\textit{neg}=\textit{sum}-2\cdot\textit{neg}=\textit{target}
+$$
+即
+
+$$
+\textit{neg}=\dfrac{\textit{sum}-\textit{target}}{2}
+$$
+由于数组 nums 中的元素都是非负整数，neg 也必须是非负整数，所以上式成立的前提是 sum−target 是非负偶数。若不符合该条件可直接返回 0。
+
+若上式成立，问题转化成在数组 nums 中选取若干元素，使得这些元素之和等于 neg，计算选取元素的方案数。我们可以使用动态规划的方法求解。
+
+定义二维数组 dp，其中 $\textit{dp}[i][j]$ 表示在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数。假设数组 nums 的长度为 n，则最终答案为 $\textit{dp}[n][\textit{neg}]$。
+
+当没有任何元素可以选取时，元素和只能是 0，对应的方案数是 1，因此动态规划的边界条件是：
+
+$$
+\textit{dp}[0][j]=\begin{cases} 1, & j=0 \\ 0, & j \ge 1 \end{cases}
+$$
+当 $1 \le i \le n$ 时，对于数组 nums 中的第 i 个元素 num（i 的计数从 1 开始），遍历 $0 \le j \le \textit{neg}$，计算 $\textit{dp}[i][j]$ 的值：
+
+如果 $j < \textit{num}$，则不能选 num，此时有 $\textit{dp}[i][j] = \textit{dp}[i - 1][j]$；
+
+如果 $j \ge \textit{num}$，则如果不选 num，方案数是 $\textit{dp}[i - 1][j]$，如果选 num，方案数是 $\textit{dp}[i - 1][j - \textit{num}]$，此时有 $\textit{dp}[i][j] = \textit{dp}[i - 1][j] + \textit{dp}[i - 1][j - \textit{num}]$。
+
+因此状态转移方程如下：
+
+$$
+\textit{dp}[i][j]=\begin{cases} \textit{dp}[i - 1][j], & j<\textit{nums}[i] \\ \textit{dp}[i - 1][j] + \textit{dp}[i - 1][j - \textit{nums}[i]], & j \ge \textit{nums}[i] \end{cases}
+$$
+最终得到 $\textit{dp}[n][\textit{neg}]$ 的值即为答案。
+
+由此可以得到空间复杂度为 $O(n \times \textit{neg})$ 的实现。
+
+```c++
+int findTargetSumWays(vector<int>& nums, int target) {
+    int n = nums.size();
+
+
+    int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+    if ((sumn - target)  < 0 || (sumn - target)  & 1) return 0;
+
+    int neg = (sumn - target) / 2;  //目标数变成负数个数
+
+
+
+    vector<vector<int>> dp(n+1, vector<int>(neg+1, 0));    // 在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数。
+    dp[0][0] = 1;
+
+    for (int i = 1; i <= n; ++i) {
+        int num = nums[i-1];
+
+        for (int j = neg; j >= 0; --j) {
+            if (j - num < 0) {  //不能选
+                dp[i][j] = dp[i-1][j];
+            } else {            // 能选 能选一定要选，而不是max
+                dp[i][j] = dp[i-1][j] + dp[i-1][j-num];
+            }
+        } 
+
+    }
+
+    return dp[n][neg];
+}
+```
+
+
+
+**滚动优化至一维**
+
+```c++
+int findTargetSumWays(vector<int>& nums, int target) {
+    int n = nums.size();
+
+
+    int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+    if ((sumn - target)  < 0 || (sumn - target)  & 1) return 0;
+
+    int neg = (sumn - target) / 2;  //目标数变成负数个数
+
+
+    vector<int> dp(neg+1, 0);    // 在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数。
+    dp[0] = 1;
+
+    for (int i = 0; i < n; ++i) {
+        int num = nums[i];
+
+        for (int j = neg; j >= 0; --j) {
+            if (j - num < 0) {  //不能选
+                dp[j] = dp[j];
+            } else {            // 能选
+                dp[j] = dp[j] + dp[j-num];
+            }
+        } 
+
+    }
+
+    return dp[neg];
+}
+```
+
+
+
+**输出结果**
+
+```c++
+int findTargetSumWays(vector<int>& nums, int target) {
+    int n = nums.size();
+
+
+    int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+    if ((sumn - target)  < 0 || (sumn - target)  & 1) return 0;
+
+    int neg = (sumn - target) / 2;  //目标数变成负数个数
+
+
+    vector<int> dp(neg + 1, 0);    // 在数组 nums 的前 i 个数中选取元素，使得这些元素之和等于 j 的方案数。
+    vector<vector<int>> path(n, vector<int>(neg + 1, 0));
+    dp[0] = 1;
+
+    for (int i = 0; i < n; ++i) {
+        int num = nums[i];
+
+        for (int j = neg; j >= 0; --j) {
+            if (j - num < 0) {  //不能选
+                dp[j] = dp[j];
+            } else {            // 能选
+                dp[j] = dp[j] + dp[j-num];
+                path[i][j] = dp[j];
+            }
+        } 
+
+    }
+
+    int ans[n+1];
+    int idx = 0, negg = neg;
+    for (int i = n-1; i >= 0; --i) {
+        if (path[i][negg] && negg >= 0) {
+            ans[++idx] = i;
+            negg -= nums[i];
+        }
+    }
+
+    for (int i = idx; i > 0; --i)
+        cout << ans[i] << " ";
+
+    return dp[neg];
+}
+```
 
 
 
 ---
 
 ### 1049. 最后一块石头的重量 II
+
+本题其实就是**尽量让石头分成重量相同的两堆**，相撞之后剩下的石头最小，这样就化解成01背包问题了。
+
+```c++
+int lastStoneWeightII(vector<int>& stones) {
+    int n = stones.size();
+
+    int sumn = accumulate(stones.begin(), stones.end(), 0);
+
+    int target = sumn / 2;
+
+    vector<vector<int>> dp(n + 1, vector<int>(target + 1, 0));  //前i个数字 可以组成的最大数字
+
+    for (int i = 1; i <= n; ++i) {
+        int num = stones[i - 1];
+
+        for (int j = target; j >= 0; --j) {
+            if (j - num < 0) {
+                dp[i][j] = dp[i-1][j];
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i-1][j - num] + num);
+            }
+        }
+    }
+
+    /*
+        for (int i = 0; i <= n; ++i) {
+            for (int j = 0; j <= target; ++j) {
+                cout << dp[i][j] << " ";
+            }
+            cout << endl;
+        }
+        */
+
+    return sumn - dp[n][target] * 2;   
+}
+```
+
+
+
+**滚动数组优化**
+
+```c++
+int lastStoneWeightII(vector<int>& stones) {
+    int n = stones.size();
+
+    int sumn = accumulate(stones.begin(), stones.end(), 0);
+
+    int target = sumn / 2;
+
+    vector<int> dp(target + 1, 0);  //前i个数字 可以组成的最大数字
+
+    for (int i = 1; i <= n; ++i) {
+        int num = stones[i - 1];
+
+        for (int j = target; j >= 0; --j) {
+            if (j - num < 0) {
+                dp[j] = dp[j];
+            } else {
+                dp[j] = max(dp[j], dp[j - num] + num);
+            }
+        }
+    }
+
+    /*
+        for (int i = 0; i <= n; ++i) {
+            for (int j = 0; j <= target; ++j) {
+                cout << dp[i][j] << " ";
+            }
+            cout << endl;
+        }
+        */
+
+    return sumn - dp[target] * 2;   
+}
+```
+
+
+
+**不能输出路径**
 
 
 

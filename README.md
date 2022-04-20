@@ -41,7 +41,32 @@ DAG 的问题就 dfs+memo
 
 
 
-做题先写数学公式，画出每一个map/set中的变化，然后再写代码
+1）做题先写数学公式，画出每一个map/set中的变化，然后再写代码。
+
+2）遇到很复杂的背景题，要仔细看输入输出的要求。
+
+3）一眼看不到方法的问题，三种情况：
+
+- 第一种是**脑筋急转弯**
+  - 尽量画图，找规律
+- 第二种是需要把**题目抽象一下**
+  - 课程表抽象成节点，用图算法
+- 第三种需要把**求解的答案转换一下**（一般需要简单的数学公式推导一下），再用固定的算法模板
+  - 分割等和子集，不要上去就dfs，枚举情况，把他转变成求一个集合答案为和的一半；如
+  - 目标和，把找目标和，变成找固定负数个数
+  - 最后一块石头的重量，不要想着一步一步粉碎石头，解空间太大，根据题目的要求，分析出两堆石头重量尽可能接近，剩下来的重量就小。
+- 第四种**两种算法的结合**
+  - 可能需要先用前缀和预处理一下，然后再建图/模拟
+  - 或者先用01背包计算出所用满足情况的满足条件，然后再计算输出答案
+
+
+4）确保算法没问题但没 AC
+
+- 找没考虑到的特殊情况
+- long long
+- 输出格式问题
+
+
 
 
 
@@ -67,40 +92,7 @@ DAG 的问题就 dfs+memo
 - [ ] [大数的十进制与二进制互转新方法](https://zhuanlan.zhihu.com/p/29768999)
 - [ ] [红黑树比 AVL 树具体更高效在哪里](https://www.zhihu.com/question/19856999/answer/258118494)
 
-```c++
-int n,m;
-int v[MAX],w[MAX];
-int dp[MAX];
-bool path[MAX][MAX];
-int V;
-void solve()
-{
-    memset(dp,0,sizeof(dp));
-   memset(path,false,sizeof(path));
-   for(int i=0;i<n;i++)
-   {
-       for(int j=V;j>=w[i];j--)
-        if(dp[j-w[i]]+v[i]>dp[j])
-        {
-            dp[j]=dp[j-w[i]]+v[i];
-            path[i][j]=true;//cout<<i<<j<<endl;
-        }
-   }
-   cout<<dp[V]<<endl;
-   int ans[MAX];
-   int k=0;
-   for(int i=n-1;i>=0;i--)
-   {
-       if(path[i][V]){
-        ans[++k]=i;
-        V-=w[i];
-       }
-   }
-   //输出所选择的物品
-   for(int i=k;i>0;i--)
-     cout<<ans[i]<<endl;
-}
-```
+
 
 ---
 
@@ -216,6 +208,10 @@ https://www.cnblogs.com/MinPage/
 |记忆化搜索/回溯|超时的可能原因<br>1. 把几个**返回状态相同**的 if **用 \|\| 合并**成一个 if<br>2.先计算再用计算结果return，可以直接放到return里（如下）|
 ||bool b1 = dfs(\*args1)<br>bool b2 = dfs(\*args2)<br>return b1 \|\| b2;<br>换为<br>return dfs(\*args1) \|\| dfs(\*args2)|
 |||
+|DP|打印dp数组来看|
+||先不要用滚动数组，先写naive的；超时再改|
+||注意初始化|
+||检查 i，j 遍历的索引是否 >=0 或 <=n|
 |||
 
 
@@ -785,9 +781,10 @@ DP
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |2+[416. Partition Equal Subset Sum](/Alog_DP/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到背包容量本质是target,物品的重量是其nums[i]<br>可以用滚动数组优化到1维DP|
+|[416. Output Answer](/Alog_DP/416+Output.cpp) | | 输出结果|
 |[474. Ones and Zeroes](/Alog_DP/474+Ones%20and%20Zeroes+.cpp) |01背包 |三维DP数组，滚动优化到2维，需要满足两个条件，才能取 |
-| | | |
-| | | |
+|[474. Output Answer](/Alog_DP/474+Output.cpp) | | 输出结果 |
+|[1049. Last Stone Weight II](/Alog_DP/1049+Last%20Stone%20Weight%20II.cpp) | dp[i][j] 表示前i个数字 可以组成的最大数字<br>dp[i][j] 表示前i个数字是否能组成j|转化为01背包问题，注意索引 |
 | | | |
 | | | |
 | | | |
