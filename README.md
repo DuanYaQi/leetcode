@@ -77,14 +77,8 @@ DAG 的问题就 dfs+memo
 - [ ] 440 K-th Smallest in Lexicographical Order
 - [ ] 523
 - [ ] 322
-- [ ] 474记忆化搜索  `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
-- [ ] [UVA 624 CD 01背包 输出解](`https://blog.csdn.net/u012139398/article/details/43346667)
-- [ ] [01背包输出路径、完全背包、多重背包](https://blog.csdn.net/qq_51070956/article/details/123155169#01_Knapsack__3)
-- [ ] [01背包的基础和进阶版以及路径的输出问题](https://blog.csdn.net/qq_45859272/article/details/123663552)
-- [ ] [0-1背包问题求解，及输出路径和选择的物品](https://blog.csdn.net/shansharp/article/details/102847600)
-- [ ] [QDU YZM10与大富翁的故事 （01背包+输出路径）](https://www.freesion.com/article/900814173/)
-- [ ] [Codeforces Round #436 (Div. 2)-E-Fire（01背包输出路径）](https://blog.51cto.com/u_15354358/3764897)
-- [ ] [Codeforces Gym-102219 2019 ICPC Malaysia National E. Optimal Slots(01背包+输出路径)](https://www.bbsmax.com/A/Gkz1qjBrzR/)
+- [ ] 474 记忆化搜索  `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
+- [ ] 322 为什么 dp 赋初始值 `0x3f` 可以，而 `INT_MAX`， `INT_MAX / 2` 就不行
 - [ ] 面试题 17.07. Baby Names LCCI
 - [ ] 蓄水池算法
 - [ ] bitmap
@@ -153,7 +147,8 @@ https://www.cnblogs.com/MinPage/
 |  :----:  |
 | 注意爆 int 要用 long long |
 | 输出具体方案，如果找不到问题，来回排序试一试 |
-|  |
+| `const int inf = 0x3f3f3f3f;`|
+| `int a[m][n]; memset(a, 0x3f, sizeof(a));` |
 |  |
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |if (root != nullptr)　而不是　if (root)|
@@ -212,6 +207,7 @@ https://www.cnblogs.com/MinPage/
 ||先不要用滚动数组，先写naive的；超时再改|
 ||注意初始化|
 ||检查 i，j 遍历的索引是否 >=0 或 <=n|
+||最外层循环，可以把后边重复读取到的值先创建一个变量保存|
 |||
 
 
@@ -786,7 +782,7 @@ DP
 |[474. Output Answer](/Alog_DP/474+Output.cpp) | | 输出结果 |
 |[1049. Last Stone Weight II](/Alog_DP/1049+Last%20Stone%20Weight%20II.cpp) | dp[i][j] 表示前i个数字 可以组成的最大数字<br>dp[i][j] 表示前i个数字是否能组成j|转化为01背包问题，注意索引 |
 | | | |
-| | | |
+|[322. Coin Change](/322) | | |
 | | | |
 | | | |
 

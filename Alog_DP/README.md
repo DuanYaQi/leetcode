@@ -1219,6 +1219,10 @@ $$
 
 
 
+这一步保证了值是恰好相等的 `j - nums[i-1] == 0 ` ，
+
+
+
 #### 二维DP
 
 ```c++
@@ -1819,6 +1823,10 @@ int lastStoneWeightII(vector<int>& stones) {
 
 ### 322. 零钱兑换
 
+https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-cong-zui-po-su-de-1g1m/
+
+
+
 给定一个整数数组 coins，表示不同面额的硬币；以及一个整数 amount，表示总金额。本题要求的是在每种硬币的数量是无限的情况下，计算并返回可以凑成总金额所需的最少的硬币个数 。
 
 每种硬币的数量是无限的，这是一个典型的「完全背包」求最优解问题。对于本题，定义二维数组 $dp[i][j]$ 表示：从前 i 个硬币中组成金额 j 所需最少的硬币数量。
@@ -1827,10 +1835,71 @@ int lastStoneWeightII(vector<int>& stones) {
 $$
 dp[i][j] = \min\left\{ \ dp[i-1][j-k\cdot w_i] + k \ \right\}\ ,\quad 0<=k\cdot w_i<=j \quad\quad
 $$
-对应于对于第 ii 个硬币，选 00、11、22、...、kk 个组成金额 jj 时所对应的最小硬币数目。
+对应于对于第 i 个硬币，选 0、1、2、...、k 个组成金额 j 时所对应的最小硬币数目。
 
-初始化时，dp[i][0] = 0dp[i][0]=0，表示从前 ii 个硬币中凑出金额 00 所需要的硬币数目为 00。【不选任何硬币即可得到 00 】
+初始化时，`dp[i][0] = 0`，表示从前 i 个硬币中凑出金额 0 所需要的硬币数目为 0。【不选任何硬币即可得到 0 】
+
 其他不合法的或未定义的状态则可以设置为正无穷或一个不可能取到的较大值。
+
+
+
+#### 朴素完全背包
+
+每计算一个 `dp[i][j]` 需要遍历 k 种状态(每个coin可以存在0-k个)所以时间复杂度为$O(n^3)$，所以应该超时，但竟然没超。
+
+```c++
+int coinChange(vector<int>& coins, int amount) {
+    int n = coins.size();
+	const int inf = 0x3f3f3f3f;
+    int dp[n + 1][amount + 1]; memset(dp, inf, sizeof(dp)); // 前i个数字组成j的最小个数
+
+    for (int i = 0; i <= n; ++i) 
+        dp[i][0] = 0;
+
+    for (int i = 1; i <= n; ++i) {	// 遍历物品
+        int num = coins[i-1];		// 能过的原因是这一步，后边两个计算用到num了！！！！！！
+
+        for (int j = 0; j <= amount; ++j) {	// 遍历包的体积
+            for (int k = 0; k <= (int)j / num; ++k) {
+                dp[i][j] = min(dp[i][j], dp[i-1][j - k * num] + k);
+            }
+        }
+    }
+
+    return dp[n][amount] == inf ? -1 : dp[n][amount];
+}
+```
+
+
+
+但是如果用 `vector<vector<int>> dp(n + 1, vector<int>(amount + 1, INT_MAX / 2));` 就会超时
+
+
+
+j和k翻着遍历也是一样的，为后续优化做准备
+
+```C++
+int coinChange(vector<int>& coins, int amount) {
+    int n = coins.size();
+	const int inf = 0x3f3f3f3f;
+    int dp[n + 1][amount + 1]; memset(dp, inf, sizeof(dp)); // 前i个数字组成j的最小个数
+
+    for (int i = 0; i <= n; ++i) 
+        dp[i][0] = 0;
+
+    for (int i = 1; i <= n; ++i) {	                            // 遍历物品
+        int num = coins[i-1];   // O(n^3)能过的原因是这一步，后边两个计算用到num了！！！！！！
+
+        for (int j = amount; j >= 0; --j) {	                    // 遍历包的体积
+            for (int k = (int)j / num; k >= 0; --k) {           // 遍历每个物品有多少个的K种情况
+                dp[i][j] = min(dp[i][j], dp[i-1][j - k * num] + k);
+            }
+        }
+    }
+
+    return dp[n][amount] == inf ? -1 : dp[n][amount];
+}
+```
 
 
 
