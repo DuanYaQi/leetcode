@@ -979,6 +979,142 @@ dp[0] = nums[0];
 
 
 
+---
+
+## 377. 组合总和 Ⅳ-完全背包？
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 表示选取的元素之和等于 i 的方案数
+```
+
+
+
+2. 确定**递推公式**
+
+如果存在一种排列，其中的元素之和等于 i，则该排列的最后一个元素一定是数组 nums 中的一个元素。假设该排列的最后一个元素是 num，则一定有 num≤i，对于元素之和等于 i−num 的每一种排列，在最后添加 num 之后即可得到一个元素之和等于 i 的排列，因此在计算 dp[i] 时，应该计算**所有的 dp[i−num] 之和**。
+
+```c++
+for (int k = 0; k < nums.size(); ++k)
+	dp[i] += dp[i-nums[k]];
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+// 边界条件
+dp[0] = 1; 
+```
+
+不选取任何元素时，元素之和才为 0，因此只有 1 种方案。
+
+
+
+4. 确定**遍历顺序**
+
+外层循环是遍历从 1 到 target 的值，内层循环是遍历数组 nums 的值，在计算 dp[i] 的值时，nums 中的**每个小于等于 i 的元素都可能作为元素之和等于 i 的排列的最后一个元素**。
+
+
+
+
+
+
+
+5. 举例推导dp数组
+
+
+
+
+
+```c++
+int combinationSum4(vector<int>& nums, int target) {
+    int dp[target+1]; memset(dp, 0, sizeof(dp));
+    dp[0] = 1;
+
+    for (int i = 1; i <= target; ++i) { // 1 2 3 4
+        for (int j = 0; j < nums.size(); ++j) { // 1 2 3
+            int num = nums[j];                  // 1 2 3
+            if (i - num >= 0) {
+                dp[i] += dp[i - num];
+            }                
+        }
+    }
+
+    return dp[target];
+}
+```
+
+
+
+
+
+
+
+----
+
+## 139. 单词划分-完全背包？
+
+`dp[i][j]`,表示前 i 个单词，是否可以组成长度为 j 的字符串
+
+
+
+每个物品都有放入和不放入的情况
+当物品不放入背包
+`dp[i][j]=dp[i-1][j]`
+当物品放入背包
+`dp[i][j]=dp[i][j-w.size()]`
+
+```c++
+public boolean wordBreak(String s, List<String> wordDict) {
+    boolean[][] dp = new boolean[s.length()+1][wordDict.size()+1];
+    Arrays.fill(dp[0],true);
+
+    for (int i = 1; i < dp.length; i++) {
+        for (int j = 1; j < dp[0].length; j++) {
+            int len = wordDict.get(j-1).length();
+            dp[i][j] = dp[i][j-1];
+            if(i>=len&&s.substring(i-len,i).equals(wordDict.get(j-1))){
+                for (int k = 1; k <= wordDict.size(); k++) {
+                    dp[i][j]|= dp[i-len][k];
+                }
+            }
+        }
+    }
+
+    return dp[dp.length-1][dp[0].length-1];
+}
+```
+
+
+
+```c++
+bool wordBreak(string s, vector<string>& wordDict) {
+    int bagSize = s.size();
+    vector<bool> dp(bagSize + 1, false);
+    dp[0] = true;
+    for (int j = 1; j <= bagSize; j++)               // 背包容量
+        for (int i = 0; i < wordDict.size(); i++) {  // 物品
+            int dictLen = wordDict[i].size();
+            if (j >= dictLen && wordDict[i] == s.substr(j - dictLen, dictLen))
+                dp[j] = dp[j] || dp[j - dictLen];
+        }   
+    return dp[bagSize];
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 ---
@@ -1046,7 +1182,7 @@ $$
 
 **动态规划**是解决 [0-1 背包问题] 和 [完全背包问题] 的**标准做法**。
 
-**1. [0-1 背包问题]**
+### 1. [0-1 背包问题]
 
 一般地，我们定义：`dp[i][j]` 表示**前 i** 件物品放入一个**容量为 j** 的背包可以获得的最大价值（每件物品最多放一次），则状态转移过程可表示为：
 
@@ -1064,7 +1200,8 @@ dp[i][j] = max(dp[i-1][j],dp[i-1][j-w_i] + v_i)
 $$
 
 
-**2. [完全背包问题]**
+
+### 2. [完全背包问题]
 
 类似于 01 背包，但不同的是每件物品有无限个供应：从每件物品的数量来考虑，有取 0 件、取 1 件、取 2 件......取 k 件等很多种。
 
@@ -1114,7 +1251,13 @@ $$
 
 
 
-**对比总结**
+
+
+
+
+---
+
+### 对比总结
 
 两种背包问题的状态转移方程对比总结如下：
 
@@ -1123,12 +1266,99 @@ $$
 完全背包：\ dp[i][j] = \max \{ \ dp[i-1][j],\quad \textcolor{red}{dp[i]}[j-w_i] + v_i\ \} ,\quad \quad \quad 0<=w_i<=j \quad \quad
 $$
 
-> ⚠️ 求最优解的背包问题中，有的题目要求 **恰好装满背包** 时的最优解，有的题目则要求 **不超过背包容量** 时的最优解。一种区别这两种问法的实现方法是在**状态初始化的时候有所不同**。
+
+
+
+
+
+
+---
+
+### 模板
+
+```c++
+// 01背包
+int dp[n+1][m+1]; memset(dp, 0, sizeof(dp));	// 表示前i件物品恰放入一个容量为j的背包可以获得的最大价值
+for(int i=0; i<n; i++){				//遍历n个物品
+    for(int j=m; j>=0;j--){			//遍历m个容量 逆序遍历
+        if(j >= w[i]){				//能装，判断装不装再装
+            dp[i][j]=max(dp[i-1][j], dp[i-1][j-w[i]]+v[i]);
+        }
+        //第i个物体不选 dp[i][j]=dp[i-1][j];
+        //第i个物体若选 dp[i][j]=dp[i-1][j-w[i]]+v[i]
+    } 
+}
+```
+
+
+
+```c++
+// 多重背包
+int dp[n+1][m+1]; memset(dp, 0, sizeof(dp));	// 表示前i件物品恰放入一个容量为j的背包可以获得的最大价值
+for(int i=0; i<n; i++){				//遍历n个物品
+    for(int j=m; j>=0;j--){			//遍历m个容量 逆序遍历
+        if(j >= w[i]){				//能装，判断装不装再装
+            dp[i][j]=max(dp[i-1][j], dp[i][j-w[i]]+v[i]);
+        }
+        //第i个物体不选 dp[i][j]=dp[i-1][j];
+        //第i个物体若选 dp[i][j]=dp[i][j-w[i]]+v[i]
+    } 
+}
+```
+
+
+
+
+
+⚠️ 求最优解的背包问题中，有的题目要求 **恰好装满背包** 时的最优解，有的题目则要求 **不超过背包容量** 时的最优解。两种问法**状态初始化不同**。
+
+初始化的 dp 数组事实上就是在背包中没有放入任何物品时的合法状态：
+
+1. 如果要求**恰好装满背包**，那么在初始化时 `dp[i][0]=0`，其它 `dp[i][*]` 均设为 $-\infty$。这是因为此时只有容量为 0 的背包可能被价值为 0 的 nothing “恰好装满”，而其它容量的背包均没有合法的解，属于未定义的状态。
+   - 答案在 `dp[m][n]`
+2. 如果只是要求**不超过背包容量**而使得背包中的物品价值尽量大，初始化时应将 `dp[*][*]` 全部设为 0。这是因为对应于任何一个背包，都有一个合法解为 “什么都不装”，价值为 0。答案两种情况，
+   - dp存是否满足前 i 个数构成 j，答案在满足 `dp[*][j] == true` 的最大 `j`
+   - dp存前 i 件物品恰放入一个容量为 j 的背包可以获得的最大价值，答案在 `dp[m][n]`
+
+
+
+
+
+⚠️求最优解的背包问题中，有的题目要求**判断**是否可以装入背包，有的题目要求**计算**装入背包的最小最大**物品个数**，有的要求**计算**装入背包的**方法数**。区别是在**能装入时的那一条状态转移方程不同**。
+
+|                  |    if (j - w >= 0) （可装）时的状态转移方程    |           初始化            |                             含义                             |
+| ---------------- | :--------------------------------------------: | :-------------------------: | :----------------------------------------------------------: |
+| 判断能否装入背包 |    ` dp[i][j] = dp[i-1][j] || dp[i-1][j-w]`    | 全 false，`dp[*][0] = true` | 前 i 个数中选取元素，**是否**可以使这些元素之**和刚好**为 j  |
+| 能组成的最大值   |                      同上                      |            同上             |              找最大 `j` 满足`dp[*][j] == true`               |
+| 能组成的最大值   | `dp[i][j] = max(dp[i-1][j], dp[i-1][j-w] + v)` |            全 0             |    前 i 件物品恰放入一个容量为 j 的背包可以获得的最大价值    |
+|                  |                                                |                             |                                                              |
+| 计算最大物品个数 | `dp[i][j] = max(dp[i-1][j], dp[i-1][j-w] + 1)` |            全 0             | 从前 i 个硬币中组成金额 j 所需最多的硬币数<br/>如果不能满足装入，结果为 0 |
+| 计算最小物品个数 | `dp[i][j] = min(dp[i-1][j], dp[i-1][j-w] + 1)` |   全 inf，`dp[*][0] = 0;`   | 从前 i 个硬币中组成金额 j 所需最少的硬币数<br>如果不能满足装入，结果为 inf |
+|                  |                                                |                             |                                                              |
+| 计算方法数       |    `dp[i][j] = dp[i-1][j] + dp[i-1][j-w];`     |    全 0，`dp[0][0] = 1;`    |      前 i 个数中选取元素，使这些元素之和等于 j 的方案数      |
+|                  |                                                |                             |                                                              |
+
+>以上状态转移方程均为 01 背包为例，w 为重量，v 为价值。
 >
-> 初始化的 dp 数组事实上就是在背包中没有放入任何物品时的合法状态：
 >
-> 1. 如果要求**恰好装满背包**，那么在初始化时 `dp[i][0]=0`，其它 `dp[i][1,2,...,*]` 均设为 $-\infty$。这是因为此时只有容量为 0 的背包可能被价值为 0 的 nothing “恰好装满”，而其它容量的背包均没有合法的解，属于未定义的状态。
-> 2. 如果只是要求**不超过背包容量**而使得背包中的物品价值尽量大，初始化时应将 `dp[*][*]` 全部设为 0。这是因为对应于任何一个背包，都有一个合法解为 “什么都不装”，价值为 0。
+>
+>判断能否装入背包：416
+>
+>能组成的最大值：1049
+>
+>能组成的最小值：没有意义的问题
+>
+>
+>
+>计算最大物品个数：474（一般限制条件比较复杂，不能简单的贪心）
+>
+>计算最小物品个数：322，279
+>
+>
+>
+>计算方法数：494
+>
+>
 
 
 
@@ -1136,7 +1366,45 @@ $$
 
 
 
-**输出路径**
+---
+
+### 组合数和排列数
+
+```c++
+for (int i = 0; i < coins.size(); i++) { 		// 遍历物品
+    for (int j = coins[i]; j <= amount; j++) { 	// 遍历背包容量
+    	if (j - coins[i] >= 0)
+            dp[j] += dp[j - coins[i]];
+    }
+}
+```
+
+假设：coins[0] = 1，coins[1] = 5。那么就是先把1加入计算，然后再把5加入计算，得到的方法数量只有{1, 5}这种情况。而不会出现{5, 1}的情况。得到的是组合数
+
+
+
+```c++
+for (int j = 0; j <= amount; j++) { 			// 遍历背包容量
+    for (int i = 0; i < coins.size(); i++) { 	// 遍历物品
+    	if (j - coins[i] >= 0) 
+            dp[j] += dp[j - coins[i]];
+    }
+}
+```
+
+背包容量的每⼀个值，都是经过 1 和 5 的计算，包含了{1, 5} 和 {5, 1}两种情况。得到的是排列数。
+
+
+
+遇到排列数如果 dp 数组意义不明确，不要轻易把 dp 数组设计成背包问题来做，用普通 dp 方法来做好一点
+
+
+
+
+
+---
+
+### 输出路径
 
 ```C++
 int n,m;
@@ -1176,26 +1444,19 @@ void solve() {
 
 
 
-拓展：
-
-- 「0-1 背包」是「完全背包」的基础，可参考以下题目掌握「0-1 背包问题」：
-
-| **题号**                    | 题解                            | **难度** |
-| --------------------------- | ------------------------------- | -------- |
-| 416. 分割等和子集           | 记忆化搜索、动态规划 + 空间优化 | 中等     |
-| 417. 一和零                 | 记忆化搜索、动态规划 + 空间优化 | 中等     |
-| 494. 目标和                 | 记忆化搜索、动态规划 + 空间优化 | 中等     |
-| 1049. 最后一块石头的重量 II | 记忆化搜索、动态规划 + 空间优化 | 中等     |
 
 
+---
 
-- 对「0-1 背包」模板稍加拓展，可用于解决一众「完全背包问题」：
+### 优化
 
-| **题号**         | 题解                               | **难度** |
-| ---------------- | ---------------------------------- | -------- |
-| 322. 零钱兑换    | 从0-1背包到完全背包，逐层深入+推导 | 中等     |
-| 518. 零钱兑换 II | 从0-1背包到完全背包，逐层深入+推导 | 中等     |
-| 279. 完全平方数  | 记忆化搜索、动态规划 + 空间优化    | 中等     |
+滚动数组优化，优化时需要倒着遍历，因为第 i 次倒着遍历取到的值就是 i-1时刻的值
+
+完全背包的状态转移方程优化，去除对物品数量 k 的循环，`dp[i][j-w] + v` 
+
+
+
+
 
 
 
@@ -1223,7 +1484,7 @@ $$
 
 
 
-#### 二维DP
+- **二维DP**
 
 ```c++
 bool canPartition(vector<int>& nums) {
@@ -1297,7 +1558,7 @@ public:
 
 
 
-#### 一维DP
+- **一维DP**
 
 动态规划的滚动数组优化如下：
 
@@ -1352,7 +1613,7 @@ bool canPartition(vector<int>& nums) {
 
 
 
-#### 输出结果
+- **输出结果**
 
 ```c++
 bool canPartition(vector<int>& nums) {
@@ -1827,7 +2088,7 @@ https://leetcode-cn.com/problems/coin-change/solution/322-ling-qian-dui-huan-con
 
 
 
-给定一个整数数组 coins，表示不同面额的硬币；以及一个整数 amount，表示总金额。本题要求的是在每种硬币的数量是无限的情况下，计算并返回可以凑成总金额所需的最少的硬币个数 。
+给定一个整数数组 coins，表示不同面额的硬币；以及一个整数 amount，表示总金额。本题要求的是在每种硬币的数量是无限的情况下，计算并返回可以凑成总金额所需的**最少的硬币个数** 。
 
 每种硬币的数量是无限的，这是一个典型的「完全背包」求最优解问题。对于本题，定义二维数组 $dp[i][j]$ 表示：从前 i 个硬币中组成金额 j 所需最少的硬币数量。
 
@@ -1843,7 +2104,7 @@ $$
 
 
 
-#### 朴素完全背包
+- **朴素完全背包**
 
 每计算一个 `dp[i][j]` 需要遍历 k 种状态(每个coin可以存在0-k个)所以时间复杂度为$O(n^3)$，所以应该超时，但竟然没超。
 
@@ -1861,7 +2122,7 @@ int coinChange(vector<int>& coins, int amount) {
 
         for (int j = 0; j <= amount; ++j) {	// 遍历包的体积
             for (int k = 0; k <= (int)j / num; ++k) {
-                dp[i][j] = min(dp[i][j], dp[i-1][j - k * num] + k);
+                dp[i][j] = min(dp[i][j], dp[i-1][j - k * num] + k);// 注意这里是+k，不是+1！！！！！！！！
             }
         }
     }
@@ -1876,7 +2137,7 @@ int coinChange(vector<int>& coins, int amount) {
 
 
 
-j和k翻着遍历也是一样的，为后续优化做准备
+j和k反着遍历也是一样的，为后续优化做准备
 
 ```C++
 int coinChange(vector<int>& coins, int amount) {
@@ -1905,6 +2166,98 @@ int coinChange(vector<int>& coins, int amount) {
 
 
 
+- **滚动数组优化至二维**
+
+为什么 j 和 k 不反向遍历也可以通过？？？
+
+**对于纯完全背包问题，其for循环的先后循环是可以颠倒的，但如果问装满背包有几种方式的话？ 那么两个for循环的先后顺序就有很⼤区别了**
+
+```c++
+int coinChange(vector<int>& coins, int amount) {
+    int n = coins.size();
+    const int inf = 0x3f3f3f3f;
+
+    int dp[amount + 1]; memset(dp, inf, sizeof(dp));
+
+
+    dp[0] = 0;
+
+    for (int i = 1; i <= n; ++i) {
+        int num = coins[i-1];
+
+        for (int j = amount; j >= 0; --j) {
+            for (int k = (int)j / num; k >= 0; --k) {
+                dp[j] = min(dp[j], dp[j - k*num] + k);
+            }
+        }
+    }
+    return dp[amount] == inf ? -1 : dp[amount];
+}
+```
+
+只是优化了空间
+
+
+
+
+
+- **状态转移方程优化**
+
+$$
+dp[i][j] = \min\left\{ \ dp[i-1][j-k\cdot w_i] + k \ \right\}\ ,\quad 0<=k\cdot w_i<=j \quad\quad
+$$
+
+将上述状态转移方程展开可得：
+$$
+dp[i][j] = \min \{ \ dp[i-1][j],\quad \textcolor{red}{dp[i-1][j-w_i] + v_i}, \textcolor{teal}{\ dp[i-1][j-2\cdot w_i] + 2\cdot v_i}, \ \ \ \\ \ ..., \ \textcolor{blue}{dp[i-1][j-k\cdot w_i] + k\cdot v_i} \ \} ,\quad \quad \quad 0<=k\cdot w_i<=j  \tag{1}
+$$
+而恰巧的是对于 $dp[i][j-w_i]$ 我们有：
+$$
+dp[i][j-w_i] = \min \{ \ \textcolor{red}{dp[i-1][j-w_i]}, \ \textcolor{teal}{dp[i-1][j-2\cdot w_i] + v_i}, \quad \quad \quad \quad \quad \quad \quad \quad \\ \ ..., \ \textcolor{blue}{dp[i-1][j-k\cdot w_i] + (k-1)\cdot v_i} \ \} , w_i<=k\cdot w_i<=j
+\tag{2}
+$$
+观察发现式 2 与式 1 中的后 k 项刚好相差了一个 $v_i$ ，将式 2 代入式 1 可得简化后的「完全背包问题」的「状态转移方程」为：
+$$
+dp[i][j] = \min \{ \ dp[i-1][j],\quad \textcolor{red}{dp[i]}[j-w_i] + v_i\ \} ,\quad 0<=w_i<=j \ \ \quad \quad \quad \quad \quad \quad
+\tag{3}
+$$
+
+
+> ⚠️ 注意，式 3 与「0-1 背包问题」的状态转移方程及其相似，差别（以红色标注）在于第二项中的状态转移是来自上一行还是本行。这也决定了具体编程实现时状态更新方式的异同。
+
+
+
+```c++
+int coinChange(vector<int>& coins, int amount) {
+    int n = coins.size();
+    const int inf = 0x3f3f3f3f;
+    int dp[n + 1][amount + 1]; memset(dp, inf, sizeof(dp)); // 前i个数字组成j的最小个数
+
+    for (int i = 0; i <= n; ++i) 
+        dp[i][0] = 0;
+
+    for (int i = 1; i <= n; ++i) {	// 遍历物品
+        int num = coins[i-1];		// 能过的原因是这一步，后边两个计算用到num了,这里相当于缓存了一下！！！！！！
+
+        for (int j = 0; j <= amount; ++j) {	// 遍历包的体积     
+            if (j - num < 0) {              // 如果装不下延续上一时刻的状态
+                dp[i][j] = dp[i-1][j];      
+            } else {                        // 可以装到，选择装或不装 的最小数量
+                dp[i][j] = min(dp[i-1][j], dp[i][j - num] + 1);	// 注意第二项不是 dp[i-1][j-num] + 1 而是 dp[i][j-num] + 1
+            }
+        }
+    }
+
+    return dp[n][amount] == inf ? -1 : dp[n][amount];
+}
+```
+
+
+
+
+
+
+
 
 
 
@@ -1913,11 +2266,152 @@ int coinChange(vector<int>& coins, int amount) {
 
 ### 518. 零钱兑换 II
 
+请你计算并返回可以凑成总金额的**硬币组合数**
+
+`dp[i][j]` **长度为i的序列和为j的方案数**。
+
+
+
+而恰巧的是对于 $dp[i][j-w_i]$ 我们有：
+$$
+dp[i][j-w_i] =   \ \textcolor{red}{dp[i-1][j-w_i]}+
+\ \textcolor{teal}{dp[i-1][j-2\cdot w_i]}+
+\quad \quad \quad \quad \quad \quad \quad \quad \\ \ ...+ \ \textcolor{blue}{dp[i-1][j-k\cdot w_i]} \ , w_i<=k\cdot w_i<=j
+\tag{2}
+$$
+观察发现式 2 与式 1 中的后 k 项刚好相等 ，将式 2 代入式 1 可得简化后的「完全背包问题」的「状态转移方程」为：
+$$
+dp[i][j] = \ dp[i-1][j]+ 
+\textcolor{red}{dp[i]}[j-w_i]\quad 0<=w_i<=j \ \ \quad \quad \quad \quad \quad \quad
+\tag{3}
+$$
+
+
+> ⚠️ 注意，式 3 与「0-1 背包问题」的状态转移方程及其相似，差别（以红色标注）在于第二项中的状态转移是来自上一行还是本行。这也决定了具体编程实现时状态更新方式的异同。
+
+
+
+```c++
+int change(int amount, vector<int>& coins) {
+    int n = coins.size();
+
+    int dp[n+1][amount+1]; memset(dp, 0, sizeof(dp));   // 前i个数中选元素，元素和为j的组合数
+
+
+    for (int i = 0; i <= n; ++i)    // 和0的组合数均为1，都不选
+        dp[i][0] = 1;
+
+    for (int i = 1; i <= n; ++i) {
+        int w = coins[i-1];
+
+        for (int j = 0; j <= amount; ++j) {
+            if (j - w < 0) {    // 不能选
+                dp[i][j] = dp[i-1][j];
+            } else {            // 能选
+                dp[i][j] = dp[i-1][j] + dp[i][j-w];     // 注意这里是 = 号 不是+=号
+            }
+        }
+    }
+
+    return dp[n][amount];
+}
+```
+
+
+
+
+
 
 
 ---
 
 ### 279. 完全平方数
+
+可以随便取，所以是完全背包
+
+
+
+取较小者，状态转移方程为
+$$
+dp[i][j] = min(dp[i-1][j],dp[i-1][j-k\cdot w_i] + k\cdot v_i),\ \ 0\le k\cdot w_i \le j
+$$
+
+```C++
+int numSquares(int n) {
+    int maxn = sqrt(n); //找到搜索上界 3
+
+    const int inf = 0x3f3f3f3f;
+    int dp[maxn + 1][n + 1]; memset(dp, inf, sizeof(dp)); //前i个数，其平方数的和构成i的最少数量
+
+    for (int i = 0; i <= maxn; ++i) {
+        dp[i][0] = 0;
+    }
+
+    for (int i = 1; i <= maxn; ++i) {
+        int w = i * i;
+        for (int j = 0; j <= n; ++j) {
+            if (j - w < 0) {
+                dp[i][j] = dp[i-1][j];
+            } else {
+                for (int k = (int)j / w; k >= 0; --k) {
+                    dp[i][j] = min(dp[i][j], dp[i-1][j-w*k] + k);// 注意这里是+k，不是+1！！！！！！！！
+                }
+            }
+        }
+    }
+
+    return dp[maxn][n];
+}
+```
+
+超时，滚动数组优化也超时。只能优化状态转移方程，省去中间的 for 循环
+
+
+
+将上述状态转移方程展开可得：
+$$
+dp[i][j] = \min \{ \ dp[i-1][j],\quad \textcolor{red}{dp[i-1][j-w_i] + v_i}, \textcolor{teal}{\ dp[i-1][j-2\cdot w_i] + 2\cdot v_i}, \ \ \ \\ \ ..., \ \textcolor{blue}{dp[i-1][j-k\cdot w_i] + k\cdot v_i} \ \} ,\quad \quad \quad 0<=k\cdot w_i<=j  \tag{1}
+$$
+而恰巧的是对于 $dp[i][j-w_i]$ 我们有：
+$$
+dp[i][j-w_i] = \min \{ \ \textcolor{red}{dp[i-1][j-w_i]}, \ \textcolor{teal}{dp[i-1][j-2\cdot w_i] + v_i}, \quad \quad \quad \quad \quad \quad \quad \quad \\ \ ..., \ \textcolor{blue}{dp[i-1][j-k\cdot w_i] + (k-1)\cdot v_i} \ \} , w_i<=k\cdot w_i<=j
+\tag{2}
+$$
+观察发现式 2 与式 1 中的后 k 项刚好相差了一个 $v_i$ ，将式 2 代入式 1 可得简化后的「完全背包问题」的「状态转移方程」为：
+$$
+dp[i][j] = \min \{ \ dp[i-1][j],\quad \textcolor{red}{dp[i]}[j-w_i] + v_i\ \} ,\quad 0<=w_i<=j \ \ \quad \quad \quad \quad \quad \quad
+\tag{3}
+$$
+
+
+> ⚠️ 注意，式 3 与「0-1 背包问题」的状态转移方程及其相似，差别（以红色标注）在于第二项中的状态转移是来自上一行还是本行。这也决定了具体编程实现时状态更新方式的异同。
+
+
+
+```c++
+ int numSquares(int n) {
+     int maxn = sqrt(n); //找到搜索上界 3
+
+     const int inf = 0x3f3f3f3f;
+     int dp[maxn + 1][n + 1]; memset(dp, inf, sizeof(dp)); //前i个数，其平方数的和构成i的最少数量
+
+     for (int i = 0; i <= maxn; ++i) 
+         dp[i][0] = 0;
+
+     for (int i = 1; i <= maxn; ++i) {
+         int w = i * i;
+         for (int j = 0; j <= n; ++j) {
+             if (j - w < 0) {
+                 dp[i][j] = dp[i-1][j];
+             } else {
+                 dp[i][j] = min(dp[i-1][j], dp[i][j-w] + 1);
+             }
+         }
+     }
+
+     return dp[maxn][n];
+ }
+```
 
 
 

@@ -1,24 +1,27 @@
-// 1.朴素完全背包 O(n^3)
 class Solution {
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        int n = coins.size();
-        const int inf = 0x3f3f3f3f;
-        int dp[n + 1][amount + 1]; memset(dp, inf, sizeof(dp)); // 前i个数字组成j的最小个数
+    int dfs(vector<int>& coins, int rem, vector<int> &memo) {
+        if (rem < 0) return -1;
+        if (rem == 0) return 0;
 
-        for (int i = 0; i <= n; ++i) 
-            dp[i][0] = 0;
+        // 有记忆, 直接返回所需的最少硬币个数
+        if (memo[rem] != -2) return memo[rem];    
 
-        for (int i = 1; i <= n; ++i) {	// 遍历物品
-            int num = coins[i-1];		// 能过的原因是这一步，后边两个计算用到num了！！！！！！
-
-            for (int j = 0; j <= amount; ++j) {	// 遍历包的体积
-                for (int k = 0; k <= (int)j / num; ++k) {
-                    dp[i][j] = min(dp[i][j], dp[i-1][j - k * num] + k);
-                }
-            }
+        
+        int minCnt = INT_MAX;
+        for (int i = 0; i < coins.size(); ++i) {
+            int cnt = dfs(coins, rem - coins[i], memo);
+            if (cnt != -1 ) minCnt = min(cnt, minCnt);
         }
 
-        return dp[n][amount] == inf ? -1 : dp[n][amount];
+        memo[rem] = (minCnt == INT_MAX ? -1 : minCnt + 1);  //记忆化部分，通过数组记住金额为amount时，所需的最少硬币个数
+
+        return memo[rem];
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> memo(amount + 1, -2);    // memo[i]当前剩余金额为i时的最小选择硬币数
+        int ans = dfs(coins, amount, memo);
+        return ans == -2 ? -1 : ans;
     }
 };

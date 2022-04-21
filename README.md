@@ -208,6 +208,7 @@ https://www.cnblogs.com/MinPage/
 ||注意初始化|
 ||检查 i，j 遍历的索引是否 >=0 或 <=n|
 ||最外层循环，可以把后边重复读取到的值先创建一个变量保存|
+||dp答案不对<br>一看初始化<br>二看每层循环的起始值<br>三看w的值取得对不对<br>四看状态转移方程i/i-1，+1/+k，max/min/+=|
 |||
 
 
@@ -778,11 +779,14 @@ DP
 |  :----  |:----:|:----:|
 |2+[416. Partition Equal Subset Sum](/Alog_DP/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到背包容量本质是target,物品的重量是其nums[i]<br>可以用滚动数组优化到1维DP|
 |[416. Output Answer](/Alog_DP/416+Output.cpp) | | 输出结果|
-|[474. Ones and Zeroes](/Alog_DP/474+Ones%20and%20Zeroes+.cpp) |01背包 |三维DP数组，滚动优化到2维，需要满足两个条件，才能取 |
+|[474. Ones and Zeroes](/Alog_DP/474+Ones%20and%20Zeroes+.cpp) | |三维DP数组，滚动优化到2维，需要满足两个条件，才能取 |
 |[474. Output Answer](/Alog_DP/474+Output.cpp) | | 输出结果 |
 |[1049. Last Stone Weight II](/Alog_DP/1049+Last%20Stone%20Weight%20II.cpp) | dp[i][j] 表示前i个数字 可以组成的最大数字<br>dp[i][j] 表示前i个数字是否能组成j|转化为01背包问题，注意索引 |
 | | | |
-|[322. Coin Change](/322) | | |
+|[322. Coin Change](/Alog_DP/322+Coin%20Change.cpp) |完全背包 |注意状态转移方程优化 |
+|[518. Coin Change 2](/Alog_DP/518+Coin%20Change%202.cpp) | | 注意累加和的时候 |
+|[279. Perfect Squares](/Alog_DP/279+Perfect%20Squares.cpp) | |求最小物品数 |
+| | | |
 | | | |
 | | | |
 
@@ -809,7 +813,7 @@ DP
 |  :----  |:----:|:----:|
 |[416. Partition Equal Subset Sum](/Alog_D_BFS/416+Partition%20Equal%20Subset%20Sum.cpp) | |先写暴力,再找重复,一般是同层重复,记忆化优化 |
 |[474. Ones and Zeroes](/Alog_D_BFS/474+Ones%20and%20Zeroes+.cpp) |01背包 |先写暴力,再找重复,一般是同层重复,记忆化优化 |
-| | | |
+|[322. Coin Change](/Alog_DP/322+Coin%20Change.cpp) | | |
 | | | |
 
 

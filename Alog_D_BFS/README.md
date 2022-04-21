@@ -462,7 +462,81 @@ public:
 
 # 记忆化搜索
 
-## 416. 分割等和子集
+- 记忆化搜索的框架。 总共可以归纳为以下四步：
+    1）合法性剪枝
+    2）偏序关系剪枝
+    3）记忆化剪枝
+    4）递归计算结果并返回
+
+
+
+**1）合法性剪枝**
+
+因为在递归计算的时候，我们必须保证传入参数的合法性，所以这一步是必要的，比如坐标为负数之类的判断；
+
+**2）偏序关系剪枝**
+
+偏序关系其实就是代表了状态转移的方向，例如只允许值大的往值小的方向走，这就是一种偏序关系；如果不满足偏序关系的就不能继续往下搜索了；
+
+**3）记忆化剪枝**
+
+记忆化剪枝就是去对应的哈希数组判断这个状态是否曾经已经计算过，如果计算过则直接返回，时间复杂度  ；
+
+**4）递归计算结果并返回**
+
+这一步就是深度优先搜索的递归过程，也是递归子问题取最优解的过程，需要具体问题具体分析；
+
+
+
+
+
+- 记忆化搜索的优点
+
+**1、忽略边界判断**
+
+状态转移的时候完全不需要进行边界判断，只需要在递归调用的出口进行统一判断即可，这样使得代码更加简洁清晰；
+
+**2、编码方便**
+
+相比动态规划而言，不用去关心子问题的枚举顺序问题，也不用管数组下标越界问题，只要按照深度优先搜索的思路，把代码框架写好，再加入记忆化部分的代码即可，实现方便，手到擒来；
+
+
+
+
+
+
+
+## 模板
+
+```c++
+int dfs(mem)
+{
+    // 终止条件
+    if (xxx) return -1;
+    if (xxx) return 0;
+    if (mem[xxx] != -1) return mem[xxx];
+
+    // 求解体
+    int minval = INT_MAX;
+    for () {
+        int val = dfs(mem);
+        if (val) {
+            minval = min(minval, val);
+        }
+    }
+
+    // 当次记忆化结果更新，回溯
+    return mem[xxx] = minval;
+}
+```
+
+
+
+
+
+## 01背包
+
+### 416. 分割等和子集
 
 递归搜索：常规的递归搜索 dfs(i, *args) 在到达一个位置 i 时无非有两种情况（选或不选）：
 
@@ -571,7 +645,7 @@ bool canPartition(vector<int>& nums) {
 
 ---
 
-## 474. 一和零
+### 474. 一和零
 
 最重要的一点，如果传入的参数中有 cnt，那么 memo 里的索引要有 cnt，i，m，n
 
@@ -750,7 +824,7 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 
 
-### 答案对但超时
+#### 答案对但超时
 
 45
 60
@@ -799,7 +873,7 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 
 
-### unordered_map 优化
+#### unordered_map 优化
 
 **key 从 string 优化为 int**
 
@@ -835,7 +909,7 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 
 
-### `vector<unordered_set<int>>` 优化
+#### `vector<unordered_set<int>>` 优化
 
 注意算idx的时候包括cnt，不用算 i 的原因是 `memo[i]`中包括了
 
@@ -874,7 +948,7 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 
 
-### 三维数组
+#### 三维数组
 
 ```c++
 int dfs(const vector<vector<int>> &nums, int m, int n, int i, vector<vector<vector<int>>> &memo) {
@@ -911,17 +985,21 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 ---
 
-## 1755.最接近目标值的子序列和
+### 1755.最接近目标值的子序列和
 
 
 
-## 2035.将数组分成两个数组并最小化数组和的差
+### 2035.将数组分成两个数组并最小化数组和的差
 
 
 
 
 
-## 805.数组的均值分割
+### 805.数组的均值分割
+
+
+
+
 
 
 
@@ -929,7 +1007,9 @@ int findMaxForm(vector<string>& strs, int m, int n) {
 
 ---
 
-## 322. 零钱兑换
+## 完全背包
+
+### 322. 零钱兑换
 
 该问题可建模为以下优化问题：
 
@@ -971,29 +1051,30 @@ $$
 在上面的递归树中，我们可以看到许多子问题被多次计算。例如，$F(1)$ 被计算了13次。为了避免重复计算，我们要将子问题的答案存在一个数组中进行记忆化。保证每个子问题最多只被计算一次。
 
 ```c++
-class Solution {
-    vector<int>count;
-    int dp(vector<int>& coins, int rem) {
-        if (rem < 0) return -1;
-        if (rem == 0) return 0;
-        if (count[rem - 1] != 0) return count[rem - 1];
-        int Min = INT_MAX;
-        for (int coin:coins) {
-            int res = dp(coins, rem - coin);
-            if (res >= 0 && res < Min) {
-                Min = res + 1;
-            }
-        }
-        count[rem - 1] = Min == INT_MAX ? -1 : Min;
-        return count[rem - 1];
+int dfs(vector<int>& coins, int rem, vector<int> &memo) {
+    if (rem < 0) return -1;
+    if (rem == 0) return 0;
+
+    // 有记忆, 直接返回所需的最少硬币个数
+    if (memo[rem] != -2) return memo[rem];    
+
+
+    int minCnt = INT_MAX;
+    for (int i = 0; i < coins.size(); ++i) {
+        int cnt = dfs(coins, rem - coins[i], memo);
+        if (cnt != -1 ) minCnt = min(cnt, minCnt);
     }
-public:
-    int coinChange(vector<int>& coins, int amount) {
-        if (amount < 1) return 0;
-        count.resize(amount);
-        return dp(coins, amount);
-    }
-};
+
+    memo[rem] = (minCnt == INT_MAX ? -1 : minCnt + 1);  //记忆化部分，通过数组记住金额为amount时，所需的最少硬币个数
+
+    return memo[rem];
+}
+
+int coinChange(vector<int>& coins, int amount) {
+    vector<int> memo(amount + 1, -2);    // memo[i]当前剩余金额为i时的最小选择硬币数
+    int ans = dfs(coins, amount, memo);
+    return ans == -2 ? -1 : ans;
+}
 ```
 
 
@@ -1010,6 +1091,9 @@ public:
 
 
 
+---
+
+### 518. 零钱兑换 II
 
 
 
@@ -1017,10 +1101,19 @@ public:
 
 
 
+### 279. 完全平方数
 
 
 
 
+
+### 377. 组合总和 Ⅳ
+
+
+
+
+
+### 139. 单词拆分
 
 
 
