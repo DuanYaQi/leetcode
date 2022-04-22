@@ -1,3 +1,51 @@
+// new
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int leftB = getLeftBorder(nums, target);
+        int rightB = getRightBorder(nums, target);
+
+        if (leftB > rightB) return {-1, -1};
+
+        return {leftB, rightB};
+    }
+
+    int getLeftBorder(vector<int>& nums, int target) {
+        int lo = 0, hi = nums.size() - 1;
+
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+
+            if (nums[mid] >= target) {
+                hi = mid - 1;
+            } else if (nums[mid] < target) {
+                lo = mid + 1;
+            }
+        }
+
+        return hi + 1;
+    }
+
+    int getRightBorder(vector<int>& nums, int target) {
+        int lo = 0, hi = nums.size() - 1;
+        
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+
+            if (nums[mid] > target) {
+                hi = mid - 1;
+            } else if (nums[mid] <= target) {
+                lo = mid + 1;
+            }
+        }
+
+        return lo - 1;
+    }
+    
+
+};
+
+
 class Solution {
 public:
     int searchLeftBound(vector<int>& nums, int target) {

@@ -196,6 +196,126 @@ private:
 
 
 
+
+
+
+
+### Mine
+
+```c++
+int getLeftBorder(vector<int>& nums, int target) {
+    int lo = 0, hi = nums.size() - 1;
+
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+
+        if (nums[mid] >= target) {
+            hi = mid - 1;
+        } else if (nums[mid] < target) {
+            lo = mid + 1;
+        }
+    }
+
+    return hi + 1;
+}
+
+int getRightBorder(vector<int>& nums, int target) {
+    int lo = 0, hi = nums.size() - 1;
+
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+
+        if (nums[mid] > target) {
+            hi = mid - 1;
+        } else if (nums[mid] <= target) {	// =target 一直往右压缩，直到压缩到
+            lo = mid + 1;
+        }
+    }
+
+    return lo - 1;
+}
+```
+
+
+
+getLeftBorder                        target = 8
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+L          M                R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                   L    M    R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                 LMR        
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​             R   L  
+
+返回时 R 指向的是第一个比 target 小的数字，R+1为target第一次出现的位置
+
+
+
+
+
+
+
+getLeftBorder                        target = 8
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+L          M                R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                   L    M    R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                              LMR
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+  					   R    L
+
+
+
+返回时 L 指向的是第一个比 target 大的数字，R/L-1为target第一次出现的位置
+
+
+
 ---
 
 ## 69.x 的平方根

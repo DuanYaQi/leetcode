@@ -370,9 +370,13 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[538. Convert BST to Greater Tree](DS_Tree/538+convertBST_Rec.cpp)   | 反中序 ||
 |[100. Same Tree](DS_Tree/100+isSameTree.cpp)   |  |递归|
 |[572. Subtree of Another Tree](DS_Tree/572+Subtree%20of%20Another%20Tree.cpp) |注意continue位置 | |
-|| | |
 | | | |
 | | | |
+|[剑指 Offer II 051. 节点之和最大的路径](/DS_Tree/剑指%20Offer%20II%20051.%20节点之和最大的路径.cpp) | | 注意函数返回的是最大贡献值，答案是在递归的时候不断更新的|
+| | | |
+| | | |
+| | | |
+
 
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
 > 
@@ -566,9 +570,9 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 ### 2.1. [二分](Alog_BinarySearch/README.md)
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
+|2+[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
 |[35.Search Insert Position.cpp](Alog_BinarySearch/35+Search%20Insert%20Position.cpp) | | 与二分查找仅有最后return的区别 |
-|[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
+|2+[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
 |[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
 |[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
 |[14. Longest Common Prefix](/Alog_BinarySearch/14+Longest%20Common%20Prefix.cpp) | | 从长度最小的字符串进行判断，二分最小的字符串 |
