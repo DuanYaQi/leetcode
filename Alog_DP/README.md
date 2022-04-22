@@ -981,7 +981,9 @@ dp[0] = nums[0];
 
 ---
 
-## 377. 组合总和 Ⅳ-完全背包？
+## 377. 组合总和 Ⅳ
+
+
 
 1. 确定**dp数组**(dp table)以及**下标的含义**
 
@@ -997,7 +999,8 @@ dp[i]: 表示选取的元素之和等于 i 的方案数
 
 ```c++
 for (int k = 0; k < nums.size(); ++k)
-	dp[i] += dp[i-nums[k]];
+    if (i - nums[k] > 0)
+		dp[i] += dp[i-nums[k]];
 ```
 
 
@@ -1031,89 +1034,24 @@ dp[0] = 1;
 
 ```c++
 int combinationSum4(vector<int>& nums, int target) {
-    int dp[target+1]; memset(dp, 0, sizeof(dp));
+    int n = nums.size();
+
+    int dp[target+1]; memset(dp, 0, sizeof(dp));     // dp[0] 组合成 target 的方案数
+
     dp[0] = 1;
 
-    for (int i = 1; i <= target; ++i) { // 1 2 3 4
-        for (int j = 0; j < nums.size(); ++j) { // 1 2 3
-            int num = nums[j];                  // 1 2 3
-            if (i - num >= 0) {
-                dp[i] += dp[i - num];
-            }                
+    for (int i = 1; i <= target; ++i) {             // 遍历每个值
+        for (int j = 0; j < n; ++j) {              
+            int num = nums[j];                      
+            if (i - num >= 0 && dp[i] < INT_MAX - dp[i - num] ) { 
+                dp[i] += dp[i-num];
+            }
         }
     }
 
     return dp[target];
 }
 ```
-
-
-
-
-
-
-
----
-
-**二维**
-
-1. 确定**dp数组**(dp table)以及**下标的含义**
-
-```C++
-dp[i][j];			以i-1数为下标结束时组成和为j的组合个数
-```
-
-
-
-2. 确定**递推公式**
-
-```c++
-dp[i][j] += dp[i][j-nums[i]]   for all i make j - nums[i］>= 0
-```
-
-
-
-3. dp数组如何**初始化**
-
-```c++
-dp[0][0] = 1;
-```
-
-
-
-
-
-4. 确定**遍历顺序**
-
-
-
-
-
-5. 举例推导dp数组
-
-
-
-
-
-```c++
-int combinationSum4(vector<int>& nums, int target) {
-    int dp[target+1]; memset(dp, 0, sizeof(dp));
-    dp[0] = 1;
-
-    for (int i = 1; i <= target; ++i) { // 1 2 3 4
-        for (int j = 0; j < nums.size(); ++j) { // 1 2 3
-            int num = nums[j];                  // 1 2 3
-            if (i - num >= 0) {
-                dp[i] += dp[i - num];
-            }                
-        }
-    }
-
-    return dp[target];
-}
-```
-
-
 
 
 
@@ -1125,63 +1063,37 @@ int combinationSum4(vector<int>& nums, int target) {
 
 ----
 
-## 139. 单词划分-完全背包？
+## 139. 单词划分
 
-`dp[i][j]`,表示前 j 个单词，是否可以组成长度为 i 的字符串
+跟 377 一样，没必要非得用完全背包来做，一维 dp 数组已经有很好的解释了。
 
 
 
-每个物品都有放入和不放入的情况
-当物品不放入背包
-`dp[i][j]=dp[i-1][j]`
-当物品放入背包
-`dp[i][j]=dp[i][j-w.size()]`
-
-```c++
-public boolean wordBreak(String s, List<String> wordDict) {
-    boolean[][] dp = new boolean[s.length()+1][wordDict.size()+1];
-    Arrays.fill(dp[0],true);
-
-    for (int i = 1; i < dp.length; i++) {
-        for (int j = 1; j < dp[0].length; j++) {
-            int len = wordDict.get(j-1).length();
-            dp[i][j] = dp[i][j-1];
-            if(i>=len&&s.substring(i-len,i).equals(wordDict.get(j-1))){
-                for (int k = 1; k <= wordDict.size(); k++) {
-                    dp[i][j]|= dp[i-len][k];
-                }
-            }
-        }
-    }
-
-    return dp[dp.length-1][dp[0].length-1];
-}
-```
+`dp[i]` 表示是否可以从dict中选取一些元素 组成长度为 s.substr(0, i) 的字符串
 
 
 
 ```c++
 bool wordBreak(string s, vector<string>& wordDict) {
-    int bagSize = s.size();
-    vector<bool> dp(bagSize + 1, false);
+    int m = s.size(); 
+
+    bool dp[m + 1]; memset(dp, false, sizeof(dp));   //表示前 i 个单词，是否可以组成长度为 j 的字符串 
+
     dp[0] = true;
-    for (int j = 1; j <= bagSize; j++)               // 背包容量
-        for (int i = 0; i < wordDict.size(); i++) {  // 物品
-            int dictLen = wordDict[i].size();
-            if (j >= dictLen && wordDict[i] == s.substr(j - dictLen, dictLen))
-                dp[j] = dp[j] || dp[j - dictLen];
-        }   
-    return dp[bagSize];
+
+    for (int i = 1; i <= m; ++i) {
+
+        for (int j = 0; j < wordDict.size(); ++j) {
+            string str = wordDict[j];
+            int sSize = str.size();
+            if (i - sSize >= 0 && str == s.substr(i - sSize, sSize))	// 能取，并且完全相同
+                dp[i] = dp[i] || dp[i - sSize];		// 注意要跟自己的状态一起转移，因为可能 for j 前边已经有true了
+        }
+    }
+
+    return dp[m];
 }
 ```
-
-
-
-
-
-
-
-
 
 
 

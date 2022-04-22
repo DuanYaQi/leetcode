@@ -209,7 +209,12 @@ https://www.cnblogs.com/MinPage/
 ||检查 i，j 遍历的索引是否 >=0 或 <=n|
 ||最外层循环，可以把后边重复读取到的值先创建一个变量保存|
 ||dp答案不对<br>一看初始化<br>二看每层循环的起始值<br>三看w的值取得对不对<br>四看状态转移方程i/i-1，+1/+k，max/min/+=|
+||看到可以无限取的，别上来就完全背包<br>先看看一维dp数组有没有很好的解释，如377、139|
 |||
+
+
+
+
 
 
 
@@ -224,6 +229,8 @@ https://www.cnblogs.com/MinPage/
 |字符串反转，可以试着从局部反转和全局反转下手|
 ||
 ||
+
+
 
 
 
@@ -784,6 +791,14 @@ DP
 |[714. Best Time to Buy and Sell Stock with Transaction Fee](/Alog_DP/714+Best%20Time%20to%20Buy%20and%20Sell%20Stock%20with%20Transaction%20Fee.cpp) | 基于122(121>122>714)| -fee |
 | | | |
 
+
+全排列DP专题
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[377. Combination Sum IV](/Alog_DP/377+Combination%20Sum%20IV.cpp) | |不要硬去想背包二维，能压缩到一维，并且DP有一个很好的解释就用一维DP数组去推 |
+|[139. Word Break](/Alog_DP/139+Word%20Break.cpp) | |跟377完全一样，但需要额外判断字符是否一样 |
+| | | |
+| | | |
 
 背包专题
 |  题目  |知识点|技巧|
