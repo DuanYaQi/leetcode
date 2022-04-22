@@ -1053,11 +1053,81 @@ int combinationSum4(vector<int>& nums, int target) {
 
 
 
+---
+
+**二维**
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i][j];			以i-1数为下标结束时组成和为j的组合个数
+```
+
+
+
+2. 确定**递推公式**
+
+```c++
+dp[i][j] += dp[i][j-nums[i]]   for all i make j - nums[i］>= 0
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+dp[0][0] = 1;
+```
+
+
+
+
+
+4. 确定**遍历顺序**
+
+
+
+
+
+5. 举例推导dp数组
+
+
+
+
+
+```c++
+int combinationSum4(vector<int>& nums, int target) {
+    int dp[target+1]; memset(dp, 0, sizeof(dp));
+    dp[0] = 1;
+
+    for (int i = 1; i <= target; ++i) { // 1 2 3 4
+        for (int j = 0; j < nums.size(); ++j) { // 1 2 3
+            int num = nums[j];                  // 1 2 3
+            if (i - num >= 0) {
+                dp[i] += dp[i - num];
+            }                
+        }
+    }
+
+    return dp[target];
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 ----
 
 ## 139. 单词划分-完全背包？
 
-`dp[i][j]`,表示前 i 个单词，是否可以组成长度为 j 的字符串
+`dp[i][j]`,表示前 j 个单词，是否可以组成长度为 i 的字符串
 
 
 

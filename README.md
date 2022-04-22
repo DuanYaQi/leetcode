@@ -235,6 +235,13 @@ https://www.cnblogs.com/MinPage/
 |`s.substr(i, k);` 如果 i+k 超过 `s.size()`，就不取后半部分|
 |`int zero = count(strs.begin(), strs].end(), '0');`<br>`int one = strs.size() - zero;`|
 ||
+|`int t = lower_bound(vec.begin(), vec.end(), 3) - vec.begin();`<br>找到第一个大于等于3的数，返回它在 vec 容器内的**下标**，如果不存在会返回 `vec.end()`|
+|`int t = *lower_bound(vec.begin(), vec.end(), 3);`<br/>找到第一个大于等于3的**数字值**，|
+||
+|`sort(vec.begin(), vec.end());`	<br/>	unique本身的功能是将排序后的数组内的所有重复元素在 O(n) 时间内堆积到数组末端,	同时它会返回一个指针/下标（区别于你传入的是容器还是数组） —— 堆积的第一个重复元素的位置<br/>`vec.erase(unique(vec.begin(), vec.end()), vec.end());`<br/>再利用 vector 的 erase 区间删除功能就能完成去重的过程|
+||
+|gcd : `__gcd(a, b);`<br>lcm : `(a*b)/__gcd(a, b);`<br>algorithm|
+||
 
 
 

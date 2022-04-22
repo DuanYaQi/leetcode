@@ -95,7 +95,7 @@ int findGCD(vector<int>& nums) {
 ## 最小公倍数
 
 ```c++
-int lcm(int a, int b){
+int lcm(int a, int b) {
     int g = gcd(a, b);
     return a * b / g;
 }
