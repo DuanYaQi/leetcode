@@ -607,3 +607,147 @@ int minSubArrayLen(int target, vector<int>& nums) {
 }
 ```
 
+
+
+
+
+## 头条2018后端笔试-用户喜好
+
+https://blog.csdn.net/flushhip/article/details/79416715
+
+
+
+题目
+
+> 为了不断优化推荐效果，今日头条每天要存储和处理海量数据。假设有这样一种场景：我们对用户按照它们的注册时间先后来标号，对于一类文章，每个用户都有不同的喜好值，我们会想知道某一段时间内注册的用户（标号相连的一批用户）中，有多少用户对这类文章喜好值为 k。因为一些特殊的原因，不会出现一个查询的用户区间完全覆盖另一个查询的用户区间(不存在L1<=L2<=R2<=R1)。
+
+
+
+输入
+
+>第 1 行为 n 代表用户的个数 
+>
+>第 2 行为 n 个整数，第 i 个代表用户标号为 i 的用户对某类文章的喜好度
+>
+>第3行为一个正整数 q 代表查询的组数,
+>
+>第4行到第(3+q)行，每行包含3个整数 l,r,k 代表一组查询，即标号为 l<=i<=r 的用户中对这类文章喜好值为 k 的用户的个数。 数据范围 n<=3e5, q<=3e5，k是整型。
+
+
+
+输出
+
+>一共`q`行，每行一个整数代表喜好值为`k`的用户的个数。
+
+
+
+**样例输入**：
+
+```
+5
+1 2 3 3 5
+3
+1 2 1
+2 4 5
+3 5 3
+```
+
+
+
+**样例输出**：
+
+```
+1
+0
+2
+```
+
+
+
+数据很大，询问 300000 次，那么每次询问对应的操作的时间复杂度必须是 O(1) 或 O(logn) ；
+
+这就为我们思考算法提供了方向，O(1) 显然是不可能的，那么操作的时间复杂度为 O(logn) 的算法只能是二分查找了
+
+二分的要求是序列有序，因此不管那么多，先排序，可是按照什么东西来排序呢？由于题目要求在一个时间范围内喜好为 k 的有多少人，那么可以把相同 k 值的人放到一起形成一个子序列，然后再根据时间的范围在这个子序列中查找，因此用结构体的二级排序，先按 k 值的大小升序排序，如果 k 值相同，再按时间顺序升序排序；
+
+
+```c++
+bool sort_cmp (const pair<int, int> &A, const pair<int, int> &B)
+{
+	if (A.first == B.first)
+        return A.second < B.second;
+    
+    return A.first < B.first;
+}
+```
+
+这样的二级排序是稳定排序，故排序后整个序列是`k`值升序的，各个子序列中的时间也是升序的。
+
+
+
+排好序后，就是查找的过程，先用equal_range找到序列中k值为目标k值的子序列，然后用lower_bound与upper_bound在子序列中找到目标时间范围内的最长子序列(用lower_bound找到第一个大于或等于左端点的位置，用upper_bound找到最后一个小于或等于右端点的位置)，比如目标时间范围是[3, 7]，那么假设最大子序列为[4, 5]，[4,5]⊂[3,7][4,5]⊂[3,7]，答案就是最长子序列的长度。
+
+
+
+
+
+
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+bool sort_cmp(const pair<int, int> &A, const pair<int, int> &B)
+{
+    return A.first == B.first ? A.second < B.second :
+        A.first < B.first;
+}
+
+struct find_first_cmp {
+    bool operator()(const pair<int, int> &P, int k) const
+    {
+        return P.first < k;
+    }
+
+    bool operator()(int k, const pair<int, int> &P) const
+    {
+        return k < P.first;
+    }
+};
+
+struct find_second_cmp {
+    bool operator()(const pair<int, int> &P, int k) const
+    {
+        return P.second < k;
+    }
+
+    bool operator()(int k, const pair<int, int> &P) const
+    {
+        return k < P.second;
+    }
+};
+
+int main()
+{
+    int n, q;
+    while (EOF != scanf("%d", &n)) {
+        vector<pair<int, int> > arr;
+        for (int i = 0, x; i < n; cin >> x, arr.emplace_back(x, ++i)) {}
+        sort(arr.begin(), arr.end(), sort_cmp);
+
+        for (scanf("%d", &q); q--;) {
+            int L, R, k;
+            scanf("%d%d%d", &L, &R, &k);
+            pair<vector<pair<int, int> >::iterator, vector<pair<int, int> >::iterator> sd =
+                equal_range(arr.begin(), arr.end(), k, find_first_cmp{});
+            
+            printf("%d\n", upper_bound(sd.first, sd.second, R, find_second_cmp{}) -
+                lower_bound(sd.first, sd.second, L, find_second_cmp{}));
+        }
+    }
+    return 0;
+}
+
+```
+

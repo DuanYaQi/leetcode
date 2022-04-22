@@ -88,7 +88,7 @@ https://hackingcpp.com/cpp/std/vector.html
 向量，“变长数组”，“长度根据需要而自动改变的数组”。有时会碰到只用普通数组会超内存的情况，这种情况使用vector会便捷许多。vector还可以以邻接表的方式储存图，对**无法使用邻接矩阵**的题目（结点数太多）、又害怕**使用指针实现邻接表**的读者十分友好。
 
 ```c++
-#include<vector>
+#include <vector>
 using namespace std;
 ```
 
@@ -98,6 +98,8 @@ using namespace std;
 
 ### 1.1 vector定义
 
+
+
 ```c++
 vector<typename> name;//等同于一维数组name[SIZE],只不过其长度可以根据需要进行变化，比较节省空间。
 //typename 可以是 int、double、char、结构体等，也可以是vector、set、queue等
@@ -106,23 +108,25 @@ vector<double> name;
 vector<char> name;
 vector<node> name;	//结构体类型
 
-//二维数组  二维vector数组 当作两个都可变长的二维数组
-vector<vector<int> > name;	//!!!!!!!! >>之间要加空格
 
-//vector数组
+
+//二维vector数组  其中一维长度是否已经固定
 vector<typename> Arrayname[arraySize];
 vector<int> vi[100];	//vi[0]~vi[100]中每一个都是一个vector容器。 一维长度已经固定为100
-//与vector<vector<int> > name;不同的是  其中一维长度是否已经固定
+
+//二维数组  两个维度都可变长的二维数组
+vector<vector<int> > name;	//!!!!!!!! >>之间要加空格
 
 
-vector<int> v3(100,9);	//把100长度的数组v3所有值初始化为9
+
+vector<int> v3(100, 9);	//把100长度的数组v3所有值初始化为9
 
 in={1,2,3,4,5,6,7};
 vector<int> tin(in, in+7);	// 1 2 3 4 5 6 7
 vector<int> tin(in, in+6);	// 1 2 3 4 5 6 
 
 vector<int>(n, 0); 								//一维向量1xn 初始化为0
-vector<vector<int>> dp(m, vector<int>(n, 0));  //二维向量mxn 初始化为0
+vector<vector<int>> dp(m, vector<int>(n, 0));   //二维矩阵mxn 初始化为0
 ```
 
 [二维vector初始化](https://www.cnblogs.com/NirobertEinteson/p/11960285.html) 
@@ -133,14 +137,14 @@ vector<vector<int>> dp(m, vector<int>(n, 0));  //二维向量mxn 初始化为0
 
 ### 1.2 vector容器内元素的访问
 
-1. 通过下标访问
+1. 通过**下标**访问
 
 ```c++
 vector<int> vi;
-printf("%d %",v[0],v[99]);
+printf("%d %", v[0], v[99]);
 ```
 
-2. 通过迭代器访问
+2. 通过**迭代器**访问
 
 ```c++
 vector<typename>::iterator it;	//it为迭代器变量
@@ -153,46 +157,27 @@ for(int i=1;i<=5;i++){
 通过类似下标和指针访问数组的方式来访问容器内的元素
 
 ```c++
-#include<stdio.h>
-#include<vector>
-using namespace std;
-int main(){
-    vector<int> vi;
-    for(int i=1;i<=5;i++){
-        vi.push_back(i);
-    }
     //vi.begin()为取vi的首元素地址，而it指向这个地址
    	vector<int>::iterator it=vi.begin();
-    for(int i=0;i<5;i++){
-        printf("%d ",*(it+i));			  			//1 2 3 4 5
+    for(int i=0; i<5; i++){
+        printf("%d ", *(it+i));			  			//1 2 3 4 5
     }
-    return 0;
-}
 ```
 
-​	 `vi[i]`和`*(vi.begin()+i)`是等价的
+`vi[i]`和`*(vi.begin()+i)`是等价的
 
-​	`end()`取`vi`的尾元素地址的下一个地址。`end()`作为迭代器末尾标志，不储存任何元素。
+`end()`取`vi`的尾元素地址的下一个地址。`end()`作为迭代器末尾标志，不储存任何元素。
 
 ```c++
-#include<stdio.h>
-#include<vector>
-using namespace std;
-int main(){
-    vector<int> vi;
-    for(int i=1;i<=5;i++){
-        vi.push_back(i);
-    }
     //vi.begin()为取vi的首元素地址，而it指向这个地址
-   	
-    for(vector<int>::iterator it=vi.begin();it!=vi.end();it++){
-        printf("%d ",*it);			//1 2 3 4 5 
+    for(vector<int>::iterator it=vi.begin(); it!=vi.end(); it++){
+        printf("%d ", *it);			//1 2 3 4 5 
     }
-    return 0;
-}
 ```
 
-​	**STL容器中，只有 vector 和 string 中，允许使用`vi.begin()+3`这种迭代器加上整数的写法**
+**STL容器中，只有 vector 和 string 中，允许使用`vi.begin()+3`这种迭代器加上整数的写法**
+
+
 
 
 
@@ -204,18 +189,12 @@ int main(){
 
 ```C++
 //在vector后面添加元素x，时间复杂度O(1)
-#include<stdio.h>
-#incldue<vector>
-using namespace std;
-int main(){
-    vector<int> vi;
-    for(int i=1;i<=3;i++){
-        vi.emplace_back(i);	//push_back
-    }
-    for(int i=0;i<vi.size();i++){
-        printf("%d ",vi[i]);		// 1 2 3
-    }
-    return 0;
+vector<int> vi;
+for(int i = 1; i <= 3; i++){
+    vi.emplace_back(i);	//push_back
+}
+for(int i = 0; i < vi.size(); i++){
+    printf("%d ", vi[i]);		// 1 2 3
 }
 
 //emplace_back() 和 push_back() 的区别，就在于底层实现的机制不同
@@ -232,20 +211,14 @@ int main(){
 2. pop_back()
 
 ```c++
-//有添加就会有删除， 删除vector尾元素
-#include<stdio.h>
-#incldue<vector>
-using namespace std;
-int main(){
-    vector<int> vi;
-    for(int i=1;i<=3;i++){
-        vi.push_back(i);
-    }
-    vi.pop_back();	//删除vi尾部元素
-    for(int i=0;i<vi.size();i++){
-        printf("%d ",vi[i]);		// 1 2 
-    }
-    return 0;
+//有添加就会有删除， 删除尾部元素
+vector<int> vi;
+for(int i = 1 ;i <= 3; i++) {
+    vi.push_back(i);
+}
+vi.pop_back();	//删除vi尾部元素
+for(int i = 0 ;i < vi.size(); i++) {
+    printf("%d ", vi[i]);		// 1 2 
 }
 ```
 
@@ -255,10 +228,6 @@ int main(){
 
 ```c++
 //向vector的任意迭代器it处插入一个元素x
-#include<stdio.h>
-#incldue<vector>
-using namespace std;
-int main(){
     vector<int> vi;
     for(int i=1;i<=5;i++){
         vi.push_back(i);	//1 2 3 4 5 
@@ -267,8 +236,6 @@ int main(){
     for(int i=0;i<vi.size();i++){
         printf("%d ",vi[i]);		// 1 2 -1 3 4 5
     }
-    return 0;
-}
 ```
 
 
@@ -277,10 +244,6 @@ int main(){
 
 ```c++
 //删除迭代器为it处的元素
-#include<stdio.h>
-#incldue<vector>
-using namespace std;
-int main(){
     vector<int> vi;
     for(int i=5;i<=9;i++){
         vi.push_back(i);	//5 6 7 8 9
@@ -290,16 +253,10 @@ int main(){
     for(int i=0;i<vi.size();i++){
         printf("%d ",vi[i]);		// 5 6 7 9 
     }
-    return 0;
-}
 ```
 
 ```c++
 //删除一个区间[fisrt,last)内的所有元素
-#include<stdio.h>
-#incldue<vector>
-using namespace std;
-int main(){
     vector<int> vi;
     for(int i=5;i<=9;i++){
         vi.push_back(i);	//5 6 7 8 9
@@ -309,8 +266,7 @@ int main(){
     for(int i=0;i<vi.size();i++){
         printf("%d ",vi[i]);		// 5 9 
     }
-    return 0;
-}
+
 ```
 
 
@@ -321,12 +277,14 @@ int main(){
 
 
 
-6. clear() 删除全部
+6. clear() 清空容器
 
 ```c++
 vector<int> vec{1,2,3,4,5};
 vec.clear() 
 ```
+
+
 
 
 
@@ -390,7 +348,7 @@ bool operator!=( const vector<T,Alloc>& lhs,
 
 
 
-7. 
+
 
 
 
@@ -488,37 +446,25 @@ int main(){
 
    ```c++
    //向vector的任意迭代器it处插入一个元素x
-   #include<stdio.h>
-   #incldue<vector>
-   using namespace std;
-   int main(){
        set<int> st;
        st.insert(2);	
        st.insert(5);
        st.insert(4);
        printf("%d ",st.size());		// 3
-       return 0;
-   }
    ```
-
+   
 2. find(x)
 
    ```c++
    //返回set中对应值为value的迭代器
-   #include<stdio.h>
-   #incldue<set>
-   using namespace std;
-   int main(){
        set<int> st;
        st.insert(2);	
        st.insert(5);
        st.insert(4);
        set<int>::iterator it=st.find(2);//在set中查找2，返回迭代器
        printf("%d ",*it);		// 2
-       return 0;
-   }
    ```
-
+   
 5. erase(it)/erase(first,last)
 
    ```c++
@@ -598,10 +544,12 @@ int main(){
 ​	在c语言中，一般使用字符数组`char str[]`来存放字符串，但是使用字符数组有时会显得操作麻烦。
 
 ```c++
-#include<string>
+#include <string>
 using namespace std;
 //！！！！！！！！string 和cstring不一样
 ```
+
+
 
 
 
@@ -623,30 +571,18 @@ string str="abcd";
 1. **通过下标访问**
 
    ```C++
-   #incldue<stdio.h>
-   #include<string>
-   using namespace std;
-   int main(){
-       string str="abcd";
-       for(int i=0;i<str.length();i++){
-           printf("%c",str[i]);	//abcd
-       }
-       return0
+   string str = "abcd";
+   for(int i = 0; i < str.length(); i++){
+       printf("%c", str[i]);	//abcd
    }
    ```
-
+   
    如果要**读入和输出**整个字符串，则只能用**cin和cout**;
-
+   
    ```c++
-   #include<isotream>
-   #include<string>
-   using namespace std;
-   int main{
-       string str;
-       cin>>str;
-       cout<<str;
-       return 0;
-   }
+   string str;
+   cin >> str;
+cout << str;
    ```
 
 2. **通过迭代器访问**
@@ -658,19 +594,17 @@ string str="abcd";
    这样就得到了迭代器it，并且可以通过*it来访问string里的每一位
 
    ```c++
-   #include<isotream>
-   #include<string>
-   using namespace std;
-   int main{
-       string str="abcd";
-       for(string::iterator it=st.begin();it!=st.end();it++){
-           printf("%c ",*it);			//abcd
-       }
-       return 0;
+   string str="abcd";
+   for(string::iterator it = st.begin(); it != st.end(); it++){
+       printf("%c ", *it);			//abcd
    }
    ```
 
-​	**STL容器中，只有vector和string中，允许使用`str.begin()+3`这种迭代器加上整数的写法**
+**STL容器中，只有vector和string中，允许使用`str.begin()+3`这种迭代器加上整数的写法**
+
+
+
+
 
 ---
 
@@ -680,49 +614,31 @@ string str="abcd";
 
    ```c++
    //string的加法 直接拼接
-   #include<isotream>
-   #include<string>
-   using namespace std;
-   int main{
-       string str1="abc",str2="xyz",str3;
-       str3=str1+str2;
-       str1+=str2;
-       cout<<str1<<endl;	//abcxyz
-       cout<<str3<<endl;	//abcxyz
-       return 0;
-   }
+   string str1 = "abc", str2 = "xyz", str3;
+   str3 = str1 + str2;
+   str1 += str2;
+   cout << str1 << endl;	//abcxyz
+   cout << str3 << endl;	//abcxyz
    ```
-
+   
 2. compare operator
 
    ```c++
-   //两个string类型可以直接使用== ！= 等比较大小 字典序
-   #include<isotream>
-   #include<string>
-   using namespace std;
-   int main{
-       string str1="aa",str2="aaa",str3="abc",str4="xyz";
-       if(str1<str2) printf("ok1\n");	//ok1
-       if(str1!=str3) printf("ok2\n");	//ok2
-       if(str4>=str3) printf("ok3\n");	//ok3
-       return 0;
-   }
+   //两个string类型可以直接使用== ！<= 等比较大小 字典序
+   string str1 = "aa",str2 = "aaa",str3 = "abc",str4 = "xyz";
+   if(str1 < str2) printf("ok1\n");	//ok1
+   if(str1 != str3) printf("ok2\n");	//ok2
+   if(str4 >= str3) printf("ok3\n");	//ok3
    ```
-
+   
 3. length()/size()
 
    ```C++
-   //返回string的长度，即存放的字符数
-   #include<stdio.h>
-   #include<string>
-   using namespace std;
-   int main(){
-       string str="abcxyz";	
-       printf("%d %d",str.size(),str.length());// 6 6
-       return 0;
-   }
+   // 返回string的长度，即存放的字符数
+   string str="abcxyz";	
+   printf("%d %d", str.size(), str.length());// 6 6
    ```
-
+   
 4. insert(x)
 
    ```c++
@@ -754,7 +670,7 @@ string str="abcd";
    ```c++
    //删除一个区间[fisrt,last)内的所有元素
    int main(){
-        string str="abcdefg";
+       string str="abcdefg";
        str.erase(str.begin()+2,str.end()-1);	//删除cdef
       	cout<<str<<endl;	//abg
        return 0;
@@ -794,25 +710,23 @@ string str="abcd";
    ```c++
    //find(str2)，当str2是str的子串时，返回其在str中第一次出现的位置；如果str2不是str的子串，返回string::npos
    //find(str2,pos),从str的pos号位开始寻找str2
-   int main(){
-       string str="Thank you for your smile";
-       string str2="you";
-       string str3="me";
-       if(str.find(str2)!=string::npos){
-           cout<<str.find(str2)<<endl;
+       string str = "Thank you for your smile";
+       string str2 = "you";
+       string str3 = "me";
+   
+       if(str.find(str2) != string::npos){
+           cout << str.find(str2) << endl;
        }
-       if(str.find(str2,7)!=string::npos){
-           cout<<str.find(str2,7)<<endl;
+       if(str.find(str2, 7) != string::npos){
+           cout << str.find(str2,7) << endl;
        }
-       if(str.find(str2)!=string::npos){
-           cout<<str.find(str3)<<endl;
-       }else{
-           cout<<"i know"<<endl;
+       if(str.find(str2) != string::npos){
+           cout << str.find(str3) << endl;
+       } else {
+           cout << "i know" << endl;
        }
-       return 0;
-   }
    ```
-
+   
 10. replace()
 
     ```c++
@@ -836,7 +750,7 @@ string str="abcd";
     //调整容器中有效数据区域的尺寸，如果尺寸变小，原来数据多余的截掉
     string s = "smiada";
     s.resize(2); // sm
-    //。若尺寸变大，不够的数据用该函数第二个参数填充,影响size。
+    //若尺寸变大，不够的数据用该函数第二个参数填充,影响size。
     string s = "smiada";
     s.resize(10, 'b');//smiadabbbb
     ```
