@@ -349,7 +349,7 @@ vector<vector<int>> combine(int n, int k) {
 
 ---
 
-### 216题. 组合总和III
+### 216. 组合总和III
 
 
 

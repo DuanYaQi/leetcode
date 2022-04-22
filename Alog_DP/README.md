@@ -981,126 +981,6 @@ dp[0] = nums[0];
 
 ---
 
-## 377. 组合总和 Ⅳ
-
-
-
-1. 确定**dp数组**(dp table)以及**下标的含义**
-
-```C++
-dp[i]: 表示选取的元素之和等于 i 的方案数
-```
-
-
-
-2. 确定**递推公式**
-
-如果存在一种排列，其中的元素之和等于 i，则该排列的最后一个元素一定是数组 nums 中的一个元素。假设该排列的最后一个元素是 num，则一定有 num≤i，对于元素之和等于 i−num 的每一种排列，在最后添加 num 之后即可得到一个元素之和等于 i 的排列，因此在计算 dp[i] 时，应该计算**所有的 dp[i−num] 之和**。
-
-```c++
-for (int k = 0; k < nums.size(); ++k)
-    if (i - nums[k] > 0)
-		dp[i] += dp[i-nums[k]];
-```
-
-
-
-3. dp数组如何**初始化**
-
-```c++
-// 边界条件
-dp[0] = 1; 
-```
-
-不选取任何元素时，元素之和才为 0，因此只有 1 种方案。
-
-
-
-4. 确定**遍历顺序**
-
-外层循环是遍历从 1 到 target 的值，内层循环是遍历数组 nums 的值，在计算 dp[i] 的值时，nums 中的**每个小于等于 i 的元素都可能作为元素之和等于 i 的排列的最后一个元素**。
-
-
-
-
-
-
-
-5. 举例推导dp数组
-
-
-
-
-
-```c++
-int combinationSum4(vector<int>& nums, int target) {
-    int n = nums.size();
-
-    int dp[target+1]; memset(dp, 0, sizeof(dp));     // dp[0] 组合成 target 的方案数
-
-    dp[0] = 1;
-
-    for (int i = 1; i <= target; ++i) {             // 遍历每个值
-        for (int j = 0; j < n; ++j) {              
-            int num = nums[j];                      
-            if (i - num >= 0 && dp[i] < INT_MAX - dp[i - num] ) { 
-                dp[i] += dp[i-num];
-            }
-        }
-    }
-
-    return dp[target];
-}
-```
-
-
-
-
-
-
-
-
-
-----
-
-## 139. 单词划分
-
-跟 377 一样，没必要非得用完全背包来做，一维 dp 数组已经有很好的解释了。
-
-
-
-`dp[i]` 表示是否可以从dict中选取一些元素 组成长度为 s.substr(0, i) 的字符串
-
-
-
-```c++
-bool wordBreak(string s, vector<string>& wordDict) {
-    int m = s.size(); 
-
-    bool dp[m + 1]; memset(dp, false, sizeof(dp));   //表示前 i 个单词，是否可以组成长度为 j 的字符串 
-
-    dp[0] = true;
-
-    for (int i = 1; i <= m; ++i) {
-
-        for (int j = 0; j < wordDict.size(); ++j) {
-            string str = wordDict[j];
-            int sSize = str.size();
-            if (i - sSize >= 0 && str == s.substr(i - sSize, sSize))	// 能取，并且完全相同
-                dp[i] = dp[i] || dp[i - sSize];		// 注意要跟自己的状态一起转移，因为可能 for j 前边已经有true了
-        }
-    }
-
-    return dp[m];
-}
-```
-
-
-
-
-
----
-
 # DP-Bag
 
 背包
@@ -2394,6 +2274,136 @@ $$
      return dp[maxn][n];
  }
 ```
+
+
+
+
+
+
+
+# 全排列 DP
+
+## 377. 组合总和 Ⅳ
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i]: 表示选取的元素之和等于 i 的方案数
+```
+
+
+
+2. 确定**递推公式**
+
+如果存在一种排列，其中的元素之和等于 i，则该排列的最后一个元素一定是数组 nums 中的一个元素。假设该排列的最后一个元素是 num，则一定有 num≤i，对于元素之和等于 i−num 的每一种排列，在最后添加 num 之后即可得到一个元素之和等于 i 的排列，因此在计算 dp[i] 时，应该计算**所有的 dp[i−num] 之和**。
+
+```c++
+for (int k = 0; k < nums.size(); ++k)
+    if (i - nums[k] > 0)
+		dp[i] += dp[i-nums[k]];
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+// 边界条件
+dp[0] = 1; 
+```
+
+不选取任何元素时，元素之和才为 0，因此只有 1 种方案。
+
+
+
+4. 确定**遍历顺序**
+
+外层循环是遍历从 1 到 target 的值，内层循环是遍历数组 nums 的值，在计算 dp[i] 的值时，nums 中的**每个小于等于 i 的元素都可能作为元素之和等于 i 的排列的最后一个元素**。
+
+
+
+
+
+
+
+5. 举例推导dp数组
+
+
+
+
+
+```c++
+int combinationSum4(vector<int>& nums, int target) {
+    int n = nums.size();
+
+    int dp[target+1]; memset(dp, 0, sizeof(dp));     // dp[0] 组合成 target 的方案数
+
+    dp[0] = 1;
+
+    for (int i = 1; i <= target; ++i) {             // 遍历每个值
+        for (int j = 0; j < n; ++j) {              
+            int num = nums[j];                      
+            if (i - num >= 0 && dp[i] < INT_MAX - dp[i - num] ) { 
+                dp[i] += dp[i-num];
+            }
+        }
+    }
+
+    return dp[target];
+}
+```
+
+
+
+
+
+
+
+
+
+----
+
+## 139. 单词划分
+
+跟 377 一样，没必要非得用完全背包来做，一维 dp 数组已经有很好的解释了。
+
+
+
+`dp[i]` 表示是否可以从dict中选取一些元素 组成长度为 s.substr(0, i) 的字符串
+
+
+
+```c++
+bool wordBreak(string s, vector<string>& wordDict) {
+    int m = s.size(); 
+
+    bool dp[m + 1]; memset(dp, false, sizeof(dp));   //表示前 i 个单词，是否可以组成长度为 j 的字符串 
+
+    dp[0] = true;
+
+    for (int i = 1; i <= m; ++i) {
+
+        for (int j = 0; j < wordDict.size(); ++j) {
+            string str = wordDict[j];
+            int sSize = str.size();
+            if (i - sSize >= 0 && str == s.substr(i - sSize, sSize))	// 能取，并且完全相同
+                dp[i] = dp[i] || dp[i - sSize];		// 注意要跟自己的状态一起转移，因为可能 for j 前边已经有true了
+        }
+    }
+
+    return dp[m];
+}
+```
+
+
+
+
+
+## 216. 组合总和III
+
+
 
 
 
