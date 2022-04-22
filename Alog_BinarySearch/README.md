@@ -227,7 +227,7 @@ int getRightBorder(vector<int>& nums, int target) {
 
         if (nums[mid] > target) {
             hi = mid - 1;
-        } else if (nums[mid] <= target) {	// =target 一直往右压缩，直到压缩到
+        } else if (nums[mid] <= target) {	// ==target 一直往右压缩，直到压缩到
             lo = mid + 1;
         }
     }
