@@ -404,7 +404,7 @@ int wiggleMaxLength(vector<int>& nums) {
 
 
 
-# Hard 题
+# Other
 
 ---
 
@@ -485,6 +485,56 @@ int maxSubArray(vector<int>& nums) {
 
 
 
+
+---
+
+## 1775. 通过最少操作次数使数组的和相等
+
+数组 a, b，其中 a 的和较小，b 的和较大
+双指针分别从 数组 a 左侧（较小侧） 和 数组 b 右侧（较大侧）开始移动；
+
+为了让两数组和相等，每次操作可以使较大数变小（最小变为 1），或较小数变大（最大变为 6），贪心的选择**变化差值最大的一边修改**；
+
+重复操作直到 **指针遍历完数组** 或 `sum(a)≥sum(b)` 
+
+为什么是 `sum(a)≥sum(b)`  因为当大于的时候，说明最后一次加的差值过大了，完全可以加一个小一点的数，使 `sum(a) == sum(b)`
+
+```c++
+int minOperations(vector<int>& nums1, vector<int>& nums2) {
+    int sumn1 = accumulate(nums1.begin(), nums1.end(), 0);
+    int sumn2 = accumulate(nums2.begin(), nums2.end(), 0);
+
+    if (sumn1 > sumn2) {
+        return minOperations(nums2, nums1);
+    }
+
+    sort(nums1.begin(), nums1.end());
+    sort(nums2.begin(), nums2.end());
+
+    int i = 0, j = nums2.size() - 1;
+    int cnt = 0;
+    while (i < nums1.size() && j >= 0 && sumn1 < sumn2) {
+        if (6 - nums1[i] > nums2[j] - 1) {  // nums1 小变大 缩进距离比 nums2 大变小 缩进的好
+            sumn1 += (6 - nums1[i++]);
+        } else {
+            sumn2 -= (nums2[j--] - 1);
+        }          
+        cnt++;
+    }   
+
+    while (i < nums1.size() && sumn1 < sumn2) {
+        sumn1 += (6 - nums1[i++]);
+        cnt++;
+    }
+
+    while (j >= 0 && sumn1 < sumn2) {
+        sumn2 -= (nums2[j--] - 1);
+        cnt++;
+    }
+
+    return sumn1 >= sumn2 ? cnt : -1;
+}
+```
 
 
 

@@ -150,6 +150,8 @@ https://www.cnblogs.com/MinPage/
 | `const int inf = 0x3f3f3f3f;`|
 | `int a[m][n]; memset(a, 0x3f, sizeof(a));` |
 |  |
+| 两个输入大小不确定时，可以巧妙地转换一下 `if(a1 > a2) return deal(a2, a1);` 变成一个固定大，一个固定小|
+|  |
 |复杂函数放在private会减少执行用时，减少内存消耗|
 |if (root != nullptr)　而不是　if (root)|
 |int size;   double asum;<br>vec.push_back(double(asum/size)); 　而不是　vec.push_back(asum/size);|
@@ -739,7 +741,7 @@ Greedy
 |[55. Jump Game](Alog_Greedy/55+Jump%20Game.cpp) | | |
 |[45. Jump Game II](/Alog_Greedy/45+Jump%20Game%20II.cpp) | | |
 | | | |
-| | | |
+|[1775. Equal Sum Arrays With Minimum Number of Operations](/Alog_Greedy/1775+Equal%20Sum%20Arrays%20With%20Minimum%20Number%20of%20Operations.cpp) | | 可以一直贪心，不一定要使它刚好相等，使sumn1 大于sumn2 说明一定有解，只要最后一次取小一点就可以了 |
 | | | |
 | | | |
 
