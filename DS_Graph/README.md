@@ -1,4 +1,4 @@
-​	Graph
+	Graph
 
 https://labuladong.gitee.io/algo/2/20/36/
 
@@ -408,6 +408,51 @@ https://labuladong.gitee.io/algo/2/20/48/
 
 
 ## 743. 网络延迟时间（中等）
+
+
+
+### dfs
+
+```c++
+int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+    const int inf = 0x3f3f3f3f;
+    vector<vector<pair<int, int>>> g(n + 1);
+	
+    /*建图 邻接表*/
+    for (auto &p : times) {
+        g[p[0]].emplace_back(p[1], p[2]);	
+    }
+
+    vector<int> dist(n+1, inf);
+    dist[k] = 0;
+    //vector<bool> vis(n+1, false);!!!!!!!!!!!!!普通dfs不能使用vis数组，需要全部松弛一边
+
+    queue<int> q;
+    q.emplace(k);
+
+    while (q.size()) {
+        int x = q.front(); q.pop();
+
+        //if (vis[x]) continue;
+        //vis[x] = true;
+
+        for (auto &p : g[x]) {
+            int dis = dist[x] + p.second, y = p.first;
+            if (dist[y] > dis) {
+                dist[y] = dis;
+                q.push(y);
+            }
+        }
+    }
+
+    int res = *max_element(++dist.begin(), dist.end());
+    return res == inf ? -1 : res;
+}
+```
+
+
+
+
 
 
 

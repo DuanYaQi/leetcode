@@ -289,7 +289,7 @@ int climbStairs(int n) {
 
 ---
 
-### 拓展
+**拓展**
 
 一步一个台阶,两个台阶,三个台阶,直到 m个台阶,有多少种方法爬到n阶楼顶。 完全背包题
 
@@ -344,20 +344,18 @@ i    : 当前的步数
 2. 确定**递推公式**
 
 ```c++
-dp[i] += cost[i] + min(dp[i-1], dp[i-2]);
+dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]);
+
+因此要取 dp[n + 1];
 ```
-
-最后一步可以理解为不用花费,所以取倒数第一步,第二步的最小值
-
-
 
 
 
 3. dp数组如何**初始化**
 
 ```c++
-dp[0] = cost[0];
-dp[1] = cost[1];
+dp[0] = 0;
+dp[1] = 0;
 ```
 
 
@@ -372,34 +370,24 @@ dp[1] = cost[1];
 
 ```c++
 N = 10;
-dp[0] = 1;
-dp[1] = 100;
-dp[2] = 1 + 1 = 2;
-dp[3] = 2 + 1 = 3;
-dp[4] = 3 + 2 = 5;
-dp[5] = 5 + 3 = 8;
-dp[6] = 8 + 5 = 13;
-dp[7] = 13 + 8 = 21;
-dp[8] = 21 + 13 = 34;
-dp[9] = 34 + 21 = 55;
+
+dp[0] = 0;
+dp[1] = 0;
+dp[2] = 0 + 10 = 10;
+dp[3] = 0 + 15 = 15;
 ```
 
 
 
 ```c++
 int minCostClimbingStairs(vector<int>& cost) {
-    int N = cost.size();
-    if (N < 2) return min(cost[0], cost[1]);
+    int dp[1010]; memset(dp, 0, sizeof dp);
 
-    vector<int> dp(N, 0);
-    dp[0] = cost[0];
-    dp[1] = cost[1];
-
-    for (int i = 2; i < N; ++i) { //从第二层开始
-        dp[i] = cost[i] + min(dp[i-1], dp[i-2]);
+    for (int i = 2; i <= cost.size(); ++i) {
+        dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]);
     }
-    // 注意最后一步可以理解为不用花费,所以取倒数第一步,第二步的最少值
-    return min(dp[N-1], dp[N-2]);
+
+    return dp[cost.size()];
 }
 ```
 
@@ -408,7 +396,7 @@ int minCostClimbingStairs(vector<int>& cost) {
 
 
 
-### 优化
+**优化**
 
 ```c++
 int minCostClimbingStairs(vector<int>& cost) {
@@ -2401,18 +2389,6 @@ bool wordBreak(string s, vector<string>& wordDict) {
 
 
 
-## 216. 组合总和III
-
-
-
-
-
-
-
-
-
-
-
 ----
 
 # 打家劫舍
@@ -3414,6 +3390,8 @@ int trap(vector<int>& height) {
 
 
 
+
+----
 
 # 子序列
 

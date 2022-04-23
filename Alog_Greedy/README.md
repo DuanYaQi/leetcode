@@ -38,8 +38,6 @@ https://mp.weixin.qq.com/s/zsbSJCGB7oc3O38VGvXReg
 
 贪心也没有什么框架和套路，所以对刷题顺序要求没有那么高。
 
-
-
 1. 贪心很简单，就是常识？
 贪心思路往往很**巧妙**，**但并不简单**。
 2. 贪心有没有固定的套路？
@@ -79,11 +77,34 @@ https://mp.weixin.qq.com/s/zsbSJCGB7oc3O38VGvXReg
 
 
 
+贪心的一些题型，主要是**区间重叠问题**，分配问题也是典型的贪心。而像**子序列、跳跃问题等都是 dp 的优化，比较特殊**。
 
 
-# 简单题目
 
-## 455.分发饼干
+
+
+- **分配问题**是最直接的贪心问题，如果涉及多个方便的比较，不要一次处理，分开处理。
+
+- **区间重叠问题**比较常见。通常**需要排序**，可能按左右端点排序，排序后又**左右遍历**，都有可能。最常见的，是左端点升序排序，然后用 end 维护上一个区间的右端点，再比较 end 和当前区间的左端点大小，就知道有没有重叠。
+- 涉及两个维度的题，通常先解决掉一维，再处理另一维
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
+
+# 分配问题
+
+## 455.分发饼干x
 
 为了了满足更多的小孩，就**不要造成饼干尺寸的浪费**。
 
@@ -116,45 +137,21 @@ int findContentChildren(vector<int>& g, vector<int>& s) {
 
 
 
-## 1005. K次取反后最大化的数组和
+----
 
-那么本题的解题步骤为：
-
-- 第一步：将数组按照绝对值大小从大到小排序，**注意要按照绝对值的大小**
-- 第二步：从前向后遍历，遇到负数将其变为正数，同时K--
-- 第三步：如果K还大于0，那么反复转变数值最小的元素，将K用完
-- 第四步：求和
-
-```c++
-static bool cmp(int a, int b) {
-    return abs(a) > abs(b);
-}
-
-int largestSumAfterKNegations(vector<int>& nums, int k) {
-    sort(nums.begin(), nums.end(), cmp);
+## 135. 分发糖果x
 
 
-    for (int i = 0; i < nums.size(); ++i) {
-        if (k > 0 && nums[i] < 0) {
-            nums[i] = -nums[i];
-            k--;
-        }
-    }
 
-    if (k % 2 == 1) nums[nums.size()-1] *= -1;
 
-    int res = 0;
-    for (int i : nums) res += i;
 
-    return res;
-}
-```
+
 
 
 
 ---
 
-## 860. 柠檬水找零
+## 860. 柠檬水找零x
 
 - 情况一：账单是5，直接收下。
 - 情况二：账单是10，消耗一个5，增加一个10
@@ -172,44 +169,7 @@ int largestSumAfterKNegations(vector<int>& nums, int k) {
 
 
 
-
-
-
-
 ---
-
-## 55. 跳跃游戏
-
-rightmax 存储当前能到达的所有地方，然后贪心，每次都尽可能地走远。
-
-
-
-
-
-## 45. 跳跃游戏II
-
-```c++
-int jump(vector<int>& nums) {
-    int n = nums.size();
-    int rightmax = 0;                   // 目前能跳到的最远位置
-    int res = 0;
-    int end = 0;                        // 上次跳跃可达范围右边界下次的最右起跳点
-    for (int i = 0; i < n - 1; ++i) {   // 不遍历到最后一点 因为假设你总是可以到达数组的最后一个位置。
-        if (i <= rightmax) {        
-            rightmax = max(rightmax, i + nums[i]);                
-
-            if (i == end) {         // 到达上次跳跃能到达的右边界了
-                end = rightmax;     // 目前能跳到的最远位置变成了下次起跳位置的有边界
-                res++;              // 进入下一次跳跃
-            }
-        }
-    }
-
-    return res;
-}
-```
-
-
 
 
 
@@ -378,6 +338,104 @@ int wiggleMaxLength(vector<int>& nums) {
 
 
 
+---
+
+# 跳跃问题
+
+## 55. 跳跃游戏
+
+维护能够到达的最远位置
+
+```c++
+bool canJump(vector<int>& nums) {
+    int n = nums.size();
+    int maxI = 0;
+
+    for (int i = 0; i < n; ++i) {
+        if (i <= maxI) {
+            maxI = max(maxI, i + nums[i]);
+        } else {			// 中途走不动了，说明到达不了
+            return false;
+        }            
+    }
+
+    return true;
+}
+```
+
+
+
+
+
+
+
+## 45. 跳跃游戏II
+
+倒着跳，每次都选能到达 i 的最前位置
+
+```c++
+int jump(vector<int>& nums) {
+    int n = nums.size();
+
+    int cnt = 0;
+    int flag = n-1;	// 当前倒推到的位置
+	
+    while (flag > 0) {	// = 0时倒退结束
+
+        for (int i = 0; i <= flag; ++i) {
+            if (i + nums[i] >= flag) {
+                flag = i;  
+                break;
+            }
+        }
+
+        cnt++;
+    }
+
+    return cnt;        
+}
+```
+
+
+
+
+
+----
+
+## 1306. 跳跃游戏 III
+
+广度优先 queue 维护能倒退回的位置
+
+每次从结束位置，倒退，返回 0 能退回的位置，标为true，直到 start 入队
+
+```c++
+int jump(vector<int>& nums) {
+    int n = nums.size();
+
+    int cnt = 0;
+    int flag = n-1;	// 当前倒推到的位置
+	
+    while (flag > 0) {	// = 0时倒退结束
+
+        for (int i = 0; i <= flag; ++i) {
+            if (i + nums[i] >= flag) {
+                flag = i;  
+                break;
+            }
+        }
+
+        cnt++;
+    }
+
+    return cnt;        
+}
+```
+
+
+
+---
+
+## 1696. 跳跃游戏 VI
 
 
 
@@ -386,7 +444,14 @@ int wiggleMaxLength(vector<int>& nums) {
 
 
 
-# 维度权衡问题
+
+
+
+## 1871. 跳跃游戏 VII
+
+```c++
+
+```
 
 
 
@@ -396,15 +461,27 @@ int wiggleMaxLength(vector<int>& nums) {
 
 
 
-# 区间问题
+---
+
+# 数字问题
+
+---
+
+## 738. 单调递增的数字
+
+## 179. 最大数
+
+## 321. 拼接最大数
+
+## 397. 整数替换
+
+## 402. 移掉 K 位数字
 
 
 
 
 
 
-
-# Other
 
 ---
 
@@ -448,6 +525,42 @@ int maxSubArray(vector<int>& nums) {
 
 
 
+## 1005. K次取反后最大化的数组和
+
+那么本题的解题步骤为：
+
+- 第一步：将数组按照绝对值大小从大到小排序，**注意要按照绝对值的大小**
+- 第二步：从前向后遍历，遇到负数将其变为正数，同时K--
+- 第三步：如果K还大于0，那么反复转变数值最小的元素，将K用完
+- 第四步：求和
+
+```c++
+static bool cmp(int a, int b) {
+    return abs(a) > abs(b);
+}
+
+int largestSumAfterKNegations(vector<int>& nums, int k) {
+    sort(nums.begin(), nums.end(), cmp);
+
+
+    for (int i = 0; i < nums.size(); ++i) {
+        if (k > 0 && nums[i] < 0) {
+            nums[i] = -nums[i];
+            k--;
+        }
+    }
+
+    if (k % 2 == 1) nums[nums.size()-1] *= -1;
+
+    int res = 0;
+    for (int i : nums) res += i;
+
+    return res;
+}
+```
+
+
+
 
 
 **贪心**
@@ -479,6 +592,24 @@ int maxSubArray(vector<int>& nums) {
     return res;
 }
 ```
+
+
+
+
+
+
+
+----
+
+# 维度权衡问题
+
+## 135. 
+
+
+
+
+
+## 406. 根据身高重建队列x
 
 
 
@@ -535,6 +666,100 @@ int minOperations(vector<int>& nums1, vector<int>& nums2) {
     return sumn1 >= sumn2 ? cnt : -1;
 }
 ```
+
+
+
+
+
+---
+
+# 区间问题
+
+## 452. 
+
+
+
+
+
+## 435. 
+
+
+
+
+
+
+
+
+
+## 763.
+
+
+
+
+
+## 56.
+
+
+
+
+
+## 57. 
+
+
+
+## 1024. 
+
+
+
+
+
+## 1288. 
+
+
+
+## 986. 
+
+
+
+
+
+---
+
+## 二维贪心问题
+
+## 122.买卖股票的最佳时机II
+
+## 1005. K 次取反后最大化的数组和
+
+
+
+## 134. 加油站
+
+## 406. 根据身高重建队列
+
+
+
+## 714. 买卖股票的最佳时机含手续费
+
+
+
+
+
+---
+
+# Other
+
+## 134.
+
+
+
+
+
+
+
+## 868.
+
+
 
 
 

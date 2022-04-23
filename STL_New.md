@@ -274,7 +274,7 @@ using namespace std;
 
 
 
-### 考点
+### *考点
 
 - **Q：优点**
 
@@ -415,6 +415,57 @@ $$
 > https://blog.csdn.net/qq_46780256/article/details/122023002
 
 
+
+
+
+
+
+- Q：循环中 erase 造成的问题，以及改正方法？
+
+```c++
+vector<int> vec;
+vec.push_back(1);vec.push_back(2);vec.push_back(3);vec.push_back(3);vec.push_back(4);vec.push_back(5);
+
+for (vector<int>::iterator iter = vec.begin(); iter != vec.end(); ++iter)
+    if (*iter == 3)
+        vec.erase(iter);
+```
+
+当 `vec.erase(iter)` 之后，`iter` 就变成了一个**野指针**，对一个野指针进行 `iter++` 是肯定会出错的。
+
+对于 erase 的**返回值**是这样描述的：An iterator that designates the first element remaining beyond any elements removed, or a pointer to the end of the vector if no such element exists. 一个迭代器，它指定被移除元素之外**剩余的第一个元素**，或者一个指向向量末尾的指针(如果没有这样的元素)
+
+因此修正为：
+
+```c++
+for (vector<int>::iterator iter = vec.begin(); iter != vec.end(); ++iter)
+    if (*iter == 3)
+        iter = vec.erase(iter);  //返回值指向删除元素的下一个元素
+```
+
+这段代码也是错误的：1）**无法删除两个连续的"3"**； 2）当3位于vector最后位置的时候，也会出错（在vec.end()上执行 ++ 操作）
+
+
+
+**正确答案**
+
+```c++
+for (vector<int>::iterator iter = vec.begin(); iter != vec.end(); )//每次循环不增
+    if (*iter == 3)
+        iter = vec.erase(iter);  //返回值指向删除元素的下一个元素
+	else
+        iter++;
+```
+
+或者利用 `reverse_iterator` 倒着来 erase
+
+```c++
+for (vector<int>::reverse_iterator riter = vec.rbegin(); riter != vec.rend(); )//每次循环不增
+    if (*riter == 3)
+        riter = vec.erase((++riter).base());  //返回值指向删除元素的下一个元素
+	else
+        riter++;
+```
 
 
 
@@ -710,7 +761,7 @@ FIFO(First In, First Out) 普通队列/先进先出
 
 **双端队列**
 
-
+线性复杂度的插入和删除，以及常数复杂度的随机访问。
 
 | 初始化/访问            | 意义                                           |
 | ---------------------- | ---------------------------------------------- |
@@ -732,38 +783,6 @@ FIFO(First In, First Out) 普通队列/先进先出
 |                    |                     |
 
 
-
-#### 考点
-
-- Q：插入和删除的复杂度？
-
-线性复杂度的插入和删除，以及常数复杂度的随机访问。
-
-
-
-- Q：实现原理？
-
-deque 的中控器，deque是连续空间，由**一段一段的定量连续空间**构成。一旦有必要在 deque 的前端或尾端增加新空间，便配置一段定量连续空间，串接在整个 deque 的头端或尾端。deque 的最大任务，在这些分段的定量连续空间上，维护其**整体连续的假象**。避开vector动态三部曲，代价是**复杂的迭代器架构**。
-
-既然是分段连续线性空间，就必须有中央控制，为了维持整体连续的假象，数据结构的设计及迭代器前进后退的操作都很繁琐。因此 deque 的代码分量比 vector 和 list 多得多。
-
-deque 采用一块所谓的map作为主控（不是stl的map容器）。这个map是一小块连续空间，其中每个元素都是指针，指向另一段（较大的）连续线性空间，称为缓冲区。缓冲区才是 deque 的储存空间主题。整体架构如下图：
-
-![img](assets/Center.png)
-
-
-
-
-
-- Q：deque 的迭代器怎么设计的？
-
-首先它必须能够指出分段连续空间（缓冲区）在哪？，它必须能判断自己是否已经处于所在缓冲区的边缘，如果是，一旦前进或后退就必须跳跃至下一个或上一个缓冲区。为了能够正确跳跃，deque 必须随时掌握主控中心 map。
-
-迭代器中需要定义：当前元素的指针，当前元素所在缓冲区的起始指针，当前元素所在缓冲区的尾指针，指向map中指向所在缓冲区地址的指针，分别为 cur, first, last, node。如下图：
-
-![img](assets/Center-165060919655331.png)
-
-> https://blog.csdn.net/baidu_28312631/article/details/48000123
 
 
 
@@ -811,7 +830,45 @@ deque 采用一块所谓的map作为主控（不是stl的map容器）。这个ma
 
 
 
+---
 
+### *考点
+
+- Q：deque 插入和删除的复杂度？
+
+线性复杂度的插入和删除，以及常数复杂度的随机访问。
+
+
+
+- Q：deque 实现原理？
+
+deque 的中控器，deque是连续空间，由**一段一段的定量连续空间**构成。一旦有必要在 deque 的前端或尾端增加新空间，便配置一段定量连续空间，串接在整个 deque 的头端或尾端。deque 的最大任务，在这些分段的定量连续空间上，维护其**整体连续的假象**。避开vector动态三部曲，代价是**复杂的迭代器架构**。
+
+既然是分段连续线性空间，就必须有中央控制，为了维持整体连续的假象，数据结构的设计及迭代器前进后退的操作都很繁琐。因此 deque 的代码分量比 vector 和 list 多得多。
+
+deque 采用一块所谓的map作为主控（不是stl的map容器）。这个map是一小块连续空间，其中每个元素都是指针，指向另一段（较大的）连续线性空间，称为缓冲区。缓冲区才是 deque 的储存空间主题。整体架构如下图：
+
+![img](assets/Center.png)
+
+
+
+
+
+- Q：deque 的迭代器怎么设计的？
+
+首先它必须能够指出分段连续空间（缓冲区）在哪？，它必须能判断自己是否已经处于所在缓冲区的边缘，如果是，一旦前进或后退就必须跳跃至下一个或上一个缓冲区。为了能够正确跳跃，deque 必须随时掌握主控中心 map。
+
+迭代器中需要定义：当前元素的指针，当前元素所在缓冲区的起始指针，当前元素所在缓冲区的尾指针，指向map中指向所在缓冲区地址的指针，分别为 cur, first, last, node。如下图：
+
+![img](assets/Center-165060919655331.png)
+
+> https://blog.csdn.net/baidu_28312631/article/details/48000123
+
+
+
+
+
+----
 
 ## 6. set
 
@@ -975,6 +1032,38 @@ if (it == record.end()) {
 
 
 
+### *考点
+
+- Q：erase 后的迭代器失效，及解决方案？
+
+```c++
+map<int, int> m = {
+    {1, 2},
+    {2, 3},
+    {3, 0},
+    {4, 1},
+    {5, 0},
+    {6, 0}
+};
+
+for (map<int, int>::iterator iter = m.begin(); iter != m.end(); ){
+    if (iter->second == 0) {
+        cout << "Erasing " << iter->second << endl;
+        m.erase(iter++);	//iter = m.erase(iter);
+    } else {
+        iter++;
+    }        
+}
+```
+
+
+
+
+
+
+
+
+
 ---
 
 ## 8. array
@@ -1054,7 +1143,7 @@ operator[]	访问指定的元素，不进行越界检查
 
 ---
 
-## 10. 通用考点
+## 10. *通用考点
 
 - Q：STL 的六大组件？
 
@@ -1336,6 +1425,12 @@ find 在序列中顺序查找一个元素；
 search 在序列中查找一段连续子序列，加了_n表示在序列中查找一段连续相同的子序列。
 
 
+
+
+
+
+
+----
 
 
 ### 改变序列的操作
