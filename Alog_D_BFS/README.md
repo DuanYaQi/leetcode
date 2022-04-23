@@ -456,9 +456,198 @@ public:
 
 
 
+---
 
 
 
+# BFS
+
+## 1306. 跳跃游戏 III
+
+刚开始的错误写法，属于想多了，从尾往前，但其实正向bfs好一点
+
+```c++
+bool bfs(vector<int>& arr, int start, int zeroIdx) {
+    int n = arr.size();
+    queue<int> q;         // 存下标
+    q.push(zeroIdx);
+
+    bool vis[n+1]; memset(vis, false, sizeof vis);
+
+    while (!q.empty()) {
+        int p = q.front(); q.pop();
+
+        if (vis[p]) continue;
+        vis[p] = true;
+
+        if (p == start) {
+            return true;
+        }
+
+        for (int i = 0; i < n; ++i) {
+            if (i + arr[i] == p || i - arr[i] == p)
+                q.push(i);
+        }
+    }
+
+    return false;
+}
+
+bool canReach(vector<int>& arr, int start) {
+    int n = arr.size();
+    int zeroIdx = find(arr.begin(), arr.end(), 0) - arr.begin();
+
+    unordered_set<int> st;
+
+    for (int i = 0; i < n; ++i) {
+        if (arr[i] == 0)
+            st.insert(i);
+    }
+
+    for (auto &idx : st)
+        if (bfs(arr, start, idx))
+            return true;
+
+    return false;
+}
+```
+
+
+
+
+
+```c++
+bool canReach(vector<int>& arr, int start) {
+    int n = arr.size();
+
+    queue<int> q;
+    q.push(start);
+
+    bool vis[n+1]; memset(vis, false, sizeof vis);
+
+    while (!q.empty()) {
+        int idx = q.front(); q.pop();
+
+        if (arr[idx] == 0) 
+            return true;
+
+        if (vis[idx]) continue;
+        vis[idx] = true;
+
+        if (idx + arr[idx] < n) q.push(idx + arr[idx]);
+        if (idx - arr[idx] >= 0) q.push(idx - arr[idx]);           
+    }
+
+    return false;
+}
+```
+
+
+
+
+
+---
+
+## 1345. 跳跃游戏 IV
+
+抽象成**无向图**，然后起点为0，终点为n，找到起点到终点的最短路径
+
+然后每个点跟其相同值的点互通，每个点跟它前后点互通 **无向无权图**
+
+暴力 bfs 遍历所有点所有边，$O(N^2)$ 
+
+
+
+优化对于等值顶点构成的子图，其实在**遍历其中一个顶点时**，**就将整个子图访问一次**，**之后清空整个子图**，从而**避免重复访问该子图**
+
+
+
+解题步骤：
+
+- 使用map 保存图的顶点和边，即 key 为元素的值，value 记录的是索引
+- 首个顶点入队，开始 BFS 搜索，当搜索到某个顶点时，将其连接的其它顶点入队
+- 搜索中，分为三种情况
+  - 向前跳
+  - 向后跳
+  - 等值跳
+
+- 为了避免重复访问顶点，标记每个顶点是否访问过，访问过就不入队，
+- 避免重复访问子图，需要将第一次添加等值子图入队之后，将该元素从map中删除，后续搜索不会在将该子图加入队列。
+- 队列中放 pair，分别表示当前索引和步数
+
+
+
+
+
+广度优先的解法
+
+- 对于目前状态，会有3种下一步的情况
+  - +1
+  - -1
+  - 和相同数字的其他坐标：通过数组来预先构建
+- 记录一个isVisited来避免循环遍历
+- 遍历的层数就是对应的操作次数
+
+
+
+
+
+```c++
+// 方法1 ： 单向BFS
+public int minJumps(int[] arr) {
+    if (arr == null || arr.length == 0) return -1;
+    int n = arr.length;
+    if (n == 1) return 0;
+    Map<Integer, List<Integer>> indexMap = new HashMap<>();
+    // 哈希表存 value 和 index
+    for (int i = 0; i < n; i++) {
+        List<Integer> list = indexMap.getOrDefault(arr[i], new ArrayList<>());
+        list.add(i);
+        indexMap.put(arr[i], list);
+    }
+    
+    boolean[] visited = new boolean[n];
+    Deque<int[]> deque = new LinkedList<>(); // int[] {index, step}
+    deque.add(new int[]{0, 0});
+    
+    while (!deque.isEmpty()) {
+        int[] cur = deque.poll();
+        int index = cur[0];
+        int step = cur[1];
+        // 搜到了末尾
+        if (index == n - 1) return step;
+        // 前后跳
+        if (index + 1 < n && !visited[index + 1]) {
+            deque.add(new int[]{index + 1, step + 1});
+            visited[index + 1] = true;
+        }
+        if (index - 1 >= 0 && !visited[index - 1]) {
+            deque.add(new int[]{index - 1, step + 1});
+            visited[index - 1] = true;
+        }
+        // 等值跳
+        if (indexMap.containsKey(arr[index])) {
+            List<Integer> indexList = indexMap.get(arr[index]);
+            for (int idx : indexList) {
+                if(!visited[idx]) {
+                    deque.add(new int[]{idx, step + 1});
+                    visited[idx] = true;
+                }
+            }
+        }
+        // 注意从哈希表中删除访问过的元素
+        indexMap.remove(arr[index]);
+    }
+    
+    return -1;
+}
+```
+
+
+
+
+
+----
 
 # 记忆化搜索
 

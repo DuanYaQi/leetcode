@@ -80,6 +80,7 @@ DAG 的问题就 dfs+memo
 - [ ] 474 记忆化搜索  `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
 - [ ] 322 为什么 dp 赋初始值 `0x3f` 可以，而 `INT_MAX`， `INT_MAX / 2` 就不行
 - [ ] 面试题 17.07. Baby Names LCCI
+- [ ] 双向bfs，127/752/剑指 Offer II 109/剑指 Offer II 108. 单词演变
 - [ ] 蓄水池算法
 - [ ] bitmap
 - [ ] 字典树
@@ -115,6 +116,8 @@ DAG 的问题就 dfs+memo
 **模板**
 
 pepcy.cf/icpc-templates/002DataStructure/bit.html
+
+https://github.com/PepcyCh/icpc-templates
 
 [负雪明烛模板](https://blog.csdn.net/fuxuemingzhu/article/details/101900729)
 
@@ -184,7 +187,7 @@ https://www.cnblogs.com/MinPage/
 ||
 |树每层都处理的话，queue就在while里再for循环，整体处理只用一个while|
 ||
-||
+|不要盲目追求一题多解，要记住最适合这道题的算法。可以拓宽思路。|
 ||
 
 
@@ -831,7 +834,7 @@ DP
 |[1462. Course Schedule IV](/Alog_D_BFS/1462+Course%20Schedule%20IV.cpp) | | Floyd算法 |
 | | | |
 |[LCP 52. 二叉搜索树染色](Alog_D_BFS/LCP%2052.%20二叉搜索树染色.cpp) |逆向推理 |注意剪枝 |
-| | | |
+|[1306. Jump Game III](/Alog_D_BFS/1306+Jump%20Game%20III.cpp) | |bfs |
 | | | |
 | | | |
 | | | |

@@ -10,7 +10,7 @@ public:
                 rightmax = max(rightmax, i + nums[i]);                
                 
                 if (i == end) {         // 到达上次跳跃能到达的右边界了
-                    end = rightmax;     // 目前能跳到的最远位置变成了下次起跳位置的有边界
+                    end = rightmax;     // 目前能跳到的最远位置变成了下次起跳位置的右边界
                     res++;              // 进入下一次跳跃
                 }
             }
@@ -19,3 +19,26 @@ public:
         return res;
     }
 };
+
+
+
+int jump(vector<int>& nums) {
+    int n = nums.size();
+
+    int cnt = 0;
+    int flag = n-1;	// 当前倒推到的位置
+	
+    while (flag > 0) {	// = 0时倒退结束
+
+        for (int i = 0; i <= flag; ++i) {
+            if (i + nums[i] >= flag) {
+                flag = i;  
+                break;
+            }
+        }
+
+        cnt++;
+    }
+
+    return cnt;        
+}

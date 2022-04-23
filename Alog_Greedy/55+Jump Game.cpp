@@ -16,3 +16,19 @@ public:
         return false;
     }
 };
+
+
+bool canJump(vector<int>& nums) {
+    int n = nums.size();
+    int maxI = 0;
+
+    for (int i = 0; i < n; ++i) {
+        if (i <= maxI) {
+            maxI = max(maxI, i + nums[i]);
+        } else {			// 中途走不动了，说明到达不了
+            return false;
+        }            
+    }
+
+    return true;
+}
