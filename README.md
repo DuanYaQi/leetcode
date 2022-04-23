@@ -195,6 +195,7 @@ https://www.cnblogs.com/MinPage/
 
 ||  算法注意事项  |
 |  :----:  |  :----:  |
+|| 当题目说有一次机会,做一些改变,直接把这种情况加入判断即可，然后与不改变的结果进行比较即可。例题 [LCP 56. 信物传送](/DS_Graph/LCP%2056.%20信物传送.cpp)|
 || size 在 for 之前取值，防止 for 循环中 size 大小改变|
 |DFS/BFS|深度优先遍历 DFS　　　stack<br> 广度优先遍历 BFS　　　queue|
 |回溯||
@@ -224,6 +225,7 @@ https://www.cnblogs.com/MinPage/
 
 
 
+
 |  数据结构注意事项  |
 |  :----:  |
 |要保存键值用`map`，不保存用`set`，限制大小用`数组`|
@@ -231,11 +233,12 @@ https://www.cnblogs.com/MinPage/
 |注意 `map` 访问就会加 size，所以要注意访问 |
 |判断元素是否在map/set中<br>`mp.count(i) != 0` 比 `mp.find(i) != mp.end()` 更快|
 ||
+||
 |字符串反转，可以试着从局部反转和全局反转下手|
 ||
+|要把矩阵存成图，可以把索引二维压到一维,详情见图序章|
 ||
-
-
+||
 
 
 
@@ -507,11 +510,10 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[优先队列再优化](/DS_Graph/743+Network%20Delay%20Time_Heap_best.cpp)||HeapNode/myCmp|
 |[1514. Path with Maximum Probability](/DS_Graph/1514+Path%20with%20Maximum%20Probability.cpp) | 注意是大顶堆 带起止点 | |
 |💛[1631. Path With Minimum Effort](DS_Graph/1631+Path%20With%20Minimum%20Effort.cpp) | 极大值最小化| 抽象为图 |
+|[LCP 56. 信物传送](/DS_Graph/LCP%2056.%20信物传送.cpp) | 最短路径| 方向指向的块与其相连为权为0<br>其余邻接块权为1<br>二维dist数组 |
 | | | |
 | | | |
 | | | |
-| | | |
-
 
 ---
 

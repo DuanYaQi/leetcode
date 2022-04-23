@@ -1,4 +1,4 @@
-	Graph
+# Graph
 
 https://labuladong.gitee.io/algo/2/20/36/
 
@@ -97,6 +97,100 @@ bool matrix[5][5];
 在**有向图**中，如果两个顶点可以各自通过一条有向路径到达另一个顶点，就称这两个顶点**强连通**。如果图 `G(V, E)` 的**任意两个顶点都强连通**，则称图 G 为**强连通图**；否则，称图为**非强连通图**，且称其中的**极大强连通子图为强连通分量**。
 
 
+
+
+
+## 二维矩阵抽象成图
+
+二维矩阵抽象成图处理，压缩索引到一维
+
+**LCP 56. 信物传送**
+
+```c++
+// 下边三个对应4个方向的索引
+short dirs[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+char s[5] = "<>^v";
+vector<string> s[5] = {"left", "right", "up", "down"};
+
+int m = matrix.size(), n = matrix[0].size();
+
+// 邻接矩阵
+const int inf = 0x3f3f3f3f;
+vector<vector<int>> g(m * n, vector<int>(m * n, inf));
+
+for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+        int idx = i * n + j;	// 压缩矩阵
+
+        for (int k = 0; k <4; ++k) {
+            int x = i + dirs[k][0];
+            int y = j + dirs[k][1];
+
+            if (x >= 0 && x < m && y >=0 && y < n) {
+                int iidx = x * n + y;
+                if (matrix[i][j] == s[k]) g[idx][iidx] = 0;
+                else g[idx][iidx] = 1;
+            }
+        }
+    }   
+}
+```
+
+
+
+超时，所以也可以直接把 dist 数组设成二维的
+
+```c++
+class Solution {
+    typedef pair<int, int> pii;
+    typedef pair<int, pii> piii;
+    
+public:
+    // 把每个格子看成一个节点，相邻格子之间连边
+    // 若出发格的箭头恰好指着这个方向，边的长度就是 0，否则是 1
+    // 在这张图上跑一边最短路即可
+
+    int conveyorBelt(vector<string>& matrix, vector<int>& start, vector<int>& end) {
+        int m = matrix.size(), n = matrix[0].size();
+
+        const int inf = 0x3f3f3f3f;
+
+        vector<vector<int>> dist(m, vector<int>(n, inf));
+        dist[start[0]][start[1]] = 0;
+
+        priority_queue<piii, vector<piii>, greater<>> pq;
+        pq.push(piii(0, pii(start[0], start[1])));
+
+        while (pq.size()) {
+            auto [weight, idx] = pq.top(); pq.pop();
+            int i = idx.first, j = idx.second;
+
+            for (int k = 0; k < 4; ++k) {
+                int x = i + dirs[k][0];
+                int y = j + dirs[k][1];
+
+                if (x >= 0 && x < m && y >=0 && y < n) {
+                    int w = -1;
+                    if (matrix[i][j] == s[k]) w = 0;
+                    else w = 1;
+
+                    int d = weight + w;
+                    if (dist[x][y] > d) {
+                        dist[x][y] = d;
+                        pq.push(piii(d, pii(x, y)));
+                    }
+                }
+            }
+        }
+
+        return dist[end[0]][end[1]] == inf ? 0 : dist[end[0]][end[1]];
+    }
+
+private:
+    short dirs[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+    char s[5] = "<>^v";
+};
+```
 
 
 
