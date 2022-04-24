@@ -3818,3 +3818,46 @@ dp[0] = nums[0];
 
 
 ### 72. 编辑距离
+
+
+
+
+
+
+
+---
+
+# 脑筋急转弯
+
+## 396. 旋转函数
+
+记数组nums 的元素之和为 numSum。根据公式，可以得到：
+
+$$
+F(0) = 0 \times \textit{nums}[0] + 1 \times \textit{nums}[1] + \ldots + (n-1) \times \textit{nums}[n-1]F(0)=0×nums[0]+1×nums[1]+…+(n−1)×nums[n−1]\\
+F(1) = 1 \times \textit{nums}[0] + 2 \times \textit{nums}[1] + \ldots + 0 \times \textit{nums}[n-1] = F(0) + \textit{numSum} - n \times \textit{nums}[n-1]
+$$
+
+
+更一般地，当 $1 \le k \lt n$ 时，$F(k) = F(k-1) + \textit{numSum} - n \times \textit{nums}[n-k]$。我们可以不停迭代计算出不同的 $F(k)$，并求出最大值。
+
+
+```c++
+int maxRotateFunction(vector<int>& nums) {
+    int n = nums.size();
+
+    int sumn = accumulate(nums.begin(), nums.end(), 0);
+
+    vector<int> F(n, 0);
+    for (int i = 0; i < n; ++i) {
+        F[0] += (i * nums[i]);
+    }
+
+
+    for (int i = 1; i < n; ++i) {
+        F[i] = F[i-1] + sumn - n * nums[n-i];
+    }
+
+    return *max_element(F.begin(), F.end());
+}
+```
