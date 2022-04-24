@@ -836,8 +836,8 @@ DP
 |[1462. Course Schedule IV](/Alog_D_BFS/1462+Course%20Schedule%20IV.cpp) | | Floyd算法 |
 | | | |
 |[LCP 52. 二叉搜索树染色](Alog_D_BFS/LCP%2052.%20二叉搜索树染色.cpp) |逆向推理 |注意剪枝 |
-|[1306. Jump Game III](/Alog_D_BFS/1306+Jump%20Game%20III.cpp) | |bfs |
-| | | |
+|[1306. Jump Game III](/Alog_D_BFS/1306+Jump%20Game%20III.cpp) |BFS| |
+|[1345. Jump Game IV](/Alog_D_BFS/1345+Jump%20Game%20IV.cpp) | BFS| queue中要把step也存起来|
 | | | |
 | | | |
 
