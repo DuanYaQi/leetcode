@@ -148,6 +148,7 @@ https://www.cnblogs.com/MinPage/
 
 |  技巧/习惯  |
 |  :----:  |
+| 注意矩阵输入，样例是方阵，但用例不一定 m==n |
 | 注意爆 int 要用 long long |
 | 输出具体方案，如果找不到问题，来回排序试一试 |
 | `const int inf = 0x3f3f3f3f;`|
