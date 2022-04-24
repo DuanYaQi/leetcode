@@ -75,6 +75,7 @@ DAG 的问题就 dfs+memo
 ## TODO
 
 - [ ] 440 K-th Smallest in Lexicographical Order
+- [ ] 868
 - [ ] 523
 - [ ] 322
 - [ ] 474 记忆化搜索  `if (memo[i].find(idx) != memo[i].end()) return cnt;` **无论返回多少都可以，没有关系？？？？？？？？？？？？？？？？？？**
