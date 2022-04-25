@@ -186,7 +186,7 @@ const int MAXN = 1000005;
 struct DSU {
     int fa[MAXN];
 
-    void init(int n) { for (int i = 0; i < n; i++) fa[i] = -1; }
+    void init(int n) { for (int i = 0; i < n; i++) fa[i] = i; }
     
     // int find(int x) { return x == fa[x] ? x : fa[x] = find(fa[x]); }
     int find(int x){			//O(N)
@@ -198,8 +198,8 @@ struct DSU {
     	merge 函数其实就是普通的 add_edge() 函数
     */
     void merge(int x, int y) { 	//O(1)
-    	int faA = find(a);		 // a的根结点
-        int faB = find(b);		 // b的根结点
+    	int faA = find(x);		 // a的根结点
+        int faB = find(y);		 // b的根结点
         if(faA != faB) fa[faB] = faA;// 不属于同一个集合合并			
     }   
     
