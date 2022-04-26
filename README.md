@@ -846,6 +846,9 @@ DP
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[396. Rotate Function](/Alog_DP/396+Rotate%20Function.cpp) | | 把计算写出来就找到规律了 |
+|[152. Maximum Product Subarray](/Alog_DP/152+Maximum%20Product%20Subarray.cpp) | |注意判0 |
+| | | |
+| | | |
 
 
 ---

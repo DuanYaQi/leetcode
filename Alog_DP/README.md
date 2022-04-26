@@ -3861,3 +3861,45 @@ int maxRotateFunction(vector<int>& nums) {
     return *max_element(F.begin(), F.end());
 }
 ```
+
+
+
+
+
+## 152. 乘积最大子数组
+
+思路：最大值乘以一个负数之后可能变为最小值
+   最小值乘以一个负数之后可能成为最大值
+
+​           该数就是一个最大值/该数就是一个最小值
+
+用 `maxx[i]` 记录以第i个元素结尾的子数组乘积最大值
+用 `minn[i]` 记录以第i个元素结尾的子数组乘积最小值
+$$
+maxx[i]=max(maxx[i-1]*num[i],minn[i-1]*num[i],num[i])\\
+minn[i]=min(maxx[i-1]*num[i],minn[i-1]*num[i],num[i])
+$$
+
+
+```c++
+int maxProduct(vector<int>& nums) {
+    int n = nums.size(); 
+
+    vector<int> dpMax(n, 0);
+    vector<int> dpMin(n, 0);
+
+    dpMax[0] = nums[0];
+    dpMin[0] = nums[0];
+
+    int res = nums[0];
+    for (int i = 1; i < n; ++i) {
+        dpMax[i] = max(max(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i]), nums[i]);
+        dpMin[i] = min(min(dpMin[i-1] * nums[i], dpMax[i-1] * nums[i]), nums[i]);
+
+        res = max(res, dpMax[i]);
+    }
+
+    return res;
+}
+```
+
