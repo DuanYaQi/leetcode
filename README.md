@@ -127,7 +127,18 @@ DAG 的问题就 dfs+memo
 
 **模板**
 
+[codeforces-python](https://github.com/TheDivergent/wjw-algorithm-base) 
+[codeforces-go](https://github.com/EndlessCheng/codeforces-go)
+
+[docs/2.Algorithm/D1.ACM模板.md](https://github.com/lemoneid/wiki_note/blob/db46390691a017c6b8ea2d293e15b9ad7f1cba50/docs/2.Algorithm/D1.ACM%E6%A8%A1%E6%9D%BF.md)
+
+[Data-Structures-and-Algorithms](https://github.com/xennygrimmato/Data-Structures-and-Algorithms)
+
+[HackerRank, Codeforces and LeetCode problem solutions](https://github.com/andreimaximov/algorithms)
+
 pepcy.cf/icpc-templates/002DataStructure/bit.html
+
+https://github.com/PepcyCh/PepcyCh.github.io/blob/fdb454ecda8f4ade50c99b78abc244154e11e184/about/index.html
 
 https://github.com/PepcyCh/icpc-templates
 
@@ -506,9 +517,9 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[415. Add Strings](/DS_String/415+Add%20Strings.cpp) | |进位|
 |[13. Roman to Integer](/DS_String/13+Roman%20to%20Integer.cpp) | | 注意观察规律，对应值小的在对应值大的左侧（必须紧挨），则该值为减不为加|
 | | | |
+|[1903. Largest Odd Number in String](/DS_String/1903+Largest%20Odd%20Number%20in%20String.cpp) |位运算 |从后往前遍历 |
 | | | |
-| | | |
-|[6070. Calculate Digit Sum of a String](/DS_String/6070+Calculate%20Digit%20Sum%20of%20a%20String.cpp) | |注意 `s.substr()` 超出范围就不取了 |
+|[2243. Calculate Digit Sum of a String](/DS_String/2243+Calculate%20Digit%20Sum%20of%20a%20String.cpp) | |注意 `s.substr()` 超出范围就不取了 |
 | | | |
 
 
