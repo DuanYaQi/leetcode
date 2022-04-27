@@ -10,15 +10,22 @@ https://blog.csdn.net/qq_44013342/article/details/88023526#t9
 
 ## 定理
 
-| 定理     | 解释                                                         |
-| -------- | ------------------------------------------------------------ |
-| 同余定理 | 给定一个正整数m，如果两个整数a和b满足a-b能够被m整除，即(a-b)/m得到一个整数，那么就称整数a与b对模m同余，记作a≡b(mod m)。对模m同余是整数的一个等价关系。 |
-| 尾随零   | 2 和 5 的个数的最小值，就是尾随零的个数                      |
-|          |                                                              |
-|          |                                                              |
+| 定理                                             |                             解释                             |
+| ------------------------------------------------ | :----------------------------------------------------------: |
+| 同余定理                                         | 给定一个正整数m，如果两个整数a和b满足a-b能够被m整除，即(a-b)/m得到一个整数，那么就称整数a与b对模m同余，记作a≡b(mod m)。对模m同余是整数的一个等价关系。 |
+| 尾随零                                           |           2 和 5 的个数的最小值，就是尾随零的个数            |
+| 排列问题，顺序无关，元素相同，顺序不同，相同排列 | 求和公式 $C^0_{n}+C^1_{n}+C^2_{n}+...+C^{n-2}_{n}+C^{n-1}_{n} +C^{n}_{n}= 2^{n}$<br>$C_n^0 = 1,C_n^1 = n,C_n^m = \frac{n!}{m! \times (n-m)!}$ |
+| 组合问题，顺序相关，元素相同，顺序不同，不同排列 |            $A_n^m = \frac{n!}{(n-m)!}$<br>$0!=1$             |
+|                                                  |                                                              |
+| 等比数列                                         | 通项公式 $a_n = a_1 \times q^{n-1}$ 或 $a_n = a_m \times q^{n-m}$<br>求和公式 $S_n = \frac{a_1(1-q^n)}{1-q},(q\ne1)$ |
+| 等差数列                                         | 通项公式 $a_n = a_1 + (n-1)d$<br/>求和公式 $S_n = a_1n + \frac{nd(n-1)}{2}$ 或 $S_n = \frac{n(a_1+a_n)}{2}$ |
+| 拐点                                             |                  碰到拐点就是选取不同的方向                  |
+|                                                  |                                                              |
+
 
 
 交换两个数字
+
 ```c++
 // in-place swap
 // 异或 任何数与自己异或为0 与0异或为自己
@@ -33,9 +40,10 @@ a = a - b;
 ```
 
 
+
+
+
 ---
-
-
 
 
 ## 1523. 在区间范围内统计奇数数目
@@ -52,6 +60,28 @@ int countOdds(int low, int high) {
     if (low & 1) low--;
     return (high - low) / 2;
 }
+```
+
+
+
+---
+
+## 提取数字每位
+
+```c++
+// 5967
+int num[4];
+for (int i = 3; i >= 0; i--) {
+    int left = nowNum % 10;
+    num[i] = left;			
+    nowNum /= 10;
+}
+
+int s[4];
+s[0] = (nowNum % 10000) / 1000;
+s[1] = (nowNum % 1000) / 100; 
+s[2] = (nowNum % 100) / 10;
+s[3] = (nowNum % 10) / 1;
 ```
 
 
@@ -100,6 +130,339 @@ int lcm(int a, int b) {
     return a * b / g;
 }
 ```
+
+
+
+
+
+---
+
+## 快速幂、快速乘、矩阵快速幂
+
+①便于取模操作（避免溢出） ②时间复杂度较低
+
+
+
+### 快速幂
+
+顾名思义，就是快速算某个数的多少次幂。
+
+快速幂是用于解决类似 $a^b \mod p$ 值类型问题。使用普通方法是从 1 循环至 b，逐次累乘，逐次取模，b大的时候会超时。所以需要使用快速幂。
+
+有下式
+$$
+if \quad b\mod 2 = 1,\quad a^b = a^{\frac{b}{2}} \times a^{\frac{b}{2}} \times a\\
+if \quad b\mod 2 = 0,\quad a^b = a^{\frac{b}{2}} \times a^{\frac{b}{2}}
+$$
+通过分治，将一个大问题变成两个小问题，再逐项计算，并取模，边界条件是
+$$
+a^0 = 1, a^1=a
+$$
+例如
+$$
+\begin{equation}
+ 3^{7}=3^{3} \times 3^{3} \times 3=\left(3^{1} \times 3^{1} \times 3\right) \times\left(3^{1} \times 3^{1} \times 3\right) \times 3 
+\end{equation}
+$$
+时间复杂度为 $O(\log b)$
+
+```c++
+double quickPow(double x, long long N) {
+    if (N == 0) return 1.0;
+    if (N == 1) return x;
+    
+    double res = quickPow(x, N / 2);
+    
+    // 核心为下边两个式子
+    if (b%2) return res * res * x; //这里的相乘 也可以用 quickMul 快速乘
+    return res * res;
+}
+```
+
+
+
+
+
+
+
+----
+
+### 快速乘
+
+快速乘常与快速幂结合在一起。当模数 p 过大时，乘起来可能会超过 long long 的范围。所以要借助快速幂的思想再中间优化一下乘法。
+
+注意到乘法 $ a \times b $ 可以转化为 $ \underbrace{a+a+\ldots+a}_{b} $ ，所以也能够通过分治方法将其转化。
+
+例如
+$$
+\begin{equation}
+ 3 \times 7=3 \times 3+3 \times 3+3=(3 \times 1+3 \times 1+3)+(3 \times 1+3 \times 1+3)+3 
+\end{equation}
+$$
+复杂度依然为 $O(\log b)$
+
+```c++
+double quickMul(double x, long long N) {
+    if (N == 0) return 1.0;
+    if (N == 1) return x;
+    
+    double res = quickMul(x, N / 2);
+    
+    // 核心为下边两个式子 基本一模一样，乘号换加号
+    if (b%2) return res + res + x;
+    return res + res;
+}
+```
+
+
+
+----
+
+### 矩阵快速幂
+
+用于求一个某一个函数值是需要从前若干项函数值线性递推过来的函数（一次多阶递推式）某一项值。
+
+即求函数 $f(n)=a_1f(n−1)+a_2f(n−2)+...+a_mf(n−m)$ 的 $f(n)$ 的值。普通方法时间复杂度 $O(NM)$ 。N 比较大的时候会超时，用矩阵来处理。
+
+简单的 斐波那契数列，可以得到
+$$
+\begin{equation}
+ \left[\begin{array}{c}f(n) \\ f(n-1)\end{array}\right]=\left[\begin{array}{ll}1 & 1 \\ 1 & 0\end{array}\right] \cdot\left[\begin{array}{c}f(n-1) \\ f(n-2)\end{array}\right] 
+\end{equation}
+$$
+一直递推下去，就能得到一个矩阵公式：
+$$
+\begin{equation}
+ \left[\begin{array}{c}f(n+1) \\ f(n)\end{array}\right]=\left[\begin{array}{ll}1 & 1 \\ 1 & 0\end{array}\right]^{n} \cdot\left[\begin{array}{c}f(2) \\ f(1)\end{array}\right] 
+\end{equation}
+$$
+再回到一般情况，我们要从
+$$
+\begin{equation}
+ \left[\begin{array}{c}f(n) \\ f(n-1) \\ \vdots \\ f(n-m)\end{array}\right]  推出  \left[\begin{array}{c}f(n+1) \\ f(n) \\ \vdots \\ f(n-m+1)\end{array}\right] 
+\end{equation}
+$$
+其中，$f(n)，f(n−1)...f(n−m+1)$ 在原矩阵中均有出现，所以，通过构造 0 和 1 我们就可以推出。我们现在只需要算出 $ f(n)=a_1f(n−1)+a_2f(n−2)+...+a_mf(n−m)$ 。即构造矩阵的第一行为 $[a_1,a_2,...,a_m]$。以下所有行分别只含 0 和 1，即第 $i+1$ 行在第 
+$i$ 列的值为 1，其他所有值全为 0.
+
+其中，矩阵可以进行快速幂，这样就可以通过快速幂的 $O(\log n)$ 时间复杂度解决一次多阶递推式。
+
+
+
+
+
+
+
+---
+
+二进制的快速幂和快速乘
+
+原理：每一个正整数都可以唯一表示为若干个指数不重复的 2 的次幂的和
+
+```c++
+// base * power
+ll qMul(ll base, ll multi, ll p) {
+    ll res = 0;
+    //base %= p; multi %= p;
+    while (multi) {
+        if (multi & 1) res = (res + base) % p;
+        base = (base + base) % p;
+        multi >>= 1;
+    }
+    return res;
+}
+
+// base ^ power
+ll qPow(ll base, ll power, ll p) {
+    ll res = 1;
+    while (power) {
+        if (power & 1) res = qMul(res, base, p); //可以在qMul里取模，这里不用取
+        base = qMul(base, base, p);
+        power >>= 1;
+    }
+    return res;
+}
+```
+
+
+
+```c++
+// a ^ b
+ll q_power(ll a, ll b) {
+	ll res = 1;
+	while (b) {
+		if (b & 1) ret = ret * a;  //这里的相乘 也可以用 q_mul 快速乘
+		a = a * a;
+		b >>= 1;
+	}
+	return res;
+} 
+
+// a * b
+ll q_mul(ll a, ll b) {
+	ll res = 0;
+	while (b) {
+		if (b & 1) res = res + a;
+		a = a + a;
+		b >>= 1;
+	}
+	return res;
+}
+
+ll q_mul(ll a, ll b, ll mod) {
+	ll res = 0;
+    a %= mod; b %= mod;
+	while (b) {
+		if (b & 1) res = (res + a) % mod;
+		a = (a + a) % mod;
+		b >>= 1;
+	}
+	return res;
+}
+```
+
+
+
+> https://www.bilibili.com/read/cv12041792/
+>
+> https://www.cnblogs.com/fusiwei/p/11599881.html
+>
+> https://www.cnblogs.com/Miracevin/p/9734292.html
+
+
+
+
+
+-----
+
+### 50. Pow(x, n)
+
+**快速幂**本质是分治，当 n 为负数时，可以计算正数，再取倒数。
+
+
+
+如果我们要计算 $x^{64}$，我们可以按照：
+$$
+x→x^2
+ →x^4
+ →x^8
+ →x^{16}
+ →x^{32}
+ →x^{64}
+$$
+的顺序，从 x 开始，每次直接把上一次的结果进行平方，计算 6 次就可以得到 $x^{64}$ 的值，而不需要对 x 乘 63 次 x。
+
+
+
+如果我们要计算 $x^{77}$ ，我们可以按照：
+
+$$
+x \to x^2 \to x^4 \to x^9 \to x^{19} \to x^{38} \to x^{77}
+$$
+的顺序，在 $x \to x^2，x^2 \to x^4，x^{19} \to x^{38}$ 这些步骤中，我们直接把上一次的结果进行平方，而在 $x^4 \to x^9，x^9 \to x^{19}，x^{38} \to x^{77}$，这些步骤中，我们把上一次的结果进行平方后，还要额外乘一个 x。
+
+直接从左到右进行推导看上去很困难，因为在每一步中，我们不知道在将上一次的结果平方之后，还需不需要额外乘 x。但如果我们从右往左看，分治的思想就十分明显了：
+
+- 当我们要计算 $x^n$  时，我们可以先递归地计算出 $y = x^{\lfloor n/2 \rfloor}$，其中 $\lfloor a \rfloor$ 表示对 a 进行下取整；
+
+- 根据递归计算的结果，如果 $n$ 为偶数，那么 $x^n = y^2$ ；如果 n 为奇数，那么 $x^n = y^2 \times x$；
+
+- 递归的边界为 $n = 0$，任意数的 0 次方均为 1。
+
+由于每次递归都会使得指数减少一半，因此递归的层数为 $O(\log n)$，算法可以在很快的时间内得到结果。
+
+```c++
+double quickMul(double x, long long N) {
+    if (N == 0) {
+        return 1.0;
+    }
+    double y = quickMul(x, N / 2);
+    return N % 2 == 0 ? y * y : y * y * x;
+}
+
+double myPow(double x, int n) {
+    long long N = n;
+    return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, N);
+}
+```
+
+
+
+时间复杂度：$O(\log n)$，即为递归的层数。
+
+空间复杂度：$O(\log n)$，即为递归的层数。这是由于递归的函数调用会使用栈空间。
+
+
+
+由于递归需要使用额外的栈空间，我们试着将递归转写为迭代。在方法一中，我们也提到过，从左到右进行推导是不容易的，因为我们不知道是否需要额外乘 x。但我们不妨找一找规律，看看哪些地方额外乘了 x，并且它们对答案产生了什么影响。
+
+
+
+
+
+我们还是以 $x^{77}$  作为例子：
+$$
+x \to x^2 \to x^4 \to^+ x^9 \to^+ x^{19} \to x^{38} \to^+ x^{77}
+$$
+
+并且把需要额外乘 x 的步骤打上了 + 标记。可以发现：
+
+$x^{38} \to^+ x^{77}$ 中额外乘的 x 在 $x^{77}$ 中贡献了 $x$；
+
+$x^9 \to^+ x^{19}$  中额外乘的 x 在之后被平方了 2 次，因此在 $x^{77}$ 中贡献了 $x^{2^2} = x^4$ ；
+
+$x^4 \to^+ x^9$ 中额外乘的 x 在之后被平方了 3 次，因此在 $x^{77}$ 中贡献了 $x^{2^3} = x^8$ ；
+
+最初的 x 在之后被平方了 6 次，因此在 $x^{77}$ 中贡献了 $x^{2^6} = x^{64}$ 。
+
+
+
+我们把这些贡献相乘，$x \times x^4 \times x^8 \times x^{64}$,  恰好等于 $x^{77}$ 。而这些贡献的指数部分又是什么呢？它们都是 2 的幂次，这是因为每个额外乘的 xx 在之后都会被平方若干次。而这些指数 1，4，8 和 64，恰好就对应了 77 的二进制表示 $(1001101)_2$ 中的每个 11！
+
+因此我们借助整数的二进制拆分，就可以得到迭代计算的方法，一般地，如果整数 nn 的二进制拆分为
+
+$$
+n = 2^{i_0} + 2^{i_1} + \cdots + 2^{i_k}
+$$
+
+那么
+
+$$
+x^n = x^{2^{i_0}} \times x^{2^{i_1}} \times \cdots \times x^{2^{i_k}}
+$$
+这样以来，我们从 x 开始不断地进行平方，得到 $x^2, x^4, x^8, x^{16}, \cdots$ ，如果 n 的第 k 个（从右往左，从 0 开始计数）二进制位为 1，那么我们就将对应的贡献 $x^{2^k}$ 计入答案。
+
+```c++
+double quickMul(double x, long long N) {
+    double ans = 1.0;
+    // 贡献的初始值为 x
+    double x_contribute = x;
+    // 在对 N 进行二进制拆分的同时计算答案
+    while (N > 0) {
+        if (N % 2 == 1) {
+            // 如果 N 二进制表示的最低位为 1，那么需要计入贡献
+            ans *= x_contribute;
+        }
+        // 将贡献不断地平方
+        x_contribute *= x_contribute;
+        // 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可
+        N /= 2;
+    }
+    return ans;
+}
+
+double myPow(double x, int n) {
+    long long N = n;
+    return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+}
+```
+
+
+
+- 时间复杂度：$O(\log n)$，即为对 n 进行二进制拆分的时间复杂度。
+- 空间复杂度：$O(1)$。
+
+
 
 
 
@@ -331,142 +694,13 @@ int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, i
 
 
 
+
+
+
+
+
+
 ---
-
-## 50. Pow(x, n)
-
-**快速幂**本质是分治，当 n 为负数时，可以计算正数，再取倒数。
-
-
-
-如果我们要计算 $x^{64}$，我们可以按照：
-$$
-x→x^2
- →x^4
- →x^8
- →x^{16}
- →x^{32}
- →x^{64}
-$$
-的顺序，从 x 开始，每次直接把上一次的结果进行平方，计算 6 次就可以得到 $x^{64}$ 的值，而不需要对 x 乘 63 次 x。
-
-
-
-如果我们要计算 $x^{77}$ ，我们可以按照：
-
-$$
-x \to x^2 \to x^4 \to x^9 \to x^{19} \to x^{38} \to x^{77}
-$$
-的顺序，在 $x \to x^2，x^2 \to x^4，x^{19} \to x^{38}$ 这些步骤中，我们直接把上一次的结果进行平方，而在 $x^4 \to x^9，x^9 \to x^{19}，x^{38} \to x^{77}$，这些步骤中，我们把上一次的结果进行平方后，还要额外乘一个 x。
-
-直接从左到右进行推导看上去很困难，因为在每一步中，我们不知道在将上一次的结果平方之后，还需不需要额外乘 x。但如果我们从右往左看，分治的思想就十分明显了：
-
-- 当我们要计算 $x^n$  时，我们可以先递归地计算出 $y = x^{\lfloor n/2 \rfloor}$，其中 $\lfloor a \rfloor$ 表示对 a 进行下取整；
-
-- 根据递归计算的结果，如果 $n$ 为偶数，那么 $x^n = y^2$ ；如果 n 为奇数，那么 $x^n = y^2 \times x$；
-
-- 递归的边界为 $n = 0$，任意数的 0 次方均为 1。
-
-由于每次递归都会使得指数减少一半，因此递归的层数为 $O(\log n)$，算法可以在很快的时间内得到结果。
-
-```c++
-double quickMul(double x, long long N) {
-    if (N == 0) {
-        return 1.0;
-    }
-    double y = quickMul(x, N / 2);
-    return N % 2 == 0 ? y * y : y * y * x;
-}
-
-double myPow(double x, int n) {
-    long long N = n;
-    return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, N);
-}
-```
-
-
-
-时间复杂度：$O(\log n)$，即为递归的层数。
-
-空间复杂度：$O(\log n)$，即为递归的层数。这是由于递归的函数调用会使用栈空间。
-
-
-
-由于递归需要使用额外的栈空间，我们试着将递归转写为迭代。在方法一中，我们也提到过，从左到右进行推导是不容易的，因为我们不知道是否需要额外乘 x。但我们不妨找一找规律，看看哪些地方额外乘了 x，并且它们对答案产生了什么影响。
-
-
-
-
-
-我们还是以 $x^{77}$  作为例子：
-$$
-x \to x^2 \to x^4 \to^+ x^9 \to^+ x^{19} \to x^{38} \to^+ x^{77}
-$$
-
-并且把需要额外乘 x 的步骤打上了 + 标记。可以发现：
-
-$x^{38} \to^+ x^{77}$ 中额外乘的 x 在 $x^{77}$ 中贡献了 $x$；
-
-$x^9 \to^+ x^{19}$  中额外乘的 x 在之后被平方了 2 次，因此在 $x^{77}$ 中贡献了 $x^{2^2} = x^4$ ；
-
-$x^4 \to^+ x^9$ 中额外乘的 x 在之后被平方了 3 次，因此在 $x^{77}$ 中贡献了 $x^{2^3} = x^8$ ；
-
-最初的 x 在之后被平方了 6 次，因此在 $x^{77}$ 中贡献了 $x^{2^6} = x^{64}$ 。
-
-
-
-我们把这些贡献相乘，$x \times x^4 \times x^8 \times x^{64}$,  恰好等于 $x^{77}$ 。而这些贡献的指数部分又是什么呢？它们都是 2 的幂次，这是因为每个额外乘的 xx 在之后都会被平方若干次。而这些指数 1，4，8 和 64，恰好就对应了 77 的二进制表示 $(1001101)_2$ 中的每个 11！
-
-因此我们借助整数的二进制拆分，就可以得到迭代计算的方法，一般地，如果整数 nn 的二进制拆分为
-
-$$
-n = 2^{i_0} + 2^{i_1} + \cdots + 2^{i_k}
-$$
-
-那么
-
-$$
-x^n = x^{2^{i_0}} \times x^{2^{i_1}} \times \cdots \times x^{2^{i_k}}
-$$
-这样以来，我们从 x 开始不断地进行平方，得到 $x^2, x^4, x^8, x^{16}, \cdots$ ，如果 n 的第 k 个（从右往左，从 0 开始计数）二进制位为 1，那么我们就将对应的贡献 $x^{2^k}$ 计入答案。
-
-```c++
-double quickMul(double x, long long N) {
-    double ans = 1.0;
-    // 贡献的初始值为 x
-    double x_contribute = x;
-    // 在对 N 进行二进制拆分的同时计算答案
-    while (N > 0) {
-        if (N % 2 == 1) {
-            // 如果 N 二进制表示的最低位为 1，那么需要计入贡献
-            ans *= x_contribute;
-        }
-        // 将贡献不断地平方
-        x_contribute *= x_contribute;
-        // 舍弃 N 二进制表示的最低位，这样我们每次只要判断最低位即可
-        N /= 2;
-    }
-    return ans;
-}
-
-double myPow(double x, int n) {
-    long long N = n;
-    return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
-}
-```
-
-
-
-- 时间复杂度：$O(\log n)$，即为对 n 进行二进制拆分的时间复杂度。
-- 空间复杂度：$O(1)$。
-
-
-
-
-
-
-
-
 
 ## 311. 稀疏矩阵的乘法
 
@@ -506,7 +740,7 @@ vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat
 
     vector<ijv> m1, m2;
 
-
+	/*收集非零元素到m1，m2*/
     for (int i = 0; i < mat1.size(); ++i) {
         for (int j = 0; j < mat1[0].size(); ++j) {
             if (mat1[i][j] != 0) {
@@ -515,7 +749,6 @@ vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat
         }
     }
 
-
     for (int i = 0; i < mat2.size(); ++i) {
         for (int j = 0; j < mat2[0].size(); ++j) {
             if (mat2[i][j] != 0) {
@@ -523,7 +756,8 @@ vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat
             }
         }
     }
-
+	
+    /*计算*/
     for (auto v1 : m1) {
         for (auto v2 : m2) {
             if (v1.j != v2.i) continue;	// a的列 = b的行
@@ -535,10 +769,6 @@ vector<vector<int>> multiply(vector<vector<int>>& mat1, vector<vector<int>>& mat
     return res;
 }
 ```
-
-
-
-
 
 
 
@@ -1498,11 +1728,87 @@ public:
 
 
 
-## 素数筛
+## 筛质数
+
+合数就是非质数\非素数
 
 
 
+----
 
+### 普通筛法 O(nlogn)
+
+用每一个**合数的所有因子**筛去当前合数，比如24被2，3，4，6，8，12筛去6次
+
+```c++
+int get_primes(int n) {
+    for (int i = 2; i <= n; ++i) {
+        if (!st[i]) { // 如果是质数
+            primes[cnt++] = i;
+        }
+        for (int j = i * 2; j <= n; j+=i)	//不管当前i是合数还是质数，都用来筛掉后面它的倍数
+            st[j] = true;
+    }
+}
+```
+
+
+
+### 埃氏筛法 O(nloglogn)
+
+埃氏筛法做法是只用每一个合数的**质因子**筛去当前合数，比如24会被2，3筛去两次
+
+```c++
+int get_primes(int n) {
+    for (int i = 2; i <= n; ++i) {
+        if (!st[i]) {	//如果是质数
+            primes[cnt++] = i;
+            for (int j = i * 2; j <= n; j += i)	//只用质数i筛掉它的倍数（合数），也可以筛掉所有合数
+                st[j] = true;
+        }
+    }
+}
+```
+
+
+
+### 线性筛法 O(n)
+
+用每一个合数的**最小质因子**筛去当前合数，比如 24 只会被 2 筛去一次
+
+```c++
+bool isPrime[100000010];
+// isPrime[i] == 1表示：i是素数 
+int Primes[6000010], cnt = 0;	// 素数表
+// Primes[i] 表示第i个质数
+
+int get_primes(int n) {			// 筛到 n
+    memset(isPrime, 1, sizeof(isPrime));	// 以“每个数都是素数”为初始状态，逐个删去
+    isPrime[1] = false;	// 1不是素数
+    
+    for (int i = 2; i <= n; ++i) {
+        if (isPrime[i]) Primes[cnt++] = i;	// 没筛掉 i成为下一个素数
+        
+        for (int j = 0; Primes[j] <= n / i; j++) {	//用Primes[j]筛掉合数Primes[j] * i
+			isPrime[Primes[j] * i] = false;
+            
+            if(i % Primes[j] == 0) break;   // i 中也含有Prime[j]这个因子
+        }
+    }
+    
+    return cnt;
+}
+
+
+int main () {
+    int n = 10000;
+    int count = get_primes(n);
+    cout << count << endl;
+    for (int i = 0; i < count; ++i) {
+        cout << Primes[i] << endl;
+    }
+}	
+```
 
 
 
