@@ -2,6 +2,18 @@
 
 ## 704. 二分查找
 
+（1）某一个数
+（2）最后一个小于目标值target的数
+（3）最后一个小于等于目标值target的数
+（3）第一个大于目标值target的数
+（5）第一个大于等于目标值target的数
+
+
+
+
+
+### 某一个数
+
 定义 target 是在一个在左闭右闭的区间里，**也就是[left, right] （这个很重要非常重要）**。
 
 区间的定义这就决定了二分法的代码应该如何写，**因为定义target在[left, right]区间，所以有如下两点：**
@@ -10,22 +22,209 @@
 - if (nums[middle] > target) right 要赋值为 middle - 1，因为当前这个nums[middle]一定不是target，那么接下来要查找的左区间结束下标位置就是 middle - 1
 
 ```c++
-int binartSearch(vector<int> &nums, int left, int right, int target) {
-    int mid;
-    while (left <= right) {
-        mid = left + ((right - left) / 2); // 防止溢出 等同于(left + right)/2
+int binartSearch(vector<int> &nums, int target) {
+    int lo = 0, hi = nums.size() - 1;
+    while (lo <= hi) {
+        int mid = lo + ((hi - lo) / 2); // 防止溢出 等同于(left + right)/2
+        
         if (nums[mid] == target) {
             return mid;
         } else if (nums[mid] > target) {
-            right = mid - 1;
+            hi = mid - 1;
         } else {
-            left = mid + 1;
+            lo = mid + 1;
         }
     }
     
     return -1;
 }
 ```
+
+
+
+
+
+### 左边界
+
+第一个大于等于目标值target的数
+
+```c++
+int getLeftBorder(vector<int>& nums, int target) {
+    int lo = 0, hi = nums.size() - 1;
+
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+
+        if (nums[mid] >= target) {		// ==target 一直往左压缩，直到压缩到不等
+            hi = mid - 1;
+        } else if (nums[mid] < target) { 
+            lo = mid + 1;
+        }
+    }
+
+    return hi + 1;	//lo
+    return hi;		//因为hi+1是左边界了,所以hi+1 - 1是小于target的最后一个数
+}
+```
+
+getLeftBorder                        target = 8
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+L          M                R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                   L    M    R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                 LMR        
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​             R   L  
+
+返回时 R 指向的是第一个比 target 小的数字，L/R+1为target第一次出现的位置
+
+
+
+
+
+
+
+### 右边界
+
+最后一个小于等于目标值target的数,
+
+```c++
+int getRightBorder(vector<int>& nums, int target) {
+    int lo = 0, hi = nums.size() - 1;
+
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+
+        if (nums[mid] > target) {
+            hi = mid - 1;
+        } else if (nums[mid] <= target) {	// ==target 一直往右压缩，直到压缩到不等
+            lo = mid + 1;
+        }
+    }
+
+    return lo - 1;	// 
+    return lo;		// 因为lo-1 是右边界了, lo-1 + 1 就是第一个大于的数
+}
+```
+
+getRightBorder                        target = 8
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+L          M                R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                   L    M    R
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​                              LMR
+
+
+
+0    1    2    3    4    5
+
+5    7    7    8    8    10
+
+​								R    L
+
+
+
+返回时 L 指向的是第一个比 target 大的数字，R/L-1为target第一次出现的位置
+
+
+
+https://blog.csdn.net/qq_41221520/article/details/108277801
+
+
+
+
+
+最后一个小于target的数
+
+```c++
+int binartSearch(vector<int> &nums, int target) {
+    int mid = 0, lo = 0, hi = nums.size() - 1;
+    
+    while (left <= right) {
+        mid = lo + ((hi - lo) / 2);
+        
+        if (nums[mid] >= target) {	// !!!!!!  >=
+            hi = mid - 1;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    
+    return hi;		// 小于 target 最后一个位置
+}
+```
+
+
+
+
+
+第一个大于target的数
+
+```c++
+int binartSearch(vector<int> &nums, int target) {
+    int mid = 0, lo = 0, hi = nums.size() - 1;
+    
+    while (left <= right) {
+        mid = lo + ((hi - lo) / 2);
+        
+        if (nums[mid] > target) {	// !!!!!!  >
+            hi = mid - 1;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    
+    return lo; 		// 大于 target 第一个位置
+}
+```
+
+
+
+
+
+
+
+
 
 
 
@@ -200,7 +399,7 @@ private:
 
 
 
-### Mine
+### Mine!!!!
 
 ```c++
 int getLeftBorder(vector<int>& nums, int target) {
@@ -278,7 +477,7 @@ L          M                R
 
 
 
-getLeftBorder                        target = 8
+getRightBorder                        target = 8
 
 0    1    2    3    4    5
 
@@ -308,7 +507,7 @@ L          M                R
 
 5    7    7    8    8    10
 
-  					   R    L
+​								R    L
 
 
 
