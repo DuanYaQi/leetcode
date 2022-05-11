@@ -22,6 +22,8 @@
 
 ### 1.3. 二叉搜索树
 
+BST  Binary Search Tree
+
 二叉搜索树是有**数值**的，且是一个**有序**树。
 
 - 若其左子树不空，则左子树所有结点的值均小于它的根节点的值；
@@ -1576,6 +1578,102 @@ TreeNode* convertBST(TreeNode* root) {
 涉及到二叉树的构造,无论普通二叉树还是二叉搜索树一定前序,都是先构造中节点。
 求普通二叉树的属性,一般是后序,一般要通过递归函数的返回值做计算。
 求二叉搜索树的属性,一定是中序了,要不白瞎了有序性了。
+
+
+
+
+
+---
+
+# 449. 序列化反序列化二叉搜索树
+
+- 序列化树为字符串
+- 反序列化将字符串(字符串也可以转为数组)转为树
+- 分割字符串
+
+```c++
+// 序列化
+string serDfs(TreeNode* root) {
+    if (root == nullptr) return "";
+    string s= "";
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (q.size()) {
+        TreeNode* node = q.front(); q.pop();
+
+        if (node == nullptr) s += "null,";
+        else {
+            s += (to_string(node->val) + ",");
+            q.push(node->left);
+            q.push(node->right);
+        }
+    }
+
+    return s;
+}
+
+// Encodes a tree to a single string.
+string serialize(TreeNode* root) {
+    string s = serDfs(root);
+    cout << s << endl;
+    return s;
+}
+
+// [2,1,3]
+// 2,1,3,null,null,null,null,
+```
+
+
+
+```c++
+//反序列化
+void stringSplit(string str, char split, vector<string>& nums)
+{
+    istringstream iss(str);	// 输入流
+    string token;			// 接收缓冲区
+    while (getline(iss, token, split))	// 以split为分隔符
+    {
+        nums.push_back(token.c_str());
+        cout << token << endl; // 输出
+    }
+}
+
+
+// Decodes your encoded data to tree.
+TreeNode* deserialize(string data) {
+    if (data == "") return nullptr;
+
+    vector<string> nums;
+    stringSplit(data, ',', nums);
+
+    TreeNode* root = new TreeNode(atoi(nums[0].c_str()));
+
+    queue<TreeNode*> q;
+    q.push(root);
+
+    int idx = 1;
+    while (q.size()) {
+        TreeNode* node = q.front(); q.pop();
+
+        if (nums[idx] != "null") {
+            node->left = new TreeNode(atoi(nums[idx].c_str()));
+            q.push(node->left);
+        }
+        idx++;
+
+        if (nums[idx] != "null") {
+            node->right = new TreeNode(atoi(nums[idx].c_str()));
+            q.push(node->right);
+        }
+        idx++;
+    }
+
+    return root;
+}
+```
+
+
 
 
 

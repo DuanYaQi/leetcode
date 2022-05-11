@@ -189,6 +189,9 @@ https://www.cnblogs.com/MinPage/
 | `const int inf = 0x3f3f3f3f;`|
 | `int a[m][n]; memset(a, 0x3f, sizeof(a));` |
 |  |
+| 计算输入数字用字符串划分 `atoi(str.c_str())` |
+| 字符串划分 https://blog.csdn.net/m0_58086930/article/details/122759927 |
+|  |
 | 两个输入大小不确定时，可以巧妙地转换一下 `if(a1 > a2) return deal(a2, a1);` 变成一个固定大，一个固定小|
 |  |
 |复杂函数放在private会减少执行用时，减少内存消耗|
@@ -1410,6 +1413,31 @@ int main() {
 	return 0;
 }
 // 23 12 34 56 33
+```
+
+
+
+
+
+### 字符串分割转数字
+
+```c++
+void stringSplit(string str, char split, vector<int>& nums)
+{
+    istringstream iss(str);	// 输入流
+    string token;			// 接收缓冲区
+    while (getline(iss, token, split))	// 以split为分隔符
+    {
+        if (token == "#") 
+            nums.push_back(-1);
+        else
+            nums.push_back(atoi(token.c_str()));
+        cout << token << endl; // 输出
+    }
+}
+
+vector<int> nums;
+stringSplit(data, ',', nums);
 ```
 
 

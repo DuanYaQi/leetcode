@@ -79,3 +79,28 @@
 
 
 
+
+
+---
+
+# 树状数组
+
+https://leetcode.cn/problems/car-pooling/solution/yi-ge-mo-ban-miao-sha-ji-dao-xiang-si-de-l4cr/
+
+涉及区间更新，单点查询，区间和查询的问题一般可以考虑树状数组
+类似的题有：
+
+1094拼车
+
+1109.航班预定统计
+
+1854.人口最多的年份
+
+面试题 16.10. 生存人数
+
+1156: 新年彩灯Ⅰ
+
+区间更新，单点查询模板：
+
+
+
