@@ -621,6 +621,65 @@ TreeNode* invertTree(TreeNode* root) {
 
 
 
+
+
+
+---
+
+## 迭代法和递归法的区别
+
+判断条件是相同的，迭代法是手动分配空间
+
+**100.相同的树**
+
+```c++
+bool isSameTree(TreeNode* p, TreeNode* q) {
+    queue<TreeNode*> que;
+    que.push(p);
+    que.push(q);
+
+    while (!que.empty()) {
+        TreeNode* L = que.front(); que.pop();
+        TreeNode* R = que.front(); que.pop();
+
+        if (L == nullptr && R == nullptr) continue;
+        if (L == nullptr || R == nullptr || L->val != R->val) return false;
+
+        que.push(L->left);
+        que.push(R->left);
+        que.push(L->right);
+        que.push(R->right);
+    }
+
+    return true;
+
+}
+```
+
+
+
+```c++
+bool rec(TreeNode* L, TreeNode* R) {
+    if (L == nullptr && R == nullptr) return true;
+
+    if (L == nullptr || R == nullptr || L->val != R->val) {
+        return false;
+    } 
+
+    return rec(L->left, R->left) & rec(L->right, R->right);
+}
+
+bool isSameTree(TreeNode* p, TreeNode* q) {
+    return rec(p, q);
+}
+```
+
+
+
+
+
+
+
 ---
 
 # 二叉树的属性
@@ -1585,7 +1644,7 @@ TreeNode* convertBST(TreeNode* root) {
 
 ---
 
-# 449. 序列化反序列化二叉搜索树
+# 💗449. 序列化反序列化二叉搜索树
 
 - 序列化树为字符串
 - 反序列化将字符串(字符串也可以转为数组)转为树

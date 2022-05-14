@@ -171,12 +171,17 @@ https://www.cnblogs.com/MinPage/
 
 
 
-
-
 </details>
 
 
+
+
+
+----
+
 ## TIPS/TRICKS
+
+### 技巧/习惯
 
 |  技巧/习惯  |
 |  :----:  |
@@ -188,7 +193,8 @@ https://www.cnblogs.com/MinPage/
 | 输出具体方案，如果找不到问题，来回排序试一试 |
 | `const int inf = 0x3f3f3f3f;`|
 | `int a[m][n]; memset(a, 0x3f, sizeof(a));` |
-|  |
+| `int cnt[26]={0};` 初始化所有值为0，不接=，不是默认为0的 |
+| |
 | 计算输入数字用字符串划分 `atoi(str.c_str())` |
 | 字符串划分 https://blog.csdn.net/m0_58086930/article/details/122759927 |
 |  |
@@ -231,6 +237,8 @@ https://www.cnblogs.com/MinPage/
 
 
 
+### 算法注意事项
+
 
 ||  算法注意事项  |
 |  :----:  |  :----:  |
@@ -268,7 +276,7 @@ https://www.cnblogs.com/MinPage/
 
 
 
-
+### 数据结构注意事项
 
 |  数据结构注意事项  |
 |  :----:  |
@@ -285,6 +293,8 @@ https://www.cnblogs.com/MinPage/
 ||
 
 
+
+### 函数注意事项
 
 
 |  函数注意事项  |
@@ -304,6 +314,87 @@ https://www.cnblogs.com/MinPage/
 
 
 
+### 通用类和函数
+
+```c++
+// 用来代替map<char, int>，charmap比map会快5倍左右
+class charmap {
+public:
+    int nums[26] = {0};
+    int& operator[](char c) {
+        return nums[c - 'a'];
+    }
+    int& data(int i) {
+        return nums[i];
+    }
+};
+```
+
+
+
+```c++
+// lambda cmp
+auto tupleCmp = [](const auto& e1, const auto& e2) {
+    auto&& [x1, y1, d1] = e1;
+    auto&& [x2, y2, d2] = e2;
+    return d1 > d2;
+};
+
+auto myCmp = [](const auto& e1, const auto& e2) {
+    auto&& [to1, w1] = e1;
+    auto&& [to2, w2] = e2;
+    return w1 > w2; // 小顶堆 返回的是下沉规则，true则下沉 即值大的下沉
+};
+
+// function cmp
+bool myCmp(const vector<int> &a, const vector<int> &b) {
+    return a[0] > b[1];
+}
+
+
+// heapNode
+struct HeapNode {
+    int u;
+    int d;
+
+    HeapNode(int uu, int dd) : u(uu), d(dd) { }
+
+    bool operator<(const HeapNode &node) const { //重载<运算符
+        return d > node.d;  // 小顶堆
+    }
+};
+
+
+// set 的运算符重载
+struct myCmp {
+	bool operator()(int a, int b) { 	// 重载()运算符，从大到小排序
+        return a > b; 
+    }
+};
+
+set<int, cmp> s;	
+```
+
+
+
+```c++
+//自定义哈希函数，元素类型为 pair<T1, T2> a(X1, X2);
+struct pair_hash
+{
+    template <class T1, class T2>
+    size_t operator () (pair<T1, T2> const &pair) const
+    {
+        size_t h1 = hash<T1>()(pair.first); //用默认的 hash 处理 pair 中的第一个数据 X1
+        size_t h2 = hash<T2>()(pair.second);//用默认的 hash 处理 pair 中的第二个数据 X2
+        return h1 ^ h2;
+    }
+};
+```
+
+
+
+
+
 ```c++
 //https://blog.csdn.net/qq_32320399/article/details/81518476
 static const auto io_sync_off = []()
@@ -320,66 +411,23 @@ static const auto io_sync_off = []()
 
 
 
+-----
 
----
-
-### 迭代法和递归法
-
-判断条件是相同的，迭代法是手动分配空间
-
-**100.相同的树**
-
-```c++
-bool isSameTree(TreeNode* p, TreeNode* q) {
-    queue<TreeNode*> que;
-    que.push(p);
-    que.push(q);
-
-    while (!que.empty()) {
-        TreeNode* L = que.front(); que.pop();
-        TreeNode* R = que.front(); que.pop();
-
-        if (L == nullptr && R == nullptr) continue;
-        if (L == nullptr || R == nullptr || L->val != R->val) return false;
-
-        que.push(L->left);
-        que.push(R->left);
-        que.push(L->right);
-        que.push(R->right);
-    }
-
-    return true;
-
-}
-```
-
-
-
-```c++
-bool rec(TreeNode* L, TreeNode* R) {
-    if (L == nullptr && R == nullptr) return true;
-
-    if (L == nullptr || R == nullptr || L->val != R->val) {
-        return false;
-    } 
-
-    return rec(L->left, R->left) & rec(L->right, R->right);
-}
-
-bool isSameTree(TreeNode* p, TreeNode* q) {
-    return rec(p, q);
-}
-```
-
-
-
-
-
-
-
-
----
 ## 1. 数据结构专题
+
+💗**绝世好题**，**做一道相当于做好多道**
+
+💛该数据结构/算法的**代表性**题目
+
+💙**有点难度**，**但**必须掌握
+
+💚
+
+💜
+
+> https://github.com/guodongxiaren/README/blob/master/emoji.md
+
+
 
 ### 1.1. [树](DS_Tree/README.md)
 
@@ -388,7 +436,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[94. Binary Tree Inorder Traversal](DS_Tree/94+inorderTraversal_2022.cpp) |中序 R| 注意放private|
 |[144. Binary Tree Preorder Traversal](DS_Tree/144+preorderTraversal_2022.cpp) |先序 R| |
 |[145. Binary Tree Postorder Traversal](DS_Tree/145+postorderTraversal_2022.cpp) |后序 R| |
-|[105. Construct Binary Tree from Preorder and Inorder Traversal](DS_Tree/105+buildTree.cpp) | 先序 中序 R|索引确定|
+|💛[105. Construct Binary Tree from Preorder and Inorder Traversal](DS_Tree/105+buildTree.cpp) | 先序 中序 R|索引确定|
 |[106. Construct Binary Tree from Inorder and Postorder Traversal](DS_Tree/106+buildTree.cpp)   |中序 后序 R |索引确定|
 |[114. Flatten Binary Tree to Linked List](DS_Tree/144+preorderTraversal.cpp)   | 后序 R |注意指针连接|
 |[116. Populating Next Right Pointers in Each Node](DS_Tree/116+connect.cpp)*   | 先序 R|考虑到特殊情况即可|
@@ -430,7 +478,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[100. Same Tree](DS_Tree/100+isSameTree.cpp)   |  |递归|
 |[572. Subtree of Another Tree](DS_Tree/572+Subtree%20of%20Another%20Tree.cpp) |注意continue位置 | |
 | | | |
-| | | |
+|💗[449. Serialize and Deserialize BST](/DS_Tree/449.%20Serialize%20and%20Deserialize%20BST.cpp) | 树转数组 + 序列化 + 分割字符串 + 字符数字互相转换| |
 |[剑指 Offer II 051. 节点之和最大的路径](/DS_Tree/剑指%20Offer%20II%20051.%20节点之和最大的路径.cpp) | | 注意函数返回的是最大贡献值，答案是在递归的时候不断更新的|
 | | | |
 | | | |
@@ -546,7 +594,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |  :----  |:----:|:----:|
 |[797+All Paths From Source to Target](DS_Graph/797+All%20Paths%20From%20Source%20to%20Target.cpp) | DFS | 重点为 `pop_back()` 和 `vis[v] = false;`|
 |[2192.All Ancestors of a Node in a Directed Acyclic Graph](DS_Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
-|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time.cpp) | Dijkstra | 每次找离flag节点最近的点,更新距离,贪心 |
+|💛[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time.cpp) | Dijkstra | 每次找离flag节点最近的点,更新距离,贪心 |
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Heap.cpp) | 堆优化 | 优先队列 pair 邻接表 |
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Floyd.cpp) | floyd| 暴力|
 |[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_BF.cpp) | BF 松弛操作| |
@@ -554,7 +602,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[优先队列再优化](/DS_Graph/743+Network%20Delay%20Time_Heap_best.cpp)||HeapNode/myCmp|
 |[1514. Path with Maximum Probability](/DS_Graph/1514+Path%20with%20Maximum%20Probability.cpp) | 注意是大顶堆 带起止点 | |
 |💛[1631. Path With Minimum Effort](DS_Graph/1631+Path%20With%20Minimum%20Effort.cpp) | 极大值最小化| 抽象为图 |
-|[LCP 56. 信物传送](/DS_Graph/LCP%2056.%20信物传送.cpp) | 最短路径| 方向指向的块与其相连为权为0<br>其余邻接块权为1<br>二维dist数组 |
+|💗[LCP 56. 信物传送](/DS_Graph/LCP%2056.%20信物传送.cpp) | 最短路径| 方向指向的块与其相连为权为0<br>其余邻接块权为1<br>二维dist数组 |
 | | | |
 | | | |
 | | | |
@@ -565,7 +613,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
-|[253. Meeting Rooms II](/DS_Heap/253+Meeting%20Rooms%20II.cpp)   |  |  按照 开始时间 对会议进行排序,小顶堆，键值为结束时间|
+|💛[253. Meeting Rooms II](/DS_Heap/253+Meeting%20Rooms%20II.cpp)   |  |  按照 开始时间 对会议进行排序,小顶堆，键值为结束时间|
 |[252. Meeting Rooms](/DS_Heap/252+Meeting%20Rooms.cpp) | |同253 |
 | | | |
 | | | |
@@ -581,7 +629,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
-|[547. Number of Provinces](/DS_UF/547+Number%20of%20Provinces.cpp)      |        | 注意遍历的时候，就要使用函数合并到一个省里     |
+|💛[547. Number of Provinces](/DS_UF/547+Number%20of%20Provinces.cpp)      |        | 注意遍历的时候，就要使用函数合并到一个省里     |
 |[1202. Smallest String With Swaps](/DS_UF/1202+Smallest%20String%20With%20Swaps.cpp)      |        | 注意找连通分量，并且排好序   |
 |[990. Satisfiability of Equality Equations](/DS_UF/990+Satisfiability%20of%20Equality%20Equations.cpp)      |        |   先判断==, 再判断!=  相同的元素抽象到同一个子集中 |
 |[721. Accounts Merge](/DS_UF/721+Accounts%20Merge.cpp)     |        |注意merge(x,y)是把y合并到x中去<br> 可以利用这点来排字典序    |
@@ -688,9 +736,9 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 ### 2.1. [二分](Alog_BinarySearch/README.md)
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|2+[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
+|💛2+[704.binarySearch](/Alog_BinarySearch/704+binartSearch.cpp) | |先排序|
 |[35.Search Insert Position.cpp](Alog_BinarySearch/35+Search%20Insert%20Position.cpp) | | 与二分查找仅有最后return的区别 |
-|2+[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
+|💗2+[34+Find First and Last Position of Element in Sorted Array](/Alog_BinarySearch/34+Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array.cpp) | |分情况，先左边界，再右边界 |
 |[69. Sqrt(x)](/Alog_BinarySearch/69+Sqrt(x).cpp) | | 等同于找target的右边界|
 |[367. Valid Perfect Square](/Alog_BinarySearch/367+Valid%20Perfect%20Square.cpp) | | |
 |[14. Longest Common Prefix](/Alog_BinarySearch/14+Longest%20Common%20Prefix.cpp) | | 从长度最小的字符串进行判断，二分最小的字符串 |
@@ -710,7 +758,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |2+[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
 |3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle<br>partition中i < hi && nums[i] <= pivot  注意是j-- |
 |3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array_MergeSort.cpp) | 归并排序 | 需要单独开tmp数组记录<br>注意merge最后nums[lo+i]而不是nums[i] |
-|[315. Count of Smaller Numbers After Self](/Alog_Sort/315+Count%20of%20Smaller%20Numbers%20After%20Self.cpp) | |结构体+cnt数组辅助记录右侧小值<br>tmp结构体数组记录，要整体转换，不要只转换val，忽略id |
+|💗[315. Count of Smaller Numbers After Self](/Alog_Sort/315+Count%20of%20Smaller%20Numbers%20After%20Self.cpp) | |结构体+cnt数组辅助记录右侧小值<br>tmp结构体数组记录，要整体转换，不要只转换val，忽略id |
 |[88. Merge Sorted Array](/Alog_Sort/88+Merge%20Sorted%20Array.cpp) | 归并| |
 | | | |
 | | | |
@@ -733,7 +781,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意`cur = cur->next;`的位置所在|
 |💛[15. 3Sum](Alog_TwoPointer/15+threeSum.cpp) |三数之和 | 考虑重复值|
 |[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp)<br>[142. Linked List Cycle II](Alog_TwoPointer/142+detectCycle.cpp) | 链表环 | 需要分析其内在规律性质 |
-|[18. 4Sum](Alog_TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
+|💗[18. 4Sum](Alog_TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
 |[26. Remove Duplicates from Sorted Array](Alog_TwoPointer/26+Remove%20Duplicates%20from%20Sorted%20Array.cpp) | | 注意慢指针的移动条件 |
 |[283. Move Zeroes](/Alog_TwoPointer/283+Move%20Zeroes.cpp) | |注意循环里i和fastIndex的区分 |
 |[844. Backspace String Compare](/Alog_TwoPointer/844+Backspace%20String%20Compare.cpp) | | 注意最后index是指向哪里的<br>for的终止位置是index还是+-1|
@@ -801,8 +849,8 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 |[77. Combinations](Alog_BackTracking/77+combine.cpp) | 回溯| 注意宽度遍历要全放到回溯函数中 <br> 到终止条件进行结果记录 |
 |[39. Combination Sum](/Alog_BackTracking/39+Combination%20Sum.cpp) | | 跟216的区别就是下一层的循环起始位置 |
 |[216. Combination Sum III](/Alog_BackTracking/216+Combination%20Sum%20III.cpp) | | 与77的区别就是,终止条件多了一个 |
-|[51. N-Queens](/Alog_BackTracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
-|[37. Sudoku Solver](/Alog_BackTracking/37+Sudoku%20Solver.cpp) | |判断合法后再递归 |
+|💛[51. N-Queens](/Alog_BackTracking/51+N-Queens.cpp) | 回溯| 注意&引用attack数组 |
+|💛[37. Sudoku Solver](/Alog_BackTracking/37+Sudoku%20Solver.cpp) | |判断合法后再递归 |
 |[17. Letter Combinations of a Phone Number](/Alog_BackTracking/17+Letter%20Combinations%20of%20a%20Phone%20Number.cpp) | | char数组未初始化元素为'\000' <br> `s[i] - '0'` char转int|
 |[40. Combination Sum II](/Alog_BackTracking/40+Combination%20Sum%20II.cpp) | | 加特判过掉重复的步骤<br> 跳过**同一树层**的先前相同值|
 |[131. Palindrome Partitioning](/Alog_BackTracking/131+Palindrome%20Partitioning.cpp) | |分割问题就是组合问题 <br>start和end模拟切割线|
@@ -898,7 +946,7 @@ DP
 背包专题
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|2+[416. Partition Equal Subset Sum](/Alog_DP/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到背包容量本质是target,物品的重量是其nums[i]<br>可以用滚动数组优化到1维DP|
+|💛2+[416. Partition Equal Subset Sum](/Alog_DP/416+Partition%20Equal%20Subset%20Sum.cpp) | 0-1背包 | 找到背包容量本质是target,物品的重量是其nums[i]<br>可以用滚动数组优化到1维DP|
 |[416. Output Answer](/Alog_DP/416+Output.cpp) | | 输出结果|
 |[474. Ones and Zeroes](/Alog_DP/474+Ones%20and%20Zeroes+.cpp) | |三维DP数组，滚动优化到2维，需要满足两个条件，才能取 |
 |[474. Output Answer](/Alog_DP/474+Output.cpp) | | 输出结果 |
@@ -934,7 +982,7 @@ DP
 |[LCP 52. 二叉搜索树染色](Alog_D_BFS/LCP%2052.%20二叉搜索树染色.cpp) |逆向推理 |注意剪枝 |
 |[1306. Jump Game III](/Alog_D_BFS/1306+Jump%20Game%20III.cpp) |BFS| |
 |[1345. Jump Game IV](/Alog_D_BFS/1345+Jump%20Game%20IV.cpp) | BFS| queue中要把step也存起来|
-| | | |
+|💗[691. Stickers to Spell Word](/Alog_D_BFS/691+Stickers%20to%20Spell%20Word.cpp) | BFS+位图 | 注意入队条件 |
 | | | |
 
 记忆化搜索
@@ -946,8 +994,13 @@ DP
 | | | |
 
 
----
+
+
+
+----
+
 ### 2.9. [CS_Math](CS_Math/README.md)
+
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[48. Rotate Image](CS_Math/48+Rotate%20Image.cpp) | |旋转公式 |
@@ -956,8 +1009,8 @@ DP
 |[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | | 注意( |
 |[227. Basic Calculator II](/CS_Math/227+Basic%20Calculator%20II.cpp) | | 注意( |
 |[16.26. Calculator LCCI](/CS_Math/16.26+Calculator%20LCCI.cpp) | | 计算器 |
-|[146. LRU Cache](/CS_Math/146+LRU%20Cache.cpp)| |双向链表+哈希表 |
-|[460. LFU Cache](/CS_Math/460+LFU%20Cache.cpp) | | 两个哈希表|
+|💗[146. LRU Cache](/CS_Math/146+LRU%20Cache.cpp)| |双向链表+哈希表 |
+|💗[460. LFU Cache](/CS_Math/460+LFU%20Cache.cpp) | | 两个哈希表|
 |[504. Base 7](/CS_Math/504+Base%207.cpp) | | 注意特判0，翻转 |
 |[136. Single Number](CS_Math/136+Single%20Number.cpp) | | 任何数和 0 做异或运算，结果仍然是原来的数 <br>任何数和其自身做异或运算，结果是 0<br>异或运算满足交换律和结合律|
 |[6062. Design an ATM Machine](/CS_Math/6062+Design%20an%20ATM%20Machine.cpp) |系统设计 | |
@@ -983,13 +1036,42 @@ DP
 | [644. Maximum Average Subarray II](/Alog_TwoPointer/644+Maximum%20Average%20Subarray%20II.cpp) |        |                 不固定k，维护一个最小值即可                  |
 | [643. Maximum Average Subarray I](Alog_TwoPointer/643+Maximum%20Average%20Subarray%20I.cpp) |        |                            固定k                             |
 | [209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) |        |                         前缀和+二分                          |
-| [6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和 | 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
+| 💗[6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和 + 尾随零 | 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
 |                                                              |        |                                                              |
 |                                                              |        |                                                              |
 |                                                              |        |                                                              |
 |                                                              |        |                                                              |
 
 
+
+
+
+---
+
+### 2.11. [位图](Alog_BitMap/README.md)
+
+| 题目                                                         | 知识点 | 技巧 |
+| :----------------------------------------------------------- | :----: | :--: |
+| 💗[691. Stickers to Spell Word](/Alog_D_BFS/691+Stickers%20to%20Spell%20Word.cpp) |  BFS+位图  |   把字符串各字符是否满足用01表示   |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+
+
+
+
+
+
+## 
 
 
 
