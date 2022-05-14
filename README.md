@@ -457,7 +457,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.2. [链表](DS_Linked_list/README.md)
+### 1.3. [链表](DS_Linked_list/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -481,7 +481,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.3. [栈与队列](DS_StackQueue/README.md)
+### 1.4. [栈与队列](DS_StackQueue/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -499,7 +499,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.4. [哈希表](DS_HashTable/README.md)
+### 1.5. [哈希表](DS_HashTable/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -517,7 +517,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.5. [字符串](DS_String/README.md)
+### 1.6. [字符串](DS_String/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -540,7 +540,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.6. [图](DS_Graph/README.md)
+### 1.7. [图](DS_Graph/README.md)
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
@@ -561,7 +561,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.7. [堆(优先队列)](DS_Heap/README.md)
+### 1.8. [堆(优先队列)](DS_Heap/README.md)
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
@@ -577,7 +577,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 1.8. [并查集](DS_UF/README.md)
+### 1.9. [并查集](DS_UF/README.md)
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
@@ -597,9 +597,11 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 
 
+
+
 ---
 
-### 1.9. [字典树](DS_Trie/README.md)
+### 1.10. [字典树](DS_Trie/README.md)
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
@@ -614,6 +616,64 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 |      |        |      |
 |      |        |      |
 |      |        |      |
+
+
+
+
+
+
+
+----
+
+### 1.11. [二叉索引树/树状数组](DS_BIT/README.md)
+
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+
+
+
+树状数组能有的操作，线段树一定有；
+
+线段树有的操作，树状数组不一定有。
+
+但是树状数组的代码要比线段树短，思维更清晰，速度也更快，在解决一些单点修改的问题时，树状数组是不二之选。
+
+
+
+
+
+
+
+----
+
+### 1.12. [线段树](DS_ST/README.md)
+
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+
+
 
 
 
@@ -661,7 +721,7 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 
 ---
 
-### 2.3. [双指针 / 前缀和](Alog_BinarySearch/README.md)
+### 2.3. [双指针](Alog_TwoPointer/README.md)
 
 双指针/滑动窗口
 |  题目  |知识点|技巧|
@@ -686,22 +746,6 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
 | | | |
 
 
-前缀和
-|  题目  |知识点|技巧|
-|  :----  |:----:|:----:|
-|[724. Find Pivot Index](/Alog_TwoPointer/724+Find%20Pivot%20Index.cpp) | 前缀和| |
-|[523. ] | 前缀和| |
-|[560. Subarray Sum Equals K](/Alog_TwoPointer/560+Subarray%20Sum%20Equals%20K.cpp) | 前缀和| |
-|[974. Subarray Sums Divisible by K](/Alog_TwoPointer/974+Subarray%20Sums%20Divisible%20by%20K.cpp) | 前缀和| 注意负数的余数|
-|[1248.] | 前缀和| |
-|[644. Maximum Average Subarray II](/Alog_TwoPointer/644+Maximum%20Average%20Subarray%20II.cpp) | | 不固定k，维护一个最小值即可|
-|[643. Maximum Average Subarray I](Alog_TwoPointer/643+Maximum%20Average%20Subarray%20I.cpp) | | 固定k|
-|[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) | |前缀和+二分 |
-|[6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和| 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
-| | | |
-| | | |
-| | | |
-| | | |
 
 ---
 
@@ -920,6 +964,32 @@ DP
 | | | |
 | | | |
 | | | |
+
+
+
+
+
+---
+
+### 2.10. [前缀和](Alog_Prefix/README.md)
+
+| 题目                                                         | 知识点 |                             技巧                             |
+| :----------------------------------------------------------- | :----: | :----------------------------------------------------------: |
+| [724. Find Pivot Index](/Alog_TwoPointer/724+Find%20Pivot%20Index.cpp) | 前缀和 |                                                              |
+| [523. ]                                                      | 前缀和 |                                                              |
+| [560. Subarray Sum Equals K](/Alog_TwoPointer/560+Subarray%20Sum%20Equals%20K.cpp) | 前缀和 |                                                              |
+| [974. Subarray Sums Divisible by K](/Alog_TwoPointer/974+Subarray%20Sums%20Divisible%20by%20K.cpp) | 前缀和 |                        注意负数的余数                        |
+| [1248.]                                                      | 前缀和 |                                                              |
+| [644. Maximum Average Subarray II](/Alog_TwoPointer/644+Maximum%20Average%20Subarray%20II.cpp) |        |                 不固定k，维护一个最小值即可                  |
+| [643. Maximum Average Subarray I](Alog_TwoPointer/643+Maximum%20Average%20Subarray%20I.cpp) |        |                            固定k                             |
+| [209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) |        |                         前缀和+二分                          |
+| [6072. Maximum Trailing Zeros in a Cornered Path](Alog_TwoPointer/6072+Maximum%20Trailing%20Zeros%20in%20a%20Cornered%20Path.cpp) | 前缀和 | 注意 `preSum[i+2] - preSum[i]` 是不包含i这个点的(必须是从1开始存数据的数组) |
+|                                                              |        |                                                              |
+|                                                              |        |                                                              |
+|                                                              |        |                                                              |
+|                                                              |        |                                                              |
+
+
 
 
 

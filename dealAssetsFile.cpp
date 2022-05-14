@@ -32,8 +32,8 @@ void getFiles(string path, vector<string>& files) {
 
 
 int main() {
-    string iterfilePath = "D:\\MY_DOCUMENT\\Work\\Reverse\\assets";   // 迭代搜索路径
-    string delfilePath = "D:\\MY_DOCUMENT\\Work\\Leetcode\\BookNote\\assets";   // 待删除路径
+    string iterfilePath = "D:\\MY_DOCUMENT\\Work\\Leetcode\\Alog_Prefix\\assets";   // 迭代搜索路径
+    string delfilePath = "D:\\MY_DOCUMENT\\Work\\Leetcode\\Alog_TwoPointer\\assets";   // 待删除路径
 
     vector<string> files;  //存储文件名
 
@@ -41,12 +41,18 @@ int main() {
     getFiles(iterfilePath, files);
 
     // 开删 del路径
-    int size = files.size();
-    for (int i = 0;i < size;i++){
-        cout << files[i] <<endl;
-        //cout << delfilePath + "\\" + files[i] << endl;
-        DeleteFileA( (delfilePath + "\\" + files[i]).c_str() ); // string > LPCSTR
+    int size = files.size(), delCnt = 0;
+    for (int i = 0; i < size; i++){
+        // cout << files[i] <<endl;
+        // cout << delfilePath + "\\" + files[i] << endl;
+        string filePath = delfilePath + "\\" + files[i];
+        auto res = DeleteFileA( filePath.c_str() ); // string > LPCSTR
+        if (res) {
+            cout << "Delete file:" << filePath << endl;
+            delCnt++;
+        }
+            
     }
-    
+    cout << "Delete " << delCnt << " files" << endl;
     return 0;
 }
