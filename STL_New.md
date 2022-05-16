@@ -919,6 +919,8 @@ https://blog.csdn.net/cainv89/article/details/51590363
 >set 自带的 lower_bound 和 upper_bound 的时间复杂度为 O(logN)。
 >
 >但使用 algorithm 库中的 lower_bound 和 upper_bound 函数对 set 中的元素进行查询，时间复杂度为 O(N)。
+>
+>如果存入元素是 pair 的话：按运算符<在字典上比较 lhs 和 rhs，即比较第一个元素，并且仅当它们相等时才比较第二个元素
 
 
 

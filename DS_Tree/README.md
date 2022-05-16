@@ -1736,6 +1736,19 @@ TreeNode* deserialize(string data) {
 
 
 
+----
+
+# 面试题 04.06. 后继者
+
+https://leetcode.cn/problems/successor-lcci/
+
+```c++
+```
+
+
+
+
+
 
 
 

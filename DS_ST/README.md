@@ -55,6 +55,56 @@ https://leetcode.cn/problems/car-pooling/solution/yi-ge-mo-ban-miao-sha-ji-dao-x
 
 
 
+---
+
+## 区间合并
+
+### 6066. 统计区间中的整数数目
+
+用一个 set 有序地维护所有不相交的区间，当加入区间 [left, right] 时，通过 lower_bound 快速找到第一个右端点大等于 left - 1 的区间，然后不断用接下来的区间和 [left, right] 合并，直到当前区间的左端点大于 right + 1。由于每个区间只会加入以及离开 set 一次，复杂度 $\mathcal{O}(n \log n)$。
+
+```C++
+class CountIntervals {
+    typedef pair<int, int> pii;
+
+    int ans = 0;
+    set<pii> st;
+
+public:
+    CountIntervals() {
+    }
+    
+    void add(int left, int right) {
+        int L = left, R = right;
+        auto it = st.lower_bound(pii(left - 1, -2e9));
+        while (it != st.end()) {
+            if (it->second > right + 1) break;
+            L = min(L, it->second);
+            R = max(R, it->first);
+            ans -= it->first - it->second + 1;
+            st.erase(it++);
+        }
+        ans += R - L + 1;
+        st.insert(pii(R, L));
+    }
+    
+    int count() {
+        return ans;
+    }
+};
+```
+
+
+
+
+
+
+
+### 352. 将数据流变为多个不相交区间
+
+```c++
+```
+
 
 
 

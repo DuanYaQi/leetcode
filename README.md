@@ -92,6 +92,8 @@ DAG 的问题就 dfs+memo
 ## TODO
 
 - [ ] 440 K-th Smallest in Lexicographical Order
+- [ ] 二分查找从入门到入睡 https://leetcode.cn/circle/discuss/ooxfo8/
+- [ ] 十大排序从入门到入赘 https://leetcode.cn/circle/discuss/eBo9UB/
 - [ ] 868
 - [ ] 523
 - [ ] 322
@@ -1053,8 +1055,8 @@ DP
 | 题目                                                         | 知识点 | 技巧 |
 | :----------------------------------------------------------- | :----: | :--: |
 | 💗[691. Stickers to Spell Word](/Alog_D_BFS/691+Stickers%20to%20Spell%20Word.cpp) |  BFS+位图  |   把字符串各字符是否满足用01表示   |
-|                                                              |        |      |
-|                                                              |        |      |
+|   [287]                                                           |        |      |
+|   [6065. Largest Combination With Bitwise AND Greater Than Zero](/Alog_BitMap/6065+Largest%20Combination%20With%20Bitwise%20AND%20Greater%20Than%20Zero.cpp)                                                           |        |      |
 |                                                              |        |      |
 |                                                              |        |      |
 |                                                              |        |      |

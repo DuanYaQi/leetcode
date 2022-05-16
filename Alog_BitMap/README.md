@@ -222,3 +222,25 @@ int minStickers(vector<string>& stickers, string target) {
 }
 ```
 
+
+
+
+
+## 6065. 按位与结果大于零的最长组合
+
+```c++
+int largestCombination(vector<int>& candidates) {
+    int ans = 0;
+    for (int i = 0; i < 32; ++i) {
+        int cnt = 0;
+        for (int j = 0; j < candidates.size(); ++j) {
+            int num = candidates[j];
+            if (num & (1 << i)) cnt++;
+        }
+        ans = max(ans, cnt);
+    }
+
+    return ans;
+}
+```
+
