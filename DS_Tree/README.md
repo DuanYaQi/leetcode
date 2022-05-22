@@ -1742,10 +1742,94 @@ TreeNode* deserialize(string data) {
 
 https://leetcode.cn/problems/successor-lcci/
 
+只需要找到节点 p 的后继节点，因此不需要维护完整的中序遍历序列，只需要在中序遍历的过程中维护上一个访问的节点和当前访问的节点
+
+
+
+中序遍历用 prev 记录其先驱节点（因为是栈，所以是先驱）$\mathcal{O}(N)$
+
 ```c++
+TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+    TreeNode* prev = nullptr;
+    stack<TreeNode*> st;
+    if (root != nullptr) st.push(root);
+
+    while (st.size()) {
+        auto now = st.top(); st.pop();
+
+        if (now != nullptr) {
+            if (now->right != nullptr) st.push(now->right);
+            st.push(now);
+            st.push(nullptr);
+            if (now->left != nullptr) st.push(now->left);
+        } else {
+            now = st.top();
+            if (prev == p) return now; 
+            st.pop();
+            prev = now;
+        }
+    }
+
+    return nullptr;
+}
 ```
 
 
+
+
+
+
+
+二叉搜索树的一个性质是中序遍历序列单调递增，因此二叉搜索树中的节点 p 的后继节点满足以下条件：
+
+后继节点的节点值大于 p 的节点值；
+
+后继节点是节点值大于 p 的节点值的所有节点中节点值最小的一个节点。
+
+
+
+利用二叉搜索树的性质，可以在**不做中序遍历的情况下找到节点 p 的后继节点**。
+
+- 如果节点 p 的右子树**不为空**，则节点 p 的后继节点在其右子树中，在其**右子树中定位到最左边的节点**，即为节点 p 的后继节点。
+
+- 如果节点 p 的右子树**为空**，则需要从根节点开始遍历寻找节点 p 的祖先节点。
+
+将答案初始化为 null。用 node 表示遍历到的节点。每次比较 node 的节点值和 p 的节点值，执行相应操作：
+
+- 如果 node 的**节点值大于 p 的节点值**，则 p 的后继节点可能是 node 或者在 node 的左子树中，因此用 node 更新答案，并将 node 移动到其左子节点继续遍历；
+
+- 如果 node 的**节点值小于或等于 p 的节点值**，则 p 的后继节点可能在 node 的右子树中，因此将 node 移动到其右子节点继续遍历。
+
+由于在遍历过程中，当且仅当 node 的节点值大于 p 的节点值的情况下，才会用 node 更新答案，因此当节点 p 有后继节点时一定可以找到后继节点，当节点 p 没有后继节点时答案一定为 null。
+
+
+
+```c++
+TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+    if (p->right != nullptr) {
+        TreeNode* node = p->right;
+
+        while (node->left != nullptr) {
+            node = node->left;
+        }
+        return node;
+    }
+
+
+    TreeNode* ans = nullptr;
+    TreeNode* node = root;
+    while (node != nullptr) {
+        if (node->val > p->val) {
+            ans = node;
+            node = node->left;
+        } else {
+            node = node->right;
+        }
+    }
+
+    return ans;
+}
+```
 
 
 

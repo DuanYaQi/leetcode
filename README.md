@@ -239,6 +239,24 @@ https://www.cnblogs.com/MinPage/
 
 
 
+----
+
+### Conner Case
+
+|          |                                                              |
+| -------- | ------------------------------------------------------------ |
+| 精度问题 | 有除法，并且判断是否相等，就要考虑高精度 long double/double <br>或者把两个**除法的比较** $k = \frac {a1}{b1}, t = \frac {a2}{b2}$ **转换**为**两个乘法的比较** $k = t \iff a1*b2 = b1*a2$<br>再或者把它变成字符串，然后判断字符串是否相同<br>再或者就除法但是加一个 eps 判断是否满足误差<br>再或者通分化简 |
+|          |                                                              |
+|          |                                                              |
+
+
+
+
+
+
+
+----
+
 ### 算法注意事项
 
 
@@ -483,7 +501,7 @@ static const auto io_sync_off = []()
 |💗[449. Serialize and Deserialize BST](/DS_Tree/449.%20Serialize%20and%20Deserialize%20BST.cpp) | 树转数组 + 序列化 + 分割字符串 + 字符数字互相转换| |
 |[剑指 Offer II 051. 节点之和最大的路径](/DS_Tree/剑指%20Offer%20II%20051.%20节点之和最大的路径.cpp) | | 注意函数返回的是最大贡献值，答案是在递归的时候不断更新的|
 | | | |
-| | | |
+|[面试题 04.06. 后继者](/DS_Tree/面试题%2004.06.%20后继者.cpp) | |注意 BST, 可能需要考虑某个节点是否存在子树 |
 | | | |
 
 
@@ -669,17 +687,13 @@ static const auto io_sync_off = []()
 
 
 
-
-
-
-
 ----
 
-### 1.11. [二叉索引树/树状数组](DS_BIT/README.md)
+### 1.11. [线段树](DS_ST/README.md)
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
-|      |        |      |
+| [2276. Count Integers in Intervals](/DS_ST/2276.%20Count%20Integers%20in%20Intervals.cpp)     |  区间合并      | 注意两个条件     |
 |      |        |      |
 |      |        |      |
 |      |        |      |
@@ -698,34 +712,6 @@ static const auto io_sync_off = []()
 线段树有的操作，树状数组不一定有。
 
 但是树状数组的代码要比线段树短，思维更清晰，速度也更快，在解决一些单点修改的问题时，树状数组是不二之选。
-
-
-
-
-
-
-
-----
-
-### 1.12. [线段树](DS_ST/README.md)
-
-| 题目 | 知识点 | 技巧 |
-| :--- | :----: | :--: |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-
-
-
-
 
 
 
@@ -1017,7 +1003,7 @@ DP
 |[136. Single Number](CS_Math/136+Single%20Number.cpp) | | 任何数和 0 做异或运算，结果仍然是原来的数 <br>任何数和其自身做异或运算，结果是 0<br>异或运算满足交换律和结合律|
 |[6062. Design an ATM Machine](/CS_Math/6062+Design%20an%20ATM%20Machine.cpp) |系统设计 | |
 | | | |
-| | | |
+|[6076. Minimum Lines to Represent a Line Chart](/CS_Math/6076+Minimum%20Lines%20to%20Represent%20a%20Line%20Chart.cpp) |分数比较 |long double/最简通分/转成两个乘法/转成字符串再比较/ |
 | | | |
 
 
