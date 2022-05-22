@@ -59,6 +59,16 @@ https://leetcode.cn/problems/car-pooling/solution/yi-ge-mo-ban-miao-sha-ji-dao-x
 
 ## 区间合并
 
+![image-20211009111244911](assets/1633749732-zEWeXS-image-20211009111244911.png)
+
+
+
+
+
+
+
+---
+
 ### 2276. 统计区间中的整数数目
 
 用一个 set 有序地维护所有不相交的区间，当加入区间 [left, right] 时，通过 lower_bound 快速找到第一个右端点大等于 left - 1 的区间，然后不断用接下来的区间和 [left, right] 合并，直到当前区间的左端点大于 right + 1。由于每个区间只会加入以及离开 set 一次，复杂度 $\mathcal{O}(n \log n)$。
@@ -102,16 +112,14 @@ public:
         return ans;
     }
 };
-
-/**
- * Your CountIntervals object will be instantiated and called as such:
- * CountIntervals* obj = new CountIntervals();
- * obj->add(left,right);
- * int param_2 = obj->count();
- */
 ```
 
 
+
+
+
+Q：为什么用 left - 1 和 right + 1 比较，直接 left 和 right 不行吗？
+A：为了把虽然不相交但是连续的区间也合并，比如 [1,3], [4, 6] 可以合并成 [1, 6]。当然对于本题而言这样的合并不需要。直接用 left 和 right 判断也可以，但作为模板的角度合并可能更合适一点。
 
 ```C++
 class CountIntervals {
@@ -126,6 +134,7 @@ public:
     
     void add(int left, int right) {
         int L = left, R = right;
+        // 这里 (R1, L1) >= (R2, L2)，若 R1 > R2 或 R1 = R2 且 L1 >= L2
         auto it = st.lower_bound(pii(left - 1, -2e9));
         while (it != st.end()) {
             if (it->second > right + 1) break;
@@ -150,10 +159,161 @@ public:
 
 
 
+
+
+----
+
 ### 352. 将数据流变为多个不相交区间
 
+注意这道题目跟 2276 基本上是一模一样，唯一不同的就是这道题比较的时候**必须是** left - 1 和 right + 1 进行比较，而不能用 left 和 right 进行比较原因：
+
+为了把虽然不相交但是连续的区间也合并，比如 [1,3], [4, 6] 可以合并成 [1, 6]。
+
 ```c++
+class SummaryRanges {
+    typedef pair<int, int> pii;
+    set<pii> st;
+    
+public:
+    SummaryRanges() {
+
+    }
+    
+    void addNum(int val) {
+        int left = val, right = val;
+        auto it = st.lower_bound(pii(left-1, -1e9));
+
+        while (it != st.end()) {
+            if (it->second > right+1) break;
+            left = min(left, it->second);
+            right = max(right, it->first);
+            st.erase(it++);
+        }
+
+        st.insert(pii(right, left));
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>> ans;
+        for (auto p : st) {
+            ans.push_back({p.second, p.first});
+        }
+        return ans;
+    }
+};
 ```
+
+lower_bound(i) 找到第一个大于等于 i 的数的位置，我们把 val 扩展成 [le=val, ri=val] 的区间
+
+针对情况 1，it 找到 L0 的位置，因为 L0->right 大于 le-1；进入循环，L0->left 小于 ri+1 调整区间范围，找到最左和最右的位置，调整之后 it++ 再次进入循环，此时 L1->left 大于 ri + 1，无需调整出循环；
+
+针对情况 2，it 找到 L0 的位置，因为 L0->right 大于 le-1；进入循环，L0->left 小于 ri+1 调整区间范围，找到最左和最右的位置，调整之后 it++ 再次进入循环；此时 L1->left 仍小于 right + 1，再次调整区间范围，找到最左和最右的位置，调整之后 it++ 再次进入循环，此时到达末尾，结束循环；
+
+针对情况 3，it 找到 L0 的位置，因为 L0->right 大于 le-1；进入循环，L0->left 小于 ri+1 调整区间范围，找到最左和最右的位置，调整之后 it++ 再次进入循环；此时 L1->left 大于 ri + 1，无需调整出循环；(实际上跟情况1相同)
+
+针对情况 4，it 找到 L1 的位置，因为 L1->right 大于 le-1；进入循环，L1->left 小于 ri+1 调整区间范围，找到最左和最右的位置，调整之后 it++ 再次进入循环；此时到达末尾，结束循环；
+
+针对情况 5，it 找到 L1 的位置，因为 L1->right 大于 le-1；进入循环，L1->left 大于 ri+1 调整区间范围结束循环；单独插入
+
+![image-20211009111244911](assets/1633749732-zEWeXS-image-20211009111244911.png)
+
+针对情况 5 时，L1 可以不存在，即 `it == st.end()`
+
+
+
+
+
+
+
+
+
+
+
+----
+
+### 715. Range 模块
+
+官方没有考虑的 case 
+
+```c++
+["RangeModule","addRange","addRange","addRange","removeRange","queryRange","queryRange"]
+[[],[10,20],[20,25],[26,30],[14,16],[20,21],[25,26]]
+```
+
+
+
+此题不能用模板直接优化离散但连续的区间，因为它是前开后闭，因此必须 left，right 而不是 left-1 和 right+1
+
+```c++
+class RangeModule {
+    typedef pair<int, int> pii;
+    set<pii> st;
+    
+public:
+    RangeModule() {
+        /*因为插入、跟踪、删除全是半开区间，那就跟全开区间没区别*/
+    }
+    
+    void addRange(int left, int right) {
+        auto it = st.lower_bound(pii(left, -1e-9)); // 找第一个可以合并的区间
+
+        while (it != st.end()) {        // 逐个合并
+            auto [R, L] = *it;
+            if (L > right)  break;      // 后面的不能合并了，提前退出循环
+            left = min(left, L);
+            right = max(right, R);
+            st.erase(it++);
+        }
+
+        st.insert(pii(right, left));    // 把合并后的区间插入set，注意是{R, L}
+    }
+    
+    bool queryRange(int left, int right) {
+        auto it = st.lower_bound(pii(left, -1e-9)); // 找第一个可能包含[left, right)的区间
+
+        if (it == st.end()) return false;           // 没有找到，直接返回false
+        
+        auto [R, L] = *it;
+        if (L <= left && right <= R) return true;   // 判断这个区间是否包含所要查询的区间
+        else return false;
+    }
+    
+    void removeRange(int left, int right) { 
+        auto it = st.lower_bound(pii(left, -1e-9)); // 找第一个可能包含[left, right)的区间
+        int l1, r1, l2, r2; 
+        bool flagL = false, flagR = false;
+        while (it != st.end()) {
+            auto [R, L] = *it;
+            if (L > right) break;   // 后面的区间不用删了，提前退出循环
+            
+            if (left > L) {         // 部分区间在left的左边，此时需要添加多删除的部分区间
+                flagL = true;
+                l1 = L;
+                r1 = left;
+            }
+
+            if (right < R) {        // 部分区间在right的右边，此时需要添加多删除的部分区间
+                flagR = true;
+                l2 = right;
+                r2 = R;
+            }
+            st.erase(it++);         // 移除该区间
+        }
+
+        if (flagL) st.insert({r1, l1}); // 部分区间在left的左边，此时需要添加多删除的部分区间
+        if (flagR) st.insert({r2, l2}); // 部分区间在right的右边，此时需要添加多删除的部分区间
+        return;
+    }
+};
+```
+
+
+
+
+
+
+
+
 
 
 

@@ -693,9 +693,9 @@ static const auto io_sync_off = []()
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
-| [2276. Count Integers in Intervals](/DS_ST/2276.%20Count%20Integers%20in%20Intervals.cpp)     |  区间合并      | 注意两个条件     |
-|      |        |      |
-|      |        |      |
+| [2276. Count Integers in Intervals](/DS_ST/2276+Count%20Integers%20in%20Intervals.cpp)     |  区间合并      | 注意两个条件     |
+| [352. Data Stream as Disjoint Intervals](/DS_ST/352+Data%20Stream%20as%20Disjoint%20Intervals.cpp)     |  区间合并      | 注意相连的范围需要合并，因此是[left-1, right+1]     |
+| [715. Range Module](/DS_ST/715+Range%20Module.cpp)     |  区间合并+查询      |   查询时注意前开后闭  |
 |      |        |      |
 |      |        |      |
 |      |        |      |
@@ -1036,7 +1036,7 @@ DP
 
 ---
 
-### 2.11. [位图](Alog_BitMap/README.md)
+### 2.11. [位运算(图)](Alog_BitMap/README.md)
 
 | 题目                                                         | 知识点 | 技巧 |
 | :----------------------------------------------------------- | :----: | :--: |

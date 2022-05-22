@@ -1818,6 +1818,9 @@ for(auto ob : obstacles)
 
 就是 size 和 capacity 的区别
 
+reserve()只修改capacity()大小，不修改size()大小，不可以设定初始值;
+
+resize()既修改capacity()大小，也修改size()大小，可以设定初始值。
 
 
 - **Q：C++ STL 标准库中，无序容器的底层实现是什么？**
