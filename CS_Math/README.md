@@ -2252,3 +2252,108 @@ private:
 };
 ```
 
+
+
+
+
+----
+
+## 155. 最小栈
+
+一个栈维护值，另一个栈维护最小元素。
+
+```c++
+typedef long long ll;
+class MinStack {
+    stack<ll> st_val;
+    stack<ll> st_min;
+
+public:
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        if (!st_min.size()) {
+            st_val.push(val);
+            st_min.push(val);
+            return;
+        } 
+
+        st_val.push(val);
+        int minn = st_min.top(); 
+        if (minn > val) {
+            st_min.push(val);
+        } else {
+            st_min.push(minn);
+        }
+        return;
+    }
+    
+    void pop() {
+        st_val.pop();
+        st_min.pop();
+    }
+    
+    int top() {
+        return st_val.top();
+    }
+    
+    int getMin() {  
+        return st_min.top();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+```
+
+
+
+或者直接用 pair 实现
+
+```c++
+typedef pair<int, int> pii;
+class MinStack {
+    stack<pii> st;
+
+public:
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        if (!st.size()) {
+            st.push(pii{val, val});
+            return;
+        } 
+
+        auto [tmp, minn] = st.top(); 
+        if (minn > val) {
+            st.push(pii{val, val});
+        } else {
+            st.push(pii{val, minn});
+        }
+        return;
+    }
+    
+    void pop() {
+        st.pop();
+    }
+    
+    int top() {
+        return st.top().first;
+    }
+    
+    int getMin() {  
+        return st.top().second;
+    }
+};
+```
+
