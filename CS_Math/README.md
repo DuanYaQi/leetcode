@@ -2357,3 +2357,46 @@ public:
 };
 ```
 
+
+
+
+
+不用 pair，只用栈和指针
+
+````c++
+typedef long long ll;
+
+class MinStack {
+    stack<ll> st;   // 存差值
+    ll min_s;       // 存最小的数
+
+public:
+    MinStack() : min_s(0) { }
+    
+    void push(int val) {
+        if (st.empty()) {
+            min_s = val;
+            st.push(0);
+        } else {
+            ll diff = val - min_s;
+            st.push(diff);
+            min_s = diff > 0 ? min_s : val;
+        }
+    }
+    
+    void pop() {
+        ll diff = st.top(); st.pop();
+        min_s = diff > 0 ? min_s : min_s - diff;
+    }
+    
+    int top() {
+        ll diff = st.top();
+        return diff > 0 ? diff + min_s : min_s;
+    }
+    
+    int getMin() {
+        return min_s;
+    }
+};
+````
+

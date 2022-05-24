@@ -673,6 +673,7 @@ static const auto io_sync_off = []()
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
+|[208. Implement Trie (Prefix Tree)](/DS_Trie/208+Implement%20Trie%20(Prefix%20Tree).cpp) | 智能指针版| 注意全字匹配和前缀匹配的区别 |
 |      |        |      |
 |      |        |      |
 |      |        |      |
@@ -1006,7 +1007,6 @@ DP
 |[6076. Minimum Lines to Represent a Line Chart](/CS_Math/6076+Minimum%20Lines%20to%20Represent%20a%20Line%20Chart.cpp) |分数比较 |long double/最简通分/转成两个乘法/转成字符串再比较/ |
 | | | |
 |[155. Min Stack](/CS_Math/155+Min%20Stack.cpp) | |两个相同的数据结构，可以考虑用pair合并成一个|
-| | | |
 | | | |
 | | | |
 | | | |
