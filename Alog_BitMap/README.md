@@ -226,20 +226,6 @@ int minStickers(vector<string>& stickers, string target) {
 
 
 
-<<<<<<< HEAD
-
-
-
-
-
-
----
-
-## 461. 汉明距离
-
-```c++
-
-=======
 ## 6065. 按位与结果大于零的最长组合
 
 ```c++
@@ -256,6 +242,5 @@ int largestCombination(vector<int>& candidates) {
 
     return ans;
 }
->>>>>>> 653de9c480f9c68fd77cfb459fe13f132bbab266
 ```
 
