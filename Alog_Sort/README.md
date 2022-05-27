@@ -588,7 +588,7 @@ int partition(int nums[], int lo, int hi) {
             i++;
             // 此 while 结束时恰好 nums[i] > pivot
         }
-        while (j > lo && nums[j] > pivot) {
+        while (j > lo && nums[j] > pivot) {  //这里如果 >= 也是可以的 可以使加速
             j--;
             // 此 while 结束时恰好 nums[j] <= pivot
         }
@@ -640,7 +640,7 @@ void swap(int[] nums, int i, int j) {
 
 ```c++
 // 洗牌算法，将输入的数组随机打乱
-void shuffle(int[] nums) {
+void shuffle(int nums[]) {
     Random rand = new Random();
     int n = nums.length;
     for (int i = 0 ; i < n; i++) {
@@ -1092,7 +1092,7 @@ void selectSort(int arr[]) {
 
 
 
-### 215. 数组中的第 K 个最大元素
+## 215. 数组中的第 K 个最大元素
 
 这种问题有两种解法，一种是二叉堆（优先队列）的解法，另一种就是快速选择算法，我们分别来看。
 

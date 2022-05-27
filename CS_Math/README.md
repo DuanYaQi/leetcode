@@ -88,9 +88,13 @@ s[3] = (nowNum % 10) / 1;
 
 
 
+
+
+## 最大公约数/最小公倍数
+
 ---
 
-## 1979. 最大公约数
+### 1979. 最大公约数
 
 欧几里得算法，即辗转相除法
 $$
@@ -122,7 +126,7 @@ int findGCD(vector<int>& nums) {
 
 ---
 
-## 最小公倍数
+### 最小公倍数
 
 ```c++
 int lcm(int a, int b) {
@@ -130,6 +134,99 @@ int lcm(int a, int b) {
     return a * b / g;
 }
 ```
+
+
+
+
+
+---
+
+### HDU 2503 通分化简
+
+有a，b，c，d四个整数，求a/b+c/d的最简分数
+
+```c++
+int gcd(int a, int b) {
+    if (b == 0) return a;
+    return gcd(b, a % b);
+}
+
+void solve() {
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+
+    int up, down;
+
+    up = a * d + b * c;
+    down = b * d;
+
+    int t = gcd(up, down);
+    up      /= t;
+    down    /= t;
+
+    cout << up << " " << down << endl; 
+    return;
+}
+
+
+int main () {
+    int n;
+    cin >> n;
+    while (n--) {
+        solve();
+    }
+
+    return 0;
+}
+```
+
+
+
+
+
+----
+
+### 6076. 表示一个折线图的最少线段数
+
+最简通分形式进行比较
+
+```c++
+void simple(int i, int &x, int &y, vector<vector<int>>& stockPrices) {
+    x = stockPrices[i][0] - stockPrices[i-1][0];
+    y = stockPrices[i][1] - stockPrices[i-1][1];
+    int t = __gcd(x, y);
+    x /= t;
+    y /= t;
+}
+
+int minimumLines(vector<vector<int>>& stockPrices) {
+    if (stockPrices.size() == 1) return 0;
+    sort(stockPrices.begin(), stockPrices.end());
+
+
+    int x1, y1, x2, y2, ans = 1;
+    simple(1, x1, y1, stockPrices);
+    for (int i = 2; i < stockPrices.size(); i++) {
+        simple(i, x2, y2, stockPrices);
+        if (x1 != x2 || y1 != y2) {
+            ans++;
+        }
+        x1 = x2, y1 = y2;
+    }
+
+    return ans;
+}
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1737,7 +1834,81 @@ public:
 
 ---
 
-## 浮点数相乘
+## 浮点数相乘/相除
+
+### 6076. 表示一个折线图的最少线段数
+
+直接用 long double 高精度
+
+```c++
+int minimumLines(vector<vector<int>>& stockPrices) {
+    if (stockPrices.size() == 1) {
+        return 0;
+    }
+
+    auto cmp = [](vector<int> &x, vector<int> &y)->bool { 
+        return x[0] < y[0];
+    };
+
+    sort(stockPrices.begin(), stockPrices.end(), cmp);                
+    vector<long double> diff(stockPrices.size(), -1);
+
+    for (int i = 1; i < stockPrices.size(); ++i) {
+        long double diffx = (long double)(stockPrices[i][0]) - (long double)(stockPrices[i-1][0]);
+        long double diffy = (long double)(stockPrices[i][1]) - (long double)(stockPrices[i-1][1]);
+
+        long double diffT = diffy == 0 ? 0 : (long double)(diffy / diffx);
+        diff[i] = diffT;
+    }
+    
+    int ans = 1;
+    for (int i = 2; i < diff.size(); ++i) {
+        if (diff[i] == diff[i-1]) continue;
+        ans++;
+    }
+
+    return ans;
+}
+```
+
+
+
+转成用两个分数的 ad 和 cb 乘积比较
+
+```c++
+
+typedef long long ll;
+public:
+int minimumLines(vector<vector<int>>& stockPrices) {
+    if (stockPrices.size() == 1) {
+        return 0;
+    }
+
+    auto cmp = [](vector<int> &x, vector<int> &y)->bool { 
+        return x[0] < y[0];
+    };
+
+    sort(stockPrices.begin(), stockPrices.end(), cmp);                
+
+    int ans = 1;
+    ll dx1 = (ll)(stockPrices[1][0]) - (ll)(stockPrices[0][0]);
+    ll dy1 = (ll)(stockPrices[1][1]) - (ll)(stockPrices[0][1]);
+    for (int i = 2; i < stockPrices.size(); ++i) {
+        ll dx2 = (ll)(stockPrices[i][0]) - (ll)(stockPrices[i-1][0]);
+        ll dy2 = (ll)(stockPrices[i][1]) - (ll)(stockPrices[i-1][1]);
+        if (dx1 * dy2 != dx2 * dy1) ans++;
+        dx1 = dx2, dy1 = dy2;
+    }
+
+    return ans;
+}
+```
+
+
+
+
+
+
 
 
 
@@ -2080,4 +2251,152 @@ private:
     vector<ll> vec;
 };
 ```
+
+
+
+
+
+----
+
+## 155. 最小栈
+
+一个栈维护值，另一个栈维护最小元素。
+
+```c++
+typedef long long ll;
+class MinStack {
+    stack<ll> st_val;
+    stack<ll> st_min;
+
+public:
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        if (!st_min.size()) {
+            st_val.push(val);
+            st_min.push(val);
+            return;
+        } 
+
+        st_val.push(val);
+        int minn = st_min.top(); 
+        if (minn > val) {
+            st_min.push(val);
+        } else {
+            st_min.push(minn);
+        }
+        return;
+    }
+    
+    void pop() {
+        st_val.pop();
+        st_min.pop();
+    }
+    
+    int top() {
+        return st_val.top();
+    }
+    
+    int getMin() {  
+        return st_min.top();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+```
+
+
+
+或者直接用 pair 实现
+
+```c++
+typedef pair<int, int> pii;
+class MinStack {
+    stack<pii> st;
+
+public:
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        if (!st.size()) {
+            st.push(pii{val, val});
+            return;
+        } 
+
+        auto [tmp, minn] = st.top(); 
+        if (minn > val) {
+            st.push(pii{val, val});
+        } else {
+            st.push(pii{val, minn});
+        }
+        return;
+    }
+    
+    void pop() {
+        st.pop();
+    }
+    
+    int top() {
+        return st.top().first;
+    }
+    
+    int getMin() {  
+        return st.top().second;
+    }
+};
+```
+
+
+
+
+
+不用 pair，只用栈和指针
+
+````c++
+typedef long long ll;
+
+class MinStack {
+    stack<ll> st;   // 存差值
+    ll min_s;       // 存最小的数
+
+public:
+    MinStack() : min_s(0) { }
+    
+    void push(int val) {
+        if (st.empty()) {
+            min_s = val;
+            st.push(0);
+        } else {
+            ll diff = val - min_s;
+            st.push(diff);
+            min_s = diff > 0 ? min_s : val;
+        }
+    }
+    
+    void pop() {
+        ll diff = st.top(); st.pop();
+        min_s = diff > 0 ? min_s : min_s - diff;
+    }
+    
+    int top() {
+        ll diff = st.top();
+        return diff > 0 ? diff + min_s : min_s;
+    }
+    
+    int getMin() {
+        return min_s;
+    }
+};
+````
 

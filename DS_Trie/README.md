@@ -1,10 +1,247 @@
 # 字典树
 
+想象以下，包含三个单词 "sea","sells","she" 的 Trie 会长啥样呢？
+
+![来自算法4](assets/e3c98484881bd654daa8419bcb0791a2b6f8288b58ef50df70ddaeefc4084f48-file_1575215107950.png)
+
+Trie 中一般都含有大量的**空链接**，因此 Trie 的应用场景是：**一次建树，多次查询**。
+
+
+
+查找或插入一个长度为 L 的单词，访问 next 数组的次数最多为 L+1，**和 Trie 中包含多少个单词无关**。
+
+
+
+Trie 的每个结点中都保留着一个字母表，这是很耗费空间的。如果 Trie 的高度为 n，字母表的大小为 m，最坏的情况是 Trie 中还不存在前缀相同的单词，那空间复杂度就为 $O(m^n)$ 。
+
+
+
+Trie树在实际开发中的应用：
+
+替换其他数据结构，比如二叉搜索树(BST, binary search tree)和哈希表(hash table)
+用于词典中自动补全(autocomplete)或搜索提示功能
+在拼写检查(spell checking)这类软件中，用来实现相似匹配算法
+用于字符串排序，比如burstsort就将Trie作为其基础数据结构
 
 
 
 
 
+---
+
+## 208. 实现 Trie (前缀树)
+
+Trie，又称前缀树或字典树，是一棵有根树，其每个节点包含以下字段：
+
+- 指向子节点的指针数组 children。对于本题而言，数组长度为 26，即小写英文字母的数量。此时 `children[0]` 对应小写字母 a,  `children[1]` 对应小写字母 b，...，`children[25]` 对应小写字母 z
+
+- 布尔字段 isEnd，表示该节点是否为字符串
+
+
+
+**插入字符串**
+
+从字典树根开始，插入字符串。对于当前字符对应的子节点，有两种情况：
+
+- 子节点存在。沿着指针移动到子节点，继续处理下一个字符。
+- 子节点不存在。**创建**一个新的子节点，记录在 `children` 数组的对应位置上，然后沿着指针移动到子节点上，继续搜索下一个字符。
+
+重复以上步骤，直到处理字符串的最后一个字符，然后将当前节点标记为字符串的结尾。
+
+
+
+**查找前缀**
+
+从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：
+
+- 子节点存在。沿着指针移动到子节点，继续搜索下一个字符。
+- 子节点不存在。说明字典树中不包含该前缀，**返回空指针**。
+
+重复以上步骤，直到返回空指针或搜索完前缀的最后一个字符。
+
+若搜索到了前缀的末尾，就说明字典树中存在该前缀。此外，若前缀末尾对应节点 isEnd 为真，则说明字典树中存在该字符串
+
+```c++
+class Trie {
+private:
+    vector<Trie*> children;	//指针数组，存Trie*
+    bool isEnd;         //这个主要是用来区分全字匹配和前缀匹配
+
+    Trie* searchPrefix(string prefix) {
+        Trie* node = this;
+        
+        for (char ch : prefix) {        
+            ch -= 'a';
+            if (node->children[ch] == nullptr) {
+                return nullptr;
+            }
+            node = node->children[ch];
+        }
+
+        return node;
+    }
+    
+public:
+    Trie() : children(26), isEnd(false) { }
+    
+    void insert(string word) {
+        Trie* node = this;
+        for (char ch : word) {
+            ch -= 'a';
+            if (node->children[ch] == nullptr) {
+                node->children[ch] = new Trie();
+            }
+            node = node->children[ch];
+        }
+        node->isEnd = true; //这里标末尾
+    }
+    
+    bool search(string word) {
+        Trie* node = this->searchPrefix(word);
+        return node != nullptr && node->isEnd;
+    }
+    
+    bool startsWith(string prefix) {
+        Trie* node = this->searchPrefix(prefix);
+        return node != nullptr;
+    }
+};
+```
+
+
+
+
+
+### 智能指针版
+
+由于Trie是动态数据结构，在插入新字符串的时候需要不断在堆上开辟新空间，为了避免内存泄漏需要在Trie树类的析构函数中释放这些内存，可以用智能指针进行管理
+
+```c++
+class Trie
+{
+private:
+    struct TrieNode
+    {
+        bool isEnd;
+        vector<shared_ptr<TrieNode>> children;
+        TrieNode() : isEnd(false), children(26, NULL) {}
+    };
+
+    shared_ptr<TrieNode> findPrefix(string &prefix)
+    {
+        auto node = root;
+        for (int i = 0; i < prefix.size() && node != NULL; ++i) // node != NULL表示前缀树中还有剩余节点
+        {
+            node = node->children[prefix[i] - 'a']; // prefix[i]-'a'表示字符串的第i个字符的ASCII码减去'a'的值
+        }
+        return node; // 若是前缀就返回最后一个字母所在的node，否则返回NULL
+    }
+
+    shared_ptr<TrieNode> root;
+
+public:
+    Trie()
+    {
+        root = make_shared<TrieNode>(); // make_shared创建一个shared_ptr智能指针，指向一个TrieNode对象
+    }
+
+    void insert(string word)
+    {
+        auto node = root; // node指向root
+        for (int i = 0; i < word.size(); ++i)
+        {
+            if (node->children[word[i] - 'a'] == NULL)                   // 若node的children[word[i] - 'a']为空，则创建一个新的TrieNode对象
+                node->children[word[i] - 'a'] = make_shared<TrieNode>(); // make_shared创建一个shared_ptr智能指针，指向一个TrieNode对象
+            node = node->children[word[i] - 'a'];                        // 进入到对应子树节点中
+        }
+        node->isEnd = true; // 整个单词遍历结束，将最后一个节点标记为单词结尾
+    }
+
+    bool search(string word)
+    {
+        auto node = findPrefix(word);
+        return node != NULL && node->isEnd; // 若node不为空且node的isEnd为true，则返回true，否则返回false
+    }
+
+    bool startsWith(string prefix)
+    {
+        return findPrefix(prefix) != NULL;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
+```
+
+
+
+```c++
+class Trie {
+    struct TrieNode{
+        shared_ptr<TrieNode> children[26];
+        bool is_end;
+        TrieNode():is_end(false){
+            for(int i=0;i<26;i++)children[i]=nullptr;
+        }
+    };
+    public:
+        Trie(){
+            head=shared_ptr<TrieNode>(new TrieNode());
+        }
+
+        void insert(string word){
+            shared_ptr<TrieNode> root=head;
+            for(char c:word){
+                int index=c-'a';
+                if(root->children[index]==nullptr){
+                    root->children[index]=shared_ptr<TrieNode>(new TrieNode());
+                }
+                root=root->children[index];
+            }
+            root->is_end=true;
+        }
+
+        bool startsWith(string prefix){
+            shared_ptr<TrieNode> root=head;
+            for(char c:prefix){
+                int index=c-'a';
+                if(root->children[index]==nullptr){
+                    return false;
+                }
+                root=root->children[index];
+            }
+            return true;
+        }
+
+        bool search(string word){
+            shared_ptr<TrieNode> root=head;
+            for(char c:word){
+                int index=c-'a';
+                if(root->children[index]==nullptr){
+                    return false;
+                }
+                root=root->children[index];
+            }
+            return root->is_end;
+        }
+
+    private:
+        shared_ptr<TrieNode> head;
+};
+```
+
+
+
+
+
+
+
+----
 
 ## 440. 字典序的第K小数字
 
@@ -269,4 +506,27 @@ int findKthNumber (int n, int k) {
     long cur = 1;
 }
 ```
+
+
+
+
+
+## 剑指 Offer II 062. 实现前缀树 Medium
+
+
+
+1804.实现 Trie （前缀树） II Medium
+
+1805.添加与搜索单词 - 数据结构设计 Medium
+
+1806.连接词 Hard
+
+1807.单词替换 Medium
+剑指 Offer II 063. 替换单词 Medium
+剑指 Offer II 064. 神奇的字典 Medium
+剑指 Offer II 065. 最短的单词编码 Medium
+剑指 Offer II 066. 单词之和 Medium
+剑指 Offer II 067. 最大的异或 Medium
+
+
 
