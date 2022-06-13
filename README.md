@@ -734,7 +734,7 @@ static const auto io_sync_off = []()
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) | |前缀和+二分 |
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch_best.cpp) | 用lower_bound()代替二分| 注意要计算长度时 需要强制类型转换 static_cast<int>|
 | | | |
-| | | |
+|[面试题 17.11. 单词距离](/Alog_TwoPointer/Offer%2017.11.%20单词距离.cpp) | | 二分负优化（开拓思维即可）|
 | | | |
 
 
@@ -779,9 +779,10 @@ static const auto io_sync_off = []()
 |[904. Fruit Into Baskets](/Alog_TwoPointer/904+Fruit%20Into%20Baskets.cpp) | | 模板<br>重点是处理左指针|
 |[76. Minimum Window Substring](/Alog_TwoPointer/76+Minimum%20Window%20Substring.cpp) | |注意最后结果是resL而不是left |
 |[438. Find All Anagrams in a String](/Alog_TwoPointer/438+Find%20All%20Anagrams%20in%20a%20String.cpp) | |固定窗口 |
+|[面试题 17.11. 单词距离](/Alog_TwoPointer/Offer%2017.11.%20单词距离.cpp) | |很简单的双指针 |
 | | | |
 | | | |
-
+| | | |
 
 
 ---
