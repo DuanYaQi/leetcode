@@ -511,6 +511,75 @@ int findKthNumber (int n, int k) {
 
 
 
+
+
+---
+
+## 211. 添加与搜索单词 - 数据结构设计
+
+```c++
+class WordDictionary {
+private:
+    vector<WordDictionary*> children;	//指针数组，存Trie*
+    bool isEnd;         //是否是末尾, 用来区分全字匹配和前缀匹配
+
+public:
+    WordDictionary() : children(26), isEnd(false) {
+
+    }
+    
+    void addWord(string word) {
+        WordDictionary* node = this;
+        for (auto ch : word) {
+            ch -= 'a';
+            if (node->children[ch] == nullptr) {
+                node->children[ch] = new WordDictionary();
+            }
+            node = node->children[ch];
+        }
+        node->isEnd = true; //标末尾
+    }   
+    
+    bool search(string word) {
+        return dfs(word, 0, this);
+    }
+
+    bool dfs(string &word, int idx, WordDictionary* nowNode) {
+        if (idx == word.size()) { //尾部处理
+            return nowNode->isEnd;
+        }
+        
+        char ch = word[idx];
+        if (ch == '.') {
+            for (int j = 0; j < 26; ++j) {
+                if (nowNode->children[j] != nullptr && dfs(word, idx + 1, nowNode->children[j])) {
+                    return true;
+                }
+            }              
+        } else {
+            ch -= 'a';
+            if (nowNode->children[ch] != nullptr && dfs(word, idx + 1, nowNode->children[ch])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 剑指 Offer II 062. 实现前缀树 Medium
 
 
