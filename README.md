@@ -675,7 +675,7 @@ static const auto io_sync_off = []()
 | :--- | :----: | :--: |
 |[208. Implement Trie (Prefix Tree)](/DS_Trie/208+Implement%20Trie%20(Prefix%20Tree).cpp) | 智能指针版| 注意全字匹配和前缀匹配的区别 |
 |[211. Design Add and Search Words Data Structure](/DS_Trie/211+Design%20Add%20and%20Search%20Words%20Data%20Structure.cpp)      |        |  注意 dfs 边界的判断，是 size() 还是 size() - 1    |
-|      |        |      |
+|[440. K-th Smallest in Lexicographical Order](/DS_Trie/440+K-th%20Smallest%20in%20Lexicographical%20Order.cpp)      | 通过计算子树结点个数直接跳过没用的区域       |   注意子树结点个数的计算   |
 |      |        |      |
 |      |        |      |
 |      |        |      |
