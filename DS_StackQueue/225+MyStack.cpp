@@ -1,45 +1,52 @@
 class MyStack {
 public:
-    /** Initialize your data structure here. */
     MyStack() {
 
     }
     
-    /** Push element x onto stack. */
     void push(int x) {
-        _qu1.push(x);
+        mqT = mqO;
+        mqO = queue<int>();     // 置空
+        mqO.push(x);            // 把x加入队首
+        while (mqT.size()) {    // 把原来的结点，再加进去
+            int num = mqT.front(); mqT.pop();
+            mqO.push(num);
+        }
+    }
+    /*只用一个队列*/
+    void push2(int x) { 
+        int size = mqO.size();
+
+        mqO.push(x);
+        for (int i = 0; i < size; ++i) {
+            mqO.push(mqO.front()); mqO.pop();
+        }
+        return;
     }
     
-    /** Removes the element on top of the stack and returns that element. */
     int pop() {
-        int res = _qu1.back();
-        int size = _qu1.size(); 
-        while ( size - 1 != 0 ) { //要留最后一个元素去除
-            _qu2.push(_qu1.front());
-            _qu1.pop();
-            size--;
-        }
-
-        _qu1.pop();
-        _qu1 = _qu2;
-
-        while (!_qu2.empty()) {
-            _qu2.pop();
-        }
-        return res;
+        int num = mqO.front(); mqO.pop();
+        return num;
     }
     
-    /** Get the top element. */
     int top() {
-        return _qu1.back();
+        return mqO.front();
     }
     
-    /** Returns whether the stack is empty. */
     bool empty() {
-        return _qu1.empty();
+        return mqO.empty();
     }
 
 private:
-    queue<int> _qu1;
-    queue<int> _qu2;
+    queue<int> mqT;
+    queue<int> mqO;    
 };
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */

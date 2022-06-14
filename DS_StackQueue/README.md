@@ -124,45 +124,41 @@ peek()的实现，直接复用了pop()。
 ```c++
 class MyQueue {
 public:
-    /** Initialize your data structure here. */
     MyQueue() {
 
     }
     
-    /** Push element x to the back of queue. */
     void push(int x) {
-        stIn.push(x);
-    }
-    
-    /** Removes the element from in front of queue and returns that element. */
-    int pop() {
-        if (stOut.empty()) {            //如果为空，则把栈in里的数据全部加入栈out中
-            while (!stIn.empty()) {
-                stOut.push(stIn.top());
-                stIn.pop();
-            }
+        mStT = stack<int>();
+        while (mStO.size()) {                   // 把 mStO 里的内容翻转到 mStT 中
+            int num = mStO.top(); mStO.pop();
+            mStT.push(num);
         }
+        
+        mStO.push(x);                           // x 入栈底
 
-        int result = stOut.top();
-        stOut.pop();
-        return result;
+        while (mStT.size()) {                   // 再翻转回来
+            int num = mStT.top(); mStT.pop();
+            mStO.push(num);
+        }
     }
     
-    /** Get the front element. */
+    int pop() {
+        int num = mStO.top(); mStO.pop();
+        return num;
+    }
+    
     int peek() {
-        int res = this->pop();
-        stOut.push(res);    //再加回去
-        return res;
+        return mStO.top();
     }
     
-    /** Returns whether the queue is empty. */
     bool empty() {
-        return stIn.empty() && stOut.empty() ? true : false;
+        return mStO.empty();
     }
 
-private:
-    stack<int> stIn;
-    stack<int> stOut;    
+private:    
+    stack<int> mStO;
+    stack<int> mStT;     
 };
 ```
 
@@ -172,53 +168,51 @@ private:
 
 **「用两个队列que1和que2实现栈的功能，que2其实完全就是一个备份的作用」**
 
-重点在pop，备份back前所有的元素，然后将back pop出去，然后恢复备份
+重点在push，备份push前所有的元素，然后加入队首，再把备份入队
 
 ```c++
 class MyStack {
 public:
-    /** Initialize your data structure here. */
     MyStack() {
 
     }
     
-    /** Push element x onto stack. */
     void push(int x) {
-        _qu1.push(x);
-    }
-    
-    /** Removes the element on top of the stack and returns that element. */
-    int pop() {
-        int res = _qu1.back();
-        int size = _qu1.size(); 
-        while ( size - 1 != 0 ) { //要留最后一个元素去除
-            _qu2.push(_qu1.front());
-            _qu1.pop();
-            size--;
+        mqT = mqO;
+        mqO = queue<int>();     // 置空
+        mqO.push(x);            // 把x加入队首
+        while (mqT.size()) {    // 把原来的结点，再加进去
+            int num = mqT.front(); mqT.pop();
+            mqO.push(num);
         }
-		
-        _qu1.pop(); //去除最后一个元素
-        _qu1 = _qu2;
+    }
+    /*只用一个队列*/
+    void push2(int x) { 
+        int size = mqO.size();
 
-        while (!_qu2.empty()) {
-            _qu2.pop();
+        mqO.push(x);
+        for (int i = 0; i < size; ++i) {
+            mqO.push(mqO.front()); mqO.pop();
         }
-        return res;
+        return;
     }
     
-    /** Get the top element. */
+    int pop() {
+        int num = mqO.front(); mqO.pop();
+        return num;
+    }
+    
     int top() {
-        return _qu1.back();
+        return mqO.front();
     }
     
-    /** Returns whether the stack is empty. */
     bool empty() {
-        return _qu1.empty();
+        return mqO.empty();
     }
 
 private:
-    queue<int> _qu1;
-    queue<int> _qu2;
+    queue<int> mqT;
+    queue<int> mqO;    
 };
 ```
 

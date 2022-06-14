@@ -484,7 +484,7 @@ static const auto io_sync_off = []()
 |[404. Sum of Left Leaves](DS_Tree/404+sumOfLeftLeaves.cpp):(   |后序  |R|
 |[513. Find Bottom Left Tree Value](DS_Tree/513+findBottomLeftValue_Queue_BFS.cpp)*:(   |回溯  |R Q BFS|
 |[112. Path Sum](DS_Tree/112+hasPathSum.cpp):(   | 回溯 |R|
-|2+[113. Path Sum II](DS_Tree/113+pathSum.cpp)   | 回溯|R |
+|2*[113. Path Sum II](DS_Tree/113+pathSum.cpp)   | 回溯|R |
 |[617. Merge Two Binary Trees](DS_Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
 |[700. Search in a Binary Search Tree](DS_Tree/700+searchBST.cpp)   |  |R|
 |[98. Validate Binary Search Tree](DS_Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
@@ -517,7 +517,7 @@ static const auto io_sync_off = []()
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[2210. Count Hills and Valleys in an Array](/DS_Array/2210+Count%20Hills%20and%20Valleys%20in%20an%20Array.cpp) | | 去重+与前后元素差值相乘大于0|
-| | | |
+|[498. Diagonal Traverse](/DS_Array/498+Diagonal%20Traverse.cpp) | 找规律 | 注意跳过非法点 |
 | | | |
 | | | |
 
@@ -529,11 +529,11 @@ static const auto io_sync_off = []()
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|2+[203. Remove Linked List Elements](DS_Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
-|2+[707. Design Linked List](DS_Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置，注意几个输入index的判断|
-|2+[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
-|2+[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
-|💛[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
+|2*[203. Remove Linked List Elements](DS_Linked_list/203+removeElements.cpp)|链表删除节点|虚拟头结点|
+|2*[707. Design Linked List](DS_Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置，注意几个输入index的判断|
+|2*[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
+|2*[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
+|💛[142. Linked List Cycle II](DS_Linked_list/142*detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
 |3+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意不要加while套一层循环，注意merge之后要return |
 |[234. Palindrome Linked List](DS_Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 |[剑指 Offer 18. 删除链表的节点](/DS_Linked_list/Offer%2018.%20删除链表的节点.cpp) | |记录前驱节点 |
@@ -553,8 +553,8 @@ static const auto io_sync_off = []()
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[232. Implement Queue using Stacks](DS_StackQueue/232+MyQueue.cpp) |栈实现队列 |栈不是双向，因此需要两个<br>pop()和peek()只差一步 |
-|[225. Implement Stack using Queues](DS_StackQueue/225+MyStack.cpp) |队列实现栈 | 重点在`pop()` |
+|2*[232. Implement Queue using Stacks](DS_StackQueue/232+MyQueue.cpp) |栈实现队列 |栈不是双向，因此需要两个<br>pop()和peek()只差一步 |
+|2*[225. Implement Stack using Queues](DS_StackQueue/225+MyStack.cpp) |队列实现栈 | 重点在`push()`，可以边添加边pop |
 |[20. Valid Parentheses](DS_StackQueue/20+isValid.cpp) | | 注意左括号和右括号的区分考虑 |
 |[150. Evaluate Reverse Polish Notation](DS_StackQueue/150+evalRPN.cpp) | 逆波兰式| 栈|
 |💛[239. Sliding Window Maximum](DS_StackQueue/239+maxSlidingWindow.cpp) | 滑动窗空| 建立一个对象queue |
@@ -744,7 +744,7 @@ static const auto io_sync_off = []()
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[75. Sort Colors](/Alog_Sort/75+Sort%20Colors.cpp) | 快排 | shuffle |
-|2+[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
+|2*[215. Kth Largest Element in an Array](/Alog_Sort/215+Kth%20Largest%20Element%20in%20an%20Array.cpp) | 快排| 传入的hi是size-1<br> swap置换，两次循环有一个要有=号|
 |3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array.cpp) | 快排 | 必须shuffle<br>partition中i < hi && nums[i] <= pivot  注意是j-- |
 |3+[912. Sort an Array](/Alog_Sort/912+Sort%20an%20Array_MergeSort.cpp) | 归并排序 | 需要单独开tmp数组记录<br>注意merge最后nums[lo+i]而不是nums[i] |
 |💗[315. Count of Smaller Numbers After Self](/Alog_Sort/315+Count%20of%20Smaller%20Numbers%20After%20Self.cpp) | |结构体+cnt数组辅助记录右侧小值<br>tmp结构体数组记录，要整体转换，不要只转换val，忽略id |

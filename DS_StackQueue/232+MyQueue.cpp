@@ -1,44 +1,40 @@
 class MyQueue {
 public:
-    /** Initialize your data structure here. */
     MyQueue() {
 
     }
     
-    /** Push element x to the back of queue. */
     void push(int x) {
-        stIn.push(x);
-    }
-    
-    /** Removes the element from in front of queue and returns that element. */
-    int pop() {
-        if (stOut.empty()) {            //如果为空，则把栈in里的数据全部加入栈out中
-            while (!stIn.empty()) {
-                stOut.push(stIn.top());
-                stIn.pop();
-            }
+        mStT = stack<int>();
+        while (mStO.size()) {                   // 把 mStO 里的内容翻转到 mStT 中
+            int num = mStO.top(); mStO.pop();
+            mStT.push(num);
         }
+        
+        mStO.push(x);                           // x 入栈底
 
-        int result = stOut.top();
-        stOut.pop();
-        return result;
+        while (mStT.size()) {                   // 再翻转回来
+            int num = mStT.top(); mStT.pop();
+            mStO.push(num);
+        }
     }
     
-    /** Get the front element. */
+    int pop() {
+        int num = mStO.top(); mStO.pop();
+        return num;
+    }
+    
     int peek() {
-        int res = this->pop();
-        stOut.push(res);    //再加回去
-        return res;
+        return mStO.top();
     }
     
-    /** Returns whether the queue is empty. */
     bool empty() {
-        return stIn.empty() && stOut.empty() ? true : false;
+        return mStO.empty();
     }
 
-private:
-    stack<int> stIn;
-    stack<int> stOut;    
+private:    
+    stack<int> mStO;
+    stack<int> mStT;     
 };
 
 /**
