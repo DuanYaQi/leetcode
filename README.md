@@ -486,20 +486,24 @@ static const auto io_sync_off = []()
 |[112. Path Sum](DS_Tree/112+hasPathSum.cpp):(   | 回溯 |R|
 |2*[113. Path Sum II](DS_Tree/113+pathSum.cpp)   | 回溯|R |
 |[617. Merge Two Binary Trees](DS_Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
-|[700. Search in a Binary Search Tree](DS_Tree/700+searchBST.cpp)   |  |R|
-|[98. Validate Binary Search Tree](DS_Tree/98+isValidBST.cpp):(   |  |R 利用平衡二叉树性质|
-|[530. Minimum Absolute Difference in BST](DS_Tree/530+getMinimumDifference.cpp)*   |  |R|
-|[501. Find Mode in Binary Search Tree](DS_Tree/501+findMode.cpp)*   | `vector<pair<int, int>>` |R Template sort  |
+| | | |
+|[700. Search in a Binary Search Tree](DS_Tree/700+searchBST.cpp)   | BST |R|
+|[98. Validate Binary Search Tree](DS_Tree/98+isValidBST.cpp):(   | BST |R 利用二叉搜索树性质|
+|2*[530. Minimum Absolute Difference in BST](DS_Tree/530+getMinimumDifference.cpp)*   | BST |R|
+|[501. Find Mode in Binary Search Tree](DS_Tree/501+findMode.cpp)*   | `vector<pair<int, int>>` BST |R Template sort  |
 |💛[236. Lowest Common Ancestor of a Binary Tree](DS_Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
 |[450. Delete Node in a BST](DS_Tree/450+deleteNode.cpp)   |BST右子树最左侧的节点的值与其兄弟左子树的值最接近  |R|
-|💛[669. Trim a Binary Search Tree](DS_Tree/669+trimBST.cpp):(   |  |R|
-|[108. Convert Sorted Array to Binary Search Tree](DS_Tree/108+sortedArrayToBST_B_Rec.cpp)   | 二分 分治 |R|
-|[538. Convert BST to Greater Tree](DS_Tree/538+convertBST_Rec.cpp)   | 反中序 ||
+|💛[669. Trim a Binary Search Tree](DS_Tree/669+trimBST.cpp):(   | BST |R|
+|[108. Convert Sorted Array to Binary Search Tree](DS_Tree/108+sortedArrayToBST_B_Rec.cpp)   | BST 二分 分治 |R|
+|[538. Convert BST to Greater Tree](DS_Tree/538+convertBST_Rec.cpp)   | BST反中序 ||
+|[230. Kth Smallest Element in a BST](/DS_Tree/230+Kth%20Smallest%20Element%20in%20a%20BST.cpp) | BST | k-th|
 |[100. Same Tree](DS_Tree/100+isSameTree.cpp)   |  |递归|
 |[572. Subtree of Another Tree](DS_Tree/572+Subtree%20of%20Another%20Tree.cpp) |注意continue位置 | |
 | | | |
-|💗[449. Serialize and Deserialize BST](/DS_Tree/449.%20Serialize%20and%20Deserialize%20BST.cpp) | 树转数组 + 序列化 + 分割字符串 + 字符数字互相转换| |
+|💗2*[449. Serialize and Deserialize BST](/DS_Tree/449.%20Serialize%20and%20Deserialize%20BST.cpp) | 树转数组 + 序列化 + 分割字符串 + 字符数字互相转换| |
 |[剑指 Offer II 051. 节点之和最大的路径](/DS_Tree/剑指%20Offer%20II%20051.%20节点之和最大的路径.cpp) | | 注意函数返回的是最大贡献值，答案是在递归的时候不断更新的|
+| | | |
+| | | |
 | | | |
 |[面试题 04.06. 后继者](/DS_Tree/面试题%2004.06.%20后继者.cpp) | |注意 BST, 可能需要考虑某个节点是否存在子树 |
 | | | |
@@ -733,6 +737,10 @@ static const auto io_sync_off = []()
 |[14. Longest Common Prefix](/Alog_BinarySearch/14+Longest%20Common%20Prefix.cpp) | | 从长度最小的字符串进行判断，二分最小的字符串 |
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch.cpp) | |前缀和+二分 |
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum_pre_binSearch_best.cpp) | 用lower_bound()代替二分| 注意要计算长度时 需要强制类型转换 static_cast<int>|
+| | | |
+|[532. K-diff Pairs in an Array](/Alog_BinarySearch/532+K-diff%20Pairs%20in%20an%20Array.cpp) | | 注意 k=0 的情况的考虑|
+| | | |
+| | | |
 | | | |
 |[面试题 17.11. 单词距离](/Alog_TwoPointer/Offer%2017.11.%20单词距离.cpp) | | 二分负优化（开拓思维即可）|
 | | | |
@@ -1047,7 +1055,7 @@ DP
 | 题目                                                         | 知识点 | 技巧 |
 | :----------------------------------------------------------- | :----: | :--: |
 | 💗[691. Stickers to Spell Word](/Alog_D_BFS/691+Stickers%20to%20Spell%20Word.cpp) |  BFS+位图  |   把字符串各字符是否满足用01表示   |
-|   [287]                                                           |        |      |
+|   [287. Find the Duplicate Number]                                                           |        |      |
 |   [6065. Largest Combination With Bitwise AND Greater Than Zero](/Alog_BitMap/6065+Largest%20Combination%20With%20Bitwise%20AND%20Greater%20Than%20Zero.cpp)                                                           |        |      |
 |                                                              |        |      |
 |                                                              |        |      |

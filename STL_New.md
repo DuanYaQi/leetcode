@@ -2202,8 +2202,8 @@ void QuickSortBySTLnth_element(Iterator first, Iterator last)
 
 ### *二分操作
 
-- `lower_bound`
-- `upper_bound`
+- `lower_bound` 第一个大于或等于num的数字
+- `upper_bound` 第一个大于num的数字
 - `binary_search`
 - `equal_range`
 

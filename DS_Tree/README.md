@@ -1279,9 +1279,7 @@ TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
 
 # 二叉搜索树的属性
 
-## 17. 二叉搜索树中的搜索
-
-**700. 二叉搜索树中的搜索**
+## 700. 二叉搜索树中的搜索
 
 ```c++
 TreeNode* searchBST(TreeNode* root, int val) {
@@ -1299,9 +1297,7 @@ TreeNode* searchBST(TreeNode* root, int val) {
 
 
 
-## 18. 验证二叉搜索树
-
-**98. 验证二叉搜索树**
+## 98. 验证二叉搜索树
 
 ```c++
 bool isValidBST(TreeNode* root) {
@@ -1327,9 +1323,9 @@ void traversal(TreeNode* root) {
 
 
 
-## 19. 二叉搜索树的最小绝对差
+---
 
-**530. 二叉搜索树的最小绝对差**
+## 530. 二叉搜索树的最小绝对差
 
 ```c++
 public:
@@ -1357,9 +1353,11 @@ private:
 
 
 
-## 20. 二叉搜索树中的众数
 
-**501. 二叉搜索树中的众数**
+
+---
+
+## 501. 二叉搜索树中的众数
 
 ```c++
 public:
@@ -1396,6 +1394,8 @@ private:
 
 
 
+----
+
 # 二叉树公共祖先问题
 
 ## 236. 二叉树的最近公共祖先LCA
@@ -1403,8 +1403,6 @@ private:
 **祖先**的定义： 若节点 p 在节点 root 的左（右）子树中，或 p = root ，则称 root 是 p 的祖先。
 
 **最近公共祖先**的定义： 设节点 root 为节点 p, q 的某公共祖先，若其左子节点 root.left 和右子节点 root.right 都不是 p,q 的公共祖先，则称 root 是 “最近的公共祖先” 。
-
-
 
 
 
@@ -1731,6 +1729,37 @@ TreeNode* deserialize(string data) {
     return root;
 }
 ```
+
+
+
+
+
+
+
+-----
+
+## 230. 二叉搜索树中第K小的元素
+
+```c++
+void dfs(TreeNode* root, vector<int> &res) {
+    if (root == nullptr) return;
+
+    dfs(root->left, res);
+    res.push_back(root->val);
+    dfs(root->right, res);
+}
+
+int kthSmallest(TreeNode* root, int k) {
+    vector<int> res;
+    dfs(root, res);
+
+    return res[k-1];
+}
+```
+
+
+
+
 
 
 

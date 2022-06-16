@@ -808,6 +808,12 @@ int minSubArrayLen(int target, vector<int>& nums) {
 
 
 
+
+
+
+
+
+
 ---
 
 ## 面试题 17.11. 单词距离
@@ -866,7 +872,105 @@ int findClosest(vector<string>& words, string word1, string word2) {
 }
 ```
 
-但事实是反向
+但事实是反向优化
+
+
+
+
+
+---
+
+## 719. 找出第 K 小的数对距离
+
+先将数组 nums 从小到大进行排序。因为第 k 小的数对距离必然在区间 [0, max (nums) - min(nums)] 内，令 left=0，right=max(nums)−min(nums)，我们在区间 [left,right] 上进行二分。
+
+对于当前搜索的距离 mid，计算所有距离小于等于 mid 的数对数目 cnt，如果 $\textit{cnt} \ge k$，那么 right = mid - 1，否则 left=mid+1。当 left>right 时，终止搜索，那么第 k 小的数对距离为 left。
+
+给定距离 mid，计算所有距离小于等于 mid 的数对数目 cnt 可以使用二分查找：枚举所有数对的右端点 j，二分查找大于等于 nums[j]−mid 的最小值的下标 i，那么右端点为 j 且距离小于等于 mid 的数对数目为 j−i，计算这些数目之和。
+
+
+
+```c++
+class Solution {
+public:
+    int getCnt(vector<int>& nums, int mid) {
+        int cnt = 0;
+
+        for (int j = 0; j < nums.size(); j++) {  // 枚举所有数对的右端点 j
+            int i = lower_bound(nums.begin(), nums.begin() + j, nums[j] - mid) - nums.begin(); // 查找大于等于 nums[j]−mid 的最小值的下标 i
+            cnt += j - i; // 那么右端点为 j 且距离小于等于 mid 的数对数目为 j−i
+        }
+        return cnt;
+    }
+
+    int smallestDistancePair(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int maxn = *max_element(nums.begin(), nums.end());
+        int minn = *min_element(nums.begin(), nums.end());
+
+        int left = 0, right = maxn - minn;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int cnt = getCnt(nums, mid);
+
+            if (cnt >= k) {
+                right = mid - 1;
+            } else if (cnt < k) {
+                left = mid + 1;
+            }
+            
+        }
+
+
+        return left;
+    }
+};
+```
+
+
+
+
+
+## 532. 数组中的 k-diff 数对
+
+```c++
+int findPairs(vector<int>& nums, int k) {
+    /*负数映射到正数区间*/
+    int minn = *min_element(nums.begin(), nums.end());
+
+    if (minn < 0) {
+        for (auto &n : nums) {
+            n += abs(minn);
+        }
+    }
+
+    sort(nums.begin(), nums.end());
+	/* k == 0 用 hashmap */
+    if (k == 0) {
+        unordered_map<int, int> ump;
+        for (int i = 1; i < nums.size(); ++i) {
+            if (ump.count(nums[i]) == 0) {
+                if (nums[i] == nums[i-1]) ump[nums[i]] = 1;
+            }
+        } 
+        return ump.size();
+    } 
+	
+    /*k != 0 用二分找*/
+    nums.erase(unique(nums.begin(), nums.end()), nums.end());
+    int cnt = 0;
+    for (int j = 1; j < nums.size(); ++j) {
+        auto find = lower_bound(nums.begin(), nums.end(), nums[j] - k);
+        if (find != nums.end()) {
+            int idx = find - nums.begin();
+            if (nums[idx] == nums[j] - k) cnt++;
+        }
+    }
+
+    return cnt;
+}
+```
 
 
 
