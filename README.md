@@ -546,7 +546,7 @@ static const auto io_sync_off = []()
 |[160. Intersection of Two Linked Lists](/DS_Linked_list/160+Intersection%20of%20Two%20Linked%20Lists.cpp) | | 数学公式推导|
 |[19. Remove Nth Node From End of List](/DS_Linked_list/19+Remove%20Nth%20Node%20From%20End%20of%20List.cpp) | | 快慢指针|
 | | | |
-| | | |
+|[剑指 Offer II 029. 排序的循环链表](/DS_Linked_list/Offer%20II%20029.%20排序的循环链表.cpp) |  | 指针 |
 | | | |
 | | | |
 
