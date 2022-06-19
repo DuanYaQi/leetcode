@@ -23,7 +23,7 @@ public:
     }
 
     static bool cmp(const pair<int, int> &p1, const pair<int, int> &p2) {
-        return p1.second > p2.second ? true : false;
+        return p1.second > p2.second ? true : false;    //注意这里>=不行 改成 > 就可以
     }
 
     vector<int> findFrequentTreeSum(TreeNode* root) {
