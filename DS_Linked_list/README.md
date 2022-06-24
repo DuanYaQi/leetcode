@@ -388,6 +388,8 @@ slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x 
 
 
 
+----
+
 # LC
 
 使用两个指针变量，刚开始都位于链表的第 1 个结点，一个永远一次只走 1 步，一个永远一次只走 2 步，一个在前，一个在后，同时走。这样当快指针走完的时候，慢指针就来到了链表的中间位置。
@@ -436,3 +438,82 @@ slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x 
 138
 
 148
+
+
+
+
+
+---
+
+## 剑指 Offer II 029. 排序的循环链表
+
+```c++
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+    }
+
+    Node(int _val, Node* _next) {
+        val = _val;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* insert(Node* head, int insertVal) {
+        Node* insertNode = new Node(insertVal);
+
+        if (head == nullptr) {          // 针对空列表
+            head = insertNode;
+            head->next = head;
+            return head;
+        }
+        
+        Node* now = head->next;
+        Node* pre = head;        
+        
+        while (now != head) {
+            // 升序的位置，即 4 - 6 插入 5
+            if (pre->val <= insertVal && insertVal <= now->val) {
+                pre->next = insertNode;
+                insertNode->next = now;
+                //cout << "flag2" << endl;
+                return head;
+            }
+            
+            // 降序的位置
+            if (now->val < pre->val) {
+                //cout << "flag" << endl;
+                if (insertVal > pre->val || insertVal < now->val) {
+                    pre->next = insertNode;
+                    insertNode->next = now;
+                    //cout << "flag1" << endl;
+                    return head;
+                }
+            }
+
+            
+            pre = now;
+            now = now->next;
+        }
+
+        // 没有在循环中处理成功，说明需要单独插入尾部
+        pre->next = insertNode;
+        insertNode->next = now;
+        
+        return head;
+    }
+};
+```
+
