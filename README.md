@@ -471,7 +471,7 @@ static const auto io_sync_off = []()
 |[199. Binary Tree Right Side View](DS_Tree/199+rightSideView.cpp)   | 层序 ||
 |[637. Average of Levels in Binary Tree](DS_Tree/637+averageOfLevels.cpp)   |层序  |强制类型转换|
 |💛[429. N-ary Tree Level Order Traversal](DS_Tree/429+levelOrder.cpp)   |层序 N叉树 |换汤不换药,为什么可以用[i]?|
-|[515. Find Largest Value in Each Tree Row](DS_Tree/515+largestValues.cpp)   |层序  | INT_MIN|
+|2*[515. Find Largest Value in Each Tree Row](DS_Tree/515+largestValues.cpp)   |层序  | INT_MIN|
 |[116. Populating Next Right Pointers in Each Node](DS_Tree/116+connect_Queue.cpp)   | 层序 |R Q |
 |[117. Populating Next Right Pointers in Each Node II](DS_Tree/117+connect.cpp)   | 层序 | 与116一样|
 |[589. N-ary Tree Preorder Traversal](DS_Tree/589+preorder_Rec.cpp)*   | N叉树 | R S|
@@ -794,7 +794,7 @@ static const auto io_sync_off = []()
 |[1089. Duplicate Zeros](/Alog_TwoPointer/1089+Duplicate%20Zeros.cpp) |双指针 | 注意最后元素是0的特判 |
 | | | |
 | | | |
-|[30. 串联所有单词的子串](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
+|[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) 串联所有单词的子串 | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
 | | | |
 | | | |
 | | | |
