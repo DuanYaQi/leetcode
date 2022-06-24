@@ -561,7 +561,7 @@ static const auto io_sync_off = []()
 |2*[225. Implement Stack using Queues](DS_StackQueue/225+MyStack.cpp) |队列实现栈 | 重点在`push()`，可以边添加边pop |
 |[20. Valid Parentheses](DS_StackQueue/20+isValid.cpp) | | 注意左括号和右括号的区分考虑 |
 |[150. Evaluate Reverse Polish Notation](DS_StackQueue/150+evalRPN.cpp) | 逆波兰式| 栈|
-|💛[239. Sliding Window Maximum](DS_StackQueue/239+maxSlidingWindow.cpp) | 滑动窗空| 建立一个对象queue |
+|💛[239. Sliding Window Maximum](DS_StackQueue/239+maxSlidingWindow.cpp) | 滑动窗口| 建立一个对象queue |
 |💛[347. Top K Frequent Elements](DS_StackQueue/347+topKFrequent.cpp) | 堆| 优先队列实现小顶堆|
 |[71. Simplify Path](DS_StackQueue/71+simplifyPath.cpp) |  Unix 风格 绝对路径|栈 |
 | | | |
@@ -788,6 +788,10 @@ static const auto io_sync_off = []()
 |[76. Minimum Window Substring](/Alog_TwoPointer/76+Minimum%20Window%20Substring.cpp) | |注意最后结果是resL而不是left |
 |[438. Find All Anagrams in a String](/Alog_TwoPointer/438+Find%20All%20Anagrams%20in%20a%20String.cpp) | |固定窗口 |
 |[面试题 17.11. 单词距离](/Alog_TwoPointer/Offer%2017.11.%20单词距离.cpp) | |很简单的双指针 |
+|[1089. Duplicate Zeros](/Alog_TwoPointer/1089+Duplicate%20Zeros.cpp) |双指针 | 注意最后元素是0的特判 |
+| | | |
+| | | |
+|[30. 串联所有单词的子串](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
 | | | |
 | | | |
 | | | |
