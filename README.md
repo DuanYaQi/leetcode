@@ -906,7 +906,13 @@ DP
 |[63.Unique Paths II](Alog_DP/63%2BUnique%20Paths%20II.cpp) | |递推 |
 |[343.Integer Break](Alog_DP/343+Integer%20Break.cpp) | | 最大乘积 需要`max`|
 |[96.Unique Binary Search Trees](Alog_DP/96+Unique%20Binary%20Search%20Trees.cpp) | | 左右子树为子空间|
+|[256. Paint House](/Alog_DP/256+Paint%20House.cpp) | |注意不相邻的房子颜色是可以一样的 |
+| || |
 | | | |
+| | | |
+| | | |
+| | | |
+
 
 打家劫舍专题
 |  题目  |知识点|技巧|
