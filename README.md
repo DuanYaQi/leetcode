@@ -987,7 +987,7 @@ DP
 |[547. Number of Provinces](/Alog_D_BFS/547+Number%20of%20Provinces.cpp) | | vis[]数组配合|
 |[399. Evaluate Division](/Alog_D_BFS/399+Evaluate%20Division.cpp) |带权并查集 | 重点是建图的思路 + dfs计算倍率<br> 初始化倍率数组<0，起点倍率为1，一直搜索直到目标倍率>0|
 |[210. Course Schedule II](/Alog_D_BFS/210+Course%20Schedule%20II.cpp) | |DFS好理解,抽象为图<br>注意入度计算方式,否则结果要reverse()<br>注意存入度的区别|
-|[207. Course Schedule](Alog_D_BFS/207+Course%20Schedule.cpp) | |与201相同 |
+|2*[207. Course Schedule](Alog_D_BFS/207+Course%20Schedule.cpp) | |与201相同 |
 |[1462. Course Schedule IV](/Alog_D_BFS/1462+Course%20Schedule%20IV.cpp) | | Floyd算法 |
 | | | |
 |[LCP 52. 二叉搜索树染色](Alog_D_BFS/LCP%2052.%20二叉搜索树染色.cpp) |逆向推理 |注意剪枝 |

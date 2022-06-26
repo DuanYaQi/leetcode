@@ -505,7 +505,7 @@ https://labuladong.gitee.io/algo/2/20/48/
 
 
 
-### dfs
+### bfs
 
 ```c++
 int networkDelayTime(vector<vector<int>>& times, int n, int k) {

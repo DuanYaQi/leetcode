@@ -50,3 +50,88 @@ private:
     // 存储答案    
     vector<int> result;
 };
+
+
+
+// dfs
+class Solution {
+private:
+    vector<vector<int>> edges;
+    vector<int> visited; 
+    bool gValid = true;    
+
+public:
+    void dfs(int u) {
+        visited[u] = 1;
+
+        for (auto &v : edges[u]) {
+            if (visited[v] == 0) {
+                dfs(v);
+                if (!gValid) return;
+            } else if (visited[v] == 1) {
+                gValid = false;
+                return;
+            }
+        }
+        visited[u] = 2;
+    }
+
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        edges.resize(numCourses);
+        visited.resize(numCourses);
+
+        for (auto &p : prerequisites) {
+            edges[p[1]].push_back(p[0]);
+        }
+
+        for (int i = 0; i < numCourses && gValid; ++i) {
+            if (!visited[i]) {
+                dfs(i);
+            }
+        }
+
+        return gValid;
+    }    
+};
+
+
+// dfs2
+class Solution {
+private:
+    vector<vector<int>> edges;
+    vector<int> isVisit; 
+    bool gValid = true;    
+
+public:
+    bool dfs(int u) {
+        if (isVisit[u] == 1) return false;
+        if (isVisit[u] == 2) return true;
+
+        isVisit[u] = 1;
+        for (auto v : edges[u]) {
+            if (!dfs(v)) return false;
+        }
+        isVisit[u] = 2;
+
+        return true;
+    }
+
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        edges.resize(numCourses);
+        isVisit.resize(numCourses);
+
+        for (auto &p : prerequisites) {
+            edges[p[1]].push_back(p[0]);
+        }
+
+        for (int i = 0; i < numCourses; ++i) {
+            if (!dfs(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }    
+};

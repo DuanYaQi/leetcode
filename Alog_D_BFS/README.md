@@ -160,6 +160,124 @@ public:
 
 
 
+---
+
+### DFS
+
+判环
+
+1.借助一个标志列表 `flags`，用于判断每个节点 `i` （课程）的状态：
+
+- 未被 DFS 访问：`i == 0`
+- 已被其他节点启动的 DFS 访问：`i == 2`
+- 已被当前节点启动的 DFS 访问：`i == 1`
+
+2.对 `numCourse` 个节点依次执行 DFS，判断每个节点起步 DFS 是否存在环，若存在环直接返回 False。DFS 流程：
+
+- 终止条件：
+  - 当 `flag[i] == 2`，说明当前访问节点已被其他节点启动的 DFS 访问，无需再重复搜索，直接返回 True
+  - 当 `flag[i] == 1`，说明在本轮 DFS 搜索中节点 `i` 被第 2 次访问，即**课程安排图有环**，直接返回 False
+
+- 将当前访问节点 `i` 对应 `flag[i]` 置 1，即标记其本轮 DFS 访问过
+- 递归访问当前节点 `i` 的所有邻接节点 `j`，当发现环直接返回 False
+- 当前节点所有邻接节点已被遍历，并没有发现环，将当前节点 `flag` 置为 -1 并返回 True
+
+3.若整个图 DFS 结束并未发现环，返回 True
+
+
+
+```c++
+class Solution {
+private:
+    vector<vector<int>> edges;
+    vector<int> visited; 
+    bool gValid = true;    
+
+public:
+    void dfs(int u) {
+        visited[u] = 1;
+
+        for (auto &v : edges[u]) {
+            if (visited[v] == 0) {
+                dfs(v);
+                if (!gValid) return;
+            } else if (visited[v] == 1) {
+                gValid = false;
+                return;
+            }
+        }
+        visited[u] = 2;
+    }
+
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        edges.resize(numCourses);
+        visited.resize(numCourses);
+
+        for (auto &p : prerequisites) {
+            edges[p[1]].push_back(p[0]);
+        }
+
+        for (int i = 0; i < numCourses && gValid; ++i) {
+            if (!visited[i]) {
+                dfs(i);
+            }
+        }
+
+        return gValid;
+    }    
+};
+```
+
+
+
+
+
+```c++
+class Solution {
+private:
+    vector<vector<int>> edges;
+    vector<int> isVisit; 
+    bool gValid = true;    
+
+public:
+    bool dfs(int u) {
+        if (isVisit[u] == 1) return false;
+        if (isVisit[u] == 2) return true;
+
+        isVisit[u] = 1;
+        for (auto v : edges[u]) {
+            if (!dfs(v)) return false;
+        }
+        isVisit[u] = 2;
+
+        return true;
+    }
+
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        edges.resize(numCourses);
+        isVisit.resize(numCourses);
+
+        for (auto &p : prerequisites) {
+            edges[p[1]].push_back(p[0]);
+        }
+
+        for (int i = 0; i < numCourses; ++i) {
+            if (!dfs(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }    
+};
+```
+
+
+
+
+
 
 
 
