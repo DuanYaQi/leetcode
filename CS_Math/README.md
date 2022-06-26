@@ -991,27 +991,258 @@ ll co_prime(ll n) {
 
 ---
 
-## 水塘采样
+## 水塘/蓄水池采样
 
 蓄水池抽样是一系列的随机算法，其目的在于从包含 n 个项目的集合 S 中选取 k 个样本，其中 n 为一很大或未知的数量，尤其适用于不能把所有 n 个项目都存放到内存的情况。
 
 
 
+> 如何从一个未知行数的文本文件中随机选择一行？
+>
+> 隐藏含义：
+>
+> 1.只能顺序读取每一行
+>
+> 2.不能将整个文件加载到内存
 
+
+
+![image-20220626203628578](assets/image-20220626203628578.png)
+
+
+
+其中 
+
+$r = (0, 1)$ 之间的随机数
+
+if $r < \frac{1}{i}$
+
+转换代码为 `rand(0, 1) < 1/i `，本质也等同于 `rand() % i == 0`
+
+
+
+
+
+选不选 i 与 i 之前无关，与 i 后面 i+1 到 n 所影响。因为 i+1到 n 都不被选才会选 i。
+
+
+
+
+
+
+
+---
 
 ### 382. 链表随机节点
 
+从链表头开始，遍历整个链表，对遍历到的第 i 个节点，随机选择区间 $[0, i)$ 内的一个整数，如果其等于 0，则将答案置为该节点值，否则答案不变。
+
+该算法会保证每个节点的值成为最后被返回的值的概率均为 $\frac{1}{n}$，证明如下：
+$$
+\begin{equation}
+
+
+\begin{aligned}
+& P( 第  i  个节点的值成为最后被返回的值)
+ \\=& P(  第  i  次随机选择的值  =0) \times
+ 	\\ &  P(  第  i+1  次随机选择的值  \neq 0) \times 	  \\ & \cdots \times P(  第  n  次随机选择的值  \neq 0)
+ \\=& \frac{1}{i} \times\left(1-\frac{1}{i+1}\right) \times \cdots \times\left(1-\frac{1}{n}\right) 
+ \\=& \frac{1}{i} \times \frac{i}{i+1} \times \cdots \times \frac{n-1}{n}  
+ \\=& \frac{1}{n} 
+\end{aligned}
+\end{equation}
+$$
+
+```c++
+class Solution {
+private:
+    ListNode* mHead;
+
+public:
+    Solution(ListNode* head) {
+        this->mHead = head;
+    }
+    
+    int getRandom() {
+        int i = 1, ans = 0;
+        for (auto node = this->mHead; node != nullptr; node = node->next) {
+            if (rand() % i == 0) {   // 1/i 的概率选中（替换为答案）   等同于 rand(0, 1) < 1/i 
+                ans = node->val;
+            }
+            ++i;
+        }
+        return ans;
+    }   
+};
+```
+
+
+
+- 时间复杂度：初始化为 $O(1)$，随机选择为 $O(n)$，其中 $n$ 是链表的元素个数。
+
+- 空间复杂度：$O(1)$。我们只需要常数的空间保存若干变量。
 
 
 
 
 
+
+
+---
 
 ### 398. 随机数索引
 
+如果数组以文件形式存储（读者可佳摄构造函数传入的是个文件路径），且文件大小远超内存大小，我们是无法通过读文件的方式，将所有下标保存在内存中。
+
+我们可以设计：
+
+遍历 nums，当我们第 i 次遇到值为 target 的元素时，随机选择区间 $[0,i)$ 内的一个整数，如果其等于 0，则将返回值置为该元素的下标，否则返回值不变。
+
+设 nums 中有 n 个值为 target 的元素，该算法会保证这 k 个元素的下标成为最终返回值的概率均为 $\frac{1}{n}$，证明如下：
+$$
+\begin{equation}
+
+
+\begin{aligned}
+& P( 第  i  个节点的值成为最后被返回的值)
+ \\=& P(  第  i  次随机选择的值  =0) \times
+ 	\\ &  P(  第  i+1  次随机选择的值  \neq 0) \times 	  \\ & \cdots \times P(  第  n  次随机选择的值  \neq 0)
+ \\=& \frac{1}{i} \times\left(1-\frac{1}{i+1}\right) \times \cdots \times\left(1-\frac{1}{n}\right) 
+ \\=& \frac{1}{i} \times \frac{i}{i+1} \times \cdots \times \frac{n-1}{n}  
+ \\=& \frac{1}{n} 
+\end{aligned}
+\end{equation}
+$$
+
+
+```c++
+class Solution {
+private:
+    vector<int> mNums;
+
+public:
+    Solution(vector<int>& nums) : mNums(nums) {
+
+    }
+    
+    int pick(int target) {
+        int ans = 0, cnt = 0;
+        for (int i = 0; i < mNums.size(); ++i) {
+            if (mNums[i] == target) {
+                cnt++;          // 第cnt次见到target
+                if (rand() % cnt == 0) {
+                    ans = i;
+                }
+            }
+        }
+
+        return ans;
+    }
+};
+```
 
 
 
+- 时间复杂度：初始化为 $O(1)$，$\text{pick}$ 为 $O(n)$，其中 $n$ 是 $\textit{nums}$ 的长度。
+
+- 空间复杂度：$O(1)$。我们只需要常数的空间保存若干变量。
+
+
+
+
+
+优化后只保存迭代器指针，不需要重复拷贝数组
+
+```c++
+class Solution {
+private:
+    vector<int>::iterator mBegin;
+    vector<int>::iterator mEnd;
+
+public:
+    Solution(vector<int>& nums) {
+        mBegin = nums.begin();
+        mEnd = nums.end();
+    }
+    
+    int pick(int target) {
+        int cnt = 0;
+        int index = -1;
+        for (auto iter = mBegin; iter != mEnd; iter++) {
+            if (*iter == target) {
+                cnt++;
+                if (rand() % cnt == 0) {	// 1/i prob
+                    index = iter - mBegin; 
+                }
+            }
+        }
+
+        return index;
+    }
+
+};
+```
+
+
+
+---
+
+### 710. 黑名单中的随机数
+
+考察一个特殊的例子：所有黑名单数全部在区间 [n-m,n) 范围内。此时我们可以直接在 [0,n-m) 范围内取随机整数。
+
+这给我们一个启示，对于在 [0,n-m) 范围内的黑名单数，我们可以将其映射到 [n-m,n) 范围内的非黑名单数（白名单数）上。每次 pick() 时，仍然可以在 [0,n−m) 范围内取随机整数（设其为 x），那么：
+
+如果 x 不在黑名单中，则直接返回 x；
+如果 x 在黑名单中，则返回 x 映射到 [n-m,n) 范围内的白名单数。
+
+我们可以在初始化时，构建一个从 [0,n-m) 范围内的黑名单数到 [n-m,n) 的白名单数的映射：
+
+将 [n-m,n) 范围内的黑名单数存入一个哈希集合 black；
+初始化白名单数 w=n−m；
+对于每个 [0,n-m) 范围内的黑名单数 b，首先不断增加 w 直至其不在黑名单中，然后将 b 映射到 w 上，并将 w 增加一。
+
+```c++
+class Solution {
+private:
+    unordered_map<int, int> mB2W;
+    int mBound;
+
+public:
+    Solution(int n, vector<int>& blacklist) {
+        unordered_set<int> set;
+        mBound = n - blacklist.size();
+        
+        /*把后半部分的黑名单加进去*/
+        for (auto &n : blacklist) {
+            if (n >= mBound) {
+                set.insert(n);
+            }   
+        }
+
+        /*把前半部分的黑名单加进去，并且记录与后半部分白名单的一一映射*/
+        int idx = mBound;
+        for (auto &n : blacklist) {
+            if (n < mBound) {
+                while (set.count(idx)) {
+                    idx++;
+                }
+                mB2W[n] = idx++;
+            }
+        }
+
+
+    }
+    
+    int pick() {
+        int r = rand() % mBound;    //取前半部分的数字 
+        
+        // 如果这个数在mB2W里，说明它在黑名单，找到跟它映射的白名单的数字
+
+        return mB2W.count(r) ? mB2W[r] : r;
+    }
+};
+```
 
 
 

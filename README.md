@@ -1017,6 +1017,13 @@ DP
 |[48. Rotate Image](CS_Math/48+Rotate%20Image.cpp) | |旋转公式 |
 |[1979. Find Greatest Common Divisor of Array](/CS_Math/1979+findGCD.cpp) | 最大公约数|辗转相除，判0 |
 |[50. Pow(x, n)](/CS_Math/50+Pow.cpp) | 快速幂|  |
+|[6076. Minimum Lines to Represent a Line Chart](/CS_Math/6076+Minimum%20Lines%20to%20Represent%20a%20Line%20Chart.cpp) |分数比较 |long double/最简通分/转成两个乘法/转成字符串再比较/ |
+|[223. Rectangle Area](/CS_Math/223+Rectangle%20Area.cpp) | | 注意要判断重复部分的高|
+|[382. Linked List Random Node](/CS_Math/382+Linked%20List%20Random%20Node.cpp) |蓄水池采样 |注意要全部遍历一遍，因为是累乘 |
+|[398. Random Pick Index](CS_Math/398+Random%20Pick%20Index.cpp) |蓄水池采样 | |
+|[710. Random Pick with Blacklist](/CS_Math/710+Random%20Pick%20with%20Blacklist.cpp) | 蓄水池采样+黑白名单映射 | |
+| | | |
+| | | |
 |[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | | 注意( |
 |[227. Basic Calculator II](/CS_Math/227+Basic%20Calculator%20II.cpp) | | 注意( |
 |[16.26. Calculator LCCI](/CS_Math/16.26+Calculator%20LCCI.cpp) | | 计算器 |
@@ -1026,7 +1033,6 @@ DP
 |[136. Single Number](CS_Math/136+Single%20Number.cpp) | | 任何数和 0 做异或运算，结果仍然是原来的数 <br>任何数和其自身做异或运算，结果是 0<br>异或运算满足交换律和结合律|
 |[6062. Design an ATM Machine](/CS_Math/6062+Design%20an%20ATM%20Machine.cpp) |系统设计 | |
 | | | |
-|[6076. Minimum Lines to Represent a Line Chart](/CS_Math/6076+Minimum%20Lines%20to%20Represent%20a%20Line%20Chart.cpp) |分数比较 |long double/最简通分/转成两个乘法/转成字符串再比较/ |
 | | | |
 |[155. Min Stack](/CS_Math/155+Min%20Stack.cpp) | |两个相同的数据结构，可以考虑用pair合并成一个|
 | | | |
