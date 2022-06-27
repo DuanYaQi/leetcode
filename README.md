@@ -931,7 +931,7 @@ DP
 |[42. Trapping Rain Water](/Alog_DP/42+Trapping%20Rain%20Water.cpp) |  |先预处理,再DP |
 |[300. Longest Increasing Subsequence](/Alog_DP/300+Longest%20Increasing%20Subsequence.cpp) |LIS | 两层循环|
 |[674. Longest Continuous Increasing Subsequence](/Alog_DP/674+Longest%20Continuous%20Increasing%20Subsequence.cpp) |LCIS |一层循环 |
-|💛[1143. Longest Common Subsequence](/Alog_DP/1143+Longest%20Common%20Subsequence.cpp) |LCS |二维dp数组 |
+|2*💛[1143. Longest Common Subsequence](/Alog_DP/1143+Longest%20Common%20Subsequence.cpp) |LCS |二维dp数组 |
 |[718. Maximum Length of Repeated Subarray](/Alog_DP/718+Maximum%20Length%20of%20Repeated%20Subarray.cpp) |LCS |连续需要保存最优值 |
 |[1035. Uncrossed Lines](/Alog_DP/1035+Uncrossed%20Lines.cpp) | | 本质就是LCS |
 |[522. Longest Uncommon Subsequence II](/Alog_DP/522+Longest%20Uncommon%20Subsequence%20II.cpp) | LCS 的变形 | |
