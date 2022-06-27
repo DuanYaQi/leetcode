@@ -3536,10 +3536,10 @@ i    : 以 i 结尾
 
 2. 确定**递推公式**
 
-主要就是两⼤情况： text1[i - 1] 与 text2[j - 1]相同，text1[i - 1] 与 text2[j - 1]不相同
+主要就是两⼤情况： text1[i - 1] 与 text2[j - 1] 相同，text1[i - 1] 与 text2[j - 1] 不相同
 
 - 如果text1[i - 1] 与 text2[j - 1]相同，那么找到了⼀个公共元素，所以`dp[i][j] = dp[i - 1][j - 1] + 1;`
-- 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看 `text1[0, i - 2]与text2[0, j - 1]` 的最长公共子序列 和 `text1[0, i - 1]与text2[0, j - 2]` 的最长公共子序列，取最⼤的。即 `dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);`
+- 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看 `text1[0, i - 2]`与 `text2[0, j - 1]` 的最长公共子序列 和 `text1[0, i - 1]` 与 `text2[0, j - 2]` 的最长公共子序列，取最大的。即 `dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);`
 
 ```c++
 if (text1[i - 1] == text2[j - 1]) {
@@ -3573,6 +3573,70 @@ vector<vector<int>> vec(text.size()+1, vector<int>(text2.size()+1, 0));
 
 
 ![image-20220406093936394](assets/image-20220406093936394.png)
+
+```C++
+```
+
+
+
+
+
+
+
+---
+
+### 522. 最长特殊序列 II
+
+题目翻译：给出一个字符串数组，在里面找出字符串满足`当前字符串不是字符串数组中其他字符串的子序列`，返回满足条件的字符串中 `最长的字符串的长度` 
+
+```c++
+bool isSubsequence(string &s1, string &s2) {
+    int m = s1.size(), n = s2.size();
+
+    if (m > n) {		
+        return false;
+    }
+
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+
+    for (int i = 1; i < m + 1; ++i) {
+        for (int j = 1; j < n + 1; ++j) {
+            if (s1[i-1] == s2[j-1]) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+
+    return dp[m][n] == m;	// m一定是最小的
+}
+
+int findLUSlength(vector<string>& strs) {
+    int res = -1;
+    for (int i = 0; i < strs.size(); ++i) {
+        bool flag = true;
+        for (int j = 0; j < strs.size(); ++j) {
+            if (i == j) continue;
+
+            if (isSubsequence(strs[i], strs[j])) {  //如果它是其它字符串的子串
+                flag = false;
+                break;
+            } 
+        }
+
+        if (flag) res = max(res, (int)strs[i].size());
+    }    
+
+    return res;
+}
+```
+
+
+
+
+
+
 
 
 
