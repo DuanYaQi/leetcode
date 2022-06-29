@@ -423,4 +423,73 @@ public:
 
 
 
-## 
+## 535. TinyURL 的加密与解密
+
+- Encoder 函数
+
+设字符串 longUrl 的长度为 n，选择两个合适的质数 $k_1 = 1117$，$k_2 = 10^9+7$，使用以下方法来计算 longUrl 和哈希值：
+$$
+\begin{equation}
+ \operatorname{Hash}(  longUrl  )=\left( \sum_{i=0}^{n-1}\right.  longUrl  \left.[i] \times k_{1}^{i}\right) \bmod k_{2} 
+\end{equation}
+$$
+将哈希值作为 longUrl 和 key，将键值对 (key, longUrl) 插入数据库 dataBase，然后返回带有 key 的字符串作为 shortUrl
+
+> 发生哈希冲突时，我们采用线性探测再散列的方法，将 key 加一，直到没有冲突。相同的 longUrl 的哈希值相同，因此哈希冲突会频繁发生。为了避免这一点，我们使用一个额外的哈希表记录从 longUrl 到 key 映射。
+
+
+
+- Decoder 函数
+
+将 shortUrl 转换成对应的 key，然后在数据库 dataBase 中查找 key 对应的 longUrl
+
+```c++
+typedef long long ll;
+const ll k1 = 1117;
+const ll k2 = 1e9 + 7;
+
+class Solution {
+private:
+    unordered_map<int, string> dataBase;
+    unordered_map<string, int> urlToKey;
+
+public:
+
+    // Encodes a URL to a shortened URL.
+    string encode(string longUrl) {
+        string res = "http://tinyurl.com/";
+        
+        if (urlToKey.count(longUrl) > 0) {
+            return res + to_string(urlToKey[longUrl]);
+        }
+        
+        ll key = 0, base = 1;
+        for (auto c : longUrl) {
+            key = (key + c * base) % k2;
+            base = (base * k1) % k2;
+        }        
+        
+        while (dataBase.count(key) > 0) {
+            key = (key + 1) % k2;
+        }
+
+        dataBase[key] = longUrl;
+        urlToKey[longUrl] = key;
+
+        return res + to_string(key);
+    }
+
+    // Decodes a shortened URL to its original URL.
+    string decode(string shortUrl) {
+        int p = shortUrl.rfind('/') + 1;    // 从字符串右侧开始匹配
+        int key = stoi(shortUrl.substr(p, int(shortUrl.size()) - p));
+
+        return dataBase[key];
+    }
+};
+
+// Your Solution object will be instantiated and called as such:
+// Solution solution;
+// solution.decode(solution.encode(url));
+```
+

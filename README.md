@@ -584,7 +584,7 @@ static const auto io_sync_off = []()
 |[1. Two Sum](DS_HashTable/1+twoSum.cpp) |两数之和 | map |
 |[454. 4Sum II](DS_HashTable/454+fourSumCount.cpp) | 四数之和| 两个数存一个map |
 |[383. Ransom Note](DS_HashTable/383+canConstruct.cpp) | 赎金信 |  |
-| | | |
+|[535. Encode and Decode TinyURL](/DS_HashTable/535+Encode%20and%20Decode%20TinyURL.cpp) | 哈希表|解决哈希冲突+计算哈希值 |
 | | | |
 | | | |
 
