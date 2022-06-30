@@ -1040,9 +1040,11 @@ DP
 | | | |
 |[155. Min Stack](/CS_Math/155+Min%20Stack.cpp) | |两个相同的数据结构，可以考虑用pair合并成一个|
 | | | |
+|[1175. Prime Arrangements](/CS_Math/1175+Prime%20Arrangements.cpp) |素数表+二分+排列组合 |注意二分的特殊判断 |
 | | | |
 | | | |
-
+| | | |
+| | | |
 
 
 
