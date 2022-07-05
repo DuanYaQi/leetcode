@@ -704,7 +704,7 @@ static const auto io_sync_off = []()
 | [2276. Count Integers in Intervals](/DS_ST/2276+Count%20Integers%20in%20Intervals.cpp)     |  区间合并      | 注意两个条件     |
 | [352. Data Stream as Disjoint Intervals](/DS_ST/352+Data%20Stream%20as%20Disjoint%20Intervals.cpp)     |  区间合并      | 注意相连的范围需要合并，因此是[left-1, right+1]     |
 | [715. Range Module](/DS_ST/715+Range%20Module.cpp)     |  区间合并+查询      |   查询时注意前开后闭  |
-|      |        |      |
+| [729. My Calendar I](/DS_ST/729+My%20Calendar%20I.cpp)     |  区间查询      |   注意要(--iter)，因为找的是比它小的数里边最大的数字，即它左边的那个数字   |
 |      |        |      |
 |      |        |      |
 |      |        |      |
@@ -784,6 +784,9 @@ static const auto io_sync_off = []()
 |💗[18. 4Sum](Alog_TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
 |[26. Remove Duplicates from Sorted Array](Alog_TwoPointer/26+Remove%20Duplicates%20from%20Sorted%20Array.cpp) | | 注意慢指针的移动条件 |
 |[283. Move Zeroes](/Alog_TwoPointer/283+Move%20Zeroes.cpp) | |注意循环里i和fastIndex的区分 |
+| | | |
+| | | |
+| | | |
 |[844. Backspace String Compare](/Alog_TwoPointer/844+Backspace%20String%20Compare.cpp) | | 注意最后index是指向哪里的<br>for的终止位置是index还是+-1|
 |[977. Squares of a Sorted Array](/Alog_TwoPointer/977+Squares%20of%20a%20Sorted%20Array.cpp) | |注意双指针也可以从两边开始指 |
 |[209. Minimum Size Subarray Sum](/Alog_TwoPointer/209+Minimum%20Size%20Subarray%20Sum.cpp) | 滑动窗口 | 重点是处理减区间的那部分<br>其实可以当它大于等于target时直接slow++，这样也计算到了这时的窗口大小|
@@ -795,10 +798,12 @@ static const auto io_sync_off = []()
 | | | |
 | | | |
 |[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) 串联所有单词的子串 | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
+|[556. Next Greater Element III](/Alog_TwoPointer/556+Next%20Greater%20Element%20III.cpp) | 全排列的实现 | |
 | | | |
 | | | |
 | | | |
-
+| | | |
+| | | |
 
 ---
 
