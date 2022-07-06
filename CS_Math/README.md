@@ -2627,3 +2627,226 @@ public:
 };
 ````
 
+
+
+
+
+# 编译原理
+
+## 736. Lisp 语法解析
+
+### 递归解析
+
+对于一个表达式 expression，如果它的首字符不等于左括号 '('，那么它只能是一个整数或者变量；否则它是 let, add 和 mult 三种表达式之一。
+
+定义函数 parseVar 用来解析变量以及函数 parseInt 用来解析整数。使用 scope 来记录作用域，每个变量都依次记录下它从外到内的所有值，查找时只需要查找最后一个数值。我们递归的解析表达式 expression。
+
+- expression 的下一个字符不等于左括号 '('
+  - expression 的下一个字符是小写字母，那么表达式是一个变量，使用函数 parseVar 解析变量，然后在 scope 中查找变量的最后一个数值即最内层作用域的值并返回结果。
+  - expression 的下一个字符不是小写字母，那么表达式是一个整数，使用函数 parseInt 解析整数，并返回结果
+
+
+
+- 去掉左括号后，expression 的下一个字符 'l'，那么表达式是 let 表达式，需要判断是否已经解析到最后一个 expr 表达式。
+
+- 去掉左括号后，expression 的下一个字符 'a'，那么表达式是 add 表达式。计算 add 表达式对应的两个表达式 e1 和 e2 的值，返回两者之和。
+- 去掉左括号后，expression 的下一个字符 'm'，那么表达式是 mult 表达式。计算 mult 表达式对应的两个表达式 e1 和 e2 的值，返回两者之积。
+
+
+
+```c++
+class Solution {
+public:
+    int parseInt(const string &expression, int &start) {
+        int res = 0, sign = 1;
+        if (expression[start] == '-') { //负号
+            sign = -1;
+            start++;
+        }
+
+        //不超范围并且是数字
+        while (start < expression.size() && isdigit(expression[start])) { 
+            res = res * 10 + (expression[start] - '0');
+            start++;
+        }
+
+        return sign * res;
+    }
+
+    string parseVar(const string &expression, int &start) {
+        string res;
+        
+        // 不超范围并且不是空格也不是右括号
+        while (start < expression.size() && expression[start] != ' ' && expression[start] != ')') {
+            res.push_back(expression[start]);
+            start++;
+        }
+
+        return res;
+    }
+
+    // 解析结算 start 开始的解析式
+    int innerEvaluate(const string &expression, int &start) {
+        if (expression[start] != '(') {         // 非表达式可能为: 整数或变量
+            if (islower(expression[start])) {   // 变量
+                string var = parseVar(expression, start); 
+                return scope[var].back();
+            } else {                            // 整数
+                return parseInt(expression, start);
+            }
+        }
+
+        int res;
+        start++;    //跳过左括号
+        if (expression[start] == 'l') {     // "let" 表达式
+            start += 4;                     // 移除 "let "
+            vector<string> vars;
+            while (true) {
+                if (!islower(expression[start])) {          // 如果不是数字，也不是空格，也不是'('
+                    res = innerEvaluate(expression, start); // let 表达式之后的 expr 的表达式的值
+                    break;                                  // 计算后直接 break
+                }
+                string var = parseVar(expression, start);
+                if (expression[start] == ')') {
+                    res = scope[var].back();                // let 表达式的最后一个 expr 表达式的值
+                    break;
+                }
+                vars.push_back(var);
+                start++;    // 移除空格
+                int e = innerEvaluate(expression, start);
+                scope[var].push_back(e);
+                start++;    // 移除空格
+            }
+
+            for (auto var : vars)
+                scope[var].pop_back();  // 清除当前作用域的变量
+        } else if (expression[start] == 'a') {              // "add" 表达式
+            start += 4;     // 移除 "add "
+            int e1 = innerEvaluate(expression, start);
+            start++;        // 移除空格
+            int e2 = innerEvaluate(expression, start);
+            res = e1 + e2;
+        } else {                                            // "mult" 表达式
+            start += 5;     // 移除 "mult "
+            int e1 = innerEvaluate(expression, start);
+            start++;        // 移除空格
+            int e2 = innerEvaluate(expression, start);
+            res = e1 * e2;
+        }   
+        start++;            // 移除右括号
+        return res;
+    }
+
+    int evaluate(string expression) {
+        int start = 0;
+        return innerEvaluate(expression, start);
+    }  
+
+private:
+    unordered_map<string, vector<int>> scope;
+};
+```
+
+
+
+---
+
+### 状态机
+
+定义状态 ExprStatus，状态机的初始状态 cur 为 VALUE。
+
+当我们解析到一个左括号时，我们需要将当前状态 `cur` 压入栈中，然后将当前状态 `cur` 设为状态 `NONE`，表示对一个未知表达式的解析。当我们解析到一个右括号时，我们需要根据括号对应的表达式的类型来计算最终值，并且将它转换成一个 token 传回上层状态，将上层状态出栈并设当前状态 `cur`，对于 `let` 表达式，我们还需要清除它的作用域。
+
+
+
+
+
+
+
+### DFS
+
+设计函数 `int dfs(int l, int r, unordered_map<string, int> ump)`，代表计算 `s[l...r]` 的结果，答案为 `dfs(0,n-1,map)`，其中 n 为字符串的长度。
+
+根据传入的 `[l, r]` 是否为表达式分情况讨论：
+
+- 若 `s[l] = (`，说明是表达式，此时从 l 开始往后取，取到空格为止（假设位置为 idx），从而得到操作 op（其中 op 为 let、add 或 mult 三者之一），此时 op 对应参数为 `[idx+1,r−1]`，也就是需要跳过位置 r（即跳过 op 对应的 `)` 符号）；
+
+  再根据 op 为何种操作进一步处理，我们设计一个「传入左端点找右端点」的函数 `int getRight(int left, int end)`，含义为从 `left` 出发，一直往右找（不超过 `end`），直到取得合法的「子表达式」或「对应的值」。
+
+
+
+```c++
+// 对于 getRight 函数作用，给大家举个 🌰 理解吧，其实就是从 left 出发，找到合法的「子表达式」或「值」为止
+
+// (let x 2 (mult x (let x 3 y 4 (add x y))))
+//          a                               b
+// 传入 a 返回 b，代表 [a, b) 表达式为 (mult x (let x 3 y 4 (add x y)))
+
+// (let x 2 (mult x (let x 3 y 4 (add x y))))
+//      ab
+// 传入 a 返回 b，代表 [a, b) 表达式为 x
+```
+
+
+
++ 否则 `s[l...r]` 不是表达式，通过判断 `s[l...r]` 是否有被哈希表记录来得知结果：若在哈希表中有记录，结果为哈希表中的映射值，否则结果为本身所代表的数值。
+
+```
+class Solution {
+    char[] cs;
+    String s;
+    public int evaluate(String _s) {
+        s = _s;
+        cs = s.toCharArray();
+        return dfs(0, cs.length - 1, new HashMap<>());
+    }
+    int dfs(int l, int r, Map<String, Integer> map) {
+        if (cs[l] == '(') {
+            int idx = l;
+            while (cs[idx] != ' ') idx++;
+            String op = s.substring(l + 1, idx);
+            r--;
+            if (op.equals("let")) {
+                for (int i = idx + 1; i <= r; ) {
+                    int j = getRight(i, r);
+                    String key = s.substring(i, j);
+                    if (j >= r) return dfs(i, j - 1, new HashMap<>(map));
+                    j++; i = j;
+                    j = getRight(i, r);
+                    int value = dfs(i, j - 1, new HashMap<>(map));
+                    map.put(key, value);
+                    i = j + 1;
+                }
+                return -1; // never
+            } else {
+                int j = getRight(idx + 1, r);
+                int a = dfs(idx + 1, j - 1, new HashMap<>(map)), b = dfs(j + 1, r, new HashMap<>(map));
+                return op.equals("add") ? a + b : a * b;
+            }
+        } else {
+            String cur = s.substring(l, r + 1);
+            if (map.containsKey(cur)) return map.get(cur);
+            return Integer.parseInt(cur);
+        }
+    }
+    int getRight(int left, int end) {
+        int right = left, score = 0;
+        while (right <= end) {
+            if (cs[right] == '(') {
+                score++; right++;
+            } else if (cs[right] == ')') {
+                score--; right++;
+            } else if (cs[right] == ' ') {
+                if (score == 0) break;
+                right++;
+            } else {
+                right++;
+            }
+        }
+        return right;
+    }
+}
+```
+
+
+

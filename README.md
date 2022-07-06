@@ -1046,7 +1046,8 @@ DP
 |[155. Min Stack](/CS_Math/155+Min%20Stack.cpp) | |两个相同的数据结构，可以考虑用pair合并成一个|
 | | | |
 |[1175. Prime Arrangements](/CS_Math/1175+Prime%20Arrangements.cpp) |素数表+二分+排列组合 |注意二分的特殊判断 |
-| | | |
+|[736. Parse Lisp Expression](/CS_Math/736+Parse%20Lisp%20Expression.cpp) | 递归解析字符 | 编译原理 LL(1) 分析，使用递归下降法实现  |
+|[736. Parse Lisp Expression](/CS_Math/736+Parse%20Lisp%20Expression_FSM.cpp) | 状态机 | 编译原理 LR(1) 分析，使用自动机实现 |
 | | | |
 | | | |
 | | | |
