@@ -940,8 +940,10 @@ DP
 |[718. Maximum Length of Repeated Subarray](/Alog_DP/718+Maximum%20Length%20of%20Repeated%20Subarray.cpp) |LCS |连续需要保存最优值 |
 |[1035. Uncrossed Lines](/Alog_DP/1035+Uncrossed%20Lines.cpp) | | 本质就是LCS |
 |[522. Longest Uncommon Subsequence II](/Alog_DP/522+Longest%20Uncommon%20Subsequence%20II.cpp) | LCS 的变形 | |
+|💗[873. Length of Longest Fibonacci Subsequence](/Alog_DP/873+Length%20of%20Longest%20Fibonacci%20Subsequence.cpp) | 因为序列是由3个元素组成，并且有2个就能确定第三个，所以dp数组是二维的 | 注意 `i<j<k` |
 | | | |
-
+| | | |
+| | | |
 
 股票专题
 |  题目  |知识点|技巧|

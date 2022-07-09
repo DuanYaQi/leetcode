@@ -662,3 +662,55 @@ string digitSum(string s, int k) {
 ```
 
 
+
+---
+
+## 648. 单词替换
+
+```c++
+class Solution {
+public:
+    inline bool isPrefix(string s1, string s2) {
+        if (s2.size() < s1.size()) return false;
+        for (int i = 0; i < s1.size(); ++i) {
+            if (s1[i] != s2[i]) return false;
+        }
+        return true;
+    }
+
+    string getReplaceWords(string &res, vector<string>& dictionary, string word) {
+        for (int i = 0; i < dictionary.size(); ++i) {
+            if (isPrefix(dictionary[i], word)) {
+                return dictionary[i];
+            }
+        }
+        return word;
+    }
+
+    void splitString(vector<string> &res, string &sentence, char split) {
+        istringstream iss(sentence);
+        string token;
+        while (getline(iss, token, split)) {
+            res.push_back(token);
+        }
+    }
+
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        string res;
+
+        sort(dictionary.begin(), dictionary.end());
+        int start = 0, n = sentence.size();
+        vector<string> words;
+        splitString(words, sentence, ' ');
+
+        for (int i = 0; i < words.size(); ++i) {
+            string tmp = getReplaceWords(res, dictionary, words[i]);
+            res += tmp;
+            res += " ";
+        }
+
+        return res.substr(0, res.size() - 1);
+    }
+};
+```
+
