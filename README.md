@@ -220,6 +220,7 @@ https://www.cnblogs.com/MinPage/
 ||
 ||
 |判断奇偶 `sum & 1` , true 为奇数，false 为偶数 |
+|`a && b < 0` 判断 a，b不同符号，即一正一负 |
 |`1<<i` 是将 1 左移了 i 位，即第 i 位为1，其余位为 0； |
 |`n & (1<<i) == 0` 判断 n 的第 i 位是否为 0|
 |`(n & (n - 1) ) == 0` 判断 n 是否为 2 的幂次方|
@@ -235,6 +236,8 @@ https://www.cnblogs.com/MinPage/
 |树每层都处理的话，queue就在while里再for循环，整体处理只用一个while|
 ||
 |不要盲目追求一题多解，要记住最适合这道题的算法。可以拓宽思路。|
+||
+||
 ||
 
 
@@ -619,13 +622,15 @@ static const auto io_sync_off = []()
 
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
+|[面试题 04.01. 节点间通路](/DS_Graph/面试题%2004.01.%20节点间通路.cpp) | BFS/DFS模板 | |
+| | | |
 |[797+All Paths From Source to Target](DS_Graph/797+All%20Paths%20From%20Source%20to%20Target.cpp) | DFS | 重点为 `pop_back()` 和 `vis[v] = false;`|
 |[2192.All Ancestors of a Node in a Directed Acyclic Graph](DS_Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
-|💛[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time.cpp) | Dijkstra | 每次找离flag节点最近的点,更新距离,贪心 |
-|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Heap.cpp) | 堆优化 | 优先队列 pair 邻接表 |
-|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Floyd.cpp) | floyd| 暴力|
-|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_BF.cpp) | BF 松弛操作| |
-|[747. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_SPFA.cpp) |SPFA |BF+队列 |
+|💛[743. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time.cpp) | Dijkstra | 每次找离flag节点最近的点,更新距离,贪心 |
+|[743. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Heap.cpp) | 堆优化 | 优先队列 pair 邻接表 |
+|[743. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_Floyd.cpp) | floyd| 暴力|
+|[743. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_BF.cpp) | BF 松弛操作| |
+|[743. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_SPFA.cpp) |SPFA |BF+队列 |
 |[优先队列再优化](/DS_Graph/743+Network%20Delay%20Time_Heap_best.cpp)||HeapNode/myCmp|
 |[1514. Path with Maximum Probability](/DS_Graph/1514+Path%20with%20Maximum%20Probability.cpp) | 注意是大顶堆 带起止点 | |
 |💛[1631. Path With Minimum Effort](DS_Graph/1631+Path%20With%20Minimum%20Effort.cpp) | 极大值最小化| 抽象为图 |
@@ -720,6 +725,26 @@ static const auto io_sync_off = []()
 线段树有的操作，树状数组不一定有。
 
 但是树状数组的代码要比线段树短，思维更清晰，速度也更快，在解决一些单点修改的问题时，树状数组是不二之选。
+
+---
+
+### 1.12. [位运算(图)](DS_BitMap/README.md)
+
+| 题目                                                         | 知识点 | 技巧 |
+| :----------------------------------------------------------- | :----: | :--: |
+| 💗[691. Stickers to Spell Word](/DS_D_BFS/691+Stickers%20to%20Spell%20Word.cpp) |  BFS+位图  |   把字符串各字符是否满足用01表示   |
+|   [287. Find the Duplicate Number]                            |        |      |
+|   [6065. Largest Combination With Bitwise AND Greater Than Zero](/DS_BitMap/6065+Largest%20Combination%20With%20Bitwise%20AND%20Greater%20Than%20Zero.cpp)                                                           |        |      |
+|   [面试题 01.01. 判定字符是否唯一.cpp]()                           |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
+|                                                              |        |      |
 
 
 
@@ -1033,6 +1058,8 @@ DP
 |[382. Linked List Random Node](/CS_Math/382+Linked%20List%20Random%20Node.cpp) |蓄水池采样 |注意要全部遍历一遍，因为是累乘 |
 |[398. Random Pick Index](CS_Math/398+Random%20Pick%20Index.cpp) |蓄水池采样 | |
 |[710. Random Pick with Blacklist](/CS_Math/710+Random%20Pick%20with%20Blacklist.cpp) | 蓄水池采样+黑白名单映射 | |
+|[989. Add to Array-Form of Integer](/CS_Math/989+Add%20to%20Array-Form%20of%20Integer.cpp) | 加法模板 |  |
+| | | |
 | | | |
 | | | |
 |[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | | 注意( |
@@ -1082,25 +1109,6 @@ DP
 
 
 ---
-
-### 2.11. [位运算(图)](Alog_BitMap/README.md)
-
-| 题目                                                         | 知识点 | 技巧 |
-| :----------------------------------------------------------- | :----: | :--: |
-| 💗[691. Stickers to Spell Word](/Alog_D_BFS/691+Stickers%20to%20Spell%20Word.cpp) |  BFS+位图  |   把字符串各字符是否满足用01表示   |
-|   [287. Find the Duplicate Number]                                                           |        |      |
-|   [6065. Largest Combination With Bitwise AND Greater Than Zero](/Alog_BitMap/6065+Largest%20Combination%20With%20Bitwise%20AND%20Greater%20Than%20Zero.cpp)                                                           |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-|                                                              |        |      |
-
 
 
 

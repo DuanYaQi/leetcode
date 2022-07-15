@@ -599,3 +599,76 @@ public:
 
 
 
+
+
+## 745. 前缀和后缀搜索
+
+调用 f 时，如果前缀和后缀的长度相同，那么可以用字典树来解决。初始化时，只需将单词正序和倒序后得到的单词对依次插入字典树即可。
+
+这样初始化后，对于前缀和后缀相同的检索，也只需要在字典树上检索前缀和后缀倒序得到的单词对。但是调用 $f$ 时，还有可能遇到前缀和后缀长度不同的情况。
+
+应对这种情况，可以将短的字符串用特殊字符补足，使得前缀和后缀长度相同。而在初始化时，也需要考虑到这个情况，特殊字符组成的单词对，也要插入字典树中。
+
+```c++
+struct Trie {
+    unordered_map<string, Trie *> children;
+    int weight;
+};
+
+class WordFilter {
+private:
+    Trie *trie;
+
+public:
+    WordFilter(vector<string>& words) {
+        trie = new Trie();
+        for (int i = 0; i < words.size(); i++) {
+            string word = words[i];
+            Trie *cur = trie;
+            int m = word.size();
+            for (int j = 0; j < m; j++) {
+                Trie *tmp = cur;
+                for (int k = j; k < m; k++) {
+                    string key({word[k], '#'});
+                    if (!tmp->children.count(key)) {
+                        tmp->children[key] = new Trie();
+                    }
+                    tmp = tmp->children[key];
+                    tmp->weight = i;
+                }
+                tmp = cur;
+                for (int k = j; k < m; k++) {
+                    string key({'#', word[m - k - 1]});
+                    if (!tmp->children.count(key)) {
+                        tmp->children[key] = new Trie();
+                    }
+                    tmp = tmp->children[key];
+                    tmp->weight = i;
+                }
+                string key({word[j], word[m - j - 1]});
+                if (!cur->children.count(key)) {
+                    cur->children[key] = new Trie();
+                }
+                cur = cur->children[key];
+                cur->weight = i;
+            }
+        }
+    }
+    
+    int f(string pref, string suff) {
+        Trie *cur = trie;
+        int m = max(pref.size(), suff.size());
+        for (int i = 0; i < m; i++) {
+            char c1 = i < pref.size() ? pref[i] : '#';
+            char c2 = i < suff.size() ? suff[suff.size() - 1 - i] : '#';
+            string key({c1, c2});
+            if (!cur->children.count(key)) {
+                return -1;
+            }
+            cur = cur->children[key];
+        }
+        return cur->weight;
+    }
+};
+```
+

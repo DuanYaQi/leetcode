@@ -443,7 +443,7 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
 ---
 
-## 347.前 K 个高频元素
+## 347. 前 K 个高频元素
 
 这道题目主要涉及到如下三块内容：
 
@@ -502,4 +502,56 @@ public:
 
 
 ---
+
+# 栈
+
+## 735. 行星碰撞
+
+```c++
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> st;
+        vector<int> res;
+        
+        int idx = 0, n = asteroids.size();
+        while (idx < n) {
+            int num = asteroids[idx];
+            if (st.empty()) {
+                st.push(num);
+                idx++;
+                continue;
+            }
+
+            // a > 0, b > 0 
+            // a < 0, b < 0
+            // a < 0, b > 0
+            if ((st.top() > 0 && num > 0) || (st.top() < 0 && num < 0) || (st.top() < 0 && num > 0)) {
+                st.push(num);
+                idx++;
+                continue;
+            } else {
+                // a > 0, b < 0
+                if (abs(st.top()) == abs(num)) {
+                    st.pop();
+                    idx++;
+                } else if (abs(st.top()) > abs(num)) {
+                    idx++;
+                } else {
+                    st.pop();
+                }
+            }      
+        }
+
+        while (!st.empty()) {
+            res.push_back(st.top());
+            st.pop();
+        }
+
+        reverse(res.begin(), res.end());
+
+        return res;
+    }
+};
+```
 

@@ -1998,6 +1998,130 @@ public:
 
 
 
+
+
+### 普通加法
+
+#### 989. 数组形式的整数加法
+
+加法有以下公式：
+
+当前位 = (A 的当前位 + B 的当前位 + 进位carry) % 10
+
+直接遍历相加即可，保存 carry，最后有 carry 额外加 1，从小到大加，最后保存的结果要翻转
+
+- 动态数组遍历数组
+- int 数字 `%10` 取最低位，`/10` 为了遍历下一个最低位
+
+```c++
+vector<int> addToArrayForm(vector<int>& num, int k) {
+    int carry = 0; 
+    vector<int> res;
+    
+    // 遍历数组，进行加
+    for (int i = num.size() - 1; i >= 0; --i) {
+        int kn = k % 10;
+        k /= 10;
+
+        int sumn = kn + num[i] + carry;  //关键公式!!!
+
+        res.push_back(sumn % 10);
+        if (sumn >= 10) {
+            carry = 1;
+        } else {
+            carry = 0;
+        }
+    }
+
+    // 如果 k 还没处理完，继续处理 k
+    while (k > 0) {
+        int kn = k % 10;
+        k /= 10;
+
+        int sumn = kn + carry; //关键公式!!! 此时 num[i] 已经是 0 了
+
+        res.push_back(sumn % 10);
+        if (sumn >= 10) {
+            carry = 1;
+        } else {
+            carry = 0;
+        }
+    }
+
+    if (carry == 1) res.push_back(1);
+    reverse(res.begin(), res.end());
+
+    return res;
+}
+```
+
+> - 时间复杂度: O(max(n,logk))
+> - 空间复杂度: O(1)，常数级别，只有res
+
+
+
+优化，发现两个循环逻辑其实是一样的，可以放在一起处理
+
+```c++
+vector<int> addToArrayForm(vector<int>& num, int k) {
+    int carry = 0;
+        
+    vector<int> res;
+    int i = num.size() - 1;
+    // 放到一起处理, 如果有一个变成 0, sumn 这里就相当于 + 0
+    while (i >= 0 || k > 0) {
+        int a = i < 0 ? 0 : num[i];
+        int kn = k == 0 ? 0 : k % 10;
+        k /= 10;
+
+        int sumn = a + kn + carry;
+
+        res.push_back(sumn % 10);
+        if (sumn >= 10) {
+            carry = 1;
+        } else {
+            carry = 0;
+        }
+        i--;
+    }
+
+    // 如果有进位
+    if (carry == 1) res.push_back(1);
+    reverse(res.begin(), res.end());
+
+    return res;
+}
+```
+
+没变化
+
+> - 时间复杂度: O(max(n,logk))
+> - 空间复杂度: O(1)，常数级别，只有res
+
+
+
+
+
+加法模板
+
+```matlab
+while ( A 没完 || B 没完)
+    A 的当前位
+    B 的当前位
+
+    和 = A 的当前位 + B 的当前位 + 进位carry
+
+    当前位 = 和 % 10;
+    进位 = 和 / 10;
+end
+
+判断还有进位吗
+```
+
+
+
+
+
 ---
 
 ## 大数相乘

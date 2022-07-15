@@ -994,6 +994,111 @@ int minCost(vector<vector<int>>& costs) {
 
 
 
+---
+
+## 741. 摘樱桃
+
+由于从 $(N-1,N-1)$ 返回 $(0,0)$ 的这条路径，可以等价地看成从 $(0,0)$ 到 $(N-1,N-1)$ 的路径，因此问题可以等价转换成，有两个人从 $(0,0)$ 出发，向下或向右走到 $(N-1,N-1)$ 时，摘到的樱桃个数之和的最大值。
+
+由于同一个格子只能摘取一次，需要判断两人是否到达了同一个格子。
+
+假设两人同时出发，且速度相同。无论两人怎么走，在时间相同的情况下，他们向右走的步数加上向下走的步数之和是一个定值（设为 k）。设两人的坐标为 $(x_1, y_1)$ 和 $(x_2,y_2)$，则 $x_1+y_1=x_2+y_2=k$。那么当 $x_1=x_2$ 时，必然有 $y_1=y_2$，即两个人到达了同一个格子。
+
+定义 $f[k][x_1][x_2]$ 表示两个人（设为 $A$ 和 $B$）分别从 $(x_1,k-x_1)$ 和 $(x_2,k-x_2)$ 同时出发，到达 $(N-1,N-1)$ 摘到的樱桃个数之和的最大值。
+
+如果 $(x_1,k-x_1)$ 或 $(x_2,k-x_2)$ 是荆棘，则 $f[k][x_1][x_2]=-\infty$，表示不合法的情况。
+
+枚举 A 和 B 上一步的走法，来计算 $f[k][x_1][x_2]$。有四种情况：
+
+- 都往右：从 $f[k-1][x_1][x_2]$ 转移过来
+
+- A 往下，B 往右：从 $f[k-1][x_1-1][x_2]$ 转移过来
+- A 往右，B 往下：从 $f[k-1][x_1][x_2-1]$ 转移过来
+- 都往下：从 $f[k-1][x_1-1][x_2-1]$ 转移过来
+
+取这四种情况的最大值，加上 $grid[x_1][k-x_2]$ 和 $grid[x_2][k-x_2]$ 的值，就得到了 $f[k][x_1][x_2]$，如果 $x_1=x_2$，则只需加上 $grid[x_1][k-x_1]$。
+
+最后答案为 $max(f[2n-2][n-1][n-1],0)$，取 $max$ 是因为路径可能被荆棘挡住，无法从 (0, 0) 到达 (N-1, N-1).
+
+
+
+代码实现时，我们可以将 A 和 B 走出的路径的上轮廓看成是 A 走出的路径，下轮廓看成是 B 走出的路径，即视作 A 始终不会走到 B 的下方，则有 $x_1\le x_2$，在代码实现时保证这一点，可以减少循环次数。
+
+
+
+```c++
+int n = grid.size();
+
+// 三维数组指针
+int ***f = (int ***)malloc(sizeof(int **) * (n * 2 - 1));
+for (int i = 0; i < n * 2 - 1; ++i) {
+    f[i] = (int **)malloc(sizeof(int *) * n);
+    for (int j = 0; j < n; ++j) {
+        f[i][j] = (int *)malloc(sizeof(int) * n);
+        for (int k = 0; k < n; ++k) {
+            f[i][j][k] = INT_MIN;
+        }
+    }
+}
+
+// 三维动态数组
+vector<vector<vector<int>>> f(n * 2 - 1, vector<vector<int>>(n, vector<int>(n, INT_MIN)));
+```
+
+
+
+```c++
+class Solution {
+public:
+    // 樱桃能摘到的情况
+    // 其上下左右为0或1
+    int cherryPickup(vector<vector<int>>& grid) {
+        int n = grid.size();
+
+        vector<vector<vector<int>>> dp(2 * n - 1, vector<vector<int>>(n, vector<int>(n, INT_MIN)));	// 为什么是 2 * n - 1, 为什么是 INT_MIN
+        dp[0][0][0] = grid[0][0];
+
+        for (int k = 1; k < 2 * n - 1; ++k) {
+            for (int x1 = max(k - n + 1, 0); x1 <= min(k, n - 1); ++x1) { //x1的起始和终止状态?
+                int y1 = k - x1;
+                if (grid[x1][y1] == -1) {
+                    continue;
+                }
+
+                for (int x2 = x1; x2 <= min(k, n - 1); ++x2) {//x2的起始和终止状态?
+                    int y2 = k - x2;
+                    if (grid[x2][y2] == -1) {
+                        continue;
+                    }
+
+                    int res = dp[k - 1][x1][x2]; // 都往右
+
+                    if (x1) {
+                        res = max(res, dp[k-1][x1-1][x2]);   // A往下 B往右
+                    }
+
+                    if (x2) {
+                        res = max(res, dp[k-1][x1][x2-1]);   // A往右 B往下
+                    }
+
+                    if (x1 && x2) {
+                        res = max(res, dp[k-1][x1-1][x2-1]); // 都往下
+                    }
+
+                    res += grid[x1][y1];
+                    if (x2 != x1) {
+                        res += grid[x2][y2];
+                    }
+                    dp[k][x1][x2] = res;
+                }
+            }
+        }        
+
+        return max(dp.back().back().back(), 0);
+    }
+};
+```
+
 
 
 
