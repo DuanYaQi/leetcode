@@ -555,3 +555,192 @@ public:
 };
 ```
 
+
+
+
+
+## 1381. 设计一个支持增量操作的栈]
+### 思路
+
+直接用 stack 模拟
+
+- increment 的时候，需要用一个辅助栈，计算出需要 +val 的边界 `int remain = max(0, (int)(mSt.size() - k));`
+
+```c++
+class CustomStack {
+public:
+    CustomStack(int maxSize) : mMaxSize(maxSize) {
+
+    }
+    
+    void push(int x) {
+        if (mSt.size() < mMaxSize) {
+            mSt.push(x);
+        }
+    }
+    
+    int pop() {
+        if (mSt.size() == 0) return -1;
+        int num = mSt.top(); mSt.pop();
+        return num;
+    }
+    
+    void increment(int k, int val) {
+        stack<int> mStTmp;
+        int remain = max(0, (int)(mSt.size() - k));    // 不加的个数
+
+        while (remain) {                        // 把不加 val 的数字给跳过去
+            mStTmp.push(mSt.top()); mSt.pop();
+            remain--;
+        }
+
+        while (mSt.size()) {                    // 把剩下的 mSt 里的元素 + val
+            mStTmp.push(mSt.top() + val); mSt.pop();
+        }
+
+        while (mStTmp.size()) {                 // 
+            mSt.push(mStTmp.top()); mStTmp.pop();
+        }
+    }
+
+private:
+    int mMaxSize;
+    stack<int> mSt;
+};
+```
+> + 时间复杂度: O(n)
+> + 空间复杂度: O(n)
+
+----
+
+### 优化
+
+直接用数组模拟栈就好了，对栈底元素好处理
+
+```c++
+class CustomStack {
+public:
+    CustomStack(int maxSize) : mMaxSize(maxSize) {
+
+    }
+    
+    void push(int x) {
+        if (mVec.size() < mMaxSize) {
+            mVec.push_back(x);
+        }
+    }
+    
+    int pop() {
+        if (mVec.size() == 0) return -1;
+        int num = mVec.back(); mVec.erase((--mVec.end()));
+        return num;
+    }
+    
+    void increment(int k, int val) {
+        for (int i = 0; i < min(k, (int)mVec.size()); ++i) 
+            mVec[i] += val;
+    }
+
+private:
+    int mMaxSize;
+    vector<int> mVec;
+};
+```
+
+
+> + 时间复杂度: O(n)
+> + 空间复杂度: O(n)
+
+----
+
+### 负优化
+
+去除繁琐的 erase，直接用 `top` 表示栈顶位置
+
+```c++
+class CustomStack {
+public:
+    CustomStack(int maxSize) : mMaxSize(maxSize) {
+        mVec.resize(maxSize);
+        top = -1;
+    }
+    
+    void push(int x) {
+        if (top < mMaxSize - 1) {
+            ++top;
+            mVec[top] = x;
+        }
+    }
+    
+    int pop() {
+        if (top == -1) return -1;
+        int num = mVec[top]; 
+        --top;
+        return num;
+    }
+    
+    void increment(int k, int val) {
+        for (int i = 0; i < min(k, top+1); ++i) 
+            mVec[i] += val;
+    }
+
+private:
+    int mMaxSize;
+    int top;        // 表示栈顶
+    vector<int> mVec;
+};
+```
+> + 时间复杂度: O(n)
+> + 空间复杂度: O(n)
+
+---
+### 究极优化
+
+- 只有在 pop 操作时，我们才需要知道栈顶元素的具体值，在其余的情况下，我们只要存储每个元素的增量就行了。
+- 因此在遇到 pop 操作时，我们返回栈顶元素的初始值加上增量 add[top]。
+- `add[i]` 表示前 i - 1 个元素的增量
+
+```c++
+class CustomStack {
+public:
+    CustomStack(int maxSize) : mMaxSize(maxSize) {
+        mVec.resize(maxSize);
+        mInc.resize(maxSize);
+        top = -1;
+    }
+    
+    void push(int x) {
+        if (top < mMaxSize - 1) {
+            ++top;
+            mVec[top] = x;
+        }
+    }
+    
+    int pop() {
+        if (top == -1) return -1;
+        int num = mVec[top] + mInc[top]; 
+        if (top > 0) {
+            mInc[top - 1] += mInc[top];
+        }
+        mInc[top] = 0;
+        --top;
+        return num;
+    }
+    
+    void increment(int k, int val) {
+        int idx = min(k - 1, top); 
+        
+        if (idx >= 0)   // top 可能是 -1
+            mInc[idx] += val;
+    }
+
+private:
+    int mMaxSize;
+    int top;        // 表示栈顶
+    vector<int> mVec, mInc; //mInc[i] 表示下标<=i的元素的增量
+};
+```
+> + 时间复杂度: O(1)
+> + 空间复杂度: O(1)
+
+

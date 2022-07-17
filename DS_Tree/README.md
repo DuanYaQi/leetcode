@@ -1702,7 +1702,7 @@ TreeNode* convertBST(TreeNode* root) {
 
 涉及到二叉树的构造,无论普通二叉树还是二叉搜索树一定前序,都是先构造中节点。
 求普通二叉树的属性,一般是后序,一般要通过递归函数的返回值做计算。
-求二叉搜索树的属性,一定是中序了,要不白瞎了有序性了。
+求二叉搜索树的属性,一定是中序了,要不浪费了有序性。
 
 
 
@@ -1925,6 +1925,58 @@ TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
     }
 
     return ans;
+}
+```
+
+
+
+
+
+---
+
+# 四叉树
+
+## 558. 四叉树交集
+
+题目给出两棵「四叉树」--  $\textit{quadTree}_1$ 和 $\textit{quadTree}_2$ ，它们分别代表一个 $n \times n$ 的矩阵，且每一个子节点都是父节点对应矩阵区域的 $\dfrac{1}{4}$ 区域：
+
+- $\textit{topLeft}$ 节点为其父节点对应的矩阵区域左上角的 $\dfrac{1}{4}$ 区域。
+- $\textit{topRight}$ 节点为其父节点对应的矩阵区域右上角的 $\dfrac{1}{4}$ 区域。
+- $\textit{bottomLeft}$ 节点为其父节点对应的矩阵区域左下角的 $\dfrac{1}{4}$ 区域。
+- $\textit{bottomRight}$ 节点为其父节点对应的矩阵区域右下角的 $\dfrac{1}{4}$区域。
+
+
+
+我们需要把这两个矩阵中的对应位置的值进行「或」操作，然后返回操作后的矩阵即可。对于 $\forall x \in \{0,1\}$，有 $0 ~|~ x = x$ 和 $1 ~|~ x = 1$ 成立。那么我们按照两棵树的对应的节点来进行合并操作，假设当前我们操作的两个节点分别为 $\textit{node}_1$ 和 $\textit{node}_2$，记节点的合并操作为：
+
+- $\textit{node}_1$ 为叶子节点时：
+  - 如果 $\textit{node}_1$ 的值为 1，那么 $\textit{node}_1 ~|~ \textit{node}_2 = \textit{node}_1$ 。
+  - 否则 $\textit{node}_1 ~|~ \textit{node}_2 = \textit{node}_2$ 。
+- $\textit{node}_2$ 为叶子节点时：
+  - 如果 $\textit{node}_2$ 的值为 1，那么 $\textit{node}_1 ~|~ \textit{node}_2 = \textit{node}_2$。
+  - 否则 $\textit{node}_1 ~|~ \textit{node}_2 = \textit{node}_1$。
+
+- 两者都不是叶子节点时：那么分别对两者的四个子节点来进行对应的分治处理——分别进行合并操作，然后再判断合并后的四个子节点的对应区域是否都为一个全 00 或者全 11 区域，如果是则原节点为叶子节点，否则原节点不是叶子节点，且四个子节点为上面合并操作后的四个对应子节点。
+
+```c++
+Node* intersect(Node* quadTree1, Node* quadTree2) {
+    if (quadTree1->isLeaf) {
+        if (quadTree1->val) {
+            return new Node(true, true);
+        }
+        return new Node(quadTree2->val, quadTree2->isLeaf, quadTree2->topLeft, quadTree2->topRight, quadTree2->bottomLeft, quadTree2->bottomRight);
+    }
+    if (quadTree2->isLeaf) {
+        return intersect(quadTree2, quadTree1);
+    }
+    Node* o1 = intersect(quadTree1->topLeft, quadTree2->topLeft);
+    Node* o2 = intersect(quadTree1->topRight, quadTree2->topRight);
+    Node* o3 = intersect(quadTree1->bottomLeft, quadTree2->bottomLeft);
+    Node* o4 = intersect(quadTree1->bottomRight, quadTree2->bottomRight);
+    if (o1->isLeaf && o2->isLeaf && o3->isLeaf && o4->isLeaf && o1->val == o2->val && o1->val == o3->val && o1->val == o4->val) {
+        return new Node(o1->val, true);
+    }
+    return new Node(false, false, o1, o2, o3, o4);
 }
 ```
 
