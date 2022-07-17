@@ -636,7 +636,7 @@ static const auto io_sync_off = []()
 |💛[1631. Path With Minimum Effort](DS_Graph/1631+Path%20With%20Minimum%20Effort.cpp) | 极大值最小化| 抽象为图 |
 |💗[LCP 56. 信物传送](/DS_Graph/LCP%2056.%20信物传送.cpp) | 最短路径| 方向指向的块与其相连为权为0<br>其余邻接块权为1<br>二维dist数组 |
 | | | |
-| | | |
+|[565. Array Nesting](/DS_Graph/565+Array%20Nesting.cpp) | dfs|找最大环 |
 | | | |
 
 ---

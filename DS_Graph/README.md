@@ -435,7 +435,7 @@ void BFSTrave() {	//遍历图G
 
 
 
-## 面试题 04.01. 节点间通路
+## 面试题 04.01. 节点间通路 - DFS
 
 ```c++
 class Solution {
@@ -477,6 +477,73 @@ public:
 
 
 
+
+## 565. 数组嵌套 - DFS
+
+注意 `isVis` 不用每次循环都重新初始化，因为这题本质是一个判断图的最大环，一个环计算一次就可以，下次再碰到环里的其它元素直接返回 0 就可以了。
+
+- **递归法**
+
+```c++
+class Solution {
+public:
+
+    int dfs(vector<int> &nums, int n, vector<bool> &isVis) {
+        if (isVis[n]) {
+            return 0;
+        }
+
+        isVis[n] = true;        
+
+        return 1 + dfs(nums, nums[n], isVis);
+    }
+
+    int arrayNesting(vector<int>& nums) {
+        vector<bool> isVis(nums.size(), 0);
+        for (int i = 0; i < nums.size(); ++i) {
+            int cnt = dfs(nums, nums[i], isVis);
+            mLongest = max(mLongest, cnt);
+        }
+        
+        return mLongest;
+    }
+
+private:
+    int mLongest = -1;    
+};
+```
+
+
+
+- **迭代法**
+
+```c++
+class Solution {
+public:
+    int arrayNesting(vector<int>& nums) {
+        vector<bool> isVis(nums.size(), 0);
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            int cnt = 1, nowIdx = nums[i];
+
+            if (!isVis[i]) {
+                while (nowIdx != i) {	// 在这里迭代
+                    cnt++;
+                    nowIdx = nums[nowIdx];
+                    isVis[nowIdx] = true;
+                }
+            } 
+
+            mLongest = max(mLongest, cnt);
+        }
+        
+        return mLongest;
+    }
+
+private:
+    int mLongest = -1;    
+};
+```
 
 
 

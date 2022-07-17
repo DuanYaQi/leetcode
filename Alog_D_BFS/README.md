@@ -572,13 +572,48 @@ public:
 
 
 
+----
+
+## 565. 数组嵌套-DFS
+
+```c++
+class Solution {
+public:
+
+    void dfs(vector<int> &nums, int n, int &cnt, vector<bool> &isVis) {
+        if (isVis[n]) return;
+
+        isVis[n] = true;
+
+        cnt++;
+        dfs(nums, nums[n], cnt, isVis);
+
+        return;
+    }
+
+    int arrayNesting(vector<int>& nums) {
+        for (int i = 0; i < nums.size(); ++i) {
+            int cnt = 0;
+            vector<bool> isVis(nums.size(), 0);
+            dfs(nums, nums[i], cnt, isVis);
+            mLongest = max(mLongest, cnt);
+        }
+        
+        return mLongest;
+    }
+
+private:
+    int mLongest = -1;    
+};
+```
+
+超时
+
 
 
 
 
 ---
-
-
 
 # BFS
 
