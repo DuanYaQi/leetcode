@@ -907,6 +907,413 @@ int minStickers(vector<string>& stickers, string target) {
 
 
 
+---
+
+## 749. 隔离病毒
+
+
+
+---
+
+### 多重BFS（不是多源!!）
+
+**大致思路**
+
+不断重复下面循环，直到没有待隔离的病毒为止
+
+- 广搜确定不同区域的：待感染区域的面积、隔离此区域所需要的隔离墙的数量
+- 隔离这个病毒区
+
+
+
+**具体实现**
+用不同的数字代表地图中不同的状态：
+
+```
+0: 空地
+1: 活的病毒
+2: 被控制的病毒
+```
+
+
+然后一个死循环，**每次控制一个病毒区域**。如果已经没有活病毒了，就退出循环。
+
+```c++
+while (true) {
+    bool has1 = false;
+    
+	// 这里进行病毒隔离操作，同时如果还有活病毒(1)，就把has1标记为true
+
+    if (!has1)
+        break;
+}
+```
+
+
+至于控制活病毒的部分，需要几个变量：
+
+```c++
+int max1adjacent = 0;  // 活病毒的最大相邻待感染区域的大小
+map<int, pair<int, int>> area2loc;  // [<待感染区域的面积, 其中一个活病毒的坐标>]
+map<pair<int, int>, int> loc2wallNum;  // [<活病毒的坐标, 需要添加的墙的数量>]  //这里选一个idx最小的病毒队长的坐标就可以，因为病毒间是连通的
+vector<vector<bool>> visited(n, vector<bool>(m, false));  // 哪个区域被遍历过了
+```
+
+这样就可以在遍历完成之时，立刻得到这次要控制的位置，以及这次控制需要安装多少隔离墙。遍历的方法为：
+
+```c++
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+        if (isInfected[i][j] == 1 && !visited[i][j]) {  // 这是一个活病毒的位置 && 这个区域还没有被遍历过
+            has1 = true;
+            visited[i][j] = true;
+            pair<int, int> oneOfThisArea = {i, j};
+            int thisAdjacent = 0;  // 这个待感染区域的大小
+            int thisWallNum = 0;  // 控制这个区域的话，需要安装隔离墙的数量
+            set<pair<int, int>> counted;  // 已经统计过的待感染区域  // 注意不能通过将visited标记为true的方式来判断某个待感染区域是否被统计过，因为待感染区域对于不同的病毒块互不影响
+			
+			// 这里进行BFS，同时记录这片区域的待感染区域的大小、需要安装隔离墙的数量
+
+            max1adjacent = max(max1adjacent, thisAdjacent);
+            area2loc[thisAdjacent] = oneOfThisArea;
+            loc2wallNum[oneOfThisArea] = thisWallNum;
+        }
+    }
+}
+```
+
+具体BFS方法为：
+
+```c++
+queue<pair<int, int>> q;
+q.push({i, j});
+while (q.size()) {
+    auto[x, y] = q.front();
+    q.pop();
+    for (int d = 0; d < 4; d++) {
+        int tx = x + direction[d][0];
+        int ty = y + direction[d][1];
+        if (tx >= 0 && tx < n && ty > 0 && ty < m) {  // 下一个单元在合法范围内
+            if (isInfected[tx][ty] == 1 && !visited[tx][ty]) {  // 下一个单元是未被标记的病毒
+                visited[tx][ty] = true;
+                q.push({tx, ty});
+            }
+            else if (isInfected[tx][ty] == 0) {  // 下一个单元格是待感染区域
+                thisWallNum++;  // 不论这个待感染区域是否被统计过，都要安装隔离墙（区域只统计一次，但隔离墙最多要安装4面）
+                if (!visited[tx][ty]) {  // 这个区域还未被统计过
+                    visited[tx][ty] = true;
+                    thisAdjacent++;      // 待感染区域的大小面积+1
+                }                                        
+            }
+        }
+    }
+}
+```
+
+这样，遍历完成后，我们就知道了最大的待感染面积 及其 对应的感染区域的某个病毒的位置，然后就把它们标记为2（隔离过了）
+
+```c++
+if (!max1adjacent) {  // 待感染区域面积为0，说明没有活病毒了或者全部被病毒感染了（其实似乎不用has1
+变量即可）
+    break;
+}
+
+pair<int, int> oneOfThisArea = area2loc[max1adjacent];
+ans += loc2wallNum[oneOfThisArea];
+
+// 再次BFS标记此区域病毒为已隔离
+// 其他区域扩散
+```
+
+具体BFS方法为：
+
+```C++
+queue<pair<int, int>> q;
+q.push(oneOfThisArea);
+isInfected[oneOfThisArea.first][oneOfThisArea.second] = 2;
+while (q.size()) {
+    auto[x, y] = q.front();
+    q.pop();
+    for (int d = 0; d < 4; d++) {
+        int tx = x + direction[d][0];
+        int ty = y + direction[d][1];
+        if (tx >= 0 && tx < n && ty > 0 && ty < m) {
+            if (isInfected[tx][ty] == 1) {
+                isInfected[tx][ty] = 2;
+                q.push({tx, ty});
+            }
+        }
+    }
+}
+```
+
+
+其他区域扩散的具体实现为：
+
+```c++
+visited = vector<vector<bool>>(n, vector<bool>(m, false));
+for (int x = 0; x < n; x++) {
+    for (int y = 0; y < m; y++) {
+        if (isInfected[x][y] == 1 && !visited[x][y]) {
+            visited[x][y] = true;
+            for (int d = 0; d < 4; d++) {
+                int tx = x + direction[d][0];
+                int ty = y + direction[d][1];
+                if (tx >= 0 && tx < n && ty >= 0 && ty < m) {
+                    if (isInfected[tx][ty] == 0) {  // 空地
+                        isInfected[tx][ty] = 1;  // 被病毒感染
+                        visited[tx][ty] = true;  // 防止继续感染拓展
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+- 时间复杂度O(mn)
+- 空间复杂度O(mn)
+  
+  
+  
+
+```c++
+/*
+    0: 空地
+    1: 活の病毒
+    2: 被控制の病毒
+*/
+const int direction[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+class Solution {
+private:
+    int ans = 0; // 存答案
+public:
+    int containVirus(vector<vector<int>>& isInfected) {
+        int n = isInfected.size();
+        int m = isInfected[0].size();
+        while (true) {
+            bool has1 = false;
+
+            int max1adjacent = 0;  // 活病毒的最大相邻待感染区域的大小
+            map<int, pair<int, int>> area2loc;  // [<待感染区域的面积, 其中一个活病毒的坐标>]
+            map<pair<int, int>, int> loc2wallNum;  // [<活病毒的坐标, 需要添加的墙的数量>]
+            vector<vector<bool>> visited(n, vector<bool>(m, false));  // 哪个区域被遍历过了
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (isInfected[i][j] == 1 && !visited[i][j]) {  // 这是一个活病毒的位置 && 这个区域还没有被遍历过
+                        has1 = true;
+                        visited[i][j] = true;
+                        pair<int, int> oneOfThisArea = {i, j};
+                        int thisAdjacent = 0;  // 这个待感染区域的大小
+                        int thisWallNum = 0;  // 控制这个区域的话，需要安装隔离墙的数量
+                        set<pair<int, int>> counted;  // 已经统计过的待感染区域  // 注意不能通过将visited标记为true的方式来判断某个待感染区域是否被统计过，因为待感染区域对于不同的病毒块互不影响
+
+                        queue<pair<int, int>> q;
+                        q.push({i, j});
+                        while (q.size()) {
+                            auto[x, y] = q.front();
+                            q.pop();
+                            for (int d = 0; d < 4; d++) {
+                                int tx = x + direction[d][0];
+                                int ty = y + direction[d][1];
+                                if (tx >= 0 && tx < n && ty >= 0 && ty < m) {  // 下一个单元在合法范围内
+                                    if (isInfected[tx][ty] == 1 && !visited[tx][ty]) {  // 下一个单元是未被标记的病毒
+                                        visited[tx][ty] = true;
+                                        q.push({tx, ty});
+                                    }
+                                    else if (isInfected[tx][ty] == 0) {  // 下一个单元格是待感染区域
+                                        thisWallNum++;  // 不论这个待感染区域是否被统计过，都要安装隔离墙（区域只统计一次，但隔离墙最多要安装4面）
+                                        if (!counted.count({tx, ty})) {  // 这个区域还未被统计过
+                                            counted.insert({tx, ty});
+                                            thisAdjacent++;
+                                        }                                        
+                                    }
+                                }
+                            }
+                        }
+
+                        max1adjacent = max(max1adjacent, thisAdjacent);
+                        area2loc[thisAdjacent] = oneOfThisArea;
+                        loc2wallNum[oneOfThisArea] = thisWallNum;
+                    }
+                }
+            }
+            if (!max1adjacent) {  // 待感染区域面积为 0,说明没有活病毒了或者全部被病毒感染了(其实似乎不用 has1 变量即可)
+                break;
+            }
+            pair<int, int> oneOfThisArea = area2loc[max1adjacent];	// 找到最大扩展面积的病毒坐标
+            ans += loc2wallNum[oneOfThisArea];	// 
+			
+            /*控制病毒*/
+            queue<pair<int, int>> q;
+            q.push(oneOfThisArea);
+            isInfected[oneOfThisArea.first][oneOfThisArea.second] = 2;//已控制
+            while (q.size()) {
+                auto[x, y] = q.front();
+                q.pop();
+                for (int d = 0; d < 4; d++) {
+                    int tx = x + direction[d][0];
+                    int ty = y + direction[d][1];
+                    if (tx >= 0 && tx < n && ty >= 0 && ty < m) {
+                        if (isInfected[tx][ty] == 1) { //是病毒
+                            isInfected[tx][ty] = 2;    //标记为2，已控制
+                            q.push({tx, ty});
+                        }
+                    }
+                }
+            }
+			
+            /*扩展病毒*/
+            visited = vector<vector<bool>>(n, vector<bool>(m, false));
+            for (int x = 0; x < n; x++) {
+                for (int y = 0; y < m; y++) {
+                    if (isInfected[x][y] == 1 && !visited[x][y]) {
+                        visited[x][y] = true;
+                        for (int d = 0; d < 4; d++) {
+                            int tx = x + direction[d][0];
+                            int ty = y + direction[d][1];
+                            if (tx >= 0 && tx < n && ty >= 0 && ty < m) {
+                                if (isInfected[tx][ty] == 0) {  // 空地
+                                    isInfected[tx][ty] = 1;  // 被病毒感染
+                                    visited[tx][ty] = true;  // 防止继续感染拓展
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!has1)
+                break;
+        }
+        return ans;
+    }
+};
+```
+
+
+
+
+
+---
+
+### 单源BFS
+
+根据题意进行模拟即可
+
+我们首先可以对矩阵 isInfected 进行广度优先搜索，具体地，当我们遍历到 isInfected 中的一个 1 时，就从这个 1 对应的位置开始进行广度优先搜索，这样就可以得到连续的一块被病毒感染的区域。
+
+在搜索的过程中，如果当前是第 idx (idx≥1) 块被病毒感染的区域，我们就把这些 1 都赋值成 −idx，这样就可以防止重复搜索，并且可以和非病毒区域 00 区分开来。同时，由于我们每次需要选择「对未感染区域的威胁最大」的区域设置防火墙，因此我们还需要存储：
+
+- 该区域相邻的未感染区域（即 0）的位置和个数；
+
+- 如果需要位该区域设置防火墙，那么需要防火墙的个数。
+
+对于前者，我们在广度优先搜索的过程中，只要在扩展 1 时搜索相邻的 0，就可以把这个 0 对应的位置放在一个哈希集合中。这里使用哈希集合的原因是同一个 0 可能会和多个 1 相邻，可以防止重复计算。同时，由于多个 1 可能出现在不同的感染区域中，如果通过修改矩阵 isInfected 的形式来标记这些 0，会使得代码编写较为麻烦。
+
+对于后者，计算的方法是类似的，在扩展 1 时如果搜索到相邻的 0，那么我们就需要在 1 和 0 之间的这条网格边上建一个防火墙。同一个 0 和多个 1 相邻，就需要建立多个防火墙，因此我们只需要使用一个变量在广度优先搜索的过程中计数即可，无需考虑重复的情况。
+
+
+
+在广度优先搜索完成后，如果我们没有发现任何感染区域，说明区域内不存在病毒，我们直接返回 0 作为答案。否则，我们需要找到「对未感染区域的威胁最大」的区域，这里只需要找出对应的哈希集合的大小最大的那块区域即可。
+
+在确定了区域（假设是第 idx 块区域）后，我们把矩阵中所有的 −idx 都变成 2，这样可以不影响任何搜索和判断；除此之外的所有负数都恢复成 1。此外，所有哈希集合中存储的（除了第 idx 块区域对应的以外）所有相邻位置都需要从 0 变成 1，表示病毒的传播。
+
+最后，如果我们发现区域一共只有一块，那么这次防火墙建立后，不会再有病毒传播，可以返回答案；否则我们还需要继续重复执行上述的所有步骤。
+
+```c++
+class Solution {
+private:
+    static constexpr int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+public:
+    int containVirus(vector<vector<int>>& isInfected) {
+        auto pair_hash = [fn = hash<int>()](const pair<int, int>& o) {
+            return (fn(o.first) << 16) ^ fn(o.second);
+        };
+
+        int m = isInfected.size(), n = isInfected[0].size();
+        int ans = 0;
+        while (true) {
+            vector<unordered_set<pair<int, int>, decltype(pair_hash)>> neighbors;
+            vector<int> firewalls;
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    if (isInfected[i][j] == 1) {
+                        queue<pair<int, int>> q;
+                        unordered_set<pair<int, int>, decltype(pair_hash)> neighbor(0, pair_hash);
+                        int firewall = 0, idx = neighbors.size() + 1;
+                        q.emplace(i, j);
+                        isInfected[i][j] = -idx;
+
+                        while (!q.empty()) {
+                            auto [x, y] = q.front();
+                            q.pop();
+                            for (int d = 0; d < 4; ++d) {
+                                int nx = x + dirs[d][0];
+                                int ny = y + dirs[d][1];
+                                if (nx >= 0 && nx < m && ny >= 0 && ny < n) {
+                                    if (isInfected[nx][ny] == 1) {
+                                        q.emplace(nx, ny);
+                                        isInfected[nx][ny] = -idx;
+                                    }
+                                    else if (isInfected[nx][ny] == 0) {
+                                        ++firewall;
+                                        neighbor.emplace(nx, ny);
+                                    }
+                                }
+                            }
+                        }
+                        neighbors.push_back(move(neighbor));
+                        firewalls.push_back(firewall);
+                    }
+                }
+            }
+            
+            if (neighbors.empty()) {
+                break;
+            }
+
+            int idx = max_element(neighbors.begin(), neighbors.end(), [](const auto& v0, const auto& v1) { return v0.size() < v1.size(); }) - neighbors.begin();
+            ans += firewalls[idx];
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    if (isInfected[i][j] < 0) {
+                        if (isInfected[i][j] != -idx - 1) {
+                            isInfected[i][j] = 1;
+                        }
+                        else {
+                            isInfected[i][j] = 2;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < neighbors.size(); ++i) {
+                if (i != idx) {
+                    for (const auto& [x, y]: neighbors[i]) {
+                        isInfected[x][y] = 1;
+                    }
+                }
+            }
+            if (neighbors.size() == 1) {
+                break;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+
+
+- 时间复杂度：$O(mn(m+n))$。每一次广度优先搜索需要的时间为 $O(mn)$，而矩阵中任意两个位置的曼哈顿距离最大值为 $m+n-2$，因此在 $O(m+n)$ 次搜索后，所有还没有被隔离的病毒会连成一个整体。
+
+- 空间复杂度：$O(mn)$，即为广度优先搜索中的队列以及哈希集合需要使用的空间。
+
+
+
+
+
 
 
 ----

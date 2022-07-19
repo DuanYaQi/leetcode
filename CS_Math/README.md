@@ -2974,3 +2974,225 @@ class Solution {
 
 
 
+
+
+---
+
+## 394. 字符串解码
+
+### 递归解析
+
+从左往右解析字符串：
+
+- 如果当前位置为数字位，那么后面一定包含一个用方括号表示的字符串，即属于这种情况 `k[...]`：
+  - 我们先解析出一个数字，然后解析到了左括号，递归向下解析后面的内容，遇到对应的右括号就返回，此时我们可以根据解析出的数字 x 解析出的括号里的字符串 `s'` 构造出一个新的字符串 `x * s'`；
+  - 我们把 `k[...]` 解析结束后，再次调用递归函数，解析右括号右边的内容。
+- 如果当前位置时字母位，我们直接解析当前这个字母，然后递归向下解析这个字母后面的内容。
+
+ 根据题目的定义，我们可以推导出这样的巴科斯范式（BNF）：
+
+$$
+\begin{aligned} {\rm String} &\rightarrow { \rm Digits \, [String] \, String \, | \, Alpha \, String \, | \, \epsilon } \\ {\rm Digits} &\rightarrow { \rm Digit \, Digits \, | \, Digit } \\ {\rm Alpha} &\rightarrow { a | \cdots | z | A | \cdots | Z } \\ {\rm Digit} &\rightarrow { 0 | \cdots | 9 } \\ \end{aligned}
+$$
+$\rm Digit$ 表示十进制数位，可能的取值是 0 到 9 之间的整数
+$\rm Alpha$ 表示字母，可能的取值是大小写字母的集合，共 52 个
+$\rm Digit$ 表示一个整数，它的组成是 $\rm Digit$ 出现一次或多次
+$\rm String$ 代表一个代解析的字符串，它可能有三种构成，如 BNF 所示
+$\rm \epsilon$ 表示空串，即没有任何子字符
+
+
+
+由于 $\rm Digits$ 和 $\rm Alpha$ 构成简单，很容易进行词法分析，我们把它他们看作独立的 TOKEN。那么此时的非终结符有 $\rm String$，终结符有 $\rm Digits$、$\rm Alpha$ 和 $\rm \epsilon$，我们可以根据非终结符和 FOLLOW 集构造出这样的预测分析表：
+
+|        | Alpha                             | Digits                                     | $\rm \epsilon$                    |
+| ------ | --------------------------------- | ------------------------------------------ | --------------------------------- |
+| String | String $\rightarrow$ Alpha String | String $\rightarrow$ Digits[String] String | String $\rightarrow \rm \epsilon$ |
+
+可见不含多重定义的项，为 LL(1) 文法，即：
+
+- 从左向右分析（Left-to-right-parse）
+- 最左推导（Leftmost-derivation）
+- 超前查看一个符号（1-symbol lookahead）
+
+它决定了我们从左向右遍历这个字符串，每次只判断当前最左边的一个字符的分析方法是正确的。
+
+
+
+```c++
+typedef pair<int, string> pis;
+
+class Solution {
+public:
+    int getDigit() {
+        int res = 0;
+        while (ptr < src.size() && isdigit(src[ptr])) {
+            res = res * 10 + src[ptr] - '0';
+            ptr++;
+        }
+        return res;
+    }
+
+    string getString() {    
+        if (ptr == src.size() || src[ptr] == ']') {
+            return "";  //String -> eps
+        }
+
+        string res;             // 最后返回的结果
+        char cur = src[ptr];    // ptr下标的字符
+
+        if (isdigit(cur)) {
+            // String -> Digits[String] String
+            // 解析 Digits 
+            int times = getDigit(); //字符串乘的次数
+            // 过滤左括号
+            ++ptr;
+            // 解析 string
+            string str = getString();
+            // 过滤右括号
+            ++ptr;
+            // 字符串累乘
+            while(times--) 
+                res += str;
+        } else if (isalpha(cur)) {
+            // String -> Alpha String
+            // 解析 Alpha
+            res = src[ptr++];
+        }
+
+        return res + getString();       
+        // 走到这一步，后边可能还有表达式,
+        // 所以要继续递归并且把后边的结果拼接起来
+    }
+
+    string decodeString(string s) {
+        src = s;
+        ptr = 0;
+        return getString();
+    }
+
+private:
+    string src;
+    size_t ptr;
+};
+```
+
+
+
+
+
+- `"abc3[cd]xyz"`
+- `"2[abc]3[cd]ef"`
+
+
+
+```c++
+class Solution {
+public:
+    int getDigit(string &src, size_t &ptr) {
+        int res = 0;
+        while (ptr < src.size() && isdigit(src[ptr])) {
+            res = res * 10 + src[ptr] - '0';
+            ptr++;
+        }
+        return res;
+    }
+
+    string decodeString(string s) {        
+        stack<int> numSt;
+        stack<string> stringSt;
+        string res;
+        int numT;
+        size_t ptr = 0; 
+
+        while (ptr < s.size()) {
+            char cur = s[ptr];
+
+            if (cur == '[') {
+                ptr++;
+                numSt.push(numT);
+                stringSt.push(res);
+                res = "";
+            } else if (cur == ']') {
+                ptr++;
+                string tmpSrc;
+                int times = numSt.top(); numSt.pop();
+                while (times--)
+                    tmpSrc += res;
+                res = stringSt.top() + tmpSrc; stringSt.pop();
+            } else if (isdigit(cur)) {
+                numT = getDigit(s, ptr);
+            } else if (isalpha(cur)) {
+                ptr++;
+                res += cur;
+            }  
+        } 
+
+        return res;
+    }
+};
+```
+
+
+
+
+
+## error
+
+```C++
+class Solution {
+public:
+    int getDigit(string &src, size_t &ptr) {
+        int res = 0;
+        while (ptr < src.size() && isdigit(src[ptr])) {
+            res = res * 10 + src[ptr] - '0';
+            ptr++;
+        }
+        return res;
+    }
+
+    string getString(string &src, size_t &ptr) {    
+        string res;
+        while (ptr < src.size() && isalpha(src[ptr])) {
+            res += src[ptr];
+            ptr++;
+        }
+        return res;
+    }
+
+    string decodeString(string s) {        
+        stack<int> numSt;
+        stack<string> stringSt;
+        string res;
+        size_t ptr = 0; 
+
+        while (ptr < s.size()) {
+            char cur = s[ptr];
+
+            if (isdigit(cur)) {
+                numSt.push(getDigit(s, ptr));
+            } else if (isalpha(cur)) {
+                stringSt.push(getString(s, ptr));
+            } else if (cur == '[') {
+                ptr++;
+                continue;
+            } else if (cur == ']') {
+                ptr++;
+                int times = numSt.top(); numSt.pop();
+                string tmpS;
+                string str = stringSt.top(); stringSt.pop();
+                while (times--)
+                    tmpS += str;
+                /*把当前字符串加到栈顶的字符串后边*/
+                if (stringSt.size()) {
+                    stringSt.top() += tmpS; 
+                } else {
+                    res += tmpS;
+                }
+            }
+        }
+
+        return res;
+    }
+};
+```
+

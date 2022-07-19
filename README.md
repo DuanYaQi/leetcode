@@ -706,13 +706,14 @@ static const auto io_sync_off = []()
 
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
+|      |        |      |
 | [2276. Count Integers in Intervals](/DS_ST/2276+Count%20Integers%20in%20Intervals.cpp)     |  区间合并      | 注意两个条件     |
 | [352. Data Stream as Disjoint Intervals](/DS_ST/352+Data%20Stream%20as%20Disjoint%20Intervals.cpp)     |  区间合并      | 注意相连的范围需要合并，因此是[left-1, right+1]     |
 | [715. Range Module](/DS_ST/715+Range%20Module.cpp)     |  区间合并+查询      |   查询时注意前开后闭  |
 | [729. My Calendar I](/DS_ST/729+My%20Calendar%20I.cpp)     |  区间查询      |   注意要(--iter)，因为找的是比它小的数里边最大的数字，即它左边的那个数字   |
 |      |        |      |
 |      |        |      |
-|      |        |      |
+| [308+Range Sum Query 2D - Mutable](/DS_ST/308+Range%20Sum%20Query%202D%20-%20Mutable.cpp)     |   线段树     |  2D > 1D    |
 |      |        |      |
 |      |        |      |
 |      |        |      |
@@ -1077,10 +1078,12 @@ DP
 |[1175. Prime Arrangements](/CS_Math/1175+Prime%20Arrangements.cpp) |素数表+二分+排列组合 |注意二分的特殊判断 |
 |[736. Parse Lisp Expression](/CS_Math/736+Parse%20Lisp%20Expression.cpp) | 递归解析字符 | 编译原理 LL(1) 分析，使用递归下降法实现  |
 |[736. Parse Lisp Expression](/CS_Math/736+Parse%20Lisp%20Expression_FSM.cpp) | 状态机 | 编译原理 LR(1) 分析，使用自动机实现 |
+|[394. Decode String](/CS_Math/394+Decode%20String.cpp) |递归解析字符 | 编译原理 LL(1) 分析，使用递归下降法实现|
+|[394. Decode String](/CS_Math/394+Decode%20String_Stack.cpp) | 栈模拟| |
 | | | |
 | | | |
 | | | |
-
+| | | |
 
 
 
