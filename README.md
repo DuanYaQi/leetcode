@@ -571,8 +571,10 @@ static const auto io_sync_off = []()
 |💛[347. Top K Frequent Elements](DS_StackQueue/347+topKFrequent.cpp) | 堆| 优先队列实现小顶堆|
 |[71. Simplify Path](DS_StackQueue/71+simplifyPath.cpp) |  Unix 风格 绝对路径|栈 |
 | | | |
-
-
+|[1381. Design a Stack With Increment Operation](/DS_StackQueue/1381+Design%20a%20Stack%20With%20Increment%20Operation.cpp) | 模拟栈 | 修改栈底元素 |
+|[768. Max Chunks To Make Sorted II](/DS_StackQueue/768+Max%20Chunks%20To%20Make%20Sorted%20II.cpp) | 最多能完成排序的块 | 栈存储每个块的最大值， |
+| | | |
+| | | |
 
 
 ---

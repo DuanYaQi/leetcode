@@ -559,7 +559,7 @@ public:
 
 
 
-## 1381. 设计一个支持增量操作的栈]
+## 1381. 设计一个支持增量操作的栈
 ### 思路
 
 直接用 stack 模拟
@@ -743,4 +743,37 @@ private:
 > + 时间复杂度: O(1)
 > + 空间复杂度: O(1)
 
+
+
+
+
+---
+
+## 768. 最多能完成排序的块 II
+
+根据题意，将原数组进行分块后，对各分块分别进行排序后的结果等于原数组排序后的结果。可以得到的一个结论是，每个分块中的数字相对于前一个分块都是递增的(因为有重复数字，所以也可能是相同)，**下一个分块中的所有数字都会大于等于上一个分块中的所有数字**。
+
+- 在遍历数组的过程中，如果一个数字比之前所有分块的最大值都要大，我们就把它作为一个新的分块。
+- 如果数字小于之前某些分块的最大值，那这些分块都要被合成一个分块(保持栈的单调递增)。
+
+```c++
+var maxChunksToSorted = function (arr) {
+    const stack = new Stack();
+
+    for (let i = 0; i < arr.length; i++) {
+        if (stack.empty() || stack.peek() <= arr[i]) {
+            stack.push(arr[i]);
+        } else {
+            const temp = stack.pop();
+
+            while (stack.peek() > arr[i]) {
+                stack.pop();
+            }
+
+            stack.push(temp);
+        }
+    }
+    return stack.size();
+};
+```
 
