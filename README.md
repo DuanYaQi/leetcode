@@ -716,10 +716,13 @@ static const auto io_sync_off = []()
 |      |        |      |
 |      |        |      |
 | [308+Range Sum Query 2D - Mutable](/DS_ST/308+Range%20Sum%20Query%202D%20-%20Mutable.cpp)     |   线段树     |  2D > 1D    |
-|      |        |      |
-|      |        |      |
-|      |        |      |
-|      |        |      |
+
+三部曲
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+| [729. My Calendar I](/DS_ST/729.%20My%20Calendar%20I_ST.cpp)     |  动态开点+懒标记（但不是离散化）| `ST.query(ST.root, start, end-1); ST.modify(ST.root, start, end-1, 1);`     |
+| [731. My Calendar II](/DS_ST/731.%20My%20Calendar%20II_ST.cpp)     | 动态开点+懒标记（但不是离散化） |  `ST.query(ST.root, start, end-1); ST.modify(ST.root, start, end-1, 1);`    |
+ [732. My Calendar III](/DS_ST/732.%20My%20Calendar%20III_ST.cpp)     | 动态开点+懒标记（但不是离散化） |  `return ST.root->maxv;`    |
 
 
 
