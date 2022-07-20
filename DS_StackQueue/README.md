@@ -757,23 +757,23 @@ private:
 - 如果数字小于之前某些分块的最大值，那这些分块都要被合成一个分块(保持栈的单调递增)。
 
 ```c++
-var maxChunksToSorted = function (arr) {
-    const stack = new Stack();
+int maxChunksToSorted(vector<int>& arr) {
+        stack<int> st;
+        st.push(arr[0]);
 
-    for (let i = 0; i < arr.length; i++) {
-        if (stack.empty() || stack.peek() <= arr[i]) {
-            stack.push(arr[i]);
-        } else {
-            const temp = stack.pop();
-
-            while (stack.peek() > arr[i]) {
-                stack.pop();
+        for (int i = 1; i < arr.size(); ++i) {
+            if (arr[i] >= st.top()) {
+                st.push(arr[i]);
+            } else {
+                int head = st.top(); st.pop();  // 先把头部取出来
+                while (st.size() != 0 && arr[i] < st.top()) { // 合并比他大的数
+                    st.pop();
+                }
+                st.push(head);
             }
-
-            stack.push(temp);
         }
+
+        return st.size();
     }
-    return stack.size();
-};
 ```
 
