@@ -388,6 +388,52 @@ slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x 
 
 
 
+---
+
+## 61. 旋转链表
+
+先把他变成环，然后计算出要移动的距离
+
+- 变成环，找到末端节点，连接头尾，捎带计算链表长度
+- 因为每个节点向右移动，相当于头节点向左移动，与链表方向相反，所以要计算移动的距离 = size - k
+
+
+```c++
+ListNode* rotateRight(ListNode* head, int k) {
+    if (head == nullptr) return nullptr;
+
+    ListNode *root = head, *cur = head;
+
+    int size = 1;
+    while (cur->next != nullptr) {
+        cur = cur->next;
+        size++;
+    }
+    cur->next = head;  //成环
+
+    int num = size - k % size;//计算正向移动的格子
+
+    while(num--) {
+        if (num == 0) {
+            ListNode* now = root; 
+            root = root->next;
+            now->next = nullptr;
+            break;
+        }
+
+        root = root->next;
+    }
+
+    return root;
+}
+```
+> + 时间复杂度: O(N)，N 为链表长度
+> + 空间复杂度: O(N)
+
+
+
+
+
 ----
 
 # LC
