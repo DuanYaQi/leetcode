@@ -1460,6 +1460,29 @@ vector<int> findFrequentTreeSum(TreeNode* root) {
 
 
 
+## 814. 二叉树剪枝
+
+```c++
+TreeNode* pruneTree(TreeNode* root) {
+    if (root == nullptr) {
+        return nullptr;
+    }
+
+    root->left = pruneTree(root->left);
+    root->right = pruneTree(root->right);
+
+    if (root->left == nullptr && root->right == nullptr && root->val == 0) {
+        return nullptr;
+    }
+
+    return root;
+}
+```
+
+
+
+
+
 
 
 ----
@@ -1806,7 +1829,7 @@ TreeNode* deserialize(string data) {
 
 -----
 
-## 230. 二叉搜索树中第K小的元素
+# 230. 二叉搜索树中第K小的元素
 
 ```c++
 void dfs(TreeNode* root, vector<int> &res) {

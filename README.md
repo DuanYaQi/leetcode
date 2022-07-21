@@ -492,6 +492,8 @@ static const auto io_sync_off = []()
 |[617. Merge Two Binary Trees](DS_Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
 | | | |
 |[508. Most Frequent Subtree Sum](/DS_Tree/508+Most%20Frequent%20Subtree%20Sum.cpp) | 递归求和 求众数| |
+|[814. Binary Tree Pruning](/DS_Tree/814+Binary%20Tree%20Pruning.cpp) | 递归|二叉树剪枝 |
+| | | |
 | | | |
 |[700. Search in a Binary Search Tree](DS_Tree/700+searchBST.cpp)   | BST |R|
 |[98. Validate Binary Search Tree](DS_Tree/98+isValidBST.cpp):(   | BST |R 利用二叉搜索树性质|
