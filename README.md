@@ -722,6 +722,8 @@ static const auto io_sync_off = []()
 |      |        |      |
 |      |        |      |
 | [308+Range Sum Query 2D - Mutable](/DS_ST/308+Range%20Sum%20Query%202D%20-%20Mutable.cpp)     |   线段树     |  2D > 1D    |
+| [757. Set Intersection Size At Least Two](/DS_ST/757+Set%20Intersection%20Size%20At%20Least%20Two.cpp)     |   线段树     |  注意怎么修改线段树的值，以及查询的意义，了解线段树存的是什么东西    |
+|      |        |      |
 
 三部曲
 | 题目 | 知识点 | 技巧 |
@@ -917,7 +919,7 @@ d 表示额外操作的次数，$O(n^d)$ 除去过程之外剩下的数据量，
 
 ### 2.6. [贪心](Alog_Greedy/README.md)
 
-Greedy
+Greedy(==**排序很重要**==)
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[455.Assign Cookies.cpp](Alog_Greedy/455+Assign%20Cookies.cpp) | |先排序|
@@ -930,9 +932,12 @@ Greedy
 |[45. Jump Game II](/Alog_Greedy/45+Jump%20Game%20II.cpp) | | |
 | | | |
 |[1775. Equal Sum Arrays With Minimum Number of Operations](/Alog_Greedy/1775+Equal%20Sum%20Arrays%20With%20Minimum%20Number%20of%20Operations.cpp) | | 可以一直贪心，不一定要使它刚好相等，使sumn1 大于sumn2 说明一定有解，只要最后一次取小一点就可以了 |
+|[452. Minimum Number of Arrows to Burst Balloons](/Alog_Greedy/452+Minimum%20Number%20of%20Arrows%20to%20Burst%20Balloons.cpp) | 贪心模拟 | 排序很重要 要构建出来射气球的场景|
 | | | |
 | | | |
-
+| | | |
+| | | |
+| | | |
 
 ---
 
