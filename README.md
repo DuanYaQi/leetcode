@@ -555,7 +555,7 @@ static const auto io_sync_off = []()
 |[19. Remove Nth Node From End of List](/DS_Linked_list/19+Remove%20Nth%20Node%20From%20End%20of%20List.cpp) | | 快慢指针|
 |[61. Rotate List](/DS_Linked_list/61+Rotate%20List.cpp) | 旋转链表 | |
 | | | |
-| | | |
+|[109. Convert Sorted List to Binary Search Tree](/DS_Linked_list/109+Convert%20Sorted%20List%20to%20Binary%20Search%20Tree.cpp) | 链表转平衡二叉树|因为已经是有序的了，每次选择好中点，控制平衡递归建树即可 |
 | | | |
 | | | |
 |[剑指 Offer II 029. 排序的循环链表](/DS_Linked_list/Offer%20II%20029.%20排序的循环链表.cpp) |  | 指针 |
@@ -646,6 +646,8 @@ static const auto io_sync_off = []()
 | | | |
 |[565. Array Nesting](/DS_Graph/565+Array%20Nesting.cpp) | dfs|找最大环 |
 | | | |
+|[剑指 Offer II 115. 重建序列](/DS_Graph/剑指%20Offer%20II%20115.%20重建序列.cpp) | 拓扑排序| 序列有方向，就可以抽象成图 |
+| | | |
 
 ---
 
@@ -712,6 +714,39 @@ static const auto io_sync_off = []()
 
 ### 1.11. [线段树](DS_ST/README.md)
 
+模板题-连续
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+| [757. 设置交集大小至少为2](/DS_ST/757+Set%20Intersection%20Size%20At%20Least%20Two.cpp)     |  求和(交集)+动态开点+懒标记（连续化）      |    `val += (node->mid - node->l + 1) * node->add` <br> `add += node->add` |
+| [729. My Calendar I](/DS_ST/729+My%20Calendar%20I_ST.cpp)     |  求最大+动态开点+懒标记（连续化）| `val += node->add` <br> `add += node->add`     |
+| [731. My Calendar II](/DS_ST/731+%20My%20Calendar%20II_ST.cpp)     | 求最大+动态开点+懒标记（连续化） | `val += node->add` <br> `add += node->add`    |
+| [732. My Calendar III](/DS_ST/732+My%20Calendar%20III_ST.cpp)     | 求最大+动态开点+懒标记（连续化） |  `val += node->add` <br> `add += node->add`    |
+| [2276. Count Integers in Intervals](/DS_ST/2276+Count%20Integers%20in%20Intervals_ST.cpp)     |  求个数+动态开点+懒标记（连续化）      |  `val = (node->mid - node->l + 1) * node->add` <br> `add = node->add`    |
+| [715. Range Module](/DS_ST/715+Range%20Module_ST_int.cpp)     |  int+求个数+动态开点+懒标记（连续化）      |  `val = (node->mid - node->l + 1) * node->add` <br> `add = node->add` <br> 但超时(44/54)   |
+| [715. Range Module](/DS_ST/715+Range%20Module_ST_bool.cpp)     |  bool+求个数+动态开点+懒标记（连续化）      |  `val = node->add` <br> `add = node->add` <br> val 不存被追踪的次数，而是存该区间是否被追踪(必须用 bool类型)   |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+
+模板题-离散
+| 题目 | 知识点 | 技巧 |
+| :--- | :----: | :--: |
+| [757. 设置交集大小至少为2](/DS_ST/757+Set%20Intersection%20Size%20At%20Least%20Two_Discrete.cpp)     |  求和(交集)+动态开点+懒标记（离散化）      |  676ms > 188ms   |
+| [729. My Calendar I]()     |  求最大+动态开点+懒标记（离散化）|      |
+| [731. My Calendar II]()     | 求最大+动态开点+懒标记（离散化） |     |
+| [732. My Calendar III]()     | 求最大+动态开点+懒标记（离散化） |      |
+| [2276. Count Integers in Intervals]()     |  求个数+动态开点+懒标记（离散化）      |     |
+| [715. Range Module]()     |  int+求个数+动态开点+懒标记（离散化）      |  连续超时(44/54)   |
+| [715. Range Module](/DS_ST/715+Range%20Module_ST_Discrete_bool.cpp)     |  bool+求个数+动态开点+懒标记（离散化）      |  1504ms>524ms   |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+|      |        |      |
+
+
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
 |      |        |      |
@@ -725,12 +760,7 @@ static const auto io_sync_off = []()
 | [757. Set Intersection Size At Least Two](/DS_ST/757+Set%20Intersection%20Size%20At%20Least%20Two.cpp)     |   线段树     |  注意怎么修改线段树的值，以及查询的意义，了解线段树存的是什么东西    |
 |      |        |      |
 
-三部曲
-| 题目 | 知识点 | 技巧 |
-| :--- | :----: | :--: |
-| [729. My Calendar I](/DS_ST/729.%20My%20Calendar%20I_ST.cpp)     |  动态开点+懒标记（但不是离散化）| `ST.query(ST.root, start, end-1); ST.modify(ST.root, start, end-1, 1);`     |
-| [731. My Calendar II](/DS_ST/731.%20My%20Calendar%20II_ST.cpp)     | 动态开点+懒标记（但不是离散化） |  `ST.query(ST.root, start, end-1); ST.modify(ST.root, start, end-1, 1);`    |
- [732. My Calendar III](/DS_ST/732.%20My%20Calendar%20III_ST.cpp)     | 动态开点+懒标记（但不是离散化） |  `return ST.root->maxv;`    |
+
 
 
 

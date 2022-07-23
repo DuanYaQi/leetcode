@@ -279,7 +279,7 @@ private:
 
 
 
-## 环形链表
+## 环形链表-快慢指针
 
 ### **142. 环形链表II**
 
@@ -429,6 +429,109 @@ ListNode* rotateRight(ListNode* head, int k) {
 ```
 > + 时间复杂度: O(N)，N 为链表长度
 > + 空间复杂度: O(N)
+
+
+
+---
+
+## 109. 有序链表转换二叉搜索树
+
+将给定的有序链表转换为二叉搜索树的第一步是确定根节点。
+
+由于我们需要构造出平衡的二叉树，因此比较直观的想法是让根节点**左子树中的节点个数**与右子树中的节点个数**尽可能接近**。这样一来，左右子树的高度也会非常接近，可以达到高度差绝对值不超过 1 的题目要求。
+
+如何找出这样的一个根节点呢？我们可以找出链表元素的**中位数**作为根节点的值。
+
+> 这里对于中位数的定义为：如果链表中的元素个数为奇数，那么唯一的中间值为中位数；如果元素个数为偶数，那么唯二的中间值都可以作为中位数，而不是常规定义中二者的平均值。
+
+
+
+根据中位数的性质，链表中小于中位数的元素个数与大于中位数的元素个数要么相等，要么相差 11。此时，小于中位数的元素组成了左子树，大于中位数的元素组成了右子树，它们分别对应着有序链表中连续的一段。
+
+在这之后，我们使用分治的思想，继续递归地对左右子树进行构造，找出对应的中位数作为根节点，以此类推。
+
+
+
+
+
+寻找链表的中间点有个小技巧：
+
+快慢指针起初都指向头结点，分别一次走两步和一步，当快指针走到尾节点时，慢指针正好走到链表的中间。断成两个链表，分而治之。
+
+为了断开，我们需要保存慢指针的前一个节点，因为单向链表的结点没有前驱指针。
+
+![image.png](assets/b112a5eba08d0e85771ddaa41c005a7057c8ca05f1e29e0316f0ec15c37c96d5-image.png)
+
+
+
+
+
+- 保存到数组，获取数组中点：O(1)
+- 每次快慢指针获取链表中点：O(N)
+
+```c++
+class Solution {
+public:
+    TreeNode* buildAVL(vector<ListNode*> &vecs, int start, int end) {
+        if (start > end) return nullptr;
+		
+        //start + end >> 1 和 start + end + 1 >> 1 针对偶数链表，一个选择前边作为根节点，另一个选择后边作为根节点，都对
+        int mid = start + end >> 1;
+        TreeNode* root = new TreeNode(vecs[mid]->val);
+        root->left = buildAVL(vecs, start, mid);
+        root->right = buildAVL(vecs, mid + 1, end);
+        return root;    
+    }
+
+    TreeNode* sortedListToBST(ListNode* head) {
+        vector<ListNode*> vecs;
+
+        for (ListNode* cur = head; cur != nullptr; cur = cur->next) {
+            vecs.push_back(cur);
+        }
+
+        TreeNode* root = buildAVL(vecs, 0, vecs.size() - 1);
+
+        return root;
+    }
+};
+```
+
+
+
+### 快慢指针
+
+```c++
+ListNode* getMid(ListNode* left, ListNode* right) {
+    ListNode *slow = left, *fast = left;
+
+    while (fast != right && fast->next != right) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+TreeNode* buildAVL(ListNode* left, ListNode* right) {
+    if (left == right) return nullptr;
+    ListNode* midNode = getMid(left, right);
+    TreeNode* root = new TreeNode(midNode->val);
+    root->left = buildAVL(left, midNode);
+    root->right = buildAVL(midNode->next, right);
+    return root;    
+}
+
+TreeNode* sortedListToBST(ListNode* head) {
+    TreeNode* root = buildAVL(head, nullptr);
+
+    return root;
+}
+```
+
+
+
+
 
 
 

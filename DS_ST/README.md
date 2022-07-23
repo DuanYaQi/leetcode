@@ -289,7 +289,103 @@ public:
 
 ---
 
-### 离散链表（动态开点）懒标记模板
+### 动态开点+懒标记模板-求和
+
+[757. 设置交集大小至少为2](https://leetcode.cn/problems/set-intersection-size-at-least-two/)
+
+```c++
+const int maxn = 1e9 + 10;
+
+class Node {           	// 线段树节点
+public:
+    Node *lNode, *rNode;   	// 区间的左右端点,即[l,r]  
+    int l, r;   			// 区间的左右端点,即[l,r]  
+    int maxv;               // 区间最大值
+    int add;				// 懒标记
+    int mid;				// 构造的时候就可以捎带计算一下
+    
+    Node () {}
+    Node (int _l, int _r) {
+        this->l = _l;
+        this->r = _r;
+        this->mid = _l + _r >> 1;
+        this->maxv = 0;
+        this->add = 0;
+        this->lNode = nullptr;
+        this->rNode = nullptr;
+    }
+};
+
+class SegTree {             // 线段树不一定满二叉树，也不一定是完全二叉树，但一定是平衡二叉树
+public:
+    Node* root;
+
+    SegTree() {
+    	root = new Node(0, maxn);    
+    }    
+    
+    void push_up(Node* node) {	// 回溯时更新父结点
+        node->maxv = node->lNode->maxv + node->rNode->maxv;    // 递归往回走的时候 一路上去更新, 更新祖先节点
+    }
+    
+    void push_down(Node* node) {	// 下传懒标记
+        if (!node->lNode) node->lNode = new Node(node->l, node->mid);
+        if (!node->rNode) node->rNode = new Node(node->mid + 1, node->r);
+        if (node->add) { 	// 欠的钱不为 0
+            node->lNode->maxv += (node->mid - node->l + 1) * node->add;  // +=
+            node->rNode->maxv += (node->r - node->mid) * node->add;
+            node->lNode->add += node->add;
+            node->rNode->add += node->add;
+            node->add = 0;
+        }        
+    }
+    
+    
+    // 区间修改 [l,r] 的和，也可以用于单点修改l=y即可
+    void modify(Node* node, int l, int r, int v) { 	// u为根节点索引 l左边界 y右边界 v为修改的值 
+        if (l <= node->l && node->r <= r) { 	// 修改区间 [l,r] 完全覆盖当前节点区
+            node->maxv += (node->r - node->l + 1) * v; 	                // 进来修改, +=
+            node->add += v;						// 懒标记 v  +=
+            return;
+        }
+        // 不覆盖裂开
+        push_down(node);							// “下次需要”，下传懒标记
+        if (l <= node->mid) modify(node->lNode, l, r, v);
+        if (r > node->mid)  modify(node->rNode, l, r, v);
+        push_up(node);				    			// 向上回溯更新祖先节点
+    }
+
+    // 区间查询 [l,r] 的和，利用拆分与拼凑的思想，把大区间变为多个小区间的和
+    int query(Node* node, int l, int r) { 			// u为根节点索引 l左边界 r右边界
+        if (l <= node->l && node->r <= r)   	// 查询区间 [l,r] 完全覆盖当前节点区
+            return node->maxv;               	// 间，立即回溯，返回该区间的sum值，让上一层累加
+        
+        // 非叶子节点，裂开
+        push_down(node);							// “下次需要”，下传懒标记
+        int res = 0;
+        if (l <= node->mid) res += query(node->lNode, l, r); 	// 查询左边界比mid小，左子节点与区间 [l,r] 有重叠，递归访问左子树
+        if (r > node->mid) res += query(node->rNode, l, r);  	// 查询右边界比mid小，右子节点与区间 [l,r] 有重叠，递归访问右子树
+        return res;
+    }
+
+};
+```
+
+
+
+
+
+
+
+---
+
+### 动态开点+懒标记模板-求最大值
+
+[729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/)
+
+[731. 我的日程安排表 II](https://leetcode.cn/problems/my-calendar-ii/)
+
+[732. 我的日程安排表 III](https://leetcode.cn/problems/my-calendar-iii/)
 
 ```c++
 const int maxn = 1e9 + 10;
@@ -479,153 +575,196 @@ public:
 
 
 
+---
 
+### 动态开点+懒标记模板-求个数
 
+[2276. 统计区间中的整数数目](https://leetcode.cn/problems/count-integers-in-intervals/)
 
-
-https://leetcode.cn/problems/falling-squares/solution/cpython3java-1xian-duan-shu-dong-tai-kai-ed6a/
+[715. Range 模块](https://leetcode.cn/problems/range-module/)
 
 ```c++
-struct SegNode {
-    int l;
-    int r;
-    int max_;
-    int lazy_max;
-    SegNode * left;
-    SegNode * right;
+const int maxn = 1e9 + 10;
 
-    SegNode () {}
-    SegNode (int l_, int r_)
-    {
-        l = l_;
-        r = r_;
-        max_ = 0;
-        lazy_max = 0;
-        left = nullptr;
-        right = nullptr;
+class Node {           	// 线段树节点
+public:
+    Node *lNode, *rNode;   	// 区间的左右端点,即[l,r]  
+    int l, r;   			// 区间的左右端点,即[l,r]  
+    int maxv;               // 区间最大值
+    int add;				// 懒标记
+    int mid;				// 构造的时候就可以捎带计算一下
+    
+    Node () {}
+    Node (int _l, int _r) {
+        this->l = _l;
+        this->r = _r;
+        this->mid = _l + _r >> 1;
+        this->maxv = 0;
+        this->add = 0;
+        this->lNode = nullptr;
+        this->rNode = nullptr;
     }
 };
 
-
-class Solution 
-{
+class SegTree {             // 线段树不一定满二叉树，也不一定是完全二叉树，但一定是平衡二叉树
 public:
-    SegNode * get_left(SegNode * rt)
-    {
-        if (rt->left == NULL)
-        {
-            rt->left = new SegNode(rt->l, (rt->l + rt->r) / 2);
-        }
-        return rt->left;
-    }
-    SegNode * get_right(SegNode * rt)
-    {
-        if (rt->right == NULL)
-        {
-            rt->right = new SegNode((rt->l + rt->r) / 2 + 1, rt->r);
-        }
-        return rt->right;
-    }
+    Node* root;
 
-    void push_up(SegNode * rt)
-    {
-        SegNode * ll = get_left(rt);
-        SegNode * rr = get_right(rt);
-        rt->max_ = max(ll->max_, rr->max_);
+    SegTree() {
+    	root = new Node(0, maxn);    
+    }    
+    
+    void push_up(Node* node) {	// 回溯时更新父结点
+        node->maxv = node->lNode->maxv + node->rNode->maxv;    // 递归往回走的时候 一路上去更新, 更新祖先节点
     }
-    void push_down(SegNode * rt)
-    {
-        if (rt->lazy_max != 0)
-        {
-            int v = rt->lazy_max;
-            SegNode * ll = get_left(rt);
-            SegNode * rr = get_right(rt);
-
-            ll->lazy_max = v;
-            rr->lazy_max = v;
-            ll->max_ = max(ll->max_, v);
-            rr->max_ = max(rr->max_, v);
-
-            push_up(rt);
-            rt->lazy_max = 0;
+    
+    void push_down(Node* node) {	// 下传懒标记
+        if (!node->lNode) node->lNode = new Node(node->l, node->mid);
+        if (!node->rNode) node->rNode = new Node(node->mid + 1, node->r);
+        if (node->add) { 	// 欠的钱不为 0
+            node->lNode->maxv = (node->mid - node->l + 1) * node->add;  // +=
+            node->rNode->maxv = (node->r - node->mid) * node->add;
+            node->lNode->add = node->add;
+            node->rNode->add = node->add;
+            node->add = 0;
+        }        
+    }
+    
+    
+    // 区间修改 [l,r] 的和，也可以用于单点修改l=y即可
+    void modify(Node* node, int l, int r, int v) { 	// u为根节点索引 l左边界 y右边界 v为修改的值 
+        if (l <= node->l && node->r <= r) { 	// 修改区间 [l,r] 完全覆盖当前节点区
+            node->maxv = (node->r - node->l + 1) * v; 	                // 进来修改, +=
+            node->add = v;						// 懒标记 v  +=
+            return;
         }
+        // 不覆盖裂开
+        push_down(node);							// “下次需要”，下传懒标记
+        if (l <= node->mid) modify(node->lNode, l, r, v);
+        if (r > node->mid)  modify(node->rNode, l, r, v);
+        push_up(node);				    			// 向上回溯更新祖先节点
     }
 
-    void update(SegNode * rt, int ul, int ur, int val)
-    {
-        if (ul <= rt->l && rt->r <= ur)
-        {
-            rt->max_ = val;
-            rt->lazy_max = val;
-            return ;
-        }
-
-        int mid = (rt->l + rt->r) / 2;
-        SegNode * ll = get_left(rt);
-        SegNode * rr = get_right(rt);
-
-        push_down(rt);
-        if (ur <= mid)
-        {
-            update(ll, ul, ur, val);
-        }
-        else if (mid + 1 <= ul)
-        {
-            update(rr, ul, ur, val);
-        }
-        else
-        {
-            update(ll, ul, ur, val);
-            update(rr, ul, ur, val);
-        }
-        push_up(rt);
-    }
-    int query(SegNode * rt, int ql, int qr)
-    {
-        if (ql <= rt->l && rt->r <= qr)
-        {
-            return rt->max_;
-        }
-
-        int mid = (rt->l + rt->r) / 2;
-        SegNode * ll = get_left(rt);
-        SegNode * rr = get_right(rt);
-        push_down(rt);
-
-        if (qr <= mid)
-        {
-            return query(ll, ql, qr);
-        }
-        else if (mid + 1 <= ql)
-        {
-            return query(rr, ql, qr);
-        }
-        return max(query(ll, ql, qr), query(rr, ql, qr));
-    }
-
-
-    vector<int> fallingSquares(vector<vector<int>>& positions) 
-    {
-        int INF = (int)(1e9);
-
-        SegNode * root = new SegNode(0, INF);
-
-        vector<int> res;
-        for (vector<int> & pos: positions)
-        {
-            int l = pos[0],    Len = pos[1];
-            int r = l + Len - 1;
-            int cur_h = query(root, l, r);
-            update(root, l, r, cur_h + Len);
-
-            int cur = root->max_;
-            res.push_back(cur);
-        }
-
+    // 区间查询 [l,r] 的和，利用拆分与拼凑的思想，把大区间变为多个小区间的和
+    int query(Node* node, int l, int r) { 			// u为根节点索引 l左边界 r右边界
+        if (l <= node->l && node->r <= r)   	// 查询区间 [l,r] 完全覆盖当前节点区
+            return node->maxv;               	// 间，立即回溯，返回该区间的sum值，让上一层累加
+        
+        // 非叶子节点，裂开
+        push_down(node);							// “下次需要”，下传懒标记
+        int res = 0;
+        if (l <= node->mid) res += query(node->lNode, l, r); 	// 查询左边界比mid小，左子节点与区间 [l,r] 有重叠，递归访问左子树
+        if (r > node->mid) res += query(node->rNode, l, r);  	// 查询右边界比mid小，右子节点与区间 [l,r] 有重叠，递归访问右子树
         return res;
     }
+
 };
 ```
+
+
+
+
+
+### 离散化+动态开点+懒标记模板-求和
+
+[757. 设置交集大小至少为2](https://leetcode.cn/problems/set-intersection-size-at-least-two/)
+
+[729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/)
+
+```c++
+const int maxn = 1e9 + 10;
+const int maxnn = 5e5;
+
+class SegTree {             // 线段树不一定满二叉树，也不一定是完全二叉树，但一定是平衡二叉树
+public:
+    struct Node {           	// 线段树节点
+        int l, r;   			// 区间的左右端点,即[l,r] 
+        int lNode, rNode;       // 区间的左右孩子索引 
+        int val;               // 是否覆盖
+        int add;				// 懒标记
+        int mid;				// 构造的时候就可以捎带计算一下
+    }tr[maxnn] {};
+
+    int idx = 0;
+    SegTree() {  
+    	tr[++idx] = {0, maxn, 0, 0, 0, 0, (1 + maxn >> 1)};
+    }    
+    
+    void push_up(Node &node) {	// 回溯时更新父结点
+        node.val = tr[node.lNode].val + tr[node.rNode].val;    // 递归往回走的时候 一路上去更新, 更新祖先节点
+    }
+    
+    void push_down(Node &node) {	// 下传懒标记
+        if (!node.lNode) {
+            node.lNode = ++idx;
+            int ll = node.l, rr = (node.l + node.r) >> 1;
+            int midd = ll + rr >> 1;
+            tr[idx] = {ll, rr, 0, 0, 0, 0, midd};
+        }
+        if (!node.rNode) {
+            node.rNode = ++idx;
+            int ll = ((node.l + node.r) >> 1) + 1, rr = node.r;
+            int midd = ll + rr >> 1;
+            tr[idx] = {ll, rr, 0, 0, 0, 0, midd};
+        }
+
+        if (node.add == 0) { return; } 
+        else if (node.add == 1) {
+            tr[node.lNode].val = node.add == 1 ?  (tr[node.lNode].r - tr[node.lNode].l + 1) : 0; 
+            tr[node.rNode].val = node.add == 1 ?  (tr[node.rNode].r - tr[node.rNode].l + 1) : 0;
+            tr[node.lNode].add = node.add;
+            tr[node.rNode].add = node.add;
+            node.add = 0;  
+        }  
+    }
+    
+    
+    // 区间修改 [l,r] 的和，也可以用于单点修改l=y即可
+    void modify(Node &node, int l, int r, bool v) { 	// u为根节点索引 l左边界 y右边界 v为修改的值 
+        if (l <= node.l && node.r <= r) { 	// 修改区间 [l,r] 完全覆盖当前节点区
+            node.val = v == 1 ? (node.r - node.l + 1) : 0; 	// 进来修改, +=
+            node.add = v;						            // 懒标记 v  +=
+            return;
+        }
+        // 不覆盖裂开
+        push_down(node);							// “下次需要”，下传懒标记
+        if (l <= node.mid) modify(tr[node.lNode], l, r, v);
+        if (r > node.mid)  modify(tr[node.rNode], l, r, v);
+        push_up(node);				    			// 向上回溯更新祖先节点
+    }
+
+    // 区间查询 [l,r] 的和，利用拆分与拼凑的思想，把大区间变为多个小区间的和
+    int query(Node &node, int l, int r) { 			// u为根节点索引 l左边界 r右边界
+        if (l <= node.l && node.r <= r)   	// 查询区间 [l,r] 完全覆盖当前节点区
+            return node.val;               	// 间，立即回溯，返回该区间的sum值，让上一层累加
+        
+        // 非叶子节点，裂开
+        push_down(node);							// “下次需要”，下传懒标记
+        int res = 0;
+        if (l <= node.mid) res += query(tr[node.lNode], l, r); 	// 查询左边界比mid小，左子节点与区间 [l,r] 有重叠，递归访问左子树
+        if (r > node.mid) res += query(tr[node.rNode], l, r);  	// 查询右边界比mid小，右子节点与区间 [l,r] 有重叠，递归访问右子树
+        return res;
+    }
+
+};
+```
+
+
+
+### 离散化+动态开点+懒标记模板-求最大
+
+```c++
+```
+
+
+
+### 离散化+动态开点+懒标记模板-求个数
+
+```c++
+
+```
+
+
 
 
 
@@ -882,6 +1021,1236 @@ public:
     }
 };
 ```
+
+
+
+
+
+#### ST 版
+
+##### 1 struct Node
+
+```c++
+struct SegNode{
+    int l;
+    int r;
+    SegNode * left;
+    SegNode * right;
+    int sum_;
+    int lazy_add;
+
+    SegNode() {}
+    SegNode(int l_, int r_)
+    {
+        l = l_;
+        r = r_;
+        left = NULL;
+        right = NULL;
+        sum_ = 0;
+        lazy_add = 0;
+    }
+};
+
+class RangeModule 
+{
+public:
+    SegNode * ST;
+
+    //--------------- SegmentTree start -------------//
+    SegNode * get_left(SegNode * rt)
+    {
+        if (rt->left == NULL)
+        {
+            int mid = (rt->l + rt->r) / 2;
+            rt->left = new SegNode(rt->l, mid);
+        }
+        return rt->left;
+    }
+
+    SegNode * get_right(SegNode * rt)
+    {
+        if (rt->right == NULL)
+        {
+            int mid = (rt->l + rt->r) / 2;
+            rt->right = new SegNode(mid + 1, rt->r);
+        }
+        return rt->right;
+    }
+
+    void push_up(SegNode * rt)
+    {
+        SegNode * ll = get_left(rt);
+        SegNode * rr = get_right(rt);
+        rt->sum_ = ll->sum_ + rr->sum_;
+    }
+    void push_down(SegNode * rt)
+    {
+        if (rt->lazy_add != 0)
+        {
+            int v = rt->lazy_add;
+            SegNode * ll = get_left(rt);
+            SegNode * rr = get_right(rt);
+            ll->lazy_add = v;
+            rr->lazy_add = v;
+            if (v == 1)
+            {
+                ll->sum_ = (ll->r - ll->l + 1);
+                rr->sum_ = (rr->r - rr->l + 1);
+            }
+            else if (v == -1)
+            {
+                ll->sum_ = 0;
+                rr->sum_ = 0;
+            }
+            rt->lazy_add = 0;
+        }
+    }
+
+    void update(SegNode * rt, int ul, int ur, int val)
+    {
+        if (ul <= rt->l && rt->r <= ur)
+        {
+            rt->lazy_add = val;
+            if (val == 1)
+            {
+                rt->sum_ = (rt->r - rt->l + 1);
+            }
+            else if (val == -1)
+            {
+                rt->sum_ = 0;
+            }
+            return ;
+        }
+        int mid = (rt->l + rt->r) / 2;
+        SegNode * ll = get_left(rt);
+        SegNode * rr = get_right(rt);
+        push_down(rt);
+        if (ur <= mid)
+        {
+            update(ll, ul, ur, val);
+        }
+        else if (mid + 1 <= ul)
+        {
+            update(rr, ul, ur, val);
+        }
+        else
+        {   
+            update(ll, ul, ur, val);
+            update(rr, ul, ur, val);
+        }
+        push_up(rt);
+    }
+
+    int query(SegNode * rt, int ql, int qr)
+    {
+        if (ql <= rt->l && rt->r <= qr)
+        {
+            return rt->sum_;
+        }
+        int mid = (rt->l + rt->r) / 2;
+        SegNode * ll = get_left(rt);
+        SegNode * rr = get_right(rt);
+        push_down(rt);
+        if (qr <= mid)
+        {
+            return query(ll, ql, qr);
+        }
+        else if (mid + 1 <= ql)
+        {
+            return query(rr, ql, qr);
+        }
+        return query(ll, ql, qr) + query(rr, ql, qr);
+    }
+
+    //--------------- SegmentTree end -------------//
+
+    RangeModule() 
+    {
+        ST = new SegNode(0, (int)1e9);
+    }
+    
+    void addRange(int left, int right) 
+    {
+        update(ST, left, right - 1, 1);
+    }
+    
+    bool queryRange(int left, int right) 
+    {
+        return query(ST, left, right - 1) == (right - left);
+    }
+    
+    void removeRange(int left, int right) 
+    {
+        update(ST, left, right - 1, -1);
+    }
+};
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule* obj = new RangeModule();
+ * obj->addRange(left,right);
+ * bool param_2 = obj->queryRange(left,right);
+ * obj->removeRange(left,right);
+ */
+
+作者：XingHe_XingHe
+链接：https://leetcode.cn/problems/range-module/solution/cpython3java-90-by-xinghe_xinghe-9m4a/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+##### 5 struct Node[]
+
+```c++
+const int INF = 1e9, N = 100010;
+struct Node{
+    int lc, rc, sum, lazy;
+} tr[N*5];
+int tot, root;
+
+class RangeModule {
+public:
+    RangeModule() {
+        tot = 0;
+        root = addNode();
+    }
+
+    int addNode() {
+        ++tot;
+        init_node(tot);
+        return tot;
+    }
+
+    void init_node(int u) {
+        tr[u] = {0, 0, 0, 0};
+    }
+
+    void modify(int& u, int l, int r, int L, int R, int d) {
+        if(!u) u = addNode();
+        if(L<=l && R >= r) {
+            if(d) {
+                tr[u].sum = r-l+1;
+            } else {
+                tr[u].sum = 0;
+            }
+            tr[u].lazy = 1;
+            return;
+        }
+        pushdown(u);
+        int mid = (l + r) >> 1;
+        if(L <= mid) modify(tr[u].lc, l, mid, L, R, d);
+        if(R > mid)  modify(tr[u].rc, mid+1, r, L, R, d);
+        pushup(u);
+    }
+
+    void pushup(int u) {
+        int l = 0, r = 0;
+        if(tr[u].lc) l =  tr[tr[u].lc].sum;
+        if(tr[u].rc) r = tr[tr[u].rc].sum;
+        tr[u].sum = l + r;
+    }
+
+    void pushdown(int u) {
+        if(tr[u].lazy) {
+            if(!tr[u].lc) tr[u].lc = addNode();
+            if(!tr[u].rc) tr[u].rc = addNode();
+            if(tr[u].sum)  {
+                tr[tr[u].lc].sum = tr[u].sum + 1 >> 1;
+                tr[tr[u].rc].sum = tr[u].sum >> 1;
+            } else {
+                tr[tr[u].lc].sum = 0,  tr[tr[u].rc].sum = 0;
+            }
+            tr[u].lazy = 0;
+            tr[tr[u].lc].lazy = 1,  tr[tr[u].rc].lazy = 1;
+        }
+    }
+
+    int query(int u, int l, int r, int L, int R) {
+        if(R < l || L > r || !u) return 0;
+        if(L <= l && R >= r) return tr[u].sum;
+        pushdown(u);
+        int mid = l + r >> 1;
+        return query(tr[u].lc, l, mid, L, R) + query(tr[u].rc, mid+1, r, L, R);
+    }
+    
+    void addRange(int left, int right) {
+        modify(root, 1, INF, left, right-1, 1);
+    }
+    
+    bool queryRange(int left, int right) {
+        int num = query(root, 1, INF, left, right-1);
+        // cout << num << endl;
+        return  num == (right-left);
+    }
+    
+    void removeRange(int left, int right) {
+        modify(root, 1, INF, left, right-1, 0);
+    }
+};
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule* obj = new RangeModule();
+ * obj->addRange(left,right);
+ * bool param_2 = obj->queryRange(left,right);
+ * obj->removeRange(left,right);
+ */
+
+作者：acw_khalil
+链接：https://leetcode.cn/problems/range-module/solution/xian-duan-shu-by-khalilliu-r510/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+##### 6 class Node
+
+```c++
+class RangeModule {
+public:
+    class Node{
+    public:
+        Node *left,*right;
+        // 覆盖状态
+        int cover;
+        // 懒标记
+        int add;
+        // 构造函数
+        Node(){
+            left = nullptr;
+            right = nullptr;
+            cover = 0;
+            add = 0;
+        }
+    };
+
+    // 根节点
+    Node* root;
+    // 默认的上界限
+    int N = 1e9+1;
+
+    // add：0表示不触发懒标记，1表示触发增加懒标记，-1表示触发删除懒标记
+    // cover: 0表示未覆盖，1表示覆盖
+    void pushdown(Node* node)
+    {
+            // 如果左子区间未创建-创建节点
+        if(node->left == nullptr) node->left = new Node();
+            // 如果右子区间未创建-创建节点
+        if(node->right == nullptr) node->right = new Node();
+            // 如果父节点的懒标记为0,说明父节点此时为叶节点,无需进行任何操作
+        if(node->add == 0)  return;
+            
+            // 如果父节点的懒标记不为0,说明父节点为明确状态的枝节点,因此需要使用父节点对子节点进行更新
+        // 使用父节点的状态更新子节点的状态
+            node->left->cover = node->cover;
+        node->right->cover = node->cover;
+            // 为子节点赋予父节点的懒标记，用于之后的向下更新
+        node->left->add = node->add;
+        node->right->add = node->add;
+            // 将父节点的懒标记置为0，表示当前节点的状态已向下传递，之后无需在此进行
+        node->add = 0;
+    }
+    void pushup(Node* node)
+    {
+        // 使用两个子节点的覆盖状态更新父节点的覆盖状态
+        node->cover = node->left->cover&&node->right->cover;
+    }
+    void update(Node* node,int left, int right,int start, int end, int state)
+    {
+        // 判断当前区间的左右界限left和right是否满足start≤left<right≤end
+        if(left>=start&&right<=end)
+        {
+            // 更新覆盖状态和懒标记
+            node->cover = state;
+            node->add = 1;
+            return;
+        }
+        // 向下更新
+        pushdown(node);
+
+        int mid = left+(right-left)/2;
+        // 向右寻找目标区间
+        if(start>mid) {
+            update(node->right,mid+1,right,start,end,state);
+        }
+        // 向左寻找目标区间
+        else if(end<=mid) {
+            update(node->left,left,mid,start,end,state);
+        }
+        // 向左右同时寻找目标区间
+        else {
+            update(node->left,left,mid,start,end,state);
+            update(node->right,mid+1,right,start,end,state);
+        }
+        // 向上更新
+        pushup(node);
+    }
+
+    int query(Node* node,int left, int right, int start, int end) {
+        // 判断当前区间的左右界限left和right是否满足start≤left<right≤end
+        if(left>=start&&right<=end)
+        {
+            // 返回覆盖状态
+            return node->cover;
+        }
+
+        // 向下更新
+        pushdown(node);
+
+        int mid = left+(right-left)/2;
+        // 向右寻找目标区间
+        if(start>mid) {
+            return query(node->right,mid+1,right,start,end);
+        }
+        // 向左寻找目标区间
+        else if(end<=mid) {
+            return query(node->left,left,mid,start,end);
+        }
+        // 向左右同时寻找目标区间
+        else {
+            return query(node->left,left,mid,start,end)&&
+                    query(node->right,mid+1,right,start,end);
+        }
+    }
+
+    RangeModule() {
+        root = new Node();
+    }
+    
+    void addRange(int left, int right) {
+        update(root,1,N,left,right-1,1);
+    }
+    
+    bool queryRange(int left, int right) {
+        return query(root,1,N,left,right-1);
+    }
+    
+    void removeRange(int left, int right) {
+        update(root,1,N,left,right-1,0);
+    }
+};
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule* obj = new RangeModule();
+ * obj->addRange(left,right);
+ * bool param_2 = obj->queryRange(left,right);
+ * obj->removeRange(left,right);
+ */
+
+作者：zhumengfei
+链接：https://leetcode.cn/problems/range-module/solution/by-zhumengfei-svro/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+##### 7 class Node
+
+```c++
+class RangeModule {
+private:
+    int N=1e9;//可能出现的区间大小
+    //---------线段树实现
+    class Node{
+        public:
+        Node* left;
+        Node* right;
+        bool isCover=false;//true代表区间完全被覆盖，false反之
+        int lazy_sign=0;//0表示无懒惰标记,1代表全部包含懒惰标记，-1代表全部抛弃懒惰标记
+    };
+
+    Node* root=new Node();
+
+    void push_up(Node* node){
+    //向上更新，也就是用孩子节点的值更新自己
+    node->isCover=node->left->isCover&&node->right->isCover;
+    }
+
+    void push_down(Node* node){
+    //动态节点
+    if(node->left==nullptr)node->left=new Node();
+    if(node->right==nullptr)node->right=new Node();
+    //看看有没有必要push_down
+    if(node->lazy_sign==0)return;
+    //要push_down
+    //node全选，孩子节点自然全选
+    node->left->lazy_sign=node->lazy_sign;
+    node->right->lazy_sign=node->lazy_sign;
+    //更新isCover
+    node->left->isCover=node->isCover;
+    node->right->isCover=node->isCover;
+    //注意归零，防止懒惰标记重复下发
+    node->lazy_sign = 0;
+    }
+
+    //start与end是node表示的区间，可以通过每次递归初始值平分得到
+    //l,r是目标区间范围
+    bool query(Node* node,int start,int end,int l,int r){//start,end都是包括的
+    //本node的区间可以直接给出一部分答案
+    if(l<=start&&end<=r)return node->isCover;
+    //可能左右两半区间有交集，先push_down确保数据正确,再往下查询
+    push_down(node);
+    int mid=(start+end)>>1;
+    bool ans=true;
+    //左半部分有交集
+    if(l<=mid)ans=ans&&query(node->left,start,mid,l,r);
+    //如果结果已经是false了，就不用再算了
+    if(!ans)return ans;
+    //右半部分有交集
+    if(mid<r)ans=ans&&query(node->right,mid+1,end,l,r);
+    return ans;
+    }
+    
+    //isCover为真为全部覆盖，反之同理
+    //start与end是node表示的区间，可以通过每次递归初始值平分得到
+    //l,r是目标区间范围
+    void update(Node* node,int start,int end,bool isCover,int l,int r){//包括start与end
+    //如果刚好本node区间是目标区间的子集，可以直接更新，留下懒惰标记
+    if(l<=start&&end<=r){
+        node->lazy_sign=isCover?1:-1;
+        node->isCover=isCover;
+        return;
+    }
+    //如果只是有交集，考虑左右半区间
+    //先push_down确保数据正确
+    push_down(node);
+    int mid=(start+end)>>1;
+    if(l<=mid)update(node->left,start,mid,isCover,l,r);
+    if(mid<r)update(node->right,mid+1,end,isCover,l,r);
+    push_up(node);
+    }
+public:
+    RangeModule() {
+    
+    }
+    
+    void addRange(int left, int right) {
+    update(root,1,N,true,left,right-1);
+    }
+    
+    bool queryRange(int left, int right) {
+    return query(root,1,N,left,right-1);
+    }
+    
+    void removeRange(int left, int right) {
+    update(root,1,N,false,left,right-1);
+    }
+
+};
+
+作者：liu-jia-hao-s
+链接：https://leetcode.cn/problems/range-module/solution/cban-xian-duan-shu-by-liu-jia-hao-s-thqg/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+
+
+##### 8 struct Node[]
+
+```c++
+class RangeModule {
+public:
+    static const int N = 100010;
+    struct Node{
+        int l, r;
+        int lc, rc;
+        int tag;
+        bool st;
+    }tr[N * 6]{};
+    int idx{};
+    RangeModule() {
+        tr[++idx] = {1, (int)1e9, 0, 0, 0, false};
+    }
+
+    void addRange(int left, int right) {
+        update(tr[1], left, right - 1, true);
+    }
+
+    bool queryRange(int left, int right) {
+        return query(tr[1], left, right - 1);
+    }
+
+    void removeRange(int left, int right) {
+        update(tr[1], left, right - 1, false);
+    }
+
+    void pushdown(Node &root)
+    {
+        if(root.lc == 0)
+            root.lc = ++idx, tr[idx] = {root.l, (root.l + root.r) / 2, 0, 0, 0, false};
+        if(root.rc == 0)
+            root.rc = ++idx, tr[idx] = {(root.l + root.r) / 2 + 1, root.r, 0, 0, 0, false};
+        Node &left = tr[root.lc], &right = tr[root.rc];
+
+        if(root.tag)
+        {
+            left.tag = right.tag = root.tag;
+            left.st = right.st = (root.tag == 1 ? true : false);
+            root.tag = 0;
+        }
+    }
+
+    void pushup(Node &root)
+    {
+        root.st = tr[root.lc].st && tr[root.rc].st;
+    }
+
+    void update(Node &root, int l, int r, bool st)
+    {
+        if(root.l >= l && root.r <= r)
+        {
+            root.st = st;
+            root.tag = (st ? 1 : 2);
+        }
+        else
+        {
+            pushdown(root);
+            int mid = (root.l + root.r) / 2;
+            if(l <= mid)
+            {
+                update(tr[root.lc], l, r, st);
+            }
+            if(r > mid)
+            {
+                update(tr[root.rc], l, r, st);
+            }
+            pushup(root);
+        }
+    }
+
+    bool query(Node &root, int l, int r)
+    {
+        if(root.l >= l && root.r <= r)
+        {
+            return root.st;
+        }
+        else
+        {
+            pushdown(root);
+            int mid = (root.l + root.r) / 2;
+            bool res = true;
+            if(l <= mid) res &= query(tr[root.lc], l, r);
+            if(r > mid) res &= query(tr[root.rc], l, r);
+            return res;
+        }
+    }
+};
+
+作者：xiao-chen-jin-tian-bu-kai-xin
+链接：https://leetcode.cn/problems/range-module/solution/by-xiao-chen-jin-tian-bu-kai-xin-y6kp/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+
+
+##### 10 struct Node[]
+
+```c++
+const int N = 1e9 + 10 , M = 500000;
+
+struct node
+{
+    int l, r, lc, rc;
+    int sum , add;
+}tr[M];
+
+int n = 0;
+
+class RangeModule {
+
+public:
+    int new_node(int l, int r)
+    {
+        tr[++ n] = {l, r};
+        return n;
+    }
+
+    void pushup(int u)
+    {
+        tr[u].sum = tr[tr[u].lc].sum + tr[tr[u].rc].sum;
+    }
+
+    void pushdown(int u)
+    {
+        node & t = tr[u];
+        if(!t.lc) t.lc = new_node(t.l, (t.l + t.r) / 2);
+        if(!t.rc) t.rc = new_node((t.l + t.r) / 2 + 1, t.r);
+
+        if(!t.add) return;
+
+        node & lc = tr[t.lc], & rc = tr[t.rc];
+        if(t.add == 1)  // addRange
+        {
+            lc.sum = lc.r - lc.l + 1;
+            rc.sum = rc.r - rc.l + 1;
+        }
+        else
+            lc.sum = rc.sum = 0;
+
+        lc.add = rc.add = t.add;
+        t.add = 0;
+    }
+
+    int query(int u, int l, int r)
+    {
+        node & t = tr[u];
+        if(t.l >= l && t.r <= r) return t.sum;
+
+        pushdown(u);
+        int mid = (t.l + t.r) >> 1, sum = 0;
+        if(l <= mid) sum = query(t.lc, l, r);
+        if(r > mid) sum += query(t.rc, l, r);
+
+        return sum;
+    }
+
+    void modify(int u, int l, int r, int d)
+    {
+        node & t = tr[u];
+        if(t.l >= l && t.r <= r)
+        {
+            if(d == 1) t.sum = t.r - t.l + 1;
+            else t.sum = 0;
+            t.add = d;
+            return;
+        }
+
+        pushdown(u);
+        int mid = (t.l + t.r) >> 1;
+        if(l <= mid) modify(t.lc, l, r, d);
+        if(r > mid) modify(t.rc, l, r, d);
+        pushup(u);
+    }
+
+    RangeModule() {
+        memset(tr, 0, sizeof(node) * M);
+        n = 0;
+        new_node(1, N - 1);
+    }
+
+    bool queryRange(int left, int right) {
+        return query(1, left, right - 1) == right - left;
+    }
+
+    void addRange(int left, int right) {
+        modify(1, left, right - 1, 1);
+    }
+
+    void removeRange(int left, int right) {
+        modify(1, left, right - 1, -1);
+    }
+};
+
+作者：xf665437
+链接：https://leetcode.cn/problems/range-module/solution/xia-by-xf665437-2qq6/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+##### 11 struct Node[]
+
+```C++
+class RangeModule {
+public:
+    static const int N = 1000010;
+    int idx;
+    struct node{
+        int l, r;
+        int ls, rs;
+        int sum,lazy = -1;
+    }tr[N];
+    void pushup(int u){
+        tr[u].sum = tr[tr[u].ls].sum + tr[tr[u].rs].sum;
+    }
+    void pushdown(int u){
+        int mid = tr[u].l+tr[u].r >> 1;
+        //动态开点
+        if(!tr[u].ls) tr[u].ls = idx, tr[idx++] = {tr[u].l,mid};
+        if(!tr[u].rs) tr[u].rs = idx, tr[idx++] = {mid+1,tr[u].r};
+        if(tr[u].lazy==-1) return ;
+        int l = tr[u].ls, r = tr[u].rs, d = tr[u].lazy;
+        tr[l].sum = (tr[l].r-tr[l].l+1)*d;
+        tr[r].sum = (tr[r].r-tr[r].l+1)*d;
+        tr[l].lazy = tr[r].lazy = d;
+        tr[u].lazy = -1;
+    }
+    void modify(int u, int l, int r, int d){//将l~r变为d
+        if(l<=tr[u].l&&tr[u].r<=r){
+            tr[u].sum = (tr[u].r-tr[u].l+1)*d;
+            tr[u].lazy = d;
+        }
+        else {
+            pushdown(u);
+            int mid = tr[u].r + tr[u].l >> 1;
+            if(l<=mid) modify(tr[u].ls,l,r,d);
+            if(r>=mid+1) modify(tr[u].rs,l,r,d);
+            pushup(u);
+        }
+    }
+    int query(int u, int l, int r){
+        if(l<=tr[u].l&&tr[u].r<=r) return tr[u].sum;
+        pushdown(u);
+        int ans = 0;
+        int mid = tr[u].r + tr[u].l >> 1;
+        if(l<=mid) ans += query(tr[u].ls,l,r);
+        if(r>=mid+1) ans += query(tr[u].rs,l,r);
+        return ans;
+    }
+    RangeModule() {
+        tr[1] = {1,1000000000};
+        idx = 2;
+    }
+    
+    void addRange(int left, int right) {
+        modify(1,left,right-1,1);
+    }
+    
+    bool queryRange(int left, int right) {
+        return query(1,left,right-1)==right-left;
+    }
+    
+    void removeRange(int left, int right) {
+        modify(1,left,right-1,0);
+    }
+};
+
+作者：zeroac
+链接：https://leetcode.cn/problems/range-module/solution/c-by-zeroac-dhrz/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+
+
+##### 2
+
+```c++
+class RangeModule {
+public:
+    static const int MAX=1e6;
+    int cnt=0;
+    int root=0;
+    struct node{
+        int lnode=0;
+        int rnode=0;
+        bool watch=false;
+        int lazy=0;
+    };
+    vector<node> N;
+
+    void check(int root){
+        if(N[root].lazy){
+            if(!N[root].lnode){
+                N[root].lnode=++cnt;
+            }
+            if(!N[root].rnode){
+                N[root].rnode=++cnt;
+            }
+            if(N[root].lazy==1){
+                N[N[root].lnode].lazy=1;
+                N[N[root].rnode].lazy=1;
+                N[N[root].lnode].watch=true;
+                N[N[root].rnode].watch=true;
+                N[root].lazy=0;
+            }else if(N[root].lazy==2){
+                N[N[root].lnode].lazy=2;
+                N[N[root].rnode].lazy=2;
+                N[N[root].lnode].watch=false;
+                N[N[root].rnode].watch=false;
+                N[root].lazy=0;
+            }
+        }
+    }
+
+    void pushup(int root){
+        if(!N[root].lnode||!N[root].rnode)
+            N[root].watch=false;
+        else N[root].watch=N[N[root].lnode].watch & N[N[root].rnode].watch;
+    }
+
+    void update(int &root, int l, int r, int L, int R){
+        if(!root){
+            root=++cnt;
+        }
+        if(l>=L&&r<=R){
+            N[root].watch=true;
+            N[root].lazy=1;
+            return;
+        }
+        check(root);
+        int mid=l+r>>1;
+        if(mid>=L){
+            update(N[root].lnode, l, mid, L, R);
+        }
+        if(mid<R){
+            update(N[root].rnode, mid+1, r, L, R);
+        }
+        pushup(root);
+    }
+
+    void removeUpdate(int &root, int l, int r, int L, int R){
+        if(!root){
+            root=++cnt;
+        }
+        if(l>=L&&r<=R){
+            N[root].watch=false;
+            N[root].lazy=2;
+            return;
+        }
+        check(root);
+        int mid=l+r>>1;
+        if(mid>=L){
+            removeUpdate(N[root].lnode, l, mid, L, R);
+        }
+        if(mid<R){
+            removeUpdate(N[root].rnode, mid+1, r, L, R);
+        }
+        pushup(root);
+    }
+
+    bool query(int root, int l, int r, int L, int R){
+        if(!root) return false;
+        if(l>=L&&r<=R){
+            return N[root].watch;
+        }
+        check(root);
+        int mid=l+r>>1;
+        bool result=true;
+        if(mid>=L){
+            result&=query(N[root].lnode, l, mid, L, R);
+        }
+        if(mid<R){
+            result&=query(N[root].rnode, mid+1, r, L, R);
+        }
+        return result;
+    }
+
+    RangeModule() {
+        N=vector<node>(MAX);
+    }
+    
+    void addRange(int left, int right) {
+        update(root, 1, 1e9, left, right-1);
+    }
+    
+    bool queryRange(int left, int right) {
+        return query(root, 1, 1e9, left,right-1);
+    }
+    
+    void removeRange(int left, int right) {
+        removeUpdate(root, 1, 1e9, left, right-1);
+    }
+};
+// 10 200
+// 250 500
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule* obj = new RangeModule();
+ * obj->addRange(left,right);
+ * bool param_2 = obj->queryRange(left,right);
+ * obj->removeRange(left,right);
+ */
+
+作者：constant-r
+链接：https://leetcode.cn/problems/range-module/solution/dong-tai-kai-dian-by-constant-r-j7ds/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+##### 3
+
+```c++
+class RangeModule {
+    int tr[3500000], lson[3500000], rson[3500000], cnt = 2, lazy0[3500000], lazy1[3500000];
+public:
+    RangeModule() {
+
+    }
+
+    void push_down(int p) {
+        if (lson[p] == 0) lson[p] = cnt++;
+        if (rson[p] == 0) rson[p] = cnt++;
+        if (lazy0[p]) {
+            lazy0[lson[p]] = 1;
+            lazy0[rson[p]] = 1;
+            lazy1[lson[p]] = 0;
+            lazy1[rson[p]] = 0;
+            tr[lson[p]] = 0;
+            tr[rson[p]] = 0;
+            lazy0[p] = 0;
+        }
+        if (lazy1[p]) {
+            lazy0[lson[p]] = 0;
+            lazy0[rson[p]] = 0;
+            lazy1[lson[p]] = 1;
+            lazy1[rson[p]] = 1;
+            tr[lson[p]] = 1;
+            tr[rson[p]] = 1;
+            lazy1[p] = 0;
+        }
+    }
+
+    void change(int p, int l, int r, int s, int t, int v) {
+        if (r < s || l > t) {
+            return;
+        } else if (s <= l && r <= t) {
+            if (v == 0) {
+                lazy0[p] = 1;
+                lazy1[p] = 0;
+                tr[p] = 0;
+            } else {
+                lazy0[p] = 0;
+                lazy1[p] = 1;
+                tr[p] = 1;
+            }
+        } else {
+            int m = l + r >> 1;
+            push_down(p);
+            change(lson[p], l, m, s, t, v);
+            change(rson[p], m + 1, r, s, t, v);
+            tr[p] = tr[lson[p]] & tr[rson[p]];
+        }
+    }
+
+    int query(int p, int l, int r, int s, int t) {
+        if (r < s || l > t) {
+            return 1;
+        } else if (s <= l && r <= t) {
+            return tr[p];
+        } else {
+            int m = l + r >> 1;
+            push_down(p);
+            return query(lson[p], l, m, s, t) & query(rson[p], m + 1, r, s, t);
+        }
+    }
+
+    void addRange(int left, int right) {
+        change(1, 0, 1e9, left, right - 1, 1);
+    }
+    
+    bool queryRange(int left, int right) {
+        return query(1, 0, 1e9, left, right - 1);
+    }
+    
+    void removeRange(int left, int right) {
+        change(1, 0, 1e9, left, right - 1, 0);
+    }
+};
+
+作者：Nreyog
+链接：https://leetcode.cn/problems/range-module/solution/cdong-tai-kai-dian-xian-duan-shu-wei-hu-d23kg/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+##### 4
+
+```c++
+typedef struct {} RangeModule;  void rangeModuleFree(RangeModule* obj) {}
+int tr[10000000], lson[10000000], rson[10000000], cnt = 2, lazy0[10000000], lazy1[10000000];
+RangeModule* rangeModuleCreate() { memset(lazy0,0,sizeof(lazy0)); memset(lazy1,0,sizeof(lazy1)); 
+memset(tr,0,sizeof(tr)); memset(lson,0,sizeof(lson)); return NULL;}
+ void push_down(int p) {
+        if (lson[p] == 0) lson[p] = cnt++;
+        if (rson[p] == 0) rson[p] = cnt++;
+        if (lazy0[p]) {
+            lazy0[lson[p]] = 1;
+            lazy0[rson[p]] = 1;
+            lazy1[lson[p]] = 0;
+            lazy1[rson[p]] = 0;
+            tr[lson[p]] = 0;
+            tr[rson[p]] = 0;
+            lazy0[p] = 0;
+        }
+        if (lazy1[p]) {
+            lazy0[lson[p]] = 0;
+            lazy0[rson[p]] = 0;
+            lazy1[lson[p]] = 1;
+            lazy1[rson[p]] = 1;
+            tr[lson[p]] = 1;
+            tr[rson[p]] = 1;
+            lazy1[p] = 0;
+        }
+    }
+
+    void change(int p, int l, int r, int s, int t, int v) {
+        if (r < s || l > t) {
+            return;
+        } else if (s <= l && r <= t) {
+            if (v == 0) {
+                lazy0[p] = 1;
+                lazy1[p] = 0;
+                tr[p] = 0;
+            } else {
+                lazy0[p] = 0;
+                lazy1[p] = 1;
+                tr[p] = 1;
+            }
+        } else {
+            int m = l + r >> 1;
+            push_down(p);
+            change(lson[p], l, m, s, t, v);
+            change(rson[p], m + 1, r, s, t, v);
+            tr[p] = tr[lson[p]] & tr[rson[p]];
+        }
+    }
+
+    int query(int p, int l, int r, int s, int t) {
+        if (r < s || l > t) {
+            return 1;
+        } else if (s <= l && r <= t) {
+            return tr[p];
+        } else {
+            int m = l + r >> 1;
+            push_down(p);
+            return query(lson[p], l, m, s, t) & query(rson[p], m + 1, r, s, t);
+        }
+    }
+void rangeModuleAddRange(RangeModule* obj, int left, int right) {
+      change(1, 0, 1e9, left, right - 1, 1);
+}   
+
+bool rangeModuleQueryRange(RangeModule* obj, int left, int right) {
+    return query(1, 0, 1e9, left, right - 1);
+}
+
+void rangeModuleRemoveRange(RangeModule* obj, int left, int right) {
+    change(1, 0, 1e9, left, right - 1, 0);
+}
+
+作者：HoshinoChiyvki
+链接：https://leetcode.cn/problems/range-module/solution/cong-ling-kai-shi-de-chun-cshua-ti-sheng-uii8/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
+
+
+
+##### 12
+
+```C++
+const int M = 1e9;
+const int MX = 1e6+5;
+class RangeModule {
+public:
+    int ls[MX],rs[MX],sum[MX];
+    bool lazy[MX];
+    int cnt,root;
+    RangeModule() {
+        cnt = 0;
+        root = addNode();
+    }
+    void init_node(int p){
+        ls[p] = rs[p] = sum[p] = 0;
+        lazy[p] = false;
+    }
+    void spread(int p){
+        if(lazy[p]){
+            if(!ls[p]) ls[p] = addNode();
+            if(!rs[p]) rs[p] = addNode();
+            int l = ls[p],r = rs[p];
+            if(sum[p]){
+                sum[l] = sum[p]/2+(sum[p]&1);
+                sum[r] = sum[p]-sum[l];
+            }else{
+                sum[l] = sum[r] = 0;
+            }
+            lazy[p] = false;
+            lazy[l] = lazy[r] = true;
+        }
+    }
+    int addNode(){
+        ++cnt;
+        init_node(cnt);
+        return cnt;
+    }
+    void change(int l,int r,int L,int R,int& p,bool add){
+        if(p==0){
+            p = addNode();
+        }
+        if(L<=l&&r<=R){
+            if(add){
+                sum[p] = r-l+1;
+            }else{
+                sum[p] = 0;
+            }
+            lazy[p] = true;
+            return ;
+        }
+        spread(p);
+        int mid = (l+r)/2;
+        if(L<=mid)change(l,mid,L,R,ls[p],add);
+        if(R>mid) change(mid+1,r,L,R,rs[p],add);
+        updateUp(p);
+    }
+    void updateUp(int p){
+        int l = ls[p],r = rs[p];
+        sum[p] = sum[l]+sum[r];
+    }
+
+    int query(int l,int r,int L,int R,int p){
+        if(r<L||R<l||p==0){
+            return 0;
+        }
+        if(L<=l&&r<=R){
+            return sum[p];
+        }
+        spread(p);
+        int mid = (l+r)/2;
+        return query(l,mid,L,R,ls[p])+query(mid+1,r,L,R,rs[p]);
+    }
+    
+    void addRange(int left, int right) {
+        change(0,M,left,right-1,root,true);
+    }
+    
+    bool queryRange(int left, int right) {
+        int num = query(0, M, left, right-1, root);
+        return num==(right-left);
+    }
+    
+    void removeRange(int left, int right) {
+        change(0,M,left,right-1,root,false);
+    }
+};
+
+/**
+ * Your RangeModule object will be instantiated and called as such:
+ * RangeModule* obj = new RangeModule();
+ * obj->addRange(left,right);
+ * bool param_2 = obj->queryRange(left,right);
+ * obj->removeRange(left,right);
+ */
+
+作者：HUST_DHC
+链接：https://leetcode.cn/problems/range-module/solution/xian-duan-shu-dong-tai-kai-dian-yan-chi-biao-ji-by/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+
 
 
 

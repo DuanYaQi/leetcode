@@ -587,6 +587,61 @@ https://labuladong.gitee.io/algo/2/20/37/
 
 ---
 
+## 剑指 Offer II 115. 重建序列(模板题)
+
+序列就表示有方向，有方向就可以考虑抽象成图来看一下
+
+首先根据有向边计算每个结点的入度，然后将所有入度为 0 的结点添加到队列中，进行拓扑排序。每一轮拓扑排序时，**队列中的元素个数**表示**可以作为超序列下一个数字的元素个数**，根据队列中的元素个数，执行如下操作。
+
+
+
+```c++
+bool sequenceReconstruction(vector<int>& nums, vector<vector<int>>& sequences) {
+    int m = nums.size();
+    vector<vector<int>> graph(m+1);
+    vector<int> inDegree(m+1);
+
+    for (auto &edge : sequences) {
+        for (int i = edge.size() - 1; i > 0; --i) {  //不一定只有两个元素的
+            int from = edge[i-1], to = edge[i];
+            graph[from].push_back(to);  // 无权图
+            inDegree[to]++;
+        }
+    }
+
+
+    queue<int> q;
+    for (int i = 1; i <= m; ++i) { //所有无入度的都加进来
+        if (inDegree[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    while (q.size()) {
+        int size = q.size();
+
+        if (size > 1) return false;
+
+        int u = q.front(); q.pop();
+        for (int i = 0; i < graph[u].size(); ++i) {
+            int to = graph[u][i];
+            inDegree[to]--;
+            if (inDegree[to] == 0) {
+                q.push(i);
+            }
+        }
+    }
+
+    return true;
+}
+```
+
+
+
+
+
+---
+
 # 二分图
 
 https://labuladong.gitee.io/algo/2/20/38/
