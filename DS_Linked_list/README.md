@@ -533,6 +533,43 @@ TreeNode* sortedListToBST(ListNode* head) {
 
 
 
+## 160. 相交链表
+
+其实就是一个公式推导
+
+- 链表A，不相交前长度为 a，相交后长度为 c，总长度为 a+c
+- 链表B，不相交前长度为 b，相交后长度为 c，总长度为 b+c
+
+那么 A 走完继续走 b 步，B 走完继续走 a 步，则共走了 a + b + c，相交。
+
+> 如果两链表不相交，那么 c 为 0，则共走了 a + b 步，到达 nullptr
+
+```c++
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    if (headA == nullptr || headB == nullptr) {
+        return nullptr;
+    }
+
+    ListNode *acur = headA, *bcur = headB;
+
+    while (acur != bcur) {
+        acur = acur == nullptr ? headB : acur->next;
+        bcur = bcur == nullptr ? headA : bcur->next;
+    }
+
+    return acur;
+}
+```
+
+> - 时间复杂度: O(M+N)
+> - 空间复杂度: O(1)
+
+
+
+
+
+
+
 
 
 
@@ -665,4 +702,6 @@ public:
     }
 };
 ```
+
+
 

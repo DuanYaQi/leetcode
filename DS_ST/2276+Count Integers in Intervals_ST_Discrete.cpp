@@ -1,5 +1,5 @@
 const int maxn = 1e9 + 10;
-const int maxnn = 5e5;
+const int maxnn = 1e6 + 1e5;
 
 class SegTree {             // 线段树不一定满二叉树，也不一定是完全二叉树，但一定是平衡二叉树
 public:
@@ -73,32 +73,27 @@ public:
 
 };
 
-class RangeModule {
+class CountIntervals {
 public:
-    RangeModule() {
+    CountIntervals() {
+
     }
     
-    void addRange(int left, int right) {
-        ST.modify(ST.tr[1], left, right - 1, 1);
+    void add(int left, int right) {
+        ST.modify(ST.tr[1], left, right, 1);
     }
     
-    bool queryRange(int left, int right) {
-        //cout << ST.query(ST.tr[1], left, right - 1) << endl;
-        return ST.query(ST.tr[1], left, right - 1) == right - left;
-    }
-    
-    void removeRange(int left, int right) {
-        ST.modify(ST.tr[1], left, right - 1, -1);
+    int count() {
+        return ST.query(ST.tr[1], 0, maxn);
     }
 
 private:
-    SegTree ST;    
+    SegTree ST;
 };
 
 /**
- * Your RangeModule object will be instantiated and called as such:
- * RangeModule* obj = new RangeModule();
- * obj->addRange(left,right);
- * bool param_2 = obj->queryRange(left,right);
- * obj->removeRange(left,right);
+ * Your CountIntervals object will be instantiated and called as such:
+ * CountIntervals* obj = new CountIntervals();
+ * obj->add(left,right);
+ * int param_2 = obj->count();
  */

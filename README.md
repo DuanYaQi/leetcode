@@ -734,12 +734,12 @@ static const auto io_sync_off = []()
 | 题目 | 知识点 | 技巧 |
 | :--- | :----: | :--: |
 | [757. 设置交集大小至少为2](/DS_ST/757+Set%20Intersection%20Size%20At%20Least%20Two_Discrete.cpp)     |  求和(交集)+动态开点+懒标记（离散化）      |  676ms > 188ms   |
-| [729. My Calendar I]()     |  求最大+动态开点+懒标记（离散化）|      |
+| [729. My Calendar I](/DS_ST/729+My%20Calendar%20I_ST_Discrete.cpp)     |  求和+动态开点+懒标记（离散化）|  512ms > 236ms    |
 | [731. My Calendar II]()     | 求最大+动态开点+懒标记（离散化） |     |
 | [732. My Calendar III]()     | 求最大+动态开点+懒标记（离散化） |      |
-| [2276. Count Integers in Intervals]()     |  求个数+动态开点+懒标记（离散化）      |     |
-| [715. Range Module]()     |  int+求个数+动态开点+懒标记（离散化）      |  连续超时(44/54)   |
-| [715. Range Module](/DS_ST/715+Range%20Module_ST_Discrete_bool.cpp)     |  bool+求个数+动态开点+懒标记（离散化）      |  1504ms>524ms   |
+| [2276. Count Integers in Intervals](/DS_ST/2276+Count%20Integers%20in%20Intervals_ST_Discrete.cpp)     |  求个数+动态开点+懒标记（离散化）      |  注意他这个里边有个几个样例，需要调试maxn的大小，合适的值是1e6+1e5 <br>1248ms > 548ms   |
+| [715. Range Module](/DS_ST/715+Range%20Module_ST_Discrete_int.cpp)     |  int+求个数+动态开点+懒标记（离散化）      |  连续超时(44/54) > 356MS   |
+| [715. Range Module](/DS_ST/715+Range%20Module_ST_Discrete_bool.cpp)     |  bool+求个数+动态开点+懒标记（离散化）      |  1504ms > 524ms   |
 |      |        |      |
 |      |        |      |
 |      |        |      |

@@ -12,7 +12,7 @@ public:
     }tr[maxnn] {};
 
     int idx = 0;
-    SegTree() {   
+    SegTree() {  
     	tr[++idx] = {0, maxn, 0, 0, 0, 0, (1 + maxn >> 1)};
     }    
     
@@ -34,20 +34,21 @@ public:
             tr[idx] = {ll, rr, 0, 0, 0, 0, midd};
         }
 
-        if (node.add != 0) {
-            tr[node.lNode].val = (node.mid - node.l + 1) * node.add; 
-            tr[node.rNode].val = (node.r - node.mid) * node.add;
+        if (node.add == 0) { return; } 
+        else if (node.add == 1) {
+            tr[node.lNode].val = node.add == 1 ?  (tr[node.lNode].r - tr[node.lNode].l + 1) : 0; 
+            tr[node.rNode].val = node.add == 1 ?  (tr[node.rNode].r - tr[node.rNode].l + 1) : 0;
             tr[node.lNode].add = node.add;
             tr[node.rNode].add = node.add;
-            node.add = 0; 
+            node.add = 0;  
         }  
     }
     
     
     // 区间修改 [l,r] 的和，也可以用于单点修改l=y即可
-    void modify(Node &node, int l, int r, int v) { 	// u为根节点索引 l左边界 y右边界 v为修改的值 
+    void modify(Node &node, int l, int r, bool v) { 	// u为根节点索引 l左边界 y右边界 v为修改的值 
         if (l <= node.l && node.r <= r) { 	// 修改区间 [l,r] 完全覆盖当前节点区
-            node.val = (node.r - node.l + 1) * v; 	// 进来修改, +=
+            node.val = v == 1 ? (node.r - node.l + 1) : 0; 	// 进来修改, +=
             node.add = v;						            // 懒标记 v  +=
             return;
         }
@@ -73,22 +74,18 @@ public:
 
 };
 
-class RangeModule {
+
+class MyCalendar {
 public:
-    RangeModule() {
+    MyCalendar() {
+        
     }
     
-    void addRange(int left, int right) {
-        ST.modify(ST.tr[1], left, right - 1, 1);
-    }
-    
-    bool queryRange(int left, int right) {
-        //cout << ST.query(ST.tr[1], left, right - 1) << endl;
-        return ST.query(ST.tr[1], left, right - 1) == right - left;
-    }
-    
-    void removeRange(int left, int right) {
-        ST.modify(ST.tr[1], left, right - 1, -1);
+    bool book(int start, int end) {
+        if (ST.query(ST.tr[1], start, end - 1) >= 1) return false;
+        ST.modify(ST.tr[1], start, end - 1, 1);
+        
+        return true;
     }
 
 private:
@@ -96,9 +93,7 @@ private:
 };
 
 /**
- * Your RangeModule object will be instantiated and called as such:
- * RangeModule* obj = new RangeModule();
- * obj->addRange(left,right);
- * bool param_2 = obj->queryRange(left,right);
- * obj->removeRange(left,right);
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
  */
