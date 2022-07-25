@@ -545,7 +545,7 @@ static const auto io_sync_off = []()
 |2*[707. Design Linked List](DS_Linked_list/707+MyLinkedList.cpp)   | 链表设计 |关键是确定待操作节点的先驱节点位置，注意几个输入index的判断|
 |2*[206. Reverse Linked List](DS_Linked_list/206+reverseList.cpp)   |  反转|注意链表指针赋值只是变量名不一样，操作在内存上进行|
 |2*[141. Linked List Cycle](DS_Linked_list/141+hasCycle.cpp)   |  |快慢指针|
-|💛[142. Linked List Cycle II](DS_Linked_list/142*detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
+|💛[142. Linked List Cycle II](DS_Linked_list/142+detectCycle.cpp):(   | 链表环 | 快慢指针，注意起点|
 |3+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意不要加while套一层循环，注意merge之后要return |
 |[234. Palindrome Linked List](DS_Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 |[剑指 Offer 18. 删除链表的节点](/DS_Linked_list/Offer%2018.%20删除链表的节点.cpp) | |记录前驱节点 |

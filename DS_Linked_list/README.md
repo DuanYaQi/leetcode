@@ -353,9 +353,9 @@ ListNode *detectCycle(ListNode *head) {
 
 把环铺开，因为速度为 2 倍关系，计算公式为
 
-![图片](../TwoPointer/assets/640.webp)
+![图片](assets/640.webp)
 
-slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x + y + n (y + z)`，n为fast指针在环内走了n圈才遇到slow指针， （y+z）为 一圈内节点的个数A。其中 n 必为1。
+slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x + y + n (y + z)`，n 为 fast 指针在环内走了 n 圈才遇到 slow 指针， （y+z）为 一圈内节点的个数 A。其中 n 必为 1。
 
 因为 fast 指针是一步走两个节点，slow 指针一步走一个节点， 所以 fast 指针走过的节点数 = slow 指针走过的节点数 * 2：
 
@@ -366,6 +366,21 @@ slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x 
 有 n = 1，则公式就化解为 `x = z`
 
 
+
+
+
+
+
+
+
+
+![image](assets/180805264-c5c5bc96-f203-40fb-a070-c6bf74661371.png)
+
+slow 走的路: a + b，
+fast 走的路: a + b + n(b + c)，
+其中 n 必为 1，
+在 b 相遇，因为 fast 速度是 slow 的两倍，则有：a + b + n(b + c) = (a + b) * 2，求解出来 c = a，
+那么 slow 再走 c = a 步，就是相交节点，找另一个指针 cur 从 head 走 a 步，cur == slow 时，即为环的起点
 
 
 
