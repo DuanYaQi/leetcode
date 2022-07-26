@@ -556,7 +556,7 @@ static const auto io_sync_off = []()
 |[61. Rotate List](/DS_Linked_list/61+Rotate%20List.cpp) | 旋转链表 | |
 | | | |
 |[109. Convert Sorted List to Binary Search Tree](/DS_Linked_list/109+Convert%20Sorted%20List%20to%20Binary%20Search%20Tree.cpp) | 链表转平衡二叉树|因为已经是有序的了，每次选择好中点，控制平衡递归建树即可 |
-| | | |
+|[1206. Design Skiplist](/DS_Linked_list/1206+Design%20Skiplist.cpp) | 跳表 | 系统设计 |
 | | | |
 |[剑指 Offer II 029. 排序的循环链表](/DS_Linked_list/Offer%20II%20029.%20排序的循环链表.cpp) |  | 指针 |
 | | | |

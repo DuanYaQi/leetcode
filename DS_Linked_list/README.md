@@ -367,7 +367,8 @@ slow 指针走过的节点数为: `x + y`， fast 指针走过的节点数：`x 
 
 
 
-
+- 为什么 n 一定是 1?
+设环的长度为 L，当慢指针刚进入环时，慢指针需要走 L 步(即 L 秒)才能走完一圈，此时快指针距离慢指针的最大距离为 L-1，我们再次以慢指针为参考系，如上所说，快指针在按照1节点/秒的速度在追赶慢指针，所以肯定能在 L 秒内追赶到慢指针。
 
 
 
@@ -583,7 +584,221 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
 
 
 
+---
 
+## 1206. 设计跳表
+
+跳跃链表，允许以平均时间复杂度 $log(N)$ 级别的快速查询、插入和删除一个**有序连续**元素的数据链表。
+
+且每一层链表中的元素是前一层链表元素的子集。
+
+![查看源图像](assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM3MTQyMzQ2,size_16,color_FFFFFF,t_70.png)
+
+
+
+---
+
+### 建造
+
+如果链表的结点数量非常多，我们就可以抽出更多的索引层级，每一层索引的结点数量都是低层索引的一半。
+
+![img](assets/format,png.png)
+
+
+
+
+
+---
+
+### 插入
+
+假设我们要插入的结点是10，首先我们按照跳表查找结点的方法，找到待插入结点的**前置结点**（**仅小于**待插入结点，也就前驱节点），类似于链表的插入一样：
+
+![img](assets/format,png-165883879276310.png)
+
+首先我们查找都是在最高层开始查找，找到前驱节点并将新的节点进行插入。
+
+![img](assets/format,png-165883880434812.png)
+
+如何调整索引呢？我们让新插入的结点**随机 “晋升”**，也就是成为**高层索引结点**。新结点晋升成功的几率是50%。
+
+假设第一次随机的结果是晋升成功，那么我们把结点10作为索引结点，插入到第1层索引的对应位置，并且向下指向原始链表的结点10：
+
+![img](assets/format,png-165883884187014.png)
+
+晋升的层数也**有可能超过头节点的层数**，此时我们需要将头节点加一层.
+
+![img](assets/format,png-165883885722016.png)
+
+
+
+
+
+---
+
+### 查找
+
+一开始，算法在**最稀疏**的层次进行搜索，直至需要查找的元素在该层两个**相邻的元素中间**。这是，算法将**跳转到下一个较稠密层次**，重复刚才的搜索，直到找到需要查找的元素位置。
+
+
+
+
+
+**示例（查找结点20）**
+
+首先，我们从最上层的索引开始查找，找到该层中**仅小于**结点 20的前置索引结点 12：
+
+![img](assets/format,png-16588382331494.png)
+
+接下来，我们顺着结点 12 访问**下一层**索引，在该层中找到结点 20：
+
+![img](assets/format,png-16588383525426.png)
+
+最后，我们顺着第 1 层索引的结点 20 **向下一层**，找到原始链表的结点 20：
+
+![img](assets/format,png-16588383778998.png)
+
+
+
+---
+
+### 删除
+
+
+
+
+
+---
+
+### 题解
+
+- 查找：从跳表的当前的**最大层数 level 层开始查找**，在当前层水平地逐个比较直至当前节点的**下一个节点大于等于目标节点**，然后移动至下一层进行查找，重复这个过程直至到达第 1 层。此时，若第 1 层的下一个节点的值等于 target，则返回 true；反之，则返回 false
+
+- 插入：从跳表的当前的最大层数 level 层开始查找，在当前层水平地逐个比较直至当前节点的**下一个节点大于等于目标节点**，然后移动至下一层进行查找，重复这个过程直至到达第 1 层。设新加入的节点为 newNode，我们需要计算出此次节点插入的层数 lv，如果 level 小于 lv，则同时需要更新 level。我们用数组 update 保存每一层查找的最后一个节点，第 i 层最后的节点为 update[i]。我们将 newNode 的后续节点指向 update[i] 的下一个节点，同时更新 update[i] 的后续节点为 newNode。
+
+- 删除：首先我们需要查找当前元素是否存在跳表中。从跳表的当前的最大层数 level 层开始查找，在当前层水平地逐个比较直至当前节点的下一个节点大于等于目标节点，然后移动至下一层进行查找，重复这个过程直至到达第 1 层。如果第 1 层的下一个节点不等于 num 时，则表示当前元素不存在直接返回。我们用数组 update 保存每一层查找的最后一个节点，第 i 层最后的节点为 update[i]。此时第 i 层的下一个节点的值为 num，则我们需要将其从跳表中将其删除。由于第 i 层的以 p 的概率出现在第 i+1 层，因此我们应当从第 1 层开始往上进行更新，将  num 从 update[i] 的下一跳中删除，同时更新 update[i] 的后续节点，直到当前层的链表中没有出现 num 的节点为止。最后我们还需要更新跳表中当前的最大层数 level。
+
+  
+
+```c++
+constexpr int MAX_LEVEL = 32;
+constexpr double P_FACTOR = 0.25;
+
+struct SkipListNode {
+    int val;
+    vector<SkipListNode*> forward;   // 存该节点每一个 level 的后继节点
+    // forward.size()  表示这个值有几层, 有几个 level
+
+    SkipListNode(int _val, int _maxLevel = MAX_LEVEL) : val(_val), forward(_maxLevel, nullptr) {};
+};
+
+class Skiplist {
+public:
+    Skiplist() : head(new SkipListNode(-1)), level(0), dis(0, 1) {
+        
+    }
+    
+    bool search(int target) {   
+        SkipListNode *curr = this->head;
+        for (int i = level - 1; i >= 0; i--) {
+            /* 找到第i层小于且最接近target的元素 */
+            while (curr->forward[i] && curr->forward[i]->val < target) {
+                curr = curr->forward[i];
+            }
+        }
+        curr = curr->forward[0];
+        /* 检测当前元素的值是否等于 target */
+        if (curr && curr->val == target) {
+            return true;
+        }
+
+        // 最接近target的元素的下一个不是的话，就说明没有
+        return false;
+    }
+    
+    void add(int num) {
+        vector<SkipListNode *> update(MAX_LEVEL, head);
+        SkipListNode *curr = this->head;        
+        for (int i = level - 1; i >= 0; i--) {  // 遍历层级
+            /* 找到第 i 层小于且最接近 num 的元素 */
+            while (curr->forward[i] != nullptr && curr->forward[i]->val < num) {
+                curr = curr->forward[i];
+            }    
+            update[i] = curr;  // 保存小于且最最近 num 的元素, 即前驱节点
+        }
+
+        int lv = randomLevel();
+        level = max(level, lv); // 更新最大的level
+        SkipListNode *newNode = new SkipListNode(num, lv);
+        for (int i = 0; i < lv; ++i) {          // 在每一层插入新节点
+            newNode->forward[i] = update[i]->forward[i];  
+            update[i]->forward[i] = newNode; 
+        }
+    }   
+    
+    bool erase(int num) {
+        vector<SkipListNode *> update(MAX_LEVEL, nullptr); // 默认都为空
+        SkipListNode *curr = this->head;        
+        for (int i = level - 1; i >= 0; i--) {  // 遍历层级
+            /* 找到第 i 层小于且最接近 num 的元素 */
+            while (curr->forward[i] != nullptr && curr->forward[i]->val < num) {
+                curr = curr->forward[i];
+            }    
+            update[i] = curr;  // 保存小于且最最近 num 的元素, 即前驱节点
+        }
+
+        curr = curr->forward[0];    // 最底层的 curr 的后继节点没值的话，上层肯定也没有
+        /* 没有这个值 */
+        if (curr == nullptr || curr->val != num) {
+            return false;
+        }
+
+        for (int i = 0; i < level; ++i) {   // 从小往上找
+            if (update[i]->forward[i] != curr) { // 如果该层没有值，上层也不会有了
+                break;
+            }
+            /* 对第 i 层的状态进行更新，将 forward 指向被删除节点的下一跳 */
+            update[i]->forward[i] = curr->forward[i];
+        }
+        delete curr;
+        /* 更新当前的 level */
+        while (level > 0 && head->forward[level - 1] == nullptr) { //头节点后继就是nullptr,肯定就为空了
+            level--;
+        }
+        return true;
+    }
+
+    int randomLevel() {
+        int lv = 1;  //初始节点就一层，再最低层
+        /* 随机生成 lv */
+        while (dis(gen) < P_FACTOR && lv < MAX_LEVEL) {
+            lv++;   //有0.25的概率加1层
+        }
+        return lv;
+    }
+
+private:
+    SkipListNode* head; // 头指针
+    int level;          // 当前最大的level
+    mt19937 gen{random_device{} ()};    // 生成 (-maxint,+maxint) 随机数
+    uniform_real_distribution<double> dis;
+};
+
+/*
+mt是指maxint（整型int最大值的缩写）, 19937是指2^19937-1
+mt19937是c++11新特性，它是一种随机数算法，用法与rand()函数类似，但是mt19937具有速度快，周期长的特点（所谓周期长应该是指19937所代表的意思吧）
+rand()在windows下生成的数据范围为0-32726
+此时的mt19937所生成的数据范围大概为(-maxint,+maxint)（maxint整型int最大值的缩写）
+*/
+
+/**
+ * Your Skiplist object will be instantiated and called as such:
+ * Skiplist* obj = new Skiplist();
+ * bool param_1 = obj->search(target);
+ * obj->add(num);
+ * bool param_3 = obj->erase(num);
+ */
+```
 
 
 
