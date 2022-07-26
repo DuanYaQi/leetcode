@@ -1696,8 +1696,8 @@ struct DLinkedNode{
     int key, value;
     DLinkedNode* next;
     DLinkedNode* prev;
-    DLinkedNode() : key(0), val(0), prev(nullptr), next(nullptr) {}
-    DLinkedNode(int k, int v) : key(k), val(v), prev(nullptr), next(nullptr) {}
+    DLinkedNode() : key(0), value(0), prev(nullptr), next(nullptr) {}
+    DLinkedNode(int k, int v) : key(k), value(v), prev(nullptr), next(nullptr) {}
 }
 ```
 
@@ -1752,7 +1752,7 @@ public:
                 // 删除哈希表中对应的项
                 _cache.erase(removed->key);
                 // 防止内存泄露
-                deletd removed;
+                delete removed;
                 --_size;
             }
         } else {			// key 存在，修改value，并移至头部
@@ -1777,22 +1777,26 @@ public:
         addToHead(node);
     }
     
+    // 对应官方图解第 3 > 4 图
     void addToHead(DLinkedNode* node) {
-        node->prev = head;
-        node->next = head->next;
-        head->next->prev = node;
-        head->next = node;
+        node->prev = head;				// 1->prev = head;
+        node->next = head->next;		// 1->next = 2;
+        head->next->prev = node;		// 2->prev = 1;
+        head->next = node;				// head->next = 1;
     }
     
+    // 对应官方图解第 3 > 4 图
 	void removeNode(DLinkedNode* node) {
-        node->prev->next = node->next;
-        node->next->prev = node->prev;
+        node->prev->next = node->next;	// 2->next = dummy_Tail
+        node->next->prev = node->prev;	// dummy_Tail->prev = 2
+        // 此时 2 被完全隔开
     }
     
+    // 对应官方图解第 4 > 5 图
     DLinkedNode* removeTail() {
-        DLinkedNode node = tail->prev;
-        removeNode(node);
-        return node;
+        DLinkedNode node = tail->prev;		// 2 = tail->prev
+        removeNode(node);					// remove(2)
+        return node;						// return 2
     }
     
     
