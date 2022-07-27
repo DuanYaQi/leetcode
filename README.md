@@ -1117,7 +1117,7 @@ DP
 |[504. Base 7](/CS_Math/504+Base%207.cpp) | | 注意特判0，翻转 |
 |[136. Single Number](CS_Math/136+Single%20Number.cpp) | | 任何数和 0 做异或运算，结果仍然是原来的数 <br>任何数和其自身做异或运算，结果是 0<br>异或运算满足交换律和结合律|
 |[6062. Design an ATM Machine](/CS_Math/6062+Design%20an%20ATM%20Machine.cpp) |系统设计 | |
-| | | |
+|[592. Fraction Addition and Subtraction](/CS_Math/592+Fraction%20Addition%20and%20Subtraction.cpp) | 表达式计算 | 分数加减，记录正负号 |
 | | | |
 |[155. Min Stack](/CS_Math/155+Min%20Stack.cpp) | |两个相同的数据结构，可以考虑用pair合并成一个|
 | | | |
