@@ -1823,6 +1823,62 @@ TreeNode* deserialize(string data) {
 
 
 
+# 297. 二叉树的序列化与反序列化
+
+序列化没什么好说的，把叶子节点的左右子树标成特殊的符号，方便反序列化时构建，
+
+```c++
+class Codec {
+public:
+    void dfs(TreeNode* root, string &s) { // 中序
+        if (root == nullptr) {
+            s += "-1111,";
+            return;
+        }
+        
+        s += to_string(root->val) + ",";
+        dfs(root->left, s);        
+        dfs(root->right, s);
+    }
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string res;
+        dfs(root, res);
+        //cout << res;
+        return res;
+    }
+
+    void stringsplit(string &s, char split, vector<int> &nums) {
+        istringstream iss(s); 
+        string token;
+        while (getline(iss, token, split)) {
+            nums.push_back(stoi(token));
+        }
+        return;
+    }
+
+    TreeNode* dfsBuild(vector<int> &nums, int &idx) {
+        if (nums[idx] == -1111) return nullptr;
+        TreeNode* root = new TreeNode(nums[idx]);
+        root->left = dfsBuild(nums, ++idx);
+        root->right = dfsBuild(nums, ++idx);
+        return root;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        vector<int> nums;
+        stringsplit(data, ',', nums);
+        int idx = 0;
+        TreeNode* res = dfsBuild(nums, idx);        
+        return res;
+    }
+};
+```
+
+
+
 
 
 
