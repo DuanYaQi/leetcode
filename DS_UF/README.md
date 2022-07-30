@@ -498,6 +498,67 @@ vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
 
 ---
 
+## 952. 按公因数计算最大组件大小
+
+埃氏筛 + 并查集
+
+对于范围 $[2, \sqrt{num}]$ 内的每个正整数 i，如果 i 是 num 的因数，则 num 和 i、$\dfrac{\textit{num}}{i}$  都属于同一个组件。
+
+然后通过并查集合并为同一个集合，最后用 map 记录输入数字的parentIdx，查看哪个最大
+
+```c++
+const int maxn = 1e5 + 5;
+
+class Solution {
+public:
+    struct UF {
+        int fa[maxn];
+
+        void init(int n) { for (int i = 0; i < n; ++i) { fa[i] = i; } }
+        int find (int x) { 
+            if (x == fa[x]) return x;
+            else {
+                int F = find(fa[x]);
+                fa[x] = F;
+                return F;
+            }
+        }
+        void merge(int x, int y) { fa[find(y)] = find(x); }
+    } uf;
+
+
+    int largestComponentSize(vector<int>& nums) {
+        int n = nums.size();
+        int maxnum = *max_element(nums.begin(), nums.end());
+        uf.init(maxnum + 1);
+
+        // 埃氏筛
+        for (int num : nums) {
+            for (int i = 2; i * i <= num; i++) {
+                if (num % i == 0) {
+                    uf.merge(num, i);
+                    uf.merge(num, num / i);
+                }
+            }
+        }
+
+        map<int, int> mp;
+        int res = -1;
+        for (int i = 0; i < n; ++i) {
+            res = max(++mp[uf.find(nums[i])], res);
+        }
+
+        return res;
+    }
+};
+```
+
+
+
+
+
+---
+
 ## 399. 除法求值
 
 ==**带权并查集**==

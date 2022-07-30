@@ -10,17 +10,18 @@
 
 ```c++
 vector<int> twoSum(vector<int>& nums, int target) {
-    unordered_map<int, int> ump;
-    int i = 0, j = nums.size() - 1;
+    unordered_map<int, int> ump; //key-value 数值-索引
 
     for (int i = 0; i < nums.size(); ++i) {
-        if (ump.find(target - nums[i]) != ump.end()) {
-            return {i, ump[target - nums[i]]};
+        int num = target - nums[i];
+        if (ump.count(num)) {
+            return {ump[num], i};
         }
 
         ump[nums[i]] = i;
-    }   
-    return {};
+    }
+
+    return {0, 0};
 }
 ```
 

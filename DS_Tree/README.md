@@ -1827,6 +1827,125 @@ TreeNode* deserialize(string data) {
 
 
 
+---
+
+# 513. 找树左下角的值
+
+## BFS
+
+
+```c++
+int findBottomLeftValue(TreeNode* root) {
+    queue<TreeNode*> q;
+    q.push(root);
+
+    int res = root->val;
+
+
+    while (q.size()) {
+        int size = q.size();
+
+        for (int i = 0; i < size; ++i) {
+            TreeNode* cur = q.front(); q.pop();
+            if (i == 0) res = cur->val;
+
+            if (cur->left != nullptr) q.push(cur->left);
+            if (cur->right != nullptr) q.push(cur->right);
+        }
+    }
+
+    return res;
+}
+```
+> + 时间复杂度: O(N)，即所有节点全遍历一遍
+> + 空间复杂度: O(N)，满完全二叉树，其中一满层全存
+
+----
+
+## DFS
+
+先序遍历，左右中
+
+- `左` 在 `右中` 的前边，保证最左节点
+- `左右` 在 `中` 的前边，保证最底层
+
+```c++
+class Solution {
+public:
+    void dfs(TreeNode* root, int level) {
+        if (root->left != nullptr) dfs(root->left, level + 1);
+        if (root->right != nullptr) dfs(root->right, level + 1);
+        
+        if (maxlevel < level) {
+            maxlevel = level;
+            res = root->val;
+            return;
+        }
+
+        return;
+    }
+
+    int findBottomLeftValue(TreeNode* root) {
+        maxlevel = -1;
+        dfs(root, 0);
+        return res;
+    }
+
+private:
+    int res;
+    int maxlevel;
+};
+```
+
+
+> + 时间复杂度: O(N)，即全部遍历一遍
+> + 空间复杂度: O(height)，树的高度，最差为 O(N)
+
+
+
+
+
+# 1161. 最大层内元素和
+
+```c++
+const int inf = 0x3f3f3f3f;
+class Solution {
+public:
+    int maxLevelSum(TreeNode* root) {
+        vector<pair<int, int>> vecs;
+        int res = -inf;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        int reslevel = 1, level = 1;
+        while (q.size()) {          
+            int size = q.size();
+            int resT = 0;
+            for (int i = 0; i < size; ++i) {
+                auto cur = q.front(); q.pop();  
+                resT += cur->val;
+                if (cur->left) q.push(cur->left);
+                if (cur->right) q.push(cur->right);
+            }
+
+            if (res < resT) {
+                res = resT;
+                reslevel = level;
+            }
+              
+            level++;
+        }
+
+        return reslevel;
+    }
+};
+```
+
+
+
+
+
 -----
 
 # 230. 二叉搜索树中第K小的元素

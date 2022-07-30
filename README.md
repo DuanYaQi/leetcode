@@ -486,7 +486,8 @@ static const auto io_sync_off = []()
 |[110. Balanced Binary Tree](DS_Tree/110+isBalanced.cpp)*:(  | 回溯 ||
 |[257. Binary Tree Paths](DS_Tree/257+binaryTreePaths_Rec+Back.cpp):)   | 回溯 | to_string()|
 |[404. Sum of Left Leaves](DS_Tree/404+sumOfLeftLeaves.cpp):(   |后序  |R|
-|[513. Find Bottom Left Tree Value](DS_Tree/513+findBottomLeftValue_Queue_BFS.cpp)*:(   |回溯  |R Q BFS|
+|2*[513. Find Bottom Left Tree Value](DS_Tree/513+findBottomLeftValue_BFS.cpp)*:(   |  |BFS|
+|2*[513. Find Bottom Left Tree Value](DS_Tree/513+findBottomLeftValue_DFS.cpp)*:(   |  DFS|后序遍历|
 |[112. Path Sum](DS_Tree/112+hasPathSum.cpp):(   | 回溯 |R|
 |2*[113. Path Sum II](DS_Tree/113+pathSum.cpp)   | 回溯|R |
 |[617. Merge Two Binary Trees](DS_Tree/617+mergeTrees_Rec.cpp)*   |  |递归|
@@ -507,7 +508,7 @@ static const auto io_sync_off = []()
 |[230. Kth Smallest Element in a BST](/DS_Tree/230+Kth%20Smallest%20Element%20in%20a%20BST.cpp) | BST | k-th|
 |[100. Same Tree](DS_Tree/100+isSameTree.cpp)   |  |递归|
 |[572. Subtree of Another Tree](DS_Tree/572+Subtree%20of%20Another%20Tree.cpp) |注意continue位置 | |
-| | | |
+|[1161. Maximum Level Sum of a Binary Tree](/DS_Tree/1161+Maximum%20Level%20Sum%20of%20a%20Binary%20Tree.cpp) |BFS |求和，计算层数 |
 |💗2*[449. Serialize and Deserialize BST](/DS_Tree/449.%20Serialize%20and%20Deserialize%20BST.cpp) | 树转数组 + 序列化 + 分割字符串 + 字符数字互相转换| |
 |[剑指 Offer II 051. 节点之和最大的路径](/DS_Tree/剑指%20Offer%20II%20051.%20节点之和最大的路径.cpp) | | 注意函数返回的是最大贡献值，答案是在递归的时候不断更新的|
 | | | |
