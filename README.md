@@ -642,12 +642,15 @@ static const auto io_sync_off = []()
 |[743. Network Delay Time](/DS_Graph/743+Network%20Delay%20Time_SPFA.cpp) |SPFA |BF+队列 |
 |[优先队列再优化](/DS_Graph/743+Network%20Delay%20Time_Heap_best.cpp)||HeapNode/myCmp|
 |[1514. Path with Maximum Probability](/DS_Graph/1514+Path%20with%20Maximum%20Probability.cpp) | 注意是大顶堆 带起止点 | |
+|[871. Minimum Number of Refueling Stops](/DS_Graph/871+Minimum%20Number%20of%20Refueling%20Stops.cpp) |优先队列 |贪心 |
 |💛[1631. Path With Minimum Effort](DS_Graph/1631+Path%20With%20Minimum%20Effort.cpp) | 极大值最小化| 抽象为图 |
 |💗[LCP 56. 信物传送](/DS_Graph/LCP%2056.%20信物传送.cpp) | 最短路径| 方向指向的块与其相连为权为0<br>其余邻接块权为1<br>二维dist数组 |
 | | | |
 |[565. Array Nesting](/DS_Graph/565+Array%20Nesting.cpp) | dfs|找最大环 |
 | | | |
 |[剑指 Offer II 115. 重建序列](/DS_Graph/剑指%20Offer%20II%20115.%20重建序列.cpp) | 拓扑排序| 序列有方向，就可以抽象成图 |
+| | | |
+| | | |
 | | | |
 
 ---
@@ -965,6 +968,7 @@ Greedy(==**排序很重要**==)
 |[1775. Equal Sum Arrays With Minimum Number of Operations](/Alog_Greedy/1775+Equal%20Sum%20Arrays%20With%20Minimum%20Number%20of%20Operations.cpp) | | 可以一直贪心，不一定要使它刚好相等，使sumn1 大于sumn2 说明一定有解，只要最后一次取小一点就可以了 |
 |[452. Minimum Number of Arrows to Burst Balloons](/Alog_Greedy/452+Minimum%20Number%20of%20Arrows%20to%20Burst%20Balloons.cpp) | 贪心模拟 | 排序很重要 要构建出来射气球的场景|
 | | | |
+|[871. Minimum Number of Refueling Stops](/DS_Graph/871+Minimum%20Number%20of%20Refueling%20Stops.cpp) |优先队列 |贪心 |
 | | | |
 | | | |
 | | | |
