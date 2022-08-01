@@ -511,7 +511,7 @@ static const auto io_sync_off = []()
 |💗2*[449. Serialize and Deserialize BST](/DS_Tree/449.%20Serialize%20and%20Deserialize%20BST.cpp) | 树转数组 + 序列化 + 分割字符串 + 字符数字互相转换| |
 |[297. Serialize and Deserialize Binary Tree](/DS_Tree/297+Serialize%20and%20Deserialize%20Binary%20Tree.cpp) | 序列化<br>反序列化 |  挺好的一道题 <br>to_string()<br>stoi() |
 |[剑指 Offer II 051. 节点之和最大的路径](/DS_Tree/剑指%20Offer%20II%20051.%20节点之和最大的路径.cpp) | | 注意函数返回的是最大贡献值，答案是在递归的时候不断更新的|
-| | | |
+|[987. Vertical Order Traversal of a Binary Tree](/DS_Tree/987+Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree.cpp) | 排序规则| |
 | | | |
 | | | |
 |[面试题 04.06. 后继者](/DS_Tree/面试题%2004.06.%20后继者.cpp) | |注意 BST, 可能需要考虑某个节点是否存在子树 |

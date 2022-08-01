@@ -4141,3 +4141,59 @@ int maxProduct(vector<int>& nums) {
 }
 ```
 
+
+
+
+
+# 241. 为运算表达式设计优先级
+
+我们把字符串按照操作符分割为两个子表达式，然后将两个子表达式的结果集进行当前 `op` 的操作，组装成新的结果集，对每个 `op` 分别进行分割得到的结果集之和就是最终的答案。而子表达式又是相同的问题，可以采用递归进行计算，最终会递归到一个`digit` 上。
+
+![image.png](assets/1656633782-AKtLNr-image.png)
+
+```c++
+vector<int> diffWaysToCompute(string expression) {
+    if (expression.size() == 0) {
+        return {};
+    } 
+
+    vector<int> ans;
+    int n = expression.size();
+    for (int i = 0; i < n; ++i) {
+        char c = expression[i];
+
+        if (!isdigit(c)) {      // 当碰到操作符
+            vector<int> left = diffWaysToCompute(expression.substr(0, i));
+            vector<int> right = diffWaysToCompute(expression.substr(i+1, n));
+
+            for (int lnum : left) {
+                for (int rnum : right) {
+                    if (c == '+') {
+                        ans.push_back(lnum + rnum);
+                    } else if (c == '-') {
+                        ans.push_back(lnum - rnum);
+                    } else {
+                        ans.push_back(lnum * rnum);
+                    }
+                }
+            }
+        }
+    }
+
+    if (ans.size() == 0) {      // 结果集是空，证明该字符串是数字，将数字加入结果集
+        ans.push_back(stoi(expression));
+    }
+
+    return ans;
+}
+```
+
+该问题牵涉到括号的**组合**问题，一般使用**递归+回溯**的思想。主要想法：
+
+其一，递归回溯。可以产生所有的组合方式。
+
+其二，每个小组合方式相当于一个子集，不断的将计算结果返回给上一层。
+
+- 举例：`a + (b - (c * d))`会不断的变成`a + (b - (res1 * res2)) `-> `a + (res1 - res2)` -> `res1 + res2`
+- 似乎计算结果不需要`for`循环？其实有这种情况，`a + (b - (c * d))`和`a + (b - c) * d))`，这里 `a + res2`，`res2`就可能有多种情况。
+
