@@ -2039,7 +2039,6 @@ bool operator < (Node node) const {
     else if(x != node.x) return x > node.x;
     return val > node.val;
 }
-};
 ```
 
 
