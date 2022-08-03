@@ -576,6 +576,7 @@ static const auto io_sync_off = []()
 |[150. Evaluate Reverse Polish Notation](DS_StackQueue/150+evalRPN.cpp) | 逆波兰式| 栈|
 |💛[239. Sliding Window Maximum](DS_StackQueue/239+maxSlidingWindow.cpp) | 滑动窗口| 建立一个对象queue |
 |💛[347. Top K Frequent Elements](DS_StackQueue/347+topKFrequent.cpp) | 堆| 优先队列实现小顶堆|
+|💛[347. Top K Frequent Elements](DS_StackQueue/347+topKFrequent_ump.cpp) | 哈希表| 哈希表直接保存到vector中|
 |[71. Simplify Path](DS_StackQueue/71+simplifyPath.cpp) |  Unix 风格 绝对路径|栈 |
 | | | |
 |[1381. Design a Stack With Increment Operation](/DS_StackQueue/1381+Design%20a%20Stack%20With%20Increment%20Operation.cpp) | 模拟栈 | 修改栈底元素 |
@@ -617,12 +618,12 @@ static const auto io_sync_off = []()
 |[459. Repeated Substring Pattern](DS_String/459+repeatedSubstringPattern.cpp) | 子序列| kmp注意审题，由子串多次构成，next数组中前边几个-1的位置都是子串|
 |[415. Add Strings](/DS_String/415+Add%20Strings.cpp) | |进位|
 |[13. Roman to Integer](/DS_String/13+Roman%20to%20Integer.cpp) | | 注意观察规律，对应值小的在对应值大的左侧（必须紧挨），则该值为减不为加|
-| | | |
+|[5. Longest Palindromic Substring](/DS_String/5+Longest%20Palindromic%20Substring.cpp) | 中心扩散|最长回文子串 |
 |[1903. Largest Odd Number in String](/DS_String/1903+Largest%20Odd%20Number%20in%20String.cpp) |位运算 |从后往前遍历 |
 | | | |
 |[2243. Calculate Digit Sum of a String](/DS_String/2243+Calculate%20Digit%20Sum%20of%20a%20String.cpp) | |注意 `s.substr()` 超出范围就不取了 |
 | | | |
-
+| | | |
 
 
 ---
