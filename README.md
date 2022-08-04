@@ -598,7 +598,7 @@ static const auto io_sync_off = []()
 |[454. 4Sum II](DS_HashTable/454+fourSumCount.cpp) | 四数之和| 两个数存一个map |
 |[383. Ransom Note](DS_HashTable/383+canConstruct.cpp) | 赎金信 |  |
 |[535. Encode and Decode TinyURL](/DS_HashTable/535+Encode%20and%20Decode%20TinyURL.cpp) | 哈希表|解决哈希冲突+计算哈希值 |
-| | | |
+|[447. Number of Boomerangs](/DS_HashTable/447+Number%20of%20Boomerangs.cpp) |重点是数学公式的推导，A_m^2 | m 为到该点距离相等的点个数|
 | | | |
 
 

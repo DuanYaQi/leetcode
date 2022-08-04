@@ -110,6 +110,19 @@
 
 
 
+### pair<int, int> 的 hash 函数
+
+```c++
+struct hashfunc {
+    template<typename T, typename U>
+    size_t operator() (const pair<T, U> &i) const
+    {
+        return hash<T>()(i.first) ^ hash<U>()(i.second);
+    }
+};
+unordered_map< pair<int, int>, int, hashfunc> ump;
+```
+
 
 
 
@@ -491,5 +504,51 @@ public:
 // Your Solution object will be instantiated and called as such:
 // Solution solution;
 // solution.decode(solution.encode(url));
+```
+
+
+
+---
+
+# 447. 回旋镖的数量
+
+题目所描述的回旋镖可以视作一个 V 型的折线。我们可以枚举每个 points[i]，将其当作 V 型的拐点。设 points 中有 m 个点到 points[i] 的距离均相等，我们需要从这 m 点中选出 2 个点当作回旋镖的 2 个端点，由于题目要求考虑元组的顺序，因此方案数即为在 m 个元素中选出 2 个不同元素的排列数，即：
+
+$$
+A_m^2 = m\cdot(m-1)
+$$
+据此，我们可以遍历 points，计算并统计所有点到 points[i] 的距离，将每个距离的出现次数记录在哈希表中，然后遍历哈希表，并用上述公式计算并累加回旋镖的个数。
+
+在代码实现时，我们可以直接保存距离的平方，避免复杂的开方运算
+
+
+
+```c++
+class Solution {
+public:
+    inline int getDis(vector<int> &v1, vector<int> &v2) {
+        return (v1[0] - v2[0]) * (v1[0] - v2[0]) + (v1[1] - v2[1]) * (v1[1] - v2[1]);
+    }
+
+    int numberOfBoomerangs(vector<vector<int>>& points) {
+        int res = 0, n = points.size();
+
+        
+        for (int i = 0; i < n; ++i) {               // 选为拐点
+            unordered_map<int, int> ump;            // k->v  距离->个数
+            for (int j = 0; j < n; ++j) {           // 距离
+                if (i == j) continue;
+                ump[getDis(points[i], points[j])]++;
+            }
+
+            for (auto &[_, m] : ump) {              // 遍历 [距离,个数]
+                res += m * (m - 1);
+            }
+
+        }
+        
+        return res;
+    }
+};
 ```
 
