@@ -860,7 +860,7 @@ static const auto io_sync_off = []()
 |💗[18. 4Sum](Alog_TwoPointer/18+fourSum.cpp) | 四数之和| 思路同三数之和|
 |[26. Remove Duplicates from Sorted Array](Alog_TwoPointer/26+Remove%20Duplicates%20from%20Sorted%20Array.cpp) | | 注意慢指针的移动条件 |
 |[283. Move Zeroes](/Alog_TwoPointer/283+Move%20Zeroes.cpp) | |注意循环里i和fastIndex的区分 |
-| | | |
+|[3. Longest Substring Without Repeating Characters](/Alog_TwoPointer/3+Longest%20Substring%20Without%20Repeating%20Characters.cpp) |滑动窗口 |注意不需要 ump 的 erase，直接判断他的值就好了，而不是他存不存在 |
 | | | |
 | | | |
 |[844. Backspace String Compare](/Alog_TwoPointer/844+Backspace%20String%20Compare.cpp) | | 注意最后index是指向哪里的<br>for的终止位置是index还是+-1|
