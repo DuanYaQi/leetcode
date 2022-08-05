@@ -550,7 +550,9 @@ static const auto io_sync_off = []()
 |3+[21. Merge Two Sorted Lists](DS_Linked_list/21+mergeTwoLists.cpp)   |  |R 注意不要加while套一层循环，注意merge之后要return |
 |[234. Palindrome Linked List](DS_Linked_list/234+isPalindrome_FastSlow.cpp)   | 回文 |快慢+反转|
 |[剑指 Offer 18. 删除链表的节点](/DS_Linked_list/Offer%2018.%20删除链表的节点.cpp) | |记录前驱节点 |
-|[Offer 06. 从尾到头打印链表](DS_Linked_list/Offer%2006.%20从尾到头打印链表.cpp) | | |
+|[剑指 Offer 06. 从尾到头打印链表](DS_Linked_list/Offer%2006.%20从尾到头打印链表.cpp) | | |
+|[剑指 Offer 34. 二叉树中和为某一值的路径](/DS_Linked_list/Offer%2034.%20二叉树中和为某一值的路径.cpp) | 递归| |
+| | | |
 |[876. Middle of the Linked List](DS_Linked_list/876+Middle%20of%20the%20Linked%20List.cpp) | | 快慢指针|
 |[160. Intersection of Two Linked Lists](/DS_Linked_list/160+Intersection%20of%20Two%20Linked%20Lists.cpp) | | 数学公式推导|
 |[19. Remove Nth Node From End of List](/DS_Linked_list/19+Remove%20Nth%20Node%20From%20End%20of%20List.cpp) | | 快慢指针|

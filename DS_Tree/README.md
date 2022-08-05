@@ -2205,7 +2205,47 @@ public:
 
 
 
+---
 
+## 剑指 Offer 34. 二叉树中和为某一值的路径
+
+dfs
+
+```C++
+class Solution {
+public:
+    void dfs(TreeNode* root, int sumn) {
+        if (root->left == nullptr && root->right == nullptr && sumn == mtarget) {
+            res.push_back(resT);
+        }
+
+        if (root->left) {
+            resT.push_back(root->left->val);
+            dfs(root->left, sumn + root->left->val);
+            resT.pop_back();
+        }
+
+        if (root->right) {
+            resT.push_back(root->right->val);
+            dfs(root->right, sumn + root->right->val);
+            resT.pop_back();
+        }
+    }
+
+    vector<vector<int>> pathSum(TreeNode* root, int target) {
+        if (root == nullptr) return {};
+        mtarget = target;
+        resT.push_back(root->val);
+        dfs(root, root->val);
+        return res;
+    }
+
+private:
+    vector<vector<int>> res;
+    vector<int> resT;    
+    int mtarget;
+};
+```
 
 
 
