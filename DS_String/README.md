@@ -763,4 +763,34 @@ private:
 > 时间复杂度：$O(n^2)$，其中 n 是字符串的长度。长度为 1 和 2 的回文中心分别有 n 和 n-1 个，每个回文中心最多会向外扩展 $O(n)$ 次。
 >
 > 空间复杂度：$O(1)$
->
+
+
+
+
+
+---
+
+# 1408. 数组中的字符串匹配
+
+对于字符串数组中的某个字符串 words[i]，我们判断它是否是其他字符串的子字符串，只需要枚举 words[j]，其中 $j \ne i$，如果 words[i] 是 words[j] 的子字符串，那么将 words[i] 加入结果中。
+
+注意外层循环是循环子字符，内层循环父字符
+
+```c++
+vector<string> stringMatching(vector<string>& words) {
+    vector<string> res;
+    int n = words.size();
+    
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (i != j && words[j].find(words[i]) != string::npos) {
+                res.push_back(words[i]);
+                break;  // i 是一个子字符串，加入直接退出即可，不需要继续寻找了
+            }
+        }
+    }
+
+    return res;
+}
+```
+

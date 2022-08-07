@@ -777,3 +777,80 @@ int maxChunksToSorted(vector<int>& arr) {
     }
 ```
 
+
+
+
+
+
+
+---
+
+## 636. 函数的独占时间
+
+我们可以用栈来模拟函数调用的过程，**栈顶**的元素为当前**正在执行函数**：
+
+- 当函数调用开始时，**如果当前有函数正在运行**，则当前正在运行函数应当停止，此时计算其的执行时间，然后将调用函数入栈。
+
+- 当函数调用结束时，将栈顶元素弹出，并计算相应的执行时间，**如果此时栈顶有被暂停的函数**，则开始运行该函数。
+
+由于每一个函数都有一个对应的 start 和 end 日志，且当遇到一个 end 日志时，栈顶元素一定为其对应的 start 日志。那么我们对于每一个函数记录它的函数标识符和上次开始运行的时间戳，此时我们只需要在每次函数暂停运行的时候来计算执行时间和开始运行的时候更新时间戳即可。
+
+```C++
+class Solution {
+public:
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        stack<pair<int, int>> st; //存当前的函数调用的 起始时间，因为一定是配对的，所以不用存 function_id
+
+        vector<int> res(n, 0);
+        for (auto &s : logs) {
+            int n = s.size();
+            int pos1 = s.find(":");            
+            int pos2 = s.find(":", pos1 + 1);
+            int func_id = stoi(s.substr(0, pos1));
+            int time = stoi(s.substr(pos2 + 1, n - pos2 - 1));
+            // printf("%d %d %d\n", pos1, pos2, time);
+
+            if (pos2 - pos1 == 6) { // start
+                if (!st.empty()) {  // 如果栈不为空, 说明是函数1里又调用了函数2, 需要计算时间函数1的前半部分的时间
+                    res[st.top().first] += time - st.top().second;
+                }
+                st.emplace(func_id, time);      // start time
+            } else {        // end
+                auto [curFuncId, startTime] = st.top(); st.pop();
+                res[curFuncId] += time - startTime + 1; 
+                if (!st.empty()) {  // 如果栈不为空, 说明是函数1里调用的函数2完毕, 需要计算时间函数1的后半部分的时间，因此需要将时间更新为后半部分的起始时间
+                    st.top().second = time + 1;
+                }
+            }
+        }
+    
+        return res;
+    }
+};
+```
+
+
+
+时间复杂度：O(n)，其中 n 为全部日志 logs 的数量，n 条日志信息对应总共 n 次入栈和出栈操作。
+空间复杂度：O(n)，其中 n 为全部日志 logs 的数量，n 条日志信息对应 $\frac{n}{2}$ 次入栈操作，最坏的情况下全部 $\frac{n}{2}$ 条日志入栈后才会依次弹栈。
+
+
+
+其中字符串解析，如果不要求速度，可以用以下简单的方式
+
+```c++
+int func_id, time;
+char str[6];
+sscanf(s.c_str(), "%d:%[^:]:%d", &func_id, str, &time);
+
+if (str[0] == 's') { // start
+}
+```
+
+
+
+
+
+---
+
+# 队列

@@ -583,9 +583,10 @@ static const auto io_sync_off = []()
 | | | |
 |[1381. Design a Stack With Increment Operation](/DS_StackQueue/1381+Design%20a%20Stack%20With%20Increment%20Operation.cpp) | 模拟栈 | 修改栈底元素 |
 |[768. Max Chunks To Make Sorted II](/DS_StackQueue/768+Max%20Chunks%20To%20Make%20Sorted%20II.cpp) | 最多能完成排序的块 | 栈存储每个块的最大值， |
+|[636. Exclusive Time of Functions](/DS_StackQueue/636+Exclusive%20Time%20of%20Functions.cpp) | 栈| 函数调用，可以把连续的函数切开，分别计算时间|
 | | | |
 | | | |
-
+| | | |
 
 ---
 
@@ -1691,6 +1692,57 @@ void stringSplit(string str, char split, vector<int>& nums)
 vector<int> nums;
 stringSplit(data, ',', nums);
 ```
+
+
+
+
+
+---
+
+### 固定格式的字符串处理
+
+题中，常常要求读入一行字符串，而这串字符里面可能有空格、制表符等空白字符，如果直接用 %s 是不可以的
+
+```c++
+// "0:start:0"
+// "1:start:2"
+// "1:end:5"
+// "0:end:6"
+
+char type[10];
+int idx, timestamp;
+sscanf(log.c_str(), "%d:%[^:]:%d", &idx, type, &timestamp);
+```
+
+
+
+`%[0-9]` 表示只读入’0’到’9’之间的字符
+
+`%[a-zA-Z]` 表示只读入字母
+
+`%[^a-z]` 就表示读入小写字母之外的字符。 `^` 表示**除XXX之外**。
+
+`"%n[^=]"` 读入"="号前的至多n 个字符
+
+在符号前面加^，比如 `“%[^:]”` 就是**除冒号其他字符都可以输入**，唯独忽略冒号，可输入的字符是除去冒号的字符集补集。
+`'-'` 是范围连接符，当然也可以直接列出需要读入的字符。
+
+
+
+%c 一个单一的字符
+%d 一个十进制整数
+%i 一个整数
+%e, %f, %g 一个浮点数
+%o 一个八进制数
+%s 一个字符串
+%x 一个十六进制数
+%p 一个指针
+%n 一个等于读取字符数量的整数
+%u 一个无符号整数
+%[] 一个字符集
+%% 一个精度符号
+
+
 
 
 
