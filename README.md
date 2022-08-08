@@ -602,6 +602,10 @@ static const auto io_sync_off = []()
 |[383. Ransom Note](DS_HashTable/383+canConstruct.cpp) | 赎金信 |  |
 |[535. Encode and Decode TinyURL](/DS_HashTable/535+Encode%20and%20Decode%20TinyURL.cpp) | 哈希表|解决哈希冲突+计算哈希值 |
 |[447. Number of Boomerangs](/DS_HashTable/447+Number%20of%20Boomerangs.cpp) |重点是数学公式的推导，A_m^2 | m 为到该点距离相等的点个数|
+|[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words_2.cpp) 串联所有单词的子串 | 哈希表,自己的方法| 注意比较可以直接用哈希表的键值来计数|
+|[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) 串联所有单词的子串 | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
+| | | |
+| | | |
 | | | |
 
 
@@ -873,8 +877,6 @@ static const auto io_sync_off = []()
 |[面试题 17.11. 单词距离](/Alog_TwoPointer/Offer%2017.11.%20单词距离.cpp) | |很简单的双指针 |
 |[1089. Duplicate Zeros](/Alog_TwoPointer/1089+Duplicate%20Zeros.cpp) |双指针 | 注意最后元素是0的特判 |
 | | | |
-| | | |
-|[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) 串联所有单词的子串 | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
 |[556. Next Greater Element III](/Alog_TwoPointer/556+Next%20Greater%20Element%20III.cpp) | 全排列的实现 | |
 | | | |
 | | | |
