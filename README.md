@@ -1120,9 +1120,13 @@ DP
 | | | |
 | | | |
 | | | |
-|[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | | 注意( |
-|[227. Basic Calculator II](/CS_Math/227+Basic%20Calculator%20II.cpp) | | 注意( |
+|[224. Basic Calculator](/CS_Math/224+Basic%20Calculator.cpp) | |  |
+|[227. Basic Calculator II](/CS_Math/227+Basic%20Calculator%20II.cpp) | | 注意(-3)需要变成(0-3)来处理 |
+|[772. Basic Calculator III](/CS_Math/772+Basic%20Calculator%20III.cpp) | | 注意(-3)需要变成(0-3)来处理 |
 |[16.26. Calculator LCCI](/CS_Math/16.26+Calculator%20LCCI.cpp) | | 计算器 |
+|[640. Solve the Equation](/CS_Math/640+Solve%20the%20Equation.cpp) | 方程计算，可以把从等号左右分割开来 | |
+| | | |
+| | | |
 |💗[146. LRU Cache](/CS_Math/146+LRU%20Cache.cpp)| |双向链表+哈希表 |
 |💗[460. LFU Cache](/CS_Math/460+LFU%20Cache.cpp) | | 两个哈希表|
 |[504. Base 7](/CS_Math/504+Base%207.cpp) | | 注意特判0，翻转 |

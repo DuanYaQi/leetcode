@@ -2353,300 +2353,6 @@ public:
 
 
 
----
-
-## 表达式计算
-
-对于「任何表达式」而言，我们都使用两个栈 `nums` 和 `ops`：
-
-- `nums` ： 存放所有的数字
-- `ops` ：存放所有的数字以外的操作
-
-
-
-然后从前往后做，对遍历到的字符做分情况讨论：
-
-- 空格 : 跳过
-- `(` : 直接加入 ops 中，等待与之匹配的 )
-- `)` : 使用现有的 nums 和 ops 进行计算，直到遇到左边最近的一个左括号为止，计算结果放到 nums
-- 数字 : 从当前位置开始继续往后取，将整一个连续数字整体取出，加入 nums
-
-+ `+ - / ^ %` : 需要将操作放入 ops 中。**在放入之前先把栈内可以算的都算掉**（只有「栈内运算符」比「当前运算符」优先级高/同等，才进行运算），使用现有的 nums 和 ops 进行计算，直到没有操作或者遇到左括号，计算结果放到 nums
-
-
-
-
-
-因为我们是从前往后做的，假设我们当前已经扫描到 2 + 1 了（此时栈内的操作为 + ）。
-
-- 如果后面出现的 + 2 或者 - 1 的话，满足**「栈内运算符」比「当前运算符」优先级高/同等**，可以将 2 + 1 算掉，把结果放到 nums 中；
-- 如果后面出现的是 * 2 或者 / 1 的话，不满足「栈内运算符」比「当前运算符」优先级高/同等，这时候不能计算 2 + 1。
-
-
-
-一些细节：
-
-- 由于第一个数可能是负数，为了减少边界判断。一个小技巧是先往 nums 添加一个 0
-- 为防止 () 内出现的首个字符为运算符，将所有的空格去掉，并将 `(-` 替换为 `(0-`，`(+` 替换为 `(0+`（当然也可以不进行这样的预处理，将这个处理逻辑放到循环里去做）
-- 从理论上分析，nums 最好存放的是 long，而不是 int。因为可能存在 大数 + 大数 + 大数 + … - 大数 - 大数 的表达式导致中间结果溢出，最终答案不溢出的情况
-
-
-
-
-
-```c++
-unordered_map<char, int> ump = {
-    {'-', 1},
-    {'+', 1},
-    {'*', 2},
-    {'/', 2},
-    {'%', 2},
-    {'^', 3},
-};
-
-stack<long long> nums;
-stack<char> ops;
-
-void eval() {
-    long long b = nums.top(); nums.pop();
-    long long a = nums.top(); nums.pop();
-    char op = ops.top(); ops.pop();
-
-    long long res = 0;
-    switch (op) {
-        case '+':   res = a + b; break;
-        case '-':   res = a - b; break;
-        case '*':   res = a * b; break;
-        case '/':   res = a / b; break;
-        case '%':   res = a % b; break;
-        case '^':   res = pow(a, b); break;
-    }
-
-    nums.push(res);
-}
-
-int calculate(string s) {       
-    nums.push(0);
-    for (int i = 0; i < s.size(); ++i) {
-        if (s[i] == ' ') continue;
-        if (isdigit(s[i])) {    // 数字
-            int res = 0;
-            while (i < s.size() && isdigit(s[i])) {
-                res = res * 10 + (s[i++] - '0');
-            }
-            nums.push(res);
-            i--;
-        } else {    // 运算符
-            if (s[i] == '(') {
-                ops.push(s[i]);
-            } else if (s[i] == ')') {   // 计算该括号内内容
-                while (ops.top() != '(') { // 找到前一个 ( 并算其中的值
-                    eval();
-                }
-                ops.pop();
-            } else {
-                // 有一个新操作要入栈时，先把栈内可以算的都算了 
-                // 但注意的是 只有满足「栈内运算符」比「当前运算符」优先级高/同等，才进行运算
-                while (!ops.empty() && ops.top() != '(' && ump[ops.top()] >= ump[s[i]]) {
-                    eval();
-                }
-                ops.push(s[i]);
-            }
-        }
-    }
-
-    while(!ops.empty() && ops.top() != '(') {
-        eval();
-    }
-
-    return nums.top();
-}
-```
-
-
-
-
-
-### 16.26. 计算器
-
-**考点是栈**
-
-用栈来保存结果， 最后把所有结果累加即可
-“+ -” 都是存在栈里
-”* /“ 是取栈顶数字取出来 *或/ 新的数字
-第一次符号记录为+， 最后每次有符号或者最后一个字符就需要进行计算，计算取决于上一个计算的符号
-
-1、由于运算符有优先级，所以设计一个哈希表来存储 `'+'，'-'，'*'，'/'` 优先级，我们将`'+'` 和 `'-'` 设为1级优先级，将 `'*'` 和 `'/'` 设为2级优先级。
-2、考虑到表达式s的第一个数字可能为负数，因此我们给s开头添加一个字符0。
-
-
-
-```c++
-
-```
-
-
-
-
-
-
-
-### 224. 基本计算器
-
-```c++
-unordered_map<char, int> ump = {
-    {'+', 1},
-    {'-', 1},
-    {'*', 2},
-    {'/', 2}
-};
-
-stack<int> nums;
-stack<char> ops;
-
-void eval() {
-    int b = nums.top(); nums.pop();
-    int a = nums.top(); nums.pop();
-    char op = ops.top(); ops.pop();
-
-    int res;
-    switch (op) {
-        case '+' : res = a + b; break;
-        case '-' : res = a - b; break;
-        case '*' : res = a * b; break;
-        case '/' : res = a / b; break;
-    }
-
-    nums.push(res);
-}
-
-int calculate(string s) {
-    nums.push(0);
-    for (int i = 0; i < s.size(); ++i) {
-        if (s[i] == ' ') continue;
-
-        if (isdigit(s[i])) { //num
-            int res = 0;
-            while (i < s.size() && isdigit(s[i])) {
-                res = res * 10 + (s[i++] - '0');
-            }
-            nums.push(res);
-            i--;
-        } else {    //ops
-            if (s[i] == '(') {
-                ops.push(s[i]);
-                if (i+1 < s.size() && s[i+1] == '-') nums.push(0); 
-            } else if (s[i] == ')') {
-                while (ops.top() != '(') {
-                    eval();
-                }
-                ops.pop();  // 弹出 (
-            } else {
-                while (!ops.empty() && ops.top() != '(' && ump[s[i]] <= ump[ops.top()]) {
-                    eval();
-                }
-                ops.push(s[i]);
-            }
-        }
-    }
-
-    while (!ops.empty() && ops.top() != '(') {
-        eval();
-    }
-
-    return nums.top();
-}
-```
-
-
-
-
-
-### 592. 分数加减运算
-
-对于两个分数 $\dfrac{x_1}{y_1}$ 和 $\dfrac{x_2}{y_2}$ ，它们相加的结果为：
-$$
-\dfrac{x_1 \times y_2 + x_2 \times y_1}{y_1 \times y_2}
-$$
-初始分数的分子为 $\textit{denominator} = 0$ ，分母为 $\textit{numerator} = 1$。我们不断从字符串中获取下一个分数，它的分子为 $\textit{denominator}_1$ ，分母为 $\textit{numerator}_1$，将它加到初始分数上，有：
-$$
-\begin{cases} \textit{denominator} = \textit{denominator} \times \textit{numerator}_1 + \textit{denominator}_1 \times \textit{numerator} \\ \textit{numerator} = \textit{numerator} \times \textit{numerator}_1 \end{cases}
-$$
-最后如果 $\textit{denominator} = 0$，说明结果为零，直接返回 $\text{"0/1"}$；否则计算分子分母的最大公约数，返回约简后分数的字符串表示。
-
-```c++
-typedef long long ll;
-
-class Solution {             // 线段树不一定满二叉树，也不一定是完全二叉树，但一定是平衡二叉树
-public:
-    string fractionAddition(string expression) {
-        string res;
-
-        queue<int> signQ;
-        queue<ll> upN, downN;
-
-
-        // 单独处理首元素
-        if (isdigit(expression[0])) 
-            signQ.push(1);
-
-        for (int i = 0; i < expression.size(); ) {
-            char c = expression[i];
-            if (c == '-' || c == '+') {
-                signQ.push(c == '+' ? 1 : -1);
-            } else if (isdigit(c)) {
-                ll upNum = 0;
-
-                /* 找数字 */
-                do {
-                    upNum = upNum * 10 + expression[i] - '0';
-                    i++;
-                } while (isdigit(expression[i]));
-                
-                i++; // 跳过 '/'
-
-                ll downNum = 0;
-                /* 找数字 */
-                do {
-                    downNum = downNum * 10 + expression[i] - '0';
-                    i++;
-                } while (isdigit(expression[i]));
-
-                upN.push(upNum);
-                downN.push(downNum);
-                continue;
-            }
-            ++i;
-        }
-
-        ll denominator = 0, numerator = 1;              // 累乘的基分子，分母
-        ll sign = 1, denominatorT = 0, numeratorT = 1;   // 获取到的分子和分母
-        while (signQ.size()) {
-            sign = signQ.front(); signQ.pop();
-            denominatorT = upN.front(); upN.pop();
-            numeratorT = downN.front(); downN.pop();
-
-            denominator = denominator * numeratorT + sign * denominatorT * numerator;
-            numerator *= numeratorT;
-        }   
-
-        if (denominator == 0) {
-            return "0/1";
-        }
-
-        long long g = __gcd(abs(denominator), numerator); // 获取最大公约数
-        return to_string(denominator / g) + "/" + to_string(numerator / g);
-    }
-
-};
-```
-
-
-
-
-
-
-
 # Design
 
 ## 6062. 设计一个 ATM 机器
@@ -2902,7 +2608,280 @@ private:
 
 ---
 
-# 编译原理
+# 编译原理/表达式计算
+
+## 224/227/772/面试题 16.26. 基本计算器 I/II/III
+
+万能模板
+
+
+
+对于「任何表达式」而言，我们都使用两个栈 `nums` 和 `ops`：
+
+- `nums` ： 存放所有的数字
+- `ops` ：存放所有的数字以外的操作
+
+
+
+然后从前往后做，对遍历到的字符做分情况讨论：
+
+- 空格 : 跳过
+- `(` : 直接加入 ops 中，等待与之匹配的 )
+- `)` : 使用现有的 nums 和 ops 进行计算，直到遇到左边最近的一个左括号为止，计算结果放到 nums
+- 数字 : 从当前位置开始继续往后取，将整一个连续数字整体取出，加入 nums
+
++ `+ - / ^ %` : 需要将操作放入 ops 中。**在放入之前先把栈内可以算的都算掉**（只有「栈内运算符」比「当前运算符」优先级高/同等，才进行运算），使用现有的 nums 和 ops 进行计算，直到没有操作或者遇到左括号，计算结果放到 nums
+
+
+
+
+
+因为我们是从前往后做的，假设我们当前已经扫描到 2 + 1 了（此时栈内的操作为 + ）。
+
+- 如果后面出现的 + 2 或者 - 1 的话，满足**「栈内运算符」比「当前运算符」优先级高/同等**，可以将 2 + 1 算掉，把结果放到 nums 中；
+- 如果后面出现的是 * 2 或者 / 1 的话，不满足「栈内运算符」比「当前运算符」优先级高/同等，这时候不能计算 2 + 1。
+
+
+
+一些细节：
+
+- 由于第一个数可能是负数，为了减少边界判断。一个小技巧是先往 nums 添加一个 0
+- 为防止 () 内出现的首个字符为运算符，将所有的空格去掉，并将 `(-` 替换为 `(0-`，`(+` 替换为 `(0+`（当然也可以不进行这样的预处理，将这个处理逻辑放到循环里去做）
+- 从理论上分析，nums 最好存放的是 long，而不是 int。因为可能存在 大数 + 大数 + 大数 + … - 大数 - 大数 的表达式导致中间结果溢出，最终答案不溢出的情况
+
+
+
+
+
+```c++
+unordered_map<char, int> ump = {
+    {'-', 1},
+    {'+', 1},
+    {'*', 2},
+    {'/', 2},
+    {'%', 2},
+    {'^', 3},
+};
+
+stack<long long> nums;
+stack<char> ops;
+
+void eval() {
+    long long b = nums.top(); nums.pop();
+    long long a = nums.top(); nums.pop();
+    char op = ops.top(); ops.pop();
+
+    long long res = 0;
+    switch (op) {
+        case '+':   res = a + b; break;
+        case '-':   res = a - b; break;
+        case '*':   res = a * b; break;
+        case '/':   res = a / b; break;
+        case '%':   res = a % b; break;
+        case '^':   res = pow(a, b); break;
+    }
+
+    nums.push(res);
+}
+
+int calculate(string s) {       
+    nums.push(0);
+
+    for (int i = 0; i < s.size(); ++i) {
+        if (s[i] == ' ') continue;
+        if (isdigit(s[i])) {    // 数字
+            int res = 0;
+            while (i < s.size() && isdigit(s[i])) {
+                res = res * 10 + (s[i++] - '0');
+            }
+            nums.push(res);
+            i--;
+        } else {    // 运算符
+            if (s[i] == '(') {
+                ops.push(s[i]);
+                // 如果有负数！！！！！！！！！
+                if (i + 1 < s.size() && s[i + 1] == '-') nums.push(0); 
+            } else if (s[i] == ')') {   // 计算该括号内内容
+                while (ops.top() != '(') { // 找到前一个 ( 并算其中的值
+                    eval();
+                }
+                ops.pop();
+            } else {
+                char nowOp = s[i];
+                // 有一个新操作要入栈时，先把栈内可以算的都算了 
+                // 但注意的是 只有满足「栈内运算符」比「当前运算符」优先级高/同等，才进行运算
+                while (!ops.empty() && ops.top() != '(' && ump[ops.top()] >= ump[nowOp]) {
+                    eval();
+                }
+                ops.push(nowOp);
+            }
+        }
+    }
+
+    while(!ops.empty() && ops.top() != '(') {
+        eval();
+    }
+
+    return nums.top();
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+---
+
+## 592. 分数加减运算
+
+对于两个分数 $\dfrac{x_1}{y_1}$ 和 $\dfrac{x_2}{y_2}$ ，它们相加的结果为：
+$$
+\dfrac{x_1 \times y_2 + x_2 \times y_1}{y_1 \times y_2}
+$$
+初始分数的分子为 $\textit{denominator} = 0$ ，分母为 $\textit{numerator} = 1$。我们不断从字符串中获取下一个分数，它的分子为 $\textit{denominator}_1$ ，分母为 $\textit{numerator}_1$，将它加到初始分数上，有：
+$$
+\begin{cases} \textit{denominator} = \textit{denominator} \times \textit{numerator}_1 + \textit{denominator}_1 \times \textit{numerator} \\ \textit{numerator} = \textit{numerator} \times \textit{numerator}_1 \end{cases}
+$$
+最后如果 $\textit{denominator} = 0$，说明结果为零，直接返回 $\text{"0/1"}$；否则计算分子分母的最大公约数，返回约简后分数的字符串表示。
+
+```c++
+typedef long long ll;
+
+class Solution {             // 线段树不一定满二叉树，也不一定是完全二叉树，但一定是平衡二叉树
+public:
+    string fractionAddition(string expression) {
+        string res;
+
+        queue<int> signQ;
+        queue<ll> upN, downN;
+
+
+        // 单独处理首元素
+        if (isdigit(expression[0])) 
+            signQ.push(1);
+
+        for (int i = 0; i < expression.size(); ) {
+            char c = expression[i];
+            if (c == '-' || c == '+') {
+                signQ.push(c == '+' ? 1 : -1);
+            } else if (isdigit(c)) {
+                ll upNum = 0;
+
+                /* 找数字 */
+                do {
+                    upNum = upNum * 10 + expression[i] - '0';
+                    i++;
+                } while (isdigit(expression[i]));
+                
+                i++; // 跳过 '/'
+
+                ll downNum = 0;
+                /* 找数字 */
+                do {
+                    downNum = downNum * 10 + expression[i] - '0';
+                    i++;
+                } while (isdigit(expression[i]));
+
+                upN.push(upNum);
+                downN.push(downNum);
+                continue;
+            }
+            ++i;
+        }
+
+        ll denominator = 0, numerator = 1;              // 累乘的基分子，分母
+        ll sign = 1, denominatorT = 0, numeratorT = 1;   // 获取到的分子和分母
+        while (signQ.size()) {
+            sign = signQ.front(); signQ.pop();
+            denominatorT = upN.front(); upN.pop();
+            numeratorT = downN.front(); downN.pop();
+
+            denominator = denominator * numeratorT + sign * denominatorT * numerator;
+            numerator *= numeratorT;
+        }   
+
+        if (denominator == 0) {
+            return "0/1";
+        }
+
+        long long g = __gcd(abs(denominator), numerator); // 获取最大公约数
+        return to_string(denominator / g) + "/" + to_string(numerator / g);
+    }
+
+};
+```
+
+
+
+
+
+---
+
+## 640. 求解方程
+
+由于只有加减法，将方程化为 kx=b 的形式即可，结果为 $x=\dfrac{b}{k}$，剩下的工作就是解析字符串了。
+
+可以根据 +-= 三个符号将等式划分，再分别计算 k 和 b 即可。
+
+注意，如果是 0x=0 即 k, b 都为 0 时返回 "Infinite solutions"(无穷多解)，如果 $0x=b(b \neq 0)$ 时返回 "No solution"(无解)
+
+```c++
+class Solution {
+public:
+    // "x+5-3+x=6+x-2"
+    string solveEquation(string equation) {
+        int left = 1, neg = 1, k = 0, b = 0;
+
+        // left 表示在等号左右
+        // neg 表示数字原本的正负号
+        // k 表示x的系数
+        // b 表示常数1的系数
+        string cur = "";
+        for (char e : equation) {
+            if (e == 'x') {
+                int num = cur.empty() ? 1 : atoi(cur.c_str()); // 取出来x前边的数字比如2x的2
+                k = k + (neg * left) * num;
+                cur = "";
+            } else if (e == '+' || e == '-' || e == '=') {
+                if (!cur.empty()) {
+                    int num = atoi(cur.c_str());
+                    b = b - (neg * left) * num;
+                }
+                neg = 1;
+                if (e == '=') left = -1;    // 只变一次
+                else if (e == '-') neg = -1;
+                cur = "";
+            } else {
+                cur += e;
+            }
+        }
+
+        if (!cur.empty())
+            b = b - neg * left * atoi(cur.c_str());
+
+        if (k == 0) return b == 0 ? "Infinite solutions" : "No solution";
+        return "x=" + to_string(b / k);
+    }
+};
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 736. Lisp 语法解析
 

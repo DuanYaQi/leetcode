@@ -1,17 +1,5 @@
 class Solution {
 public:
-    unordered_map<char, int> ump = {
-        {'-', 1},
-        {'+', 1},
-        {'*', 2},
-        {'/', 2},
-        {'%', 2},
-        {'^', 3},
-    };
-
-    stack<long long> nums;
-    stack<char> ops;
-
     void eval() {
         long long b = nums.top(); nums.pop();
         long long a = nums.top(); nums.pop();
@@ -30,30 +18,27 @@ public:
         nums.push(res);
     }
 
-    int calculate(string s) {       
-        nums.push(0);
-        
-        for (int i = 0; i < s.size(); ++i) {
+    int calculate(string s) {
+        nums.push(0); // 从0开始计算
+        int n = s.size();
+        for (int i = 0; i < n; ++i) {
             if (s[i] == ' ') continue;
-            if (isdigit(s[i])) {    // 数字
+            if (isdigit(s[i])) {    // 是数字
                 int res = 0;
-                while (i < s.size() && isdigit(s[i])) {
-                    res = res * 10 + (s[i++] - '0');
-                }
-                nums.push(res);
+                do {
+                    res = res * 10 + s[i++] - '0';
+                } while (i < n && isdigit(s[i]));
                 i--;
-            } else {    // 运算符
+            } else {
                 if (s[i] == '(') {
                     ops.push(s[i]);
-                } else if (s[i] == ')') {   // 计算该括号内内容
-                    while (ops.top() != '(') { // 找到前一个 ( 并算其中的值
+                } else if (s[i] == ')') {   // 计算与上一个 ( 之间的值
+                    while (ops.top() != '(') {
                         eval();
                     }
-                    ops.pop();
-                } else {
+                    ops.pop();  // 弹出 (
+                } else {        // 新计算符入栈， 要先把栈内能计算的都算掉
                     char nowOp = s[i];
-                    // 有一个新操作要入栈时，先把栈内可以算的都算了 
-                    // 但注意的是 只有满足「栈内运算符」比「当前运算符」优先级高/同等，才进行运算
                     while (!ops.empty() && ops.top() != '(' && ump[ops.top()] >= ump[nowOp]) {
                         eval();
                     }
@@ -62,10 +47,23 @@ public:
             }
         }
 
-        while(!ops.empty() && ops.top() != '(') {
+        while (!ops.empty() && ops.top() != '(') {
             eval();
         }
 
         return nums.top();
     }
+
+private:
+    stack<long long> nums;//存数字
+    stack<char> ops;    
+    
+    unordered_map<char, int> ump = {
+        {'-', 1},
+        {'+', 1},
+        {'*', 2},
+        {'/', 2},
+        {'%', 2},
+        {'^', 3},
+    };
 };
