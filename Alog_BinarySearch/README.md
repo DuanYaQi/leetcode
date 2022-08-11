@@ -62,8 +62,9 @@ int getLeftBorder(vector<int>& nums, int target) {
         }
     }
 
-    return hi + 1;	//lo
-    return hi;		//因为hi+1是左边界了,所以hi+1 - 1是小于target的最后一个数
+    return hi + 1;	// 因为相等还要执行hi = mid-1，所以需要+1
+    //return hi + 1 等价于 return lo
+    //因为 hi+1 是左边界了,所以 hi 是小于target的最后一个数
 }
 ```
 

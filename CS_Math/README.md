@@ -2873,15 +2873,24 @@ public:
 
 
 
+---
+
+## 770. 基本计算器 IV
+
+本质是考察如何设计数据结构处理多项式的计算
+
+https://leetcode.cn/problems/basic-calculator-iv/solution/cshi-xian-qing-xi-de-mo-kuai-hua-she-ji-k56b6/
+
+https://leetcode.cn/problems/basic-calculator-iv/solution/770-cchao-96de-fen-zhi-jie-fa-by-ffretur-aw2b/
+
+```c++
+```
 
 
 
 
 
-
-
-
-
+---
 
 ## 736. Lisp 语法解析
 

@@ -380,7 +380,8 @@ void merge(vector<int>& nums, int l1, int r1, int l2, int r2) {
     while (i <= r1) tmp[index++] = nums[i++];
     while (j <= r2) tmp[index++] = nums[j++];
     
-    for (int i = 0; i < index; ++i) nums[l1+i] = tmp[i];
+    for (int i = 0; i < index; ++i) 
+        nums[l1+i] = tmp[i];
 }
 ```
 
@@ -640,16 +641,6 @@ void swap(int[] nums, int i, int j) {
 
 ```c++
 // 洗牌算法，将输入的数组随机打乱
-void shuffle(int nums[]) {
-    Random rand = new Random();
-    int n = nums.length;
-    for (int i = 0 ; i < n; i++) {
-        
-        int r = i + rand.nextInt(n - i);
-        swap(nums, i, r);
-    }
-}
-
 void shuffle(vector<int>& nums) {
     int n = nums.size();
     for (int i = 0; i < n; ++i) {
@@ -686,7 +677,43 @@ void traverse(TreeNode root) {
 ### 912. 排序数组（中等）
 
 ```c++
+int partition(vector<int> &nums, int lo, int hi) {
+    int flag = lo;
+    int i = lo + 1, j = hi;
 
+    while (i <= j) {
+        while (nums[j] >= nums[flag] && j > lo) j--;
+        while (nums[i] <= nums[flag] && i < hi) i++;
+        if (i >= j) break;
+        swap(nums[i], nums[j]);
+    }
+
+    swap(nums[flag], nums[j]);
+    return j;
+}
+
+void sort(vector<int> &nums, int lo, int hi) {
+    if (lo >= hi) return;
+
+    int p = partition(nums, lo, hi);
+
+    sort(nums, lo, p - 1);
+    sort(nums, p + 1, hi);
+}
+
+void shuffle(vector<int>& nums) {
+    int n = nums.size();
+    for (int i = 0; i < n; ++i) {
+        int r = i + rand() % (n - i); // 生成 [i, n - 1] 的随机数
+        swap(nums[i], nums[r]);
+    }
+}
+
+vector<int> sortArray(vector<int>& nums) {
+    shuffle(nums);
+    sort(nums, 0, nums.size() - 1);
+    return nums;
+}
 ```
 
 
@@ -907,6 +934,51 @@ void selectSort(int arr[]) {
 # 线性时间
 
 ## 堆排序 - 选择
+
+```c++
+class Solution {
+    void maxHeapify(vector<int>& nums, int i, int len) {
+        for (; (i << 1) + 1 <= len;) {
+            int lson = (i << 1) + 1;
+            int rson = (i << 1) + 2;
+            int large;
+            if (lson <= len && nums[lson] > nums[i]) {
+                large = lson;
+            } else {
+                large = i;
+            }
+            if (rson <= len && nums[rson] > nums[large]) {
+                large = rson;
+            }
+            if (large != i) {
+                swap(nums[i], nums[large]);
+                i = large;
+            } else {
+                break;
+            }
+        }
+    }
+    void buildMaxHeap(vector<int>& nums, int len) {
+        for (int i = len / 2; i >= 0; --i) {
+            maxHeapify(nums, i, len);
+        }
+    }
+    void heapSort(vector<int>& nums) {
+        int len = (int)nums.size() - 1;
+        buildMaxHeap(nums, len);
+        for (int i = len; i >= 1; --i) {
+            swap(nums[i], nums[0]);
+            len -= 1;
+            maxHeapify(nums, 0, len);
+        }
+    }
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        heapSort(nums);
+        return nums;
+    }
+};
+```
 
 
 
