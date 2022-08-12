@@ -595,3 +595,38 @@ vector<int> findSubstring(string s, vector<string>& words) {
 
 - 时间复杂度: O(ls×n)，其中 ls 是输入 s 的长度，n 是 words 中每个单词的长度。需要做 n 次滑动窗口，每次需要遍历一次 s。
 - 空间复杂度: O(m×n)，其中 m 是 words 的单词数，n 是 words 中每个单词的长度。每次滑动窗口时，需要用一个哈希表保存单词频次。
+
+
+
+
+
+---
+
+# 1282. 用户分组
+
+很简单的哈希表使用
+
+```c++
+class Solution {
+public:
+    vector<vector<int>> groupThePeople(vector<int>& groupSizes) {
+        unordered_map<int, vector<int>> ump;
+
+        for (int i = 0; i < groupSizes.size(); ++i) {
+            ump[groupSizes[i]].push_back(i);
+        }
+        
+        vector<vector<int>> ans;
+        for (auto &[k, v] : ump) {
+            for (int i = 0; i < v.size(); i += k) {
+                ans.push_back({});
+                for (int j = i; j < i + k && j < v.size(); ++j) {
+                    ans.back().push_back(v[j]);
+                }
+            }          
+        }
+        return ans;      
+    }
+};
+```
+

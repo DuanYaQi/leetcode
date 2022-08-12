@@ -894,7 +894,7 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
 这个思路很简单，能理解吧？下面我们开始重头戏，单调队列的实现。
 
-### 实现单调队列数据结构
+### 单调队列
 
 首先我们要认识另一种数据结构：deque，即**双端队列**。很简单：
 
@@ -1003,6 +1003,32 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
 
 ### 优先队列
+
+初始时，我们将数组 nums 的前 k 个元素放入优先队列中。每当我们向右移动窗口时，我们就可以把一个新的元素放入优先队列中，此时堆顶的元素就是堆中所有元素的最大值。然而这个**最大值可能并不在滑动窗口中**，在这种情况下，这个值在数组 nums 中的位置出现在滑动窗口左边界的左侧。因此，当我们后续继续向右移动窗口时，这个值就永远不可能出现在滑动窗口中了，我们可以将其永久地从优先队列中移除。
+
+我们不断地移除堆顶的元素，直到其确实出现在滑动窗口中。此时，堆顶元素就是滑动窗口中的最大值。为了方便判断堆顶元素与滑动窗口的位置关系，我们可以在优先队列中存储二元组 (num,index)，表示元素 num 在数组中的下标为 index。
+
+```c++
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        priority_queue<pair<int, int>> q;
+        for (int i = 0; i < k; ++i) {
+            q.emplace(nums[i], i);
+        }
+        vector<int> ans = {q.top().first};
+        for (int i = k; i < n; ++i) {
+            q.emplace(nums[i], i);
+            while (q.top().second <= i - k) {
+                q.pop();
+            }
+            ans.push_back(q.top().first);
+        }
+        return ans;
+    }
+};
+```
 
 
 

@@ -604,7 +604,7 @@ static const auto io_sync_off = []()
 |[447. Number of Boomerangs](/DS_HashTable/447+Number%20of%20Boomerangs.cpp) |重点是数学公式的推导，A_m^2 | m 为到该点距离相等的点个数|
 |[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words_2.cpp) 串联所有单词的子串 | 哈希表,自己的方法| 注意比较可以直接用哈希表的键值来计数|
 |[30. Substring with Concatenation of All Words](/Alog_TwoPointer/30+Substring%20with%20Concatenation%20of%20All%20Words.cpp) 串联所有单词的子串 | 滑动窗口+哈希表| 注意比较可以直接用哈希表的键值来计数|
-| | | |
+|[1282. Group the People Given the Group Size They Belong To](/DS_HashTable/1282+Group%20the%20People%20Given%20the%20Group%20Size%20They%20Belong%20To.cpp) | 哈希表使用| |
 | | | |
 | | | |
 
@@ -640,6 +640,8 @@ static const auto io_sync_off = []()
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
 |[面试题 04.01. 节点间通路](/DS_Graph/面试题%2004.01.%20节点间通路.cpp) | BFS/DFS模板 | |
+|[997. Find the Town Judge](/DS_Graph/997+Find%20the%20Town%20Judge.cpp) | 图的入度出度| |
+| | | |
 | | | |
 |[797+All Paths From Source to Target](DS_Graph/797+All%20Paths%20From%20Source%20to%20Target.cpp) | DFS | 重点为 `pop_back()` 和 `vis[v] = false;`|
 |[2192.All Ancestors of a Node in a Directed Acyclic Graph](DS_Graph/2192%2BAll%20Ancestors%20of%20a%20Node%20in%20a%20Directed%20Acyclic%20Graph.cpp) | DFS，整理为邻接表 | 排序处理，循环前的 `bool vis[1001] = {false};`|
