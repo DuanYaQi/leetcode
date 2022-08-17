@@ -301,3 +301,69 @@ int minMeetingRooms(vector<vector<int>>& intervals) {
 
 
 
+
+
+## 1834. 单线程 CPU
+
+最开始加入相同时间的进入队列，然后执行完一个任务，加入满足时间的任务，按
+
+1. **执行时间最短**
+2. **下标最小**
+
+的优先顺序进入小顶堆。注意写 cmp 的时候，满足条件的沉底而不是升顶。注意空闲时间的跳跃处理
+
+
+
+```c++
+class Solution {
+public:
+    vector<int> getOrder(vector<vector<int>>& tasks) {
+        int n = tasks.size(); 
+        vector<vector<int>> newtasks = tasks;
+        for (int i = 0; i < n; ++i) {
+            newtasks[i].push_back(i);
+        }
+
+        sort(newtasks.begin(), newtasks.end()); // 默认第一个元素升序排
+        
+        auto cmp2 = [] (const vector<int> &v1, const vector<int> &v2) {
+            if (v1[1] == v2[1]) return v1[2] > v2[2];
+            return v1[1] > v2[1];
+        };
+        priority_queue<vector<int>, vector<vector<int>>, decltype(cmp2)> pq(cmp2);
+
+        int i = 0;
+        long long nowTime = newtasks[i][0];
+        for (; i < n && newtasks[i][0] <= nowTime; i++) {
+            pq.push(newtasks[i]);
+        }
+
+        vector<int> res;
+        while (pq.size()) {
+            auto cur = pq.top(); pq.pop();
+            res.push_back(cur[2]);
+
+            if (pq.empty() && i < n) {
+                nowTime = nowTime + cur[1] > newtasks[i][0] ? 
+                            nowTime + cur[1] : newtasks[i][0]; //跳过空闲的时间
+            } else {
+                nowTime += cur[1];
+            }
+            
+            while (i < n && newtasks[i][0] <= nowTime) {
+                pq.push(newtasks[i++]);
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+
+
+- 时间复杂度：O(nlogn)。排序的时间复杂度为 O(nlogn)，优先队列单次操作的时间复杂度为 O(logn)，操作的次数为 O(n)。
+
+- 空间复杂度：O(n)，n 即为存储编号的数组以及优先队列需要使用的空间。
+
+  

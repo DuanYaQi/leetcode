@@ -681,6 +681,9 @@ https://labuladong.gitee.io/algo/2/20/38/
 
 [886. 可能的二分法（中等）](https://leetcode-cn.com/problems/possible-bipartition)
 
+```c++
+```
+
 
 
 

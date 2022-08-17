@@ -671,7 +671,7 @@ static const auto io_sync_off = []()
 | :--- | :----: | :--: |
 |💛[253. Meeting Rooms II](/DS_Heap/253+Meeting%20Rooms%20II.cpp)   |  |  按照 开始时间 对会议进行排序,小顶堆，键值为结束时间|
 |[252. Meeting Rooms](/DS_Heap/252+Meeting%20Rooms.cpp) | |同253 |
-| | | |
+|[1834. Single-Threaded CPU](/DS_Heap/1834+Single-Threaded%20CPU.cpp) | |注意堆的规则，以及空闲时间的跳跃 |
 | | | |
 | | | |
 
@@ -689,7 +689,7 @@ static const auto io_sync_off = []()
 |[1202. Smallest String With Swaps](/DS_UF/1202+Smallest%20String%20With%20Swaps.cpp)      |        | 注意找连通分量，并且排好序   |
 |[990. Satisfiability of Equality Equations](/DS_UF/990+Satisfiability%20of%20Equality%20Equations.cpp)      |        |   先判断==, 再判断!=  相同的元素抽象到同一个子集中 |
 |[721. Accounts Merge](/DS_UF/721+Accounts%20Merge.cpp)     |        |注意merge(x,y)是把y合并到x中去<br> 可以利用这点来排字典序    |
-|      |        |      |
+|[886. Possible Bipartition](/DS_UF/886+Possible%20Bipartition.cpp)      |        |注意是把不喜欢的合并到一起，注意合并的元素！！！      |
 |      |        |      |
 |      |        |      |
 |      |        |      |

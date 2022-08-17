@@ -107,6 +107,8 @@ std::queue<int, std::list<int>> third; // 定义以list为底层容器的队列
 
 ---
 
+# 队列
+
 ## 232. 用栈实现队列
 
 使用栈来模式队列的行为，如果仅仅用一个栈，是一定不行的，所以需要两个栈**「一个输入栈，一个输出栈」**，这里要注意输入栈和输出栈的关系。
@@ -366,76 +368,6 @@ int evalRPN(vector<string>& tokens) {
     return st.top();
 }
 ```
-
-
-
----
-
-## 239. 滑动窗口最大值
-
-每次窗口移动的时候，调用 `que.pop` (滑动窗口中移除元素的数值)，`que.push` (滑动窗口添加元素的数值)，然后 `que.front()` 就返回我们要的最大值。
-
-「其实队列没有必要维护窗口里的所有元素，只需要**维护**有**可能成为窗口里最大值**的元素就可以了，同时保证队列里的元素数值是由大到小的。」
-
-
-
-设计单调队列的时候，pop 和 push 操作要保持如下规则：
-
-1. `pop(value)`：如果窗口移除的元素 value 等于单调队列的出口元素，那么队列弹出元素，否则不用任何操作
-2. `push(value)`：如果 push 的元素 value 大于入口元素的数值，那么就将队列入口的元素弹出，直到 push 元素的数值小于等于队列入口元素的数值为止
-
-
-
-```c++
-class MyQueue {//单调队列（从大到小）
-    public:
-    deque<int> que;// 使用deque来实现单调队列
-
-    // 如果窗口移除的元素value等于单调队列的出口元素，那么队列弹出元素，否则不用任何操作   // 同时pop之前判断队列当前是否为空。
-    void pop(int value) {
-        if (!que.empty() && value == que.front()) {
-            que.pop_front();
-        }
-    }
-
-    //如果push的元素value大于入口元素的数值，那么就将队列入口的元素弹出，直到push元素的数值小于等于队列入口元素的数值为止。这样就保持了队列里的数值是单调从大到小的了。
-    void push(int value) {
-        while (!que.empty() && value > que.back()) {
-            que.pop_back();
-        }
-        que.push_back(value);
-    }
-
-    // 查询当前队列里的最大值 直接返回队列前端也就是front就可以了。
-    int front() {
-        return que.front();
-    }
-};
-```
-
-
-
-```c++
-vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-    MyQueue que;
-    vector<int> res;
-    for (int i = 0; i < k; i++) { // 先将前k的元素放进队列
-        que.push(nums[i]);
-    }
-
-    res.push_back(que.front()); // result 记录前k的元素的最大值
-    for (int i = k; i < nums.size(); i++) {
-        que.pop(nums[i - k]); // 滑动窗口移除最前面元素
-        que.push(nums[i]); // 滑动窗口前加入最后面的元素
-        res.push_back(que.front()); // 记录对应的最大值
-    }
-    return res;
-}
-```
-
-
-
-在来看一下时间复杂度，使用单调队列的时间复杂度是 O(n)。
 
 
 
@@ -747,38 +679,6 @@ private:
 
 
 
----
-
-## 768. 最多能完成排序的块 II
-
-根据题意，将原数组进行分块后，对各分块分别进行排序后的结果等于原数组排序后的结果。可以得到的一个结论是，每个分块中的数字相对于前一个分块都是递增的(因为有重复数字，所以也可能是相同)，**下一个分块中的所有数字都会大于等于上一个分块中的所有数字**。
-
-- 在遍历数组的过程中，如果一个数字比之前所有分块的最大值都要大，我们就把它作为一个新的分块。
-- 如果数字小于之前某些分块的最大值，那这些分块都要被合成一个分块(保持栈的单调递增)。
-
-```c++
-int maxChunksToSorted(vector<int>& arr) {
-        stack<int> st;
-        st.push(arr[0]);
-
-        for (int i = 1; i < arr.size(); ++i) {
-            if (arr[i] >= st.top()) {
-                st.push(arr[i]);
-            } else {
-                int head = st.top(); st.pop();  // 先把头部取出来
-                while (st.size() != 0 && arr[i] < st.top()) { // 合并比他大的数
-                    st.pop();
-                }
-                st.push(head);
-            }
-        }
-
-        return st.size();
-    }
-```
-
-
-
 
 
 
@@ -851,6 +751,149 @@ if (str[0] == 's') { // start
 
 
 
+
+
 ---
 
-# 队列
+# 单调栈
+
+## 768. 最多能完成排序的块 II
+
+根据题意，将原数组进行分块后，对各分块分别进行排序后的结果等于原数组排序后的结果。可以得到的一个结论是，每个分块中的数字相对于前一个分块都是递增的(因为有重复数字，所以也可能是相同)，**下一个分块中的所有数字都会大于等于上一个分块中的所有数字**。
+
+- 在遍历数组的过程中，如果一个数字比之前所有分块的最大值都要大，我们就把它作为一个新的分块。
+- 如果数字小于之前某些分块的最大值，那这些分块都要被合成一个分块(保持栈的单调递增)。
+
+```c++
+int maxChunksToSorted(vector<int>& arr) {
+        stack<int> st;
+        st.push(arr[0]);
+
+        for (int i = 1; i < arr.size(); ++i) {
+            if (arr[i] >= st.top()) {
+                st.push(arr[i]);
+            } else {
+                int head = st.top(); st.pop();  // 先把头部取出来
+                while (st.size() != 0 && arr[i] < st.top()) { // 合并比他大的数
+                    st.pop();
+                }
+                st.push(head);
+            }
+        }
+
+        return st.size();
+    }
+```
+
+
+
+
+
+
+
+---
+
+## 1475. 商品折扣后的最终价格
+
+```c++
+vector<int> finalPrices(vector<int>& prices) {
+    stack<int> st; //存索引
+    for (int i = 0; i < prices.size(); ++i) {
+        int price = prices[i];
+        while (!st.empty() && price <= prices[st.top()]) {
+            int idx = st.top(); st.pop();
+            prices[idx] -= price;
+        }
+        st.push(i);
+    }
+
+    return prices;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+# 单调队列
+
+
+
+---
+
+## 239. 滑动窗口最大值
+
+每次窗口移动的时候，调用 `que.pop` (滑动窗口中移除元素的数值)，`que.push` (滑动窗口添加元素的数值)，然后 `que.front()` 就返回我们要的最大值。
+
+「其实队列没有必要维护窗口里的所有元素，只需要**维护**有**可能成为窗口里最大值**的元素就可以了，同时保证队列里的元素数值是由大到小的。」
+
+
+
+设计单调队列的时候，pop 和 push 操作要保持如下规则：
+
+1. `pop(value)`：如果窗口移除的元素 value 等于单调队列的出口元素，那么队列弹出元素，否则不用任何操作
+2. `push(value)`：如果 push 的元素 value 大于入口元素的数值，那么就将队列入口的元素弹出，直到 push 元素的数值小于等于队列入口元素的数值为止
+
+
+
+```c++
+class MyQueue {//单调队列（从大到小）
+    public:
+    deque<int> que;// 使用deque来实现单调队列
+
+    // 如果窗口移除的元素value等于单调队列的出口元素，那么队列弹出元素，否则不用任何操作   // 同时pop之前判断队列当前是否为空。
+    void pop(int value) {
+        if (!que.empty() && value == que.front()) {
+            que.pop_front();
+        }
+    }
+
+    //如果push的元素value大于入口元素的数值，那么就将队列入口的元素弹出，直到push元素的数值小于等于队列入口元素的数值为止。这样就保持了队列里的数值是单调从大到小的了。
+    void push(int value) {
+        while (!que.empty() && value > que.back()) {
+            que.pop_back();
+        }
+        que.push_back(value);
+    }
+
+    // 查询当前队列里的最大值 直接返回队列前端也就是front就可以了。
+    int front() {
+        return que.front();
+    }
+};
+```
+
+
+
+```c++
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    MyQueue que;
+    vector<int> res;
+    for (int i = 0; i < k; i++) { // 先将前k的元素放进队列
+        que.push(nums[i]);
+    }
+
+    res.push_back(que.front()); // result 记录前k的元素的最大值
+    for (int i = k; i < nums.size(); i++) {
+        que.pop(nums[i - k]); // 滑动窗口移除最前面元素
+        que.push(nums[i]); // 滑动窗口前加入最后面的元素
+        res.push_back(que.front()); // 记录对应的最大值
+    }
+    return res;
+}
+```
+
+
+
+时间复杂度： O(N)
+
