@@ -629,7 +629,7 @@ static const auto io_sync_off = []()
 |[1903. Largest Odd Number in String](/DS_String/1903+Largest%20Odd%20Number%20in%20String.cpp) |位运算 |从后往前遍历 |
 | | | |
 |[2243. Calculate Digit Sum of a String](/DS_String/2243+Calculate%20Digit%20Sum%20of%20a%20String.cpp) | |注意 `s.substr()` 超出范围就不取了 |
-| | | |
+|[1455. Check If a Word Occurs As a Prefix of Any Word in a Sentence](/DS_String/1455+Check%20If%20a%20Word%20Occurs%20As%20a%20Prefix%20of%20Any%20Word%20in%20a%20Sentence.cpp) | 找空格之后，要先判断string::npos 再+1 | string::npos == -1 |
 | | | |
 
 
