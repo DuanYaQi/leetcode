@@ -515,8 +515,16 @@ static const auto io_sync_off = []()
 |[623. Add One Row to Tree](/DS_Tree/623+Add%20One%20Row%20to%20Tree.cpp) | bfs+延迟处理| |
 | | | |
 |[面试题 04.06. 后继者](/DS_Tree/面试题%2004.06.%20后继者.cpp) | |注意 BST, 可能需要考虑某个节点是否存在子树 |
+|[655. Print Binary Tree](/DS_Tree/655+Print%20Binary%20Tree.cpp) | 输出二叉树|先找到高度，然后按照公式计算的赋值即可 |
 | | | |
-
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
 
 > 题号前*表示有多种解法， :(表示:(     　　:)表示:)
 > 
