@@ -890,7 +890,7 @@ static const auto io_sync_off = []()
 |[556. Next Greater Element III](/Alog_TwoPointer/556+Next%20Greater%20Element%20III.cpp) | 全排列的实现 | |
 | | | |
 |[239. Sliding Window Maximum](/DS_StackQueue/239+maxSlidingWindow.cpp) |单调队列 |用deque实现，维护单调递减队列，队首元素永远是最大值 |
-| | | |
+|[1456. Maximum Number of Vowels in a Substring of Given Length](/Alog_TwoPointer/1456+Maximum%20Number%20of%20Vowels%20in%20a%20Substring%20of%20Given%20Length.cpp) | 滑动窗口| 板子题|
 | | | |
 | | | |
 
