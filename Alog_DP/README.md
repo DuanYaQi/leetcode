@@ -3762,12 +3762,6 @@ int findLUSlength(vector<string>& strs) {
 
 
 
-
-
-
-
-
-
 ---
 
 ### 1035. 不相交的线
@@ -4106,17 +4100,7 @@ bool isSubsequence(string s, string t) {
 
 
 
-### 115. 不同的子序列
-
-
-
-
-
-### 583. 两个字符串的删除操作
-
-
-
-
+---
 
 ### 72. 编辑距离
 
@@ -4187,29 +4171,133 @@ dp[0] = 1;
 
 ![img](assets/d892c5f4463bc801dff85fed4c8b8e76ed0d178b1b917a4447b642c243d46c51-图片.png)
 
-**j = 0，表示此时 word2 是个空字符串，只能删除 1，2，3，4，5 得到 "orse", "rse", "se", "e", ""**
+**j = 0，表示此时 word2 是个空字符串，只能删除 1，2，3，4，5 得到 ""**
 
 ```c++
 int minDistance(string word1, string word2) {
-    vector<vector<int>> dp(word1.size() + 1, vector<int>(word2.size() + 1, 0));
+    int n1 = word1.size(), n2 = word2.size();
 
-    for (int i = 0; i < dp.size(); i++) {
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+
+    for (int i = 1; i <= n1; ++i)
         dp[i][0] = i;
-    }
-    for (int j = 0; j < dp[0].size(); j++) {
-        dp[0][j] = j;
-    }
 
-    for (int i = 1; i < dp.size(); i++) {
-        for (int j = 1; j < dp[i].size(); j++) {
-            dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j], dp[i][j - 1])) + 1;
+    for (int i = 1; i <= n2; ++i)
+        dp[0][i] = i;
+
+    int add, del, change;
+    for (int i = 1; i <= n1; ++i) {
+        for (int j = 1; j <= n2; ++j) {
+            add = dp[i-1][j] + 1;
+            del = dp[i][j-1] + 1;
+
             if (word1[i - 1] == word2[j - 1]) {
-                dp[i][j] = min(dp[i][j], dp[i - 1][j - 1]);
+                change = dp[i-1][j-1];
+            } else {
+                change = dp[i-1][j-1] + 1;
             }
+
+            dp[i][j] = min(add, min(del, change));
         }
     }
+
     return dp.back().back();
-}
+}   
+```
+
+
+
+
+
+
+
+---
+
+### 115. 不同的子序列
+
+s 为字符串，t为待匹配的短字符串
+
+相对于编辑距离，简单了不少，因为本题只有删除操作，不用考虑替换增加之类，但比 392 更有难度，因为要有很多子序列
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```c++
+dp[i][j]:	以 i-1 为结尾的 s 子序列中出现以 j-1 为结尾的 t 的个数
+```
+
+
+
+2. 确定**递推公式**
+
+s[i - 1] 与 t[j - 1] 相等
+s[i - 1] 与 t[j - 1] 不相等
+
+```c++
+当s[i - 1] 与 t[j - 1]相等时，dp[i][j]可以有两部分组成。
+
+一部分是用s[i - 1]来匹配，那么个数为dp[i - 1][j - 1]。
+一部分是不用s[i - 1]来匹配，个数为dp[i - 1][j]。
+    
+所以当 s[i - 1] 与 t[j - 1] 相等时，dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+```
+
+>  例如： s：bagg 和 t：bag ，s[3] 和 t[2]是相同的，但是字符串s也可以不用s[3]来匹配，即用s[0]s[1]s[2]组成的bag。当然也可以用s[3]来匹配，即：s[0]s[1]s[3]组成的bag。
+
+
+
+```C++
+当 s[i - 1] 与 t[j - 1] 不相等时，不能用 s[i - 1] 来匹配，即：dp[i - 1][j]
+所以递推公式为：dp[i][j] = dp[i - 1][j];
+```
+
+
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+dp[i][0] 表示：以i-1为结尾的s可以随便删除元素，出现空字符串的个数。
+那么dp[i][0]一定都是1，因为也就是把以i-1为结尾的s，删除所有元素，出现空字符串的个数就是1。
+
+dp[0][j]：空字符串s可以随便删除元素，出现以j-1为结尾的字符串t的个数。
+那么dp[0][j]一定都是0，s如论如何也变成不了t。    
+    
+dp[0][0]应该是1，空字符串s，可以删除0个元素，变成空字符串t。    
+```
+
+
+
+4. 确定**遍历顺序**
+
+```c++
+左上到右下
+```
+
+
+
+5. 举例推导dp数组
+
+![115.不同的子序列](assets/115.不同的子序列.jpg)
+
+
+
+```c++
+
+```
+
+
+
+
+
+
+
+---
+
+### 583. 两个字符串的删除操作
+
+```c++
+
 ```
 
 

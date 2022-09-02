@@ -992,7 +992,7 @@ Greedy(==**排序很重要**==)
 
 ---
 
-### 2.7. [动态规划](Alog_BinarySearch/README.md)
+### 2.7. [动态规划](Alog_DP/README.md)
 
 DP
 |  题目  |知识点|技巧|
@@ -1030,6 +1030,7 @@ DP
 |[300. Longest Increasing Subsequence](/Alog_DP/300+Longest%20Increasing%20Subsequence.cpp) |LIS | 两层循环|
 |[674. Longest Continuous Increasing Subsequence](/Alog_DP/674+Longest%20Continuous%20Increasing%20Subsequence.cpp) |LCIS |一层循环 |
 |2*💛[1143. Longest Common Subsequence](/Alog_DP/1143+Longest%20Common%20Subsequence.cpp) |LCS |二维dp数组 |
+|[392. Is Subsequence](/Alog_DP/392%2BIs%20Subsequence.cpp) | | 就是判断 1143. 最长公共子序列  |
 |[718. Maximum Length of Repeated Subarray](/Alog_DP/718+Maximum%20Length%20of%20Repeated%20Subarray.cpp) |LCS |连续需要保存最优值 |
 |[1035. Uncrossed Lines](/Alog_DP/1035+Uncrossed%20Lines.cpp) | | 本质就是LCS |
 |[522. Longest Uncommon Subsequence II](/Alog_DP/522+Longest%20Uncommon%20Subsequence%20II.cpp) | LCS 的变形 | |
@@ -1061,8 +1062,7 @@ DP
 编辑距离
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[392. Is Subsequence](/Alog_DP/392%2BIs%20Subsequence.cpp) | | 就是判断 1143. 最长公共子序列  |
-|[152. Maximum Product Subarray](/Alog_DP/152+Maximum%20Product%20Subarray.cpp) | |注意判0 |
+|[72. Edit Distance](/Alog_DP/72+Edit%20Distance.cpp) | 三种状态（增、删、改）一步一步递推到最后 | |
 | | | |
 | | | |
 
