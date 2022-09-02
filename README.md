@@ -1062,10 +1062,11 @@ DP
 编辑距离
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|
-|[72. Edit Distance](/Alog_DP/72+Edit%20Distance.cpp) | 三种状态（增、删、改）一步一步递推到最后 | |
+|[72. Edit Distance](/Alog_DP/72+Edit%20Distance.cpp) |  | 三种状态（增、删、改）一步一步递推到最后|
+|[115. Distinct Subsequences](/Alog_DP/115+Distinct%20Subsequences.cpp) | |相对于 72. 只考虑删除的情况，分字符相等和不等两种情况  |
+|[583. Delete Operation for Two Strings](/Alog_DP/583+Delete%20Operation%20for%20Two%20Strings.cpp) | | 两个字符串都能删了，分字符相等和不等两种情|
 | | | |
 | | | |
-
 
 背包专题
 |  题目  |知识点|技巧|

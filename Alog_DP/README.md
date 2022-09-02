@@ -4283,7 +4283,26 @@ dp[0][0]应该是1，空字符串s，可以删除0个元素，变成空字符串
 
 
 ```c++
+int numDistinct(string s, string t) {
+    int n1 = s.size(), n2 = t.size();
+    // dp[i][j] 表示 s 前 i 个字符串包含 t 的前 j 个字符串的个数
+    vector<vector<unsigned long long>> dp(n1 + 1, vector<unsigned long long>(n2 + 1, 0));
 
+    for (int i = 0; i <= n1; ++i) 
+        dp[i][0] = 1;
+
+    for (int i = 1; i <= n1; ++i) {
+        for (int j = 1; j <= n2; ++j) {
+            if (s[i - 1] == t[j - 1]) {  //不相等
+                dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+            } else {
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+
+    return dp.back().back();
+}
 ```
 
 
@@ -4296,8 +4315,92 @@ dp[0][0]应该是1，空字符串s，可以删除0个元素，变成空字符串
 
 ### 583. 两个字符串的删除操作
 
-```c++
 
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```c++
+dp[i][j]:	以i-1为结尾的字符串word1，和以j-1位结尾的字符串word2，想要达到相等，所需要删除元素的最少次数
+```
+
+
+
+2. 确定**递推公式**
+
+- 当word1[i - 1] 与 word2[j - 1]相同的时候
+- 当word1[i - 1] 与 word2[j - 1]不相同的时候
+
+```c++
+当word1[i - 1] 与 word2[j - 1]相同的时候，dp[i][j] = dp[i - 1][j - 1];
+```
+
+
+
+```C++
+当word1[i - 1] 与 word2[j - 1]不相同的时候，有三种情况：
+    
+情况一：删word1[i - 1]，最少操作次数为dp[i - 1][j] + 1
+情况二：删word2[j - 1]，最少操作次数为dp[i][j - 1] + 1
+情况三：同时删word1[i - 1]和word2[j - 1]，操作的最少次数为dp[i - 1][j - 1] + 2
+
+那最后当然是取最小值
+```
+
+
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+dp[i][0]：word2为空字符串，以i-1为结尾的字符串word1要删除多少个元素，才能和word2相同呢?
+dp[i][0] = i
+
+dp[0][j]：word1为空字符串，以j-1为结尾的字符串word2要删除多少个元素，才能和word1相同呢?
+dp[0][j] = j    
+    
+dp[0][0]应该是0，空字符串word1为空字符串，可以删除0个元素，变成空字符串word2。    
+```
+
+
+
+4. 确定**遍历顺序**
+
+```c++
+左上到右下
+```
+
+
+
+5. 举例推导dp数组
+
+![583.两个字符串的删除操作1](assets/20210714101750205.png)
+
+```c++
+int minDistance(string word1, string word2) {
+    int n1 = word1.size(), n2 = word2.size();
+
+    // dp[i][j] 表示  字符串word1前i个字符串 变成 word2 前j个字符所需要的最小步数
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+
+    for (int i = 0; i <= n1; ++i)
+        dp[i][0] = i;
+
+    for (int j = 0; j <= n2; ++j)
+        dp[0][j] = j;
+
+    for (int i = 1; i <= n1; ++i) {
+        for (int j = 1; j <= n2; ++j) {
+            if (word1[i-1] == word2[j-1]) {
+                dp[i][j] = dp[i-1][j-1];
+            } else {
+                dp[i][j] = min(dp[i-1][j-1] + 2, min(dp[i-1][j] + 1, dp[i][j-1] + 1));
+            }
+        }
+    }
+
+    return dp.back().back();
+}
 ```
 
 
