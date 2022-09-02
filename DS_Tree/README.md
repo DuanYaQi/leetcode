@@ -1599,6 +1599,25 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
 
 
 
+## 235. 二叉搜索树的最近公共祖先
+
+```c++
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    while (root) { 
+        if (root->val > p->val && root->val > q->val) {			// 根节点大于p和q
+            root = root->left;
+        } else if (root->val < p->val && root->val < q->val) {
+            root = root->right;
+        } else {
+            return root;
+        }
+    }
+    return nullptr;
+}
+```
+
+
+
 
 
 ## #16-21. 小结

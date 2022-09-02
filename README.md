@@ -500,6 +500,7 @@ static const auto io_sync_off = []()
 |2*[530. Minimum Absolute Difference in BST](DS_Tree/530+getMinimumDifference.cpp)*   | BST |R|
 |[501. Find Mode in Binary Search Tree](DS_Tree/501+findMode.cpp)*   | `vector<pair<int, int>>` BST |R Template sort  |
 |💛[236. Lowest Common Ancestor of a Binary Tree](DS_Tree/236+lowestCommonAncestor.cpp)   | 回溯 |R|
+|[235. Lowest Common Ancestor of a Binary Search Tree](/DS_Tree/235+Lowest%20Common%20Ancestor%20of%20a%20Binary%20Search%20Tree.cpp)   |  |利用起二叉搜索树的性质，遍历一次root即可|
 |[450. Delete Node in a BST](DS_Tree/450+deleteNode.cpp)   |BST右子树最左侧的节点的值与其兄弟左子树的值最接近  |R|
 |💛[669. Trim a Binary Search Tree](DS_Tree/669+trimBST.cpp):(   | BST |R|
 |[108. Convert Sorted Array to Binary Search Tree](DS_Tree/108+sortedArrayToBST_B_Rec.cpp)   | BST 二分 分治 |R|
