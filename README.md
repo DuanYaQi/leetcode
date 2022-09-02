@@ -1058,6 +1058,15 @@ DP
 | | | |
 | | | |
 
+编辑距离
+|  题目  |知识点|技巧|
+|  :----  |:----:|:----:|
+|[392. Is Subsequence](/Alog_DP/392%2BIs%20Subsequence.cpp) | | 就是判断 1143. 最长公共子序列  |
+|[152. Maximum Product Subarray](/Alog_DP/152+Maximum%20Product%20Subarray.cpp) | |注意判0 |
+| | | |
+| | | |
+
+
 背包专题
 |  题目  |知识点|技巧|
 |  :----  |:----:|:----:|

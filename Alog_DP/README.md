@@ -2877,13 +2877,13 @@ i：	      第i天
 
 两种情况
 
-- 持有，第i天买入，变成持有状态    `dp[i][1] = - prices[i] `
-- 持有，第i-1天就持有                        `dp[i][0] = dp[i-1][0] `
+- 持有，第 i 天买入，变成持有状态    `dp[i][1] = - prices[i] `
+- 持有，第 i-1 天就持有                        `dp[i][0] = dp[i-1][0] `
 
 
 
-- 未持有，第i天卖出，变成未持有状态     `dp[i][0] = dp[i-1][0] + prices[i]` 
-- 未持有，第i-1天就未持有                         `dp[i][1] = dp[i-1][1]` 
+- 未持有，第 i 天卖出，变成未持有状态     `dp[i][0] = dp[i-1][0] + prices[i]` 
+- 未持有，第 i-1 天就未持有                         `dp[i][1] = dp[i-1][1]` 
 
 
 
@@ -3629,22 +3629,24 @@ int lengthOfLIS(vector<int>& nums) {
 
 
 
-1. 确定**dp数组**(dp table)以及**下标的含义**
+1. 确定**dp数组**以及**下标的含义**
 
 ```C++
 dp[i][j]: 长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j]
     
-i    : 以 i 结尾
+i       : 以 i 结尾
 ```
 
 
 
 2. 确定**递推公式**
 
-主要就是两⼤情况： text1[i - 1] 与 text2[j - 1] 相同，text1[i - 1] 与 text2[j - 1] 不相同
+主要就是两种情况： text1[i - 1] 与 text2[j - 1] 相同，text1[i - 1] 与 text2[j - 1] 不相同
 
-- 如果text1[i - 1] 与 text2[j - 1]相同，那么找到了⼀个公共元素，所以`dp[i][j] = dp[i - 1][j - 1] + 1;`
-- 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看 `text1[0, i - 2]`与 `text2[0, j - 1]` 的最长公共子序列 和 `text1[0, i - 1]` 与 `text2[0, j - 2]` 的最长公共子序列，取最大的。即 `dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);`
+- 如果 text1[i - 1] 与 text2[j - 1] 相同，那么找到了⼀个公共元素，所以`dp[i][j] = dp[i - 1][j - 1] + 1;`
+- 如果 text1[i - 1] 与 text2[j - 1] 不相同，那就看看 `text1[0, i - 2]`与 `text2[0, j - 1]` 的最长公共子序列 和 `text1[0, i - 1]` 与 `text2[0, j - 2]` 的最长公共子序列，取最大的。即 `dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);`
+
+
 
 ```c++
 if (text1[i - 1] == text2[j - 1]) {
@@ -3680,6 +3682,25 @@ vector<vector<int>> vec(text.size()+1, vector<int>(text2.size()+1, 0));
 ![image-20220406093936394](assets/image-20220406093936394.png)
 
 ```C++
+int longestCommonSubsequence(string text1, string text2) {
+    int n1 = text1.size(), n2 = text2.size();
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+
+    int res = -0x3f3f3f3f;
+    for (int i = 1; i <= n1; ++i) {
+        for (int j = 1; j <= n2; ++j) {
+            if (text1[i-1] == text2[j-1]) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+
+            res = max(res, dp[i][j]);
+        }   
+    }
+
+    return res;
+}
 ```
 
 
@@ -3885,18 +3906,16 @@ vector<int> dp(nums.size(), 1);
 
 ```c++
 int findLengthOfLCIS(vector<int>& nums) {
-    vector<int> dp(nums.size(), 1);
+    int n = nums.size();
 
-    int res = 1;
-    for (int i = 1; i < nums.size(); ++i) {
-        if (nums[i] > nums[i-1]) {
+    vector<int> dp(n, 1);
+
+    for (int i = 1; i < n; ++i) {
+        if (nums[i] > nums[i-1])
             dp[i] = dp[i-1] + 1;
-        }
-
-        res = dp[i] > res ? dp[i] : res;
     }
 
-    return res;
+    return *max_element(dp.begin(), dp.end());
 }
 ```
 
@@ -3928,7 +3947,7 @@ nums[i-1] 与 nums2[i-1]相同
 
 那么找到了⼀个公共元素，所以 `dp[i][j] = dp[i - 1][j - 1] + 1;`
 
-
+> 注意它为什么要加 `dp[i-1][j-1]` 这样就限定了子数组的连续性
 
 ```c++
 if (nums1[i - 1] == nums2[j - 1]) {
@@ -3958,6 +3977,28 @@ vector<vector<int>> vec(text.size()+1, vector<int>(text2.size()+1, 0));
 5. 举例推导dp数组
 
 ![image-20220406123729625](assets/image-20220406123729625.png)
+
+
+
+```c++
+int findLength(vector<int>& nums1, vector<int>& nums2) {
+    int n1 = nums1.size(), n2 = nums2.size();
+
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+
+    int res = -0x3f3f3f3f;
+    for (int i = 1; i <= n1; ++i) {
+        for (int j = 1; j <= n2; ++j) {
+            if (nums1[i - 1] == nums2[j - 1]) 
+                dp[i][j] = dp[i-1][j-1] + 1;
+
+            res = max(dp[i][j], res);
+        }
+    }
+
+    return res;
+}
+```
 
 
 
@@ -4037,6 +4078,28 @@ dp[0] = nums[0];
 
 ### 392. 判断子序列
 
+就是判断 1143. 最长公共子序列 
+
+```c++
+bool isSubsequence(string s, string t) {
+    int n1 = s.size(), n2 = t.size();
+
+    vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+
+    for (int i = 1; i <= n1; ++i) {
+        for (int j = 1; j <= n2; ++j) {
+            if (s[i - 1] == t[j - 1]) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+
+    return dp[n1][n2] == n1;
+}
+```
+
 
 
 
@@ -4056,6 +4119,100 @@ dp[0] = nums[0];
 
 
 ### 72. 编辑距离
+
+
+
+1. 确定**dp数组**(dp table)以及**下标的含义**
+
+```C++
+dp[i][j]:   代表 word1 中前 i 个字符，变换到 word2 中前 j 个字符，最短需要操作的次数
+```
+
+需要考虑 word1 或 word2 一个字母都没有，即全增加/删除的情况，所以预留 `dp[0][j]` 和 `dp[i][0]`
+
+
+
+
+
+2. 确定**递推公式**
+
+增 `dp[i][j] = dp[i][j-1] + 1`，i 比 j 少了一个字母，在 i 结尾插入这个字母 
+
+删 `dp[i][j] = dp[i-1][j] + 1`，i 比 j 多了一个尾字母，在 j 结尾插入这个字母 
+
+改 字母不同：`dp[i][j] = dp[i-1][j-1] + 1`，
+
+​     字母相同：`dp[i][j] = dp[i-1][j-1]`
+
+配合增删改这三种操作，需要对应的 dp 把操作次数，取三种的最小
+
+
+
+```c++
+增： D[i][j-1] 为 A 的前 i 个字符和 B 的前 j - 1 个字符编辑距离的子问题。即对于 B 的第 j 个字符，我们在 A 的末尾添加了一个相同的字符，那么 D[i][j] 最小可以为 D[i][j-1] + 1
+
+删： D[i-1][j] 为 A 的前 i - 1 个字符和 B 的前 j 个字符编辑距离的子问题。即对于 A 的第 i 个字符，我们在 B 的末尾添加了一个相同的字符，那么 D[i][j] 最小可以为 D[i-1][j] + 1
+
+改： D[i-1][j-1] 为 A 前 i - 1 个字符和 B 的前 j - 1 个字符编辑距离的子问题。即对于 B 的第 j 个字符，我们修改 A 的第 i 个字符使它们相同，那么 D[i][j] 最小可以为 D[i-1][j-1] + 1。特别地，如果 A 的第 i 个字符和 B 的第 j 个字符原本就相同，那么我们实际上不需要进行修改操作。在这种情况下，D[i][j] 最小可以为 D[i-1][j-1]
+```
+
+
+
+3. dp数组如何**初始化**
+
+```c++
+// 边界条件
+dp[0] = 1; 
+```
+
+不选取任何元素时，元素之和才为 0，因此只有 1 种方案。
+
+
+
+4. 确定**遍历顺序**
+
+按顺序计算，当计算 `dp[i][j]` 时，`dp[i - 1][j]` ， `dp[i][j - 1]` ， `dp[i - 1][j - 1]` 均已经确定了
+
+
+
+
+
+
+
+5. 举例推导dp数组
+
+![img](assets/62ea5e33d1ee2396c74c87941269bc1e53cd7385c341c49b160129f2e49de80e-图片.png)
+
+**i = 0，表示此时 word1 是个空字符串，只能增加 1，2，3 得到 "r", "ro", "ros"**
+
+![img](assets/d892c5f4463bc801dff85fed4c8b8e76ed0d178b1b917a4447b642c243d46c51-图片.png)
+
+**j = 0，表示此时 word2 是个空字符串，只能删除 1，2，3，4，5 得到 "orse", "rse", "se", "e", ""**
+
+```c++
+int minDistance(string word1, string word2) {
+    vector<vector<int>> dp(word1.size() + 1, vector<int>(word2.size() + 1, 0));
+
+    for (int i = 0; i < dp.size(); i++) {
+        dp[i][0] = i;
+    }
+    for (int j = 0; j < dp[0].size(); j++) {
+        dp[0][j] = j;
+    }
+
+    for (int i = 1; i < dp.size(); i++) {
+        for (int j = 1; j < dp[i].size(); j++) {
+            dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j], dp[i][j - 1])) + 1;
+            if (word1[i - 1] == word2[j - 1]) {
+                dp[i][j] = min(dp[i][j], dp[i - 1][j - 1]);
+            }
+        }
+    }
+    return dp.back().back();
+}
+```
+
+
 
 
 
