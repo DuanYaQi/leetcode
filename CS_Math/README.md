@@ -989,6 +989,10 @@ ll co_prime(ll n) {
 
 
 
+
+
+
+
 ---
 
 ## 水塘/蓄水池采样
@@ -1719,8 +1723,6 @@ struct DLinkedNode{
 
 
 
-
-
 ```c++
 class LRUCache {
 private:
@@ -1767,7 +1769,7 @@ public:
             return -1;
         }
         // 如果 key 存在，先通过哈希表定位，再移到头部
-        DLinkedNode* node = cache[key];
+        DLinkedNode* node = _cache[key];
         moveToHead(node);
         return node->value;
     }

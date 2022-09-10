@@ -813,3 +813,9 @@ int isPrefixOfWord(string sentence, string searchWord) {
 }
 ```
 
+
+
+
+
+# 自动机
+
