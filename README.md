@@ -215,7 +215,6 @@ https://www.cnblogs.com/MinPage/
 |如果让空节点进入递归，就不加if<br>如果不让空节点进递归，就加if限制，终止条件也相应调整|
 ||
 ||
-||
 |其实很多**数组填充**类的问题，都可以先**预先**给数组**扩容**带填充后的大小，然后在**从后向前**进行操作。|
 ||
 ||
@@ -224,10 +223,14 @@ https://www.cnblogs.com/MinPage/
 |`1<<i` 是将 1 左移了 i 位，即第 i 位为1，其余位为 0； |
 |`n & (1<<i) == 0` 判断 n 的第 i 位是否为 0|
 |`(n & (n - 1) ) == 0` 判断 n 是否为 2 的幂次方|
+|`for( ; ~i; )` 是当 i 的全部位都为 1 时才退出循环，而 int 类型二进制位全为 1 的值是 -1。|
+|`lo + hi >> 1` 为 `(lo + hi) / 2`|
 ||
-|爆int<br>(1)ans = 1ll * a * a;<br/>(2)long long ans = 1e5 * 1e5;|
 ||
-|`stIn.empty() && stOut.empty() ? true : false;` == `stIn.empty() && stOut.empty()`|
+|爆int<br>(1)`ans = 1ll * a * a;`<br/>(2)`long long ans = 1e5 * 1e5;`|
+||
+||
+|`stIn.empty() && stOut.empty() ? true : false;` <br>==<br> `stIn.empty() && stOut.empty()`|
 |`unordered_set` 与 `vector` 之间迭代器传递|
 ||
 |`&&` 是有**顺序**的防止下标越界|

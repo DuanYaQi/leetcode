@@ -1256,6 +1256,290 @@ public:
 
 
 
+## 筛质数
+
+合数就是非质数\非素数
+
+
+
+----
+
+### 普通筛法 O(nlogn)
+
+用每一个**合数的所有因子**筛去当前合数，比如24被2，3，4，6，8，12筛去6次
+
+```c++
+int get_primes(int n) {
+    for (int i = 2; i <= n; ++i) {
+        if (!st[i]) { // 如果是质数
+            primes[cnt++] = i;
+        }
+        for (int j = i * 2; j <= n; j+=i)	//不管当前i是合数还是质数，都用来筛掉后面它的倍数
+            st[j] = true;
+    }
+}
+```
+
+
+
+### *埃氏筛法 O(nloglogn)
+
+埃氏筛法做法是只用每一个合数的**质因子**筛去当前合数，比如24会被2，3筛去两次
+
+```c++
+int get_primes(int n) {
+    for (int i = 2; i <= n; ++i) {
+        if (!st[i]) {	//如果是质数
+            primes[cnt++] = i;
+            for (int j = i * 2; j <= n; j += i)	//只用质数i筛掉它的倍数（合数），也可以筛掉所有合数
+                st[j] = true;
+        }
+    }
+}
+```
+
+
+
+### 线性筛法 O(n)
+
+用每一个合数的**最小质因子**筛去当前合数，比如 24 只会被 2 筛去一次
+
+```c++
+bool isPrime[100000010];
+// isPrime[i] == 1表示：i是素数 
+int Primes[6000010], cnt = 0;	// 素数表
+// Primes[i] 表示第i个质数
+
+int get_primes(int n) {			// 筛到 n
+    memset(isPrime, 1, sizeof(isPrime));	// 以“每个数都是素数”为初始状态，逐个删去
+    isPrime[1] = false;	// 1不是素数
+    
+    for (int i = 2; i <= n; ++i) {
+        if (isPrime[i]) Primes[cnt++] = i;	// 没筛掉 i成为下一个素数
+        
+        for (int j = 0; Primes[j] <= n / i; j++) {	//用Primes[j]筛掉合数Primes[j] * i
+			isPrime[Primes[j] * i] = false;
+            
+            if(i % Primes[j] == 0) break;   // i 中也含有Prime[j]这个因子
+        }
+    }
+    
+    return cnt;
+}
+
+
+int main () {
+    int n = 10000;
+    int count = get_primes(n);
+    cout << count << endl;
+    for (int i = 0; i < count; ++i) {
+        cout << Primes[i] << endl;
+    }
+}	
+```
+
+
+
+
+
+## 1175. 质数排列
+
+```c++
+const int maxn = 101;
+const int mmm = 1e9 + 7;
+class Solution {
+public:
+    void set_primes(int n, vector<bool> &isPrime, vector<int> &Primes) {			// 筛到 n
+        isPrime[0] = false;	// 1不是素数
+        isPrime[1] = false;	// 1不是素数
+        
+        for (int i = 2; i < n; ++i) {
+            if (isPrime[i]) 
+                Primes.push_back(i);	// 没筛掉,i成为下一个素数
+            
+            for (int j = i * 2; j < n; j += i) {	//用Primes[j]筛掉合数Primes[j] * i
+                isPrime[j] = false;
+            }
+        }
+        
+        return;
+    }
+
+    int numPrimeArrangements(int n) {
+        vector<bool> isPrime(maxn, true);   // isPrime[i] == 1表示：i是素数 
+        vector<int> Primes;	// 素数表        // Primes[i] 表示第i个质数
+        long long res = 1;
+
+        set_primes(maxn, isPrime, Primes);
+        
+        auto iter = lower_bound(Primes.begin(), Primes.end(), n);
+        int cnt;
+
+        if (*iter == n) cnt = iter - Primes.begin() + 1;
+        else cnt = iter - Primes.begin(); 
+        
+        int leftCnt = n - cnt;
+        
+        for (; cnt > 0; cnt -= 1) {
+            res = res * cnt % mmm;
+        }
+
+        for (; leftCnt > 0; leftCnt -= 1) {
+            res = res * leftCnt % mmm;
+        }
+
+        return res;
+    }
+};
+```
+
+
+
+
+
+
+
+
+
+---
+
+# 高精度计算
+
+
+
+
+
+
+
+## 加
+
+累加，进位，存余
+
+```c++
+const int N = 1e5 + 5;
+int A[N], B[N], C[N];
+int la, lb, lc;
+
+void add(int A[], int B[], int C[]) }{
+    for (int i = 0; i < lc; ++i) {
+        
+    }
+}
+
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    la = a.size(), lb = b.size(), lc = max(la, lb);
+    for (int i = la - 1; ~i; --i) A[]
+    
+}
+
+```
+
+
+
+
+
+
+
+
+
+### 989.数组形式的整数加法
+
+
+
+加法模板
+
+```matlab
+while ( A 没完 || B 没完)
+    A 的当前位
+    B 的当前位
+
+    和 = A 的当前位 + B 的当前位 + 进位carry
+
+    当前位 = 和 % 10;
+    进位 = 和 / 10;
+end
+
+判断还有进位吗
+```
+
+
+
+
+
+
+
+加法有以下公式：
+
+当前位 = (A 的当前位 + B 的当前位 + 进位carry) % 10
+
+直接遍历相加即可，保存 carry，最后有 carry 额外加 1，从小到大加，最后保存的结果要翻转
+
+- 动态数组遍历数组
+- int 数字 `%10` 取最低位，`/10` 为了遍历下一个最低位
+
+```c++
+vector<int> addToArrayForm(vector<int>& num, int k) {
+    int carry = 0;
+        
+    vector<int> res;
+    int i = num.size() - 1;
+    // 放到一起处理, 如果有一个变成 0, sumn 这里就相当于 + 0
+    while (i >= 0 || k > 0) {
+        int a = i < 0 ? 0 : num[i];
+        int kn = k == 0 ? 0 : k % 10;
+        k /= 10;
+
+        int sumn = a + kn + carry;
+
+        res.push_back(sumn % 10);
+        if (sumn >= 10) {
+            carry = 1;
+        } else {
+            carry = 0;
+        }
+        i--;
+    }
+
+    // 如果有进位
+    if (carry == 1) res.push_back(1);
+    reverse(res.begin(), res.end());
+
+    return res;
+}
+```
+
+
+
+- 时间复杂度: O(max(n,logk))
+- 空间复杂度: O(1)，常数级别，只有res
+
+
+
+---
+
+## 减
+
+
+
+## 乘
+
+
+
+
+
+## 除
+
+
+
+
+
+
+
+
+
 ---
 
 # CS
@@ -1985,152 +2269,9 @@ public:
 
 
 
-
----
-
-## 位图
-
-
-
-
 ## 868. 二进制间距
 
 
-
-
----
-
-## 大数相加
-
-
-
-
-
-### 普通加法
-
-#### 989. 数组形式的整数加法
-
-加法有以下公式：
-
-当前位 = (A 的当前位 + B 的当前位 + 进位carry) % 10
-
-直接遍历相加即可，保存 carry，最后有 carry 额外加 1，从小到大加，最后保存的结果要翻转
-
-- 动态数组遍历数组
-- int 数字 `%10` 取最低位，`/10` 为了遍历下一个最低位
-
-```c++
-vector<int> addToArrayForm(vector<int>& num, int k) {
-    int carry = 0; 
-    vector<int> res;
-    
-    // 遍历数组，进行加
-    for (int i = num.size() - 1; i >= 0; --i) {
-        int kn = k % 10;
-        k /= 10;
-
-        int sumn = kn + num[i] + carry;  //关键公式!!!
-
-        res.push_back(sumn % 10);
-        if (sumn >= 10) {
-            carry = 1;
-        } else {
-            carry = 0;
-        }
-    }
-
-    // 如果 k 还没处理完，继续处理 k
-    while (k > 0) {
-        int kn = k % 10;
-        k /= 10;
-
-        int sumn = kn + carry; //关键公式!!! 此时 num[i] 已经是 0 了
-
-        res.push_back(sumn % 10);
-        if (sumn >= 10) {
-            carry = 1;
-        } else {
-            carry = 0;
-        }
-    }
-
-    if (carry == 1) res.push_back(1);
-    reverse(res.begin(), res.end());
-
-    return res;
-}
-```
-
-> - 时间复杂度: O(max(n,logk))
-> - 空间复杂度: O(1)，常数级别，只有res
-
-
-
-优化，发现两个循环逻辑其实是一样的，可以放在一起处理
-
-```c++
-vector<int> addToArrayForm(vector<int>& num, int k) {
-    int carry = 0;
-        
-    vector<int> res;
-    int i = num.size() - 1;
-    // 放到一起处理, 如果有一个变成 0, sumn 这里就相当于 + 0
-    while (i >= 0 || k > 0) {
-        int a = i < 0 ? 0 : num[i];
-        int kn = k == 0 ? 0 : k % 10;
-        k /= 10;
-
-        int sumn = a + kn + carry;
-
-        res.push_back(sumn % 10);
-        if (sumn >= 10) {
-            carry = 1;
-        } else {
-            carry = 0;
-        }
-        i--;
-    }
-
-    // 如果有进位
-    if (carry == 1) res.push_back(1);
-    reverse(res.begin(), res.end());
-
-    return res;
-}
-```
-
-没变化
-
-> - 时间复杂度: O(max(n,logk))
-> - 空间复杂度: O(1)，常数级别，只有res
-
-
-
-
-
-加法模板
-
-```matlab
-while ( A 没完 || B 没完)
-    A 的当前位
-    B 的当前位
-
-    和 = A 的当前位 + B 的当前位 + 进位carry
-
-    当前位 = 和 % 10;
-    进位 = 和 / 10;
-end
-
-判断还有进位吗
-```
-
-
-
-
-
----
-
-## 大数相乘
 
 
 
@@ -2207,149 +2348,6 @@ int minimumLines(vector<vector<int>>& stockPrices) {
 ```
 
 
-
-
-
-
-
-
-
-## 筛质数
-
-合数就是非质数\非素数
-
-
-
-----
-
-### 普通筛法 O(nlogn)
-
-用每一个**合数的所有因子**筛去当前合数，比如24被2，3，4，6，8，12筛去6次
-
-```c++
-int get_primes(int n) {
-    for (int i = 2; i <= n; ++i) {
-        if (!st[i]) { // 如果是质数
-            primes[cnt++] = i;
-        }
-        for (int j = i * 2; j <= n; j+=i)	//不管当前i是合数还是质数，都用来筛掉后面它的倍数
-            st[j] = true;
-    }
-}
-```
-
-
-
-### *埃氏筛法 O(nloglogn)
-
-埃氏筛法做法是只用每一个合数的**质因子**筛去当前合数，比如24会被2，3筛去两次
-
-```c++
-int get_primes(int n) {
-    for (int i = 2; i <= n; ++i) {
-        if (!st[i]) {	//如果是质数
-            primes[cnt++] = i;
-            for (int j = i * 2; j <= n; j += i)	//只用质数i筛掉它的倍数（合数），也可以筛掉所有合数
-                st[j] = true;
-        }
-    }
-}
-```
-
-
-
-### 线性筛法 O(n)
-
-用每一个合数的**最小质因子**筛去当前合数，比如 24 只会被 2 筛去一次
-
-```c++
-bool isPrime[100000010];
-// isPrime[i] == 1表示：i是素数 
-int Primes[6000010], cnt = 0;	// 素数表
-// Primes[i] 表示第i个质数
-
-int get_primes(int n) {			// 筛到 n
-    memset(isPrime, 1, sizeof(isPrime));	// 以“每个数都是素数”为初始状态，逐个删去
-    isPrime[1] = false;	// 1不是素数
-    
-    for (int i = 2; i <= n; ++i) {
-        if (isPrime[i]) Primes[cnt++] = i;	// 没筛掉 i成为下一个素数
-        
-        for (int j = 0; Primes[j] <= n / i; j++) {	//用Primes[j]筛掉合数Primes[j] * i
-			isPrime[Primes[j] * i] = false;
-            
-            if(i % Primes[j] == 0) break;   // i 中也含有Prime[j]这个因子
-        }
-    }
-    
-    return cnt;
-}
-
-
-int main () {
-    int n = 10000;
-    int count = get_primes(n);
-    cout << count << endl;
-    for (int i = 0; i < count; ++i) {
-        cout << Primes[i] << endl;
-    }
-}	
-```
-
-
-
-
-
-## 1175. 质数排列
-
-```c++
-const int maxn = 101;
-const int mmm = 1e9 + 7;
-class Solution {
-public:
-    void set_primes(int n, vector<bool> &isPrime, vector<int> &Primes) {			// 筛到 n
-        isPrime[0] = false;	// 1不是素数
-        isPrime[1] = false;	// 1不是素数
-        
-        for (int i = 2; i < n; ++i) {
-            if (isPrime[i]) 
-                Primes.push_back(i);	// 没筛掉,i成为下一个素数
-            
-            for (int j = i * 2; j < n; j += i) {	//用Primes[j]筛掉合数Primes[j] * i
-                isPrime[j] = false;
-            }
-        }
-        
-        return;
-    }
-
-    int numPrimeArrangements(int n) {
-        vector<bool> isPrime(maxn, true);   // isPrime[i] == 1表示：i是素数 
-        vector<int> Primes;	// 素数表        // Primes[i] 表示第i个质数
-        long long res = 1;
-
-        set_primes(maxn, isPrime, Primes);
-        
-        auto iter = lower_bound(Primes.begin(), Primes.end(), n);
-        int cnt;
-
-        if (*iter == n) cnt = iter - Primes.begin() + 1;
-        else cnt = iter - Primes.begin(); 
-        
-        int leftCnt = n - cnt;
-        
-        for (; cnt > 0; cnt -= 1) {
-            res = res * cnt % mmm;
-        }
-
-        for (; leftCnt > 0; leftCnt -= 1) {
-            res = res * leftCnt % mmm;
-        }
-
-        return res;
-    }
-};
-```
 
 
 
