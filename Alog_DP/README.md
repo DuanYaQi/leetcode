@@ -1267,10 +1267,12 @@ $$
 ```c++
 // 01背包
 int dp[n+1][m+1]; memset(dp, 0, sizeof(dp));	// 表示前i件物品恰放入一个容量为j的背包可以获得的最大价值
-for(int i=0; i<n; i++){				//遍历n个物品
-    for(int j=m; j>=0;j--){			//遍历m个容量 逆序遍历
-        if(j >= w[i]){				//能装，判断装不装再装
-            dp[i][j]=max(dp[i-1][j], dp[i-1][j-w[i]]+v[i]);
+for (int i = 0; i < n; i++) {				//遍历n个物品
+    for (int j = m; j >= 0;j--) {			//遍历m个容量 逆序遍历
+        if (j >= w[i]) {				//能装，判断装不装再装
+            dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i]] + v[i]);
+        } else {
+            dp[i][j] = dp[i-1][j];
         }
         //第i个物体不选 dp[i][j]=dp[i-1][j];
         //第i个物体若选 dp[i][j]=dp[i-1][j-w[i]]+v[i]
@@ -1283,10 +1285,12 @@ for(int i=0; i<n; i++){				//遍历n个物品
 ```c++
 // 多重背包
 int dp[n+1][m+1]; memset(dp, 0, sizeof(dp));	// 表示前i件物品恰放入一个容量为j的背包可以获得的最大价值
-for(int i=0; i<n; i++){				//遍历n个物品
-    for(int j=m; j>=0;j--){			//遍历m个容量 逆序遍历
-        if(j >= w[i]){				//能装，判断装不装再装
-            dp[i][j]=max(dp[i-1][j], dp[i][j-w[i]]+v[i]);
+for (int i = 0; i < n; i++) {				//遍历n个物品
+    for (int j = m; j >= 0; j--) {			//遍历m个容量 逆序遍历
+        if (j >= w[i]) {				//能装，判断装不装再装
+            dp[i][j] = max(dp[i-1][j], dp[i][j-w[i]] + v[i]);
+        } else {
+            dp[i][j] = dp[i-1][j];
         }
         //第i个物体不选 dp[i][j]=dp[i-1][j];
         //第i个物体若选 dp[i][j]=dp[i][j-w[i]]+v[i]
